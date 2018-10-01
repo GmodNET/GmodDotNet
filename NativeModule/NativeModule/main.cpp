@@ -123,6 +123,10 @@ MonoObject* LuaGetBool(int i) //
 	MonoObject* rt = mono_value_box(mainDomain, bl_class, &tmp_bool);
 	return rt;
 }
+int LuaPCall(int args, int results, int error_func) //
+{
+	return Glua->PCall(args, results, error_func);
+}
 
 //Method to register functions with Mono runtime
 void RegisterFunctions()
@@ -134,6 +138,7 @@ void RegisterFunctions()
 	mono_add_internal_call("GmodNET.Lua::IntPushBool(bool)", LuaPushBool);
 	mono_add_internal_call("GmodNET.Lua::IntGetField(int,string)", LuaGetField);
 	mono_add_internal_call("GmodNET.Lua::IntCall(int,int)", LuaCall);
+	mono_add_internal_call("GmodNET.Lua::IntPCall(int,int,int)", LuaPCall);
 	mono_add_internal_call("GmodNET.Lua::IntPop(int)", LuaPop);
 	mono_add_internal_call("GmodNET.Lua::IntGetNumber(int)", LuaGetNumber);
 	mono_add_internal_call("GmodNET.Lua::IntGetString(int)", LuaGetString);

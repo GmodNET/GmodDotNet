@@ -10,14 +10,13 @@ namespace GmodNET
     {
         public static void Main()
         {
-            //Print message
-            lock (Lua.Api)
+           lock(Lua.Api)
             {
                 Lua.Api.PushSpecial(Lua.SpecialTables.Global);
                 Lua.Api.GetField(-1, "print");
-                Lua.Api.PushString("Hello, this your managed assembly!!!");
+                Lua.Api.PushString("Message from your managed code!");
                 Lua.Api.Call(1, 0);
-                Lua.Api.Pop();
+                Lua.Api.Pop(1);
             }
         }
     }

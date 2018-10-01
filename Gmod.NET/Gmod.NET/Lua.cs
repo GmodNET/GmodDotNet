@@ -136,6 +136,23 @@ namespace GmodNET
             IntCall(num_of_args, num_of_returns);
         }
 
+        //Bridge to the LuaPCall
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static int IntPCall(int args, int results, int error_func);
+
+        /// <summary>
+        /// Safe version of Lua.Call function. Call a function with a given number of argumnts,
+        /// results and given error handler
+        /// </summary>
+        /// <param name="num_of_args">Number of arguments for the function</param>
+        /// <param name="num_of_results">Number of values returned by function</param>
+        /// <param name="error_func">Index of the error handle function in the stack (leave 0 to not catch function)</param>
+        /// <returns>Error code</returns>
+        public int PCall(int num_of_args, int num_of_results, int error_func)
+        {
+            return IntPCall(num_of_args, num_of_results, error_func);
+        }
+
         //Method which Pops given number of elements from the stack
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern static void IntPop(int n);
