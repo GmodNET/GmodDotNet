@@ -263,5 +263,9 @@ __pycache__/
 # Lib files
 *.lib
 
+# All a files
+*.a
+
 #Folder with header files
 NativeModule/NativeModule/includes
+NativeModule/NativeModule/linux_includes

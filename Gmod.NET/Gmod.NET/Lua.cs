@@ -1,9 +1,24 @@
-﻿using System;
+﻿/* Lua is a singleton class, which provides a way to interact with Garry's Mod Lua api partially described here:
+ * https://wiki.garrysmod.com/page/C_Lua:_Functions
+ * 
+ * To call Garry's Mod lua api use property Lua.Api. Generally, methods in "GarrysMod/Lua/Interface.h" and in managed Lua class
+ * are named accordingly. For example, managed counterpart of LUA->PushString(char*) is Lua.Api.PushString(string).
+ * 
+ * Keep in mind that that Garry's Mod's Lua engine uses generalized stack and therefore not thread safe. It means you should use
+ * lock(Lua.Api) {...} statement wherever you want to perform strict sequence of Lua api calls, which is almost always the case.
+ * 
+ * Authors: Gleb Krasilich
+ * 
+ * 2018*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace GmodNET
 {
@@ -19,7 +34,33 @@ namespace GmodNET
         }
 
         //Single instance of the Lua class
-        private static readonly Lua API = new Lua();
+        private static readonly Lua API;
+
+        /// <summary>
+        /// Delegate to represent C functions, returned from Lua stack
+        /// </summary>
+        /// <param name="ptr">Pointer to the "lua state". Should be provided by Lua specification.</param>
+        /// <returns>Number of returns of the function</returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int IntPtrCFunc(IntPtr ptr);
+
+        //Internal list of pushed functions
+        static List<IntPtrCFunc> ListOfPushedDelegates;
+
+        //Static constructor
+        static Lua()
+        {
+            API = new Lua();
+            ListOfPushedDelegates = new List<IntPtrCFunc>();
+        }
+
+        /// <summary>
+        /// Delegate which is designed to push C like functions to Lua engine
+        /// </summary>
+        /// <returns>Number of values function pushed on stack as results</returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int CFunc();
+
 
         /// <summary>
         /// Instance to make calls to Lua api.
@@ -241,6 +282,62 @@ namespace GmodNET
         public bool GetBool(int pos_in_stack)
         {
             return IntGetBool(pos_in_stack);
+        }
+
+        //Bridge to LuaPushCFunction
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void IntPushCFunction(IntPtr d);
+
+        /// <summary>
+        /// Push a function with delegate func on Lua stack
+        /// </summary>
+        /// <param name="func">Delegate of the function to push on stack</param>
+        public void PushCFunction(CFunc func)
+        {
+            //Init function to be wrapped by delegate
+            int PassFunc(IntPtr ptr)
+            {
+                return func();
+            }
+            //Init delegate of this function
+            IntPtrCFunc del_to_pass = new IntPtrCFunc(PassFunc);
+            //Save the reference to the delegate
+            ListOfPushedDelegates.Add(del_to_pass);
+            //Get pointer on delegate
+            IntPtr pointer = Marshal.GetFunctionPointerForDelegate<IntPtrCFunc>(del_to_pass);
+            //Call bridge
+            IntPushCFunction(pointer);
+        }
+
+        //Bridge to LuaGetCFunction
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static IntPtr IntGetCFunction(int pos);
+
+        /// <summary>
+        /// Function to get C function pointer from the Lua stack
+        /// </summary>
+        /// <param name="stack_pos">Position of the C function on the stack</param>
+        /// <returns>Delegate on C function</returns>
+        public IntPtr GetCFunction(int stack_pos = -1)
+        {
+            //Get function pointer
+            IntPtr func_pointer = IntGetCFunction(stack_pos);
+            //Returned delegate
+            return func_pointer; ;
+        }
+
+        //Bridge to LuaSetField
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void IntSetField(int pos, string key);
+
+        /// <summary>
+        /// Set a field t[k] = v, where t is a table at stack_pos, k is a key and v is a value on top of the lua stack
+        /// </summary>
+        /// <param name="stack_pos">Position of the table to set new field on lua stack</param>
+        /// <param name="key">Key of the value to set in the table</param>
+        public void SetField(int stack_pos, string key)
+        {
+            IntSetField(stack_pos, key);
         }
     }
 }

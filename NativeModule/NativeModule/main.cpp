@@ -1,3 +1,11 @@
+/* This is a native module of the GmodDotNet. It is linked with mono, inits mono domain, load assembly and calls entry point of
+* the managed library.
+* 
+* Authors: Gleb Krasilich
+
+2018*/
+
+
 #include <string>
 
 #include <GarrysMod/Lua/Interface.h>
@@ -9,10 +17,6 @@
 using namespace std;
 using namespace GarrysMod;
 using namespace GarrysMod::Lua;
-
-//Change this variabe for building for another os: "\\" for windows and "/" for linux/macos
-const string Path_Separator = "\\";
-const char Path_Separator_Char = Path_Separator[0];
 
 //Variable to store pointer on Lua api. Must be initiated in GNOD_MODULE_OPEN.
 ILuaBase* Glua;
@@ -55,19 +59,19 @@ string GmodModuleDirectory()
 	//Resize path
 	for (int i = path.length() - 1; i >= 0; i--)
 	{
-		if (path[i] == Path_Separator_Char)
+		if (path[i] == '/' || path[i] == '\\')
 		{
 			path.resize(i);
 			break;
 		}
 	}
-	path += Path_Separator + "lua" + Path_Separator +"bin";
+	path += "/lua/bin";
 
 	return path;
 }
 
 
-//Make wrappers for lua api to pass to mananage world
+//Make wrappers for lua api to pass to mananaged world
 void LuaPushSpecial(int i) //
 {
 	Glua->PushSpecial(i);
@@ -127,30 +131,51 @@ int LuaPCall(int args, int results, int error_func) //
 {
 	return Glua->PCall(args, results, error_func);
 }
+void LuaPushCFunction(void* int_ptr_object) //
+{
+	CFunc c_func = (CFunc)int_ptr_object;
+	Glua->PushCFunction(c_func);
+}
+CFunc LuaGetCFunction(int pos) //
+{
+	return Glua->GetCFunction(pos);
+}
+void LuaSetField(int pos, MonoString* key)
+{
+	//Get char array from the key
+	char* p_key = mono_string_to_utf8(key);
+	//Call SetField
+	Glua->SetField(pos, p_key);
+	//Free memmory
+	mono_free(p_key);
+}
 
 //Method to register functions with Mono runtime
 void RegisterFunctions()
 {
-	mono_add_internal_call("GmodNET.Lua::IntPushSpecial(int)", LuaPushSpecial);
-	mono_add_internal_call("GmodNET.Lua::IntPush(int)", LuaPush);
-	mono_add_internal_call("GmodNET.Lua::IntPushString(string)", LuaPushString);
-	mono_add_internal_call("GmodNET.Lua::IntPushNumber(double)", LuaPushNumber);
-	mono_add_internal_call("GmodNET.Lua::IntPushBool(bool)", LuaPushBool);
-	mono_add_internal_call("GmodNET.Lua::IntGetField(int,string)", LuaGetField);
-	mono_add_internal_call("GmodNET.Lua::IntCall(int,int)", LuaCall);
-	mono_add_internal_call("GmodNET.Lua::IntPCall(int,int,int)", LuaPCall);
-	mono_add_internal_call("GmodNET.Lua::IntPop(int)", LuaPop);
-	mono_add_internal_call("GmodNET.Lua::IntGetNumber(int)", LuaGetNumber);
-	mono_add_internal_call("GmodNET.Lua::IntGetString(int)", LuaGetString);
-	mono_add_internal_call("GmodNET.Lua::IntGetBool(int)", LuaGetBool);
+	mono_add_internal_call("GmodNET.Lua::IntPushSpecial(int)", (void*)LuaPushSpecial);
+	mono_add_internal_call("GmodNET.Lua::IntPush(int)", (void*)LuaPush);
+	mono_add_internal_call("GmodNET.Lua::IntPushString(string)", (void*)LuaPushString);
+	mono_add_internal_call("GmodNET.Lua::IntPushNumber(double)", (void*)LuaPushNumber);
+	mono_add_internal_call("GmodNET.Lua::IntPushBool(bool)", (void*)LuaPushBool);
+	mono_add_internal_call("GmodNET.Lua::IntGetField(int,string)", (void*)LuaGetField);
+	mono_add_internal_call("GmodNET.Lua::IntCall(int,int)", (void*)LuaCall);
+	mono_add_internal_call("GmodNET.Lua::IntPCall(int,int,int)", (void*)LuaPCall);
+	mono_add_internal_call("GmodNET.Lua::IntPop(int)", (void*)LuaPop);
+	mono_add_internal_call("GmodNET.Lua::IntGetNumber(int)", (void*)LuaGetNumber);
+	mono_add_internal_call("GmodNET.Lua::IntGetString(int)", (void*)LuaGetString);
+	mono_add_internal_call("GmodNET.Lua::IntGetBool(int)", (void*)LuaGetBool);
+	mono_add_internal_call("GmodNET.Lua::IntPushCFunction", (void*)LuaPushCFunction);
+	mono_add_internal_call("GmodNET.Lua::IntGetCFunction(int)", (void*)LuaGetCFunction);
+	mono_add_internal_call("GmodNET.Lua::IntSetField(int,string)", (void*)LuaSetField);
 }
 
-//Function to setup assembly
+//Function to setup assembly. Load main assembly, get its image.
 void SetUpAssembly()
 {
 	//Open assembly
 	GmodPrint("Loading main assembly...");
-	mainAssembly = mono_domain_assembly_open(mainDomain, (GmodModuleDirectory() + Path_Separator + "Gmod.NET.dll").c_str());
+	mainAssembly = mono_domain_assembly_open(mainDomain, (GmodModuleDirectory() + "/Gmod.NET.dll").c_str());
 	if (mainAssembly)
 	{
 		GmodPrint("Main assembly was successfully loaded!");
@@ -183,7 +208,7 @@ GMOD_MODULE_OPEN()
 	GmodPrint("Loading Gmod.NET Native Module...");
 	//Set up mono folders
 	GmodPrint("Setting up mono directories...");
-	mono_set_dirs((GmodModuleDirectory() + Path_Separator + "lib").c_str(), (GmodModuleDirectory() + Path_Separator + "etc").c_str());
+	mono_set_dirs((GmodModuleDirectory() + "/lib").c_str(), (GmodModuleDirectory() + "/etc").c_str());
 	
 	//Init mono domain
 	GmodPrint("Creating mono domain...");
