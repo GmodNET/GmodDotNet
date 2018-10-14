@@ -90,9 +90,16 @@ void LuaPushNumber(double d) //
 {
 	Glua->PushNumber(d);
 }
-void LuaPushBool(MonoObject* boolean) //
+void LuaPushBool(int pre_bool) //
 {
-	Glua->PushBool(*(bool*)mono_object_unbox(boolean));
+	if (pre_bool == 1)
+	{
+		Glua->PushBool(true);
+	}
+	else
+	{
+		Glua->PushBool(false);
+	}
 }
 void LuaGetField(int stackPos, MonoString* name) //
 {
@@ -112,20 +119,21 @@ double LuaGetNumber(int i) //
 {
 	return Glua->GetNumber(i);
 }
-MonoString* LuaGetString(int i) //
+const char* LuaGetString(int i) //
 {
-	const char* tmp_str = Glua->GetString(i);
-	MonoString* str = mono_string_new(mainDomain, tmp_str);
-	return str;
+	return Glua->GetString(i);
 }
-MonoObject* LuaGetBool(int i) //
+int LuaGetBool(int i) //
 {
 	bool tmp_bool = Glua->GetBool(i);
-	//Get boolen class
-	MonoClass* bl_class = mono_get_boolean_class();
-	//Box tmp_bool into managed world
-	MonoObject* rt = mono_value_box(mainDomain, bl_class, &tmp_bool);
-	return rt;
+	if (tmp_bool)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 int LuaPCall(int args, int results, int error_func) //
 {
@@ -149,6 +157,44 @@ void LuaSetField(int pos, MonoString* key)
 	//Free memmory
 	mono_free(p_key);
 }
+void LuaPushVector(MonoObject* vec)
+{
+	//Get managed Vector
+	MonoClass* vector_class = mono_class_from_name(mainImage, "GmodNET.Math", "Vector");
+	//Get fields
+	MonoClassField* x_field = mono_class_get_field_from_name(vector_class, "x");
+	MonoClassField* y_field = mono_class_get_field_from_name(vector_class, "y");
+	MonoClassField* z_field = mono_class_get_field_from_name(vector_class, "z");
+	//Get components
+	float x, y, z;
+	mono_field_get_value(vec, x_field, &x);
+	mono_field_get_value(vec, y_field, &y);
+	mono_field_get_value(vec, z_field, &z);
+	//Create vector
+	Vector new_vec;
+	//Set new_vec components;
+	new_vec.x = x;
+	new_vec.y = y;
+	new_vec.z = z;
+	//Push it on the stack
+	Glua->PushVector(new_vec);
+}
+float* LuaGetVector(int pos)
+{
+	//Get vector
+	Vector vec = Glua->GetVector(pos);
+	//Create array from vector
+	float* vec_array = (float*)malloc(sizeof(float)*3);
+	vec_array[0] = vec.x;
+	vec_array[1] = vec.y;
+	vec_array[2] = vec.z;
+	return vec_array;
+}
+//This function is a bridge of free to managed code. It's usage is really limited;
+void BridgeFree(void* ptr)
+{
+	free(ptr);
+}
 
 //Method to register functions with Mono runtime
 void RegisterFunctions()
@@ -157,7 +203,7 @@ void RegisterFunctions()
 	mono_add_internal_call("GmodNET.Lua::IntPush(int)", (void*)LuaPush);
 	mono_add_internal_call("GmodNET.Lua::IntPushString(string)", (void*)LuaPushString);
 	mono_add_internal_call("GmodNET.Lua::IntPushNumber(double)", (void*)LuaPushNumber);
-	mono_add_internal_call("GmodNET.Lua::IntPushBool(bool)", (void*)LuaPushBool);
+	mono_add_internal_call("GmodNET.Lua::IntPushBool(int)", (void*)LuaPushBool);
 	mono_add_internal_call("GmodNET.Lua::IntGetField(int,string)", (void*)LuaGetField);
 	mono_add_internal_call("GmodNET.Lua::IntCall(int,int)", (void*)LuaCall);
 	mono_add_internal_call("GmodNET.Lua::IntPCall(int,int,int)", (void*)LuaPCall);
@@ -165,9 +211,13 @@ void RegisterFunctions()
 	mono_add_internal_call("GmodNET.Lua::IntGetNumber(int)", (void*)LuaGetNumber);
 	mono_add_internal_call("GmodNET.Lua::IntGetString(int)", (void*)LuaGetString);
 	mono_add_internal_call("GmodNET.Lua::IntGetBool(int)", (void*)LuaGetBool);
-	mono_add_internal_call("GmodNET.Lua::IntPushCFunction", (void*)LuaPushCFunction);
+	mono_add_internal_call("GmodNET.Lua::IntPushCFunction(intptr)", (void*)LuaPushCFunction);
 	mono_add_internal_call("GmodNET.Lua::IntGetCFunction(int)", (void*)LuaGetCFunction);
 	mono_add_internal_call("GmodNET.Lua::IntSetField(int,string)", (void*)LuaSetField);
+	mono_add_internal_call("GmodNET.Lua::IntPushVector(GmodNET.Math.Vector)", (void*)LuaPushVector);
+	mono_add_internal_call("GmodNET.Lua::IntGetVector(int)", (void*)LuaGetVector);
+
+	mono_add_internal_call("GmodNET.Lua::BridgeFree(intptr)", (void*)BridgeFree);
 }
 
 //Function to setup assembly. Load main assembly, get its image.

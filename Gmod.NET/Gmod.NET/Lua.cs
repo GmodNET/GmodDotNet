@@ -19,13 +19,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GmodNET.Math;
 
 namespace GmodNET
 {
     /// <summary>
     /// Singleton to make calls to Lua engine
     /// </summary>
-    sealed class Lua
+    public sealed class Lua
     {
         //Constructor
         private Lua()
@@ -43,15 +44,14 @@ namespace GmodNET
         /// <returns>Number of returns of the function</returns>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int IntPtrCFunc(IntPtr ptr);
-
-        //Internal list of pushed functions
-        static List<IntPtrCFunc> ListOfPushedDelegates;
+        //Internal list of pushed functions. Needed to prevent garbage collection
+        static List<GCHandle> ListOfPushedDelegates;
 
         //Static constructor
         static Lua()
         {
             API = new Lua();
-            ListOfPushedDelegates = new List<IntPtrCFunc>();
+            ListOfPushedDelegates = new List<GCHandle>();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace GmodNET
 
         //Bridge to LuaPushBool
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern static void IntPushBool(bool b);
+        extern static void IntPushBool(int pre_bool);
 
 
         /// <summary>
@@ -146,7 +146,14 @@ namespace GmodNET
         /// <param name="b">Boolean to push</param>
         public void PushBool(bool b)
         {
-            IntPushBool(b);
+            if (b)
+            {
+                IntPushBool(1);
+            }
+            else
+            {
+                IntPushBool(0);
+            }
         }
 
         //Bridge for LuaGetField
@@ -199,18 +206,10 @@ namespace GmodNET
         extern static void IntPop(int n);
 
         /// <summary>
-        /// Pops one element from the stack
-        /// </summary>
-        public void Pop()
-        {
-            IntPop(1);
-        }
-
-        /// <summary>
         /// Pops n elements from the stack
         /// </summary>
         /// <param name="num_to_pop">Number of elements to pop</param>
-        public void Pop(int num_to_pop)
+        public void Pop(int num_to_pop = 1)
         {
             IntPop(num_to_pop);
         }
@@ -220,68 +219,55 @@ namespace GmodNET
         extern static double IntGetNumber(int stack_pos);
 
         /// <summary>
-        /// Returns double number form position -1 in the stack
-        /// </summary>
-        /// <returns>Number from the stack</returns>
-        public double GetNumber()
-        {
-            return IntGetNumber(-1);
-        }
-
-        /// <summary>
-        /// Returns double number from the given position in the stack
+        /// Returns double number from the given position in the stack. Does not pop value from the stack.
         /// </summary>
         /// <param name="stack_pos">Position in the stack to extract number</param>
         /// <returns>Number from the stack</returns>
-        public double GetNumber(int stack_pos)
+        public double GetNumber(int stack_pos = -1)
         {
             return IntGetNumber(stack_pos);
         }
 
         //Get string from the given position in the stack
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern static string IntGetString(int stack_pos);
+        extern unsafe static sbyte* IntGetString(int stack_pos);
 
         /// <summary>
-        /// Returns string from the first position in the stack
-        /// </summary>
-        /// <returns>String from the stack</returns>
-        public string GetString()
-        {
-            return IntGetString(-1);
-        }
-
-        /// <summary>
-        /// Returns string from the given position in the stack
+        /// Returns string from the given position in the stack. Does not pop string from the stack.
         /// </summary>
         /// <param name="position_in_stack">Position in the stack</param>
         /// <returns>String from the stack</returns>
-        public string GetString(int position_in_stack)
+        public string GetString(int position_in_stack = -1)
         {
-            return IntGetString(position_in_stack);
+            unsafe
+            {
+                //Get char array pointer
+                sbyte* ar_ptr = IntGetString(position_in_stack);
+                string str = new string(ar_ptr);
+                return str;
+            }
         }
 
         //Returns bool form the stack in given pos
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern static bool IntGetBool(int pos_in_stack);
+        extern static int IntGetBool(int pos_in_stack);
 
         /// <summary>
-        /// Returns a bool value from the -1 position in the stack
-        /// </summary>
-        /// <returns>Bool value in the stack</returns>
-        public bool GetBool()
-        {
-            return IntGetBool(-1);
-        }
-
-        /// <summary>
-        /// Returns a bool value from the given position in the stack
+        /// Returns a bool value from the given position in the stack. Does not pop value from the stack.
         /// </summary>
         /// <param name="pos_in_stack">Position in the stack</param>
         /// <returns>Bool value from the stack</returns>
-        public bool GetBool(int pos_in_stack)
+        public bool GetBool(int pos_in_stack = -1)
         {
-            return IntGetBool(pos_in_stack);
+            int pre_bool = IntGetBool(pos_in_stack);
+            if(pre_bool == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //Bridge to LuaPushCFunction
@@ -301,8 +287,9 @@ namespace GmodNET
             }
             //Init delegate of this function
             IntPtrCFunc del_to_pass = new IntPtrCFunc(PassFunc);
-            //Save the reference to the delegate
-            ListOfPushedDelegates.Add(del_to_pass);
+            //Prevent delegate from garbage collection
+            GCHandle del_handle = GCHandle.Alloc(del_to_pass, GCHandleType.Pinned);
+            ListOfPushedDelegates.Add(del_handle);
             //Get pointer on delegate
             IntPtr pointer = Marshal.GetFunctionPointerForDelegate<IntPtrCFunc>(del_to_pass);
             //Call bridge
@@ -314,7 +301,7 @@ namespace GmodNET
         extern static IntPtr IntGetCFunction(int pos);
 
         /// <summary>
-        /// Function to get C function pointer from the Lua stack
+        /// Function to get C function pointer from the Lua stack. Does not pop function from the stack.
         /// </summary>
         /// <param name="stack_pos">Position of the C function on the stack</param>
         /// <returns>Delegate on C function</returns>
@@ -331,7 +318,8 @@ namespace GmodNET
         extern static void IntSetField(int pos, string key);
 
         /// <summary>
-        /// Set a field t[k] = v, where t is a table at stack_pos, k is a key and v is a value on top of the lua stack
+        /// Set a field t[k] = v, where t is a table at stack_pos, k is a key and v is a value on top of the lua stack.
+        /// Pops value from the stack.
         /// </summary>
         /// <param name="stack_pos">Position of the table to set new field on lua stack</param>
         /// <param name="key">Key of the value to set in the table</param>
@@ -339,5 +327,45 @@ namespace GmodNET
         {
             IntSetField(stack_pos, key);
         }
+
+        //Bridge to LuaPushVector
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void IntPushVector(Vector vec);
+
+        /// <summary>
+        /// Method to push vector on Lua stack
+        /// </summary>
+        /// <param name="vec">Vector to push</param>
+        public void PushVector(Vector vec)
+        {
+            //Call bridge
+            IntPushVector(vec);
+        }
+
+        //Bridge to LuaGetVector
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static IntPtr IntGetVector(int pos);
+
+        /// <summary>
+        /// Get vector from the stack. Does not pop value from the stack.
+        /// </summary>
+        /// <param name="pos">Position of the vector on the stack</param>
+        /// <returns></returns>
+        public Vector GetVector(int pos = -1)
+        {
+            IntPtr unmanaged_array = IntGetVector(pos);
+            float[] managed_aray = new float[3];
+            //Copy data from unmanaged array to managed
+            Marshal.Copy(unmanaged_array, managed_aray, 0, 3);
+            //Free memmory
+            BridgeFree(unmanaged_array);
+            //Create and return vector
+            Vector vec = new Vector(managed_aray[0], managed_aray[1], managed_aray[2]);
+            return vec;
+        }
+
+        //Bridge to BrigdeFree. Is just a wrapper for C free function. Shall not be used in general.
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern static void BridgeFree(IntPtr ptr);
     }
 }
