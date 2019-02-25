@@ -1,3 +1,8 @@
+# gm_dotnet_native CMake configuration file
+# Authors:
+#	Gleb Krasilich (gleb@krasilich.net)
+# 2019
+
 # Set CMake minimum version
 cmake_minimum_required (VERSION 3.12)
 

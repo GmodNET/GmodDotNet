@@ -1,3 +1,9 @@
+/*
+ Authors:
+	Gleb Krasilich (gleb@krasilich.net)
+ 2019
+*/
+
 #include "GarrysMod/Lua/Interface.h"
 #include "gprint.h"
 #include <string>
