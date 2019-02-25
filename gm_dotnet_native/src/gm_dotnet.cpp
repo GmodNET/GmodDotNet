@@ -8,16 +8,16 @@
 
 using namespace std;
 
-//Global LUA state
+// Global LUA state
 GarrysMod::Lua::ILuaBase * Global_lua;
 
 GMOD_MODULE_OPEN()
 {
-	//Print welcome message
+	// Print welcome message
 	gprint(LUA, "gm_dotnet_native loaded! Version " + string(VER_MAJOR) + "." + string(VER_MINOR) + "." + string(VER_MISC));
-	//Export global lua
+	// Export global lua
 	Global_lua = LUA;
-	//Display Mono information
+	// Display Mono information
 	
 	return 0;
 }
