@@ -1,6 +1,6 @@
 # Gmod.NET
 
-Cross-platform .NET Module/Plugin platform for Garry's mod powered by Mono.
+Cross-platform .NET Module/Plugin platform for Garry's Mod powered by __Mono__.
 
 ## Versions
 
