@@ -1,9 +1,0 @@
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\bin\Release\netcoreapp3.0\GmodDotNet.deps.json
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\bin\Release\netcoreapp3.0\GmodDotNet.dll
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\bin\Release\netcoreapp3.0\GmodDotNet.pdb
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\obj\Release\netcoreapp3.0\GmodDotNet.csproj.CoreCompileInputs.cache
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\obj\Release\netcoreapp3.0\GmodDotNet.AssemblyInfoInputs.cache
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\obj\Release\netcoreapp3.0\GmodDotNet.AssemblyInfo.cs
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\obj\Release\netcoreapp3.0\GmodDotNet.dll
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\obj\Release\netcoreapp3.0\GmodDotNet.pdb
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodDotNet\obj\Release\netcoreapp3.0\GmodDotNet.csprojAssemblyReference.cache
