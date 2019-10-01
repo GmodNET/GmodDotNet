@@ -1,10 +1,9 @@
 gm_dotnet_native/.vs
-gm_dotnet_native/static_libs/32
-gm_dotnet_native/static_libs/64
-gm_dotnet_native/includes/mono
-gm_dotnet_managed/.vs
 gm_dotnet_managed/bin
 gm_dotnet_managed/obj
 gm_dotnet_native/.idea
 gm_dotnet_native/cmake-build-debug
 gm_dotnet_native/cmake-build-debug_wsl
+gm_dotnet_managed/.vs
+gm_dotnet_managed/GmodNET/bin
+gm_dotnet_managed/GmodNET/obj
