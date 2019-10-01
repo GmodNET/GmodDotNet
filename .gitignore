@@ -6,3 +6,6 @@ gm_dotnet_native/includes/mono
 gm_dotnet_managed/.vs
 gm_dotnet_managed/bin
 gm_dotnet_managed/obj
+gm_dotnet_native/.idea
+gm_dotnet_native/cmake-build-debug
+gm_dotnet_native/cmake-build-debug_wsl
