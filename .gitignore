@@ -1,7 +1,6 @@
 gm_dotnet_native/.vs
 gm_dotnet_native/static_libs/32
 gm_dotnet_native/static_libs/64
-gm_dotnet_native/includes/GarrysMod
 gm_dotnet_native/includes/mono
 gm_dotnet_managed/.vs
 gm_dotnet_managed/bin
