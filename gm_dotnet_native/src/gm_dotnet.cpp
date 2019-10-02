@@ -37,6 +37,8 @@ GMOD_MODULE_OPEN()
     void * hostfxr_pointer = nullptr;
     #ifdef WIN32
     hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
+    #else
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.so", RTLD_LAZY);
     #endif
     if(hostfxr_pointer == nullptr)
     {
@@ -46,13 +48,15 @@ GMOD_MODULE_OPEN()
 
     #ifdef WIN32
     hostfxr_initialize_for_runtime_config = (hostfxr_initialize_for_runtime_config_fn)GetProcAddress((HMODULE)hostfxr_pointer, "hostfxr_initialize_for_runtime_config");
+    #else
+    hostfxr_initialize_for_runtime_config = (hostfxr_initialize_for_runtime_config_fn)dlsym(hostfxr_pointer, "hostfxr_initialize_for_runtime_config");
     #endif
     if(hostfxr_initialize_for_runtime_config == nullptr)
     {
         fprintf(stderr, "Unable to locate hostfxr_initialize_for_runtime_config function!");
         return 0;
     }
-    hostfxr_initialize_for_runtime_config(converter.from_bytes("garrysmod/lua/bin/GmodNET.runtimeconfig.json").c_str(), &runtime_params, &host_fxr_handle);
+    hostfxr_initialize_for_runtime_config((char_t*)converter.from_bytes("garrysmod/lua/bin/GmodNET.runtimeconfig.json").c_str(), &runtime_params, &host_fxr_handle);
     if(host_fxr_handle == nullptr)
     {
         fprintf(stderr, "Unable to create hostfxr handle!");
@@ -61,6 +65,8 @@ GMOD_MODULE_OPEN()
 
     #ifdef WIN32
     hostfxr_get_runtime_delegate = (hostfxr_get_runtime_delegate_fn)GetProcAddress((HMODULE)hostfxr_pointer, "hostfxr_get_runtime_delegate");
+    #else
+    hostfxr_get_runtime_delegate = (hostfxr_get_runtime_delegate_fn)dlsym(hostfxr_pointer, "hostfxr_get_runtime_delegate");
     #endif
     if(hostfxr_get_runtime_delegate == nullptr)
     {
@@ -79,8 +85,8 @@ GMOD_MODULE_OPEN()
 
     typedef void (*managed_delegate_fn)();
     managed_delegate_fn managed_delegate = nullptr;
-    get_function_pointer(converter.from_bytes("garrysmod/lua/bin/GmodNET.dll").c_str(), converter.from_bytes("GmodNET.Startup, GmodNET").c_str(), converter.from_bytes("Main").c_str(),
-            converter.from_bytes("GmodNET.MainDelegate, GmodNET").c_str(), nullptr, (void**)&managed_delegate);
+    get_function_pointer((char_t*)converter.from_bytes("garrysmod/lua/bin/GmodNET.dll").c_str(), (char_t*)converter.from_bytes("GmodNET.Startup, GmodNET").c_str(),
+                         (char_t*)converter.from_bytes("Main").c_str(), (char_t*)converter.from_bytes("GmodNET.MainDelegate, GmodNET").c_str(), nullptr, (void**)&managed_delegate);
     if(managed_delegate == nullptr)
     {
         fprintf(stderr, "Unable to get managed delegate! \n");
@@ -98,6 +104,9 @@ GMOD_MODULE_CLOSE()
     #ifdef WIN32
     HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
     hostfxr_close = (hostfxr_close_fn)GetProcAddress(hostfxr_lib, "hostfxr_close");
+    #else
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.so", RTLD_LAZY);
+    hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
     #endif
     if(hostfxr_close == nullptr)
     {

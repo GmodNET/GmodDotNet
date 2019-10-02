@@ -3,10 +3,10 @@ using System.IO;
 
 namespace GmodNET
 {
-    public delegate void MainDelegate();
-    public static class Startup
+    internal delegate void MainDelegate();
+    internal static class Startup
     {
-        public static void Main()
+        internal static void Main()
         {
            File.WriteAllText("ManagedGeneratedFile.txt", "Managed code says hi!");
         }
