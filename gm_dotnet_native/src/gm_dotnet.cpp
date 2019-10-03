@@ -12,6 +12,12 @@
 #endif // WIN32
 #include <string>
 
+#ifdef WIN32
+#define STRING_FORMATER( STR ) converter.from_bytes(STR).c_str()
+#else
+#define STRING_FORMATER( STR ) string(STR).c_str()
+#endif
+
 using namespace std;
 using namespace GarrysMod::Lua;
 
@@ -33,7 +39,13 @@ GMOD_MODULE_OPEN()
     int game_path_length = readlink("/proc/self/exe", game_char_buffer, 299);
     #endif
     char dotnet_folder [] = "garrysmod/lua/bin/dotnet";
-    hostfxr_initialize_parameters runtime_params = {sizeof(hostfxr_initialize_parameters), (const char_t*)game_char_buffer, (const char_t*)dotnet_folder};
+    #ifdef WIN32
+    wstring game_char_buffer_formated = converter.from_bytes(game_char_buffer);
+    wstring dotnet_folder_formated = converter.from_bytes(dotnet_folder);
+    hostfxr_initialize_parameters runtime_params = {sizeof(hostfxr_initialize_parameters), game_char_buffer_formated.c_str(), dotnet_folder_formated.c_str()};
+    #else
+    hostfxr_initialize_parameters runtime_params = {sizeof(hostfxr_initialize_parameters), game_char_buffer, dotnet_folder};
+    #endif
     void * hostfxr_pointer = nullptr;
     #ifdef WIN32
     hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
@@ -56,7 +68,7 @@ GMOD_MODULE_OPEN()
         fprintf(stderr, "Unable to locate hostfxr_initialize_for_runtime_config function!");
         return 0;
     }
-    hostfxr_initialize_for_runtime_config((char_t*)converter.from_bytes("garrysmod/lua/bin/GmodNET.runtimeconfig.json").c_str(), &runtime_params, &host_fxr_handle);
+    hostfxr_initialize_for_runtime_config(STRING_FORMATER("garrysmod/lua/bin/GmodNET.runtimeconfig.json"), &runtime_params, &host_fxr_handle);
     if(host_fxr_handle == nullptr)
     {
         fprintf(stderr, "Unable to create hostfxr handle!");
@@ -85,8 +97,8 @@ GMOD_MODULE_OPEN()
 
     typedef void (*managed_delegate_fn)();
     managed_delegate_fn managed_delegate = nullptr;
-    get_function_pointer((char_t*)converter.from_bytes("garrysmod/lua/bin/GmodNET.dll").c_str(), (char_t*)converter.from_bytes("GmodNET.Startup, GmodNET").c_str(),
-                         (char_t*)converter.from_bytes("Main").c_str(), (char_t*)converter.from_bytes("GmodNET.MainDelegate, GmodNET").c_str(), nullptr, (void**)&managed_delegate);
+    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
+                         STRING_FORMATER("Main"), STRING_FORMATER("GmodNET.MainDelegate, GmodNET"), nullptr, (void**)&managed_delegate);
     if(managed_delegate == nullptr)
     {
         fprintf(stderr, "Unable to get managed delegate! \n");
