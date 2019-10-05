@@ -50,6 +50,8 @@ GMOD_MODULE_OPEN()
     void * hostfxr_pointer = nullptr;
     #ifdef WIN32
     hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
+    #elif __APPLE__
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.dylib", RTLD_LAZY);
     #else
     hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.so", RTLD_LAZY);
     #endif
