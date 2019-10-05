@@ -37,6 +37,7 @@ GMOD_MODULE_OPEN()
     int game_path_length = GetModuleFileNameA(nullptr, game_char_buffer, 299);
     #else
     int game_path_length = readlink("/proc/self/exe", game_char_buffer, 299);
+    game_char_buffer[game_path_length] = '\0';
     #endif
     char dotnet_folder [] = "garrysmod/lua/bin/dotnet";
     #ifdef WIN32
