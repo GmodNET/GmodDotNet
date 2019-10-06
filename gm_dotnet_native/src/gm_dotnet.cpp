@@ -1,3 +1,6 @@
+//
+// Created by Gleb Krasilich on 02.10.2019.
+//
 #include<GarrysMod/Lua/Interface.h>
 #include<GarrysMod/Lua/LuaBase.h>
 #include<netcore/hostfxr.h>
@@ -11,6 +14,7 @@
 #include<locale>
 #endif // WIN32
 #include <string>
+#include "LuaAPIExposure.h"
 
 #ifdef WIN32
 #define STRING_FORMATER( STR ) converter.from_bytes(STR).c_str()
@@ -21,12 +25,19 @@
 using namespace std;
 using namespace GarrysMod::Lua;
 
+int maj_ver = 0;
+int min_ver = 3;
+int misc_ver = 0;
+
 wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
 hostfxr_initialize_for_runtime_config_fn hostfxr_initialize_for_runtime_config = nullptr;
 hostfxr_handle host_fxr_handle = nullptr;
 hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate = nullptr;
 hostfxr_close_fn hostfxr_close = nullptr;
+
+typedef void (*cleanup_delegate_fn)();
+cleanup_delegate_fn cleanup_delegate = nullptr;
 
 
 //Invoked by Garry's Mod on module load
@@ -98,7 +109,7 @@ GMOD_MODULE_OPEN()
         return 0;
     }
 
-    typedef void (*managed_delegate_fn)();
+    typedef cleanup_delegate_fn (*managed_delegate_fn)(ILuaBase * lua_base, int maj_ver, int min_ver, int misc_ver, void ** params);
     managed_delegate_fn managed_delegate = nullptr;
     get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
                          STRING_FORMATER("Main"), STRING_FORMATER("GmodNET.MainDelegate, GmodNET"), nullptr, (void**)&managed_delegate);
@@ -108,7 +119,61 @@ GMOD_MODULE_OPEN()
         return 0;
     }
 
-    managed_delegate();
+    // Parameters to pass to managed code
+    void * params_to_managed_code[] = {
+            (void*)export_top,
+            (void*)export_push,
+            (void*)export_pop,
+            (void*)export_get_field,
+            (void*)export_set_field,
+            (void*)export_create_table,
+            (void*)export_set_metatable,
+            (void*)export_get_metatable,
+            (void*)export_call,
+            (void*)export_p_call,
+            (void*)exports_equal,
+            (void*)export_raw_equal,
+            (void*)export_insert,
+            (void*)export_remove,
+            (void*)export_next,
+            (void*)export_throw_error,
+            (void*)export_check_type,
+            (void*)export_arg_error,
+            (void*)export_get_string,
+            (void*)export_get_number,
+            (void*)export_get_bool,
+            (void*)export_get_c_function,
+            (void*)export_push_string,
+            (void*)export_push_number,
+            (void*)export_push_bool,
+            (void*)export_push_c_function,
+            (void*)export_push_c_closure,
+            (void*)export_reference_create,
+            (void*)export_reference_free,
+            (void*)export_reference_push,
+            (void*)export_push_special,
+            (void*)export_is_type,
+            (void*)export_get_type,
+            (void*)export_get_type_name,
+            (void*)export_obj_len,
+            (void*)export_get_angle,
+            (void*)export_get_vector,
+            (void*)export_push_angle,
+            (void*)export_push_vector,
+            (void*)export_set_state,
+            (void*)export_create_metatable,
+            (void*)export_push_metatable,
+            (void*)export_push_user_type,
+            (void*)export_set_user_type,
+            (void*)export_get_iluabase_from_the_lua_state
+    };
+
+    cleanup_delegate = managed_delegate(LUA, maj_ver, min_ver, misc_ver, params_to_managed_code);
+
+    if(cleanup_delegate == nullptr)
+    {
+        fprintf(stderr, "Managed runtime returned NULL cleanup_delegate pointer \n");
+    }
 
     return 0;
 }
@@ -116,6 +181,9 @@ GMOD_MODULE_OPEN()
 //Invoked by Garry's Mod on module unload
 GMOD_MODULE_CLOSE()
 {
+    cleanup_delegate();
+    cleanup_delegate = nullptr;
+
     #ifdef WIN32
     HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
     hostfxr_close = (hostfxr_close_fn)GetProcAddress(hostfxr_lib, "hostfxr_close");

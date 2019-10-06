@@ -16,7 +16,7 @@ set(EXTERNAL_INCLUDES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external_includes/" CACH
 
 #Project name
 project(gm_dotnet_native)
-add_library(gm_dotnet_native SHARED "src/gm_dotnet.cpp")
+add_library(gm_dotnet_native SHARED "src/gm_dotnet.cpp" src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 

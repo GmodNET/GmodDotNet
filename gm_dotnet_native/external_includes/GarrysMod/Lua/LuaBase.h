@@ -169,7 +169,7 @@ namespace GarrysMod
                 // Pushes the given double on to the stack
                 virtual void        PushNumber( double val ) = 0;
 
-                // Pushes the given bobolean on to the stack
+                // Pushes the given boolean on to the stack
                 virtual void        PushBool( bool val ) = 0;
 
                 // Pushes the given C-Function on to the stack
