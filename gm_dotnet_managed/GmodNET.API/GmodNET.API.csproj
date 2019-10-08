@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Version>0.3.0</Version>
-    <ApplicationIcon />
-    <StartupObject />
-    <Authors>Gleb Krasilich</Authors>
-    <Description>GmodNET manged module loader.</Description>
     <PackageLicenseExpression>MIT License</PackageLicenseExpression>
+    <Authors>Gleb Krasilich</Authors>
+    <Product>GmodNET API</Product>
+    <Description>GmodNET API library contains all neccessary interfaces to write a GmodNET module</Description>
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <PackageTags>garrysmod, GmodNET</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -157,7 +157,7 @@ void export_push_number(GarrysMod::Lua::ILuaBase * lua, double val);
 
 /// Pushes the given boolean on to the stack
 /// \param lua ILuaBase pointer
-/// \param val bool value to psuh represented as integer (0 = false and anything else is true)
+/// \param val bool value to push represented as integer (0 = false and anything else is true)
 void export_push_bool(GarrysMod::Lua::ILuaBase * lua, int val);
 
 /// Pushes the given C-Function on to the stack
