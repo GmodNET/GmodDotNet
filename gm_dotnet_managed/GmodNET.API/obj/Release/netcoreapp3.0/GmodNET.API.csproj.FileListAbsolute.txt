@@ -1,8 +1,0 @@
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\bin\Release\netcoreapp3.0\GmodNET.API.deps.json
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\bin\Release\netcoreapp3.0\GmodNET.API.dll
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\bin\Release\netcoreapp3.0\GmodNET.API.pdb
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\obj\Release\netcoreapp3.0\GmodNET.API.csprojAssemblyReference.cache
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\obj\Release\netcoreapp3.0\GmodNET.API.AssemblyInfoInputs.cache
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\obj\Release\netcoreapp3.0\GmodNET.API.AssemblyInfo.cs
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\obj\Release\netcoreapp3.0\GmodNET.API.dll
-C:\Users\glebc\OneDrive\Code\Gmod.NET\gm_dotnet_managed\GmodNET.API\obj\Release\netcoreapp3.0\GmodNET.API.pdb
