@@ -7,3 +7,5 @@ gm_dotnet_native/cmake-build-debug_wsl
 gm_dotnet_managed/.vs
 gm_dotnet_managed/GmodNET/bin
 gm_dotnet_managed/GmodNET/obj
+gm_dotnet_managed/GmodNET.API/bin
+gm_dotnet_managed/GmodNET.API/obj
