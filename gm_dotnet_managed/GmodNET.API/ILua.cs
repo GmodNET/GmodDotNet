@@ -2,9 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace GmodNET.API
 {
+    /// <summary>
+    /// Delegate which can be converted to native CFunc pointer, pushed on Garry's Mod Lua stack, and called be Garry's Mod
+    /// When pushed to Garry's Mod, make sure that delegate instance will not be garbage collected
+    /// </summary>
+    /// <param name="lua_state_pointer">lua_state pointer. Use IModule.GetILuaFromLuaStatePointerMethod to get ILua interface from it</param>
+    /// <returns>Number of return values function pushes on the stack</returns>
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int CFuncManagedDelegate(IntPtr lua_state_pointer);
     public interface ILua
     {
         /// <summary>
@@ -147,6 +156,10 @@ namespace GmodNET.API
         /// <returns></returns>
         public IntPtr GetCFunction(int iStackPos);
         /// <summary>
+        /// Pushes a nil value on to the stack
+        /// </summary>
+        public void PushNil();
+        /// <summary>
         /// Pushes the given string on to the stack
         /// </summary>
         /// <param name="str">string to push</param>
@@ -164,8 +177,8 @@ namespace GmodNET.API
         /// <summary>
         /// Pushes the given managed function on to the stack. The managed function will be converted to the C function.
         /// </summary>
-        /// <param name="manged_function">function to push</param>
-        public void PushCFunction(Func<IntPtr, int> manged_function);
+        /// <param name="managed_function">function to push</param>
+        public void PushCFunction(CFuncManagedDelegate managed_function);
         /// <summary>
         /// Pushes the given C-Function on to the stack. Native C function must be of signature "int Func(void*)"
         /// </summary>
@@ -273,6 +286,11 @@ namespace GmodNET.API
         /// <param name="iStackPos">position of object on the stack</param>
         /// <param name="data_pointer">user data pointer</param>
         public void SetUserType(int iStackPos, IntPtr data_pointer);
+        /// <summary>
+        /// Get ILuaBase native pointer from Garry's Mod
+        /// </summary>
+        /// <returns></returns>
+        public IntPtr GetInternalPointer();
     }
 
     /// <summary>

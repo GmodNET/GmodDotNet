@@ -144,6 +144,10 @@ int export_get_bool (GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 /// \return
 GarrysMod::Lua::CFunc export_get_c_function(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 
+/// Pushes a nil value on to the stack
+/// \param lua ILuaBase pointer
+void export_push_nil(GarrysMod::Lua::ILuaBase * lua);
+
 /// Pushes the given string on to the stack. If len is 0, strlen will be used to determine the string's length.
 /// \param lua ILuaBase pointer
 /// \param string C-string to push
@@ -208,7 +212,7 @@ int export_get_type(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 /// \param lua ILuaBase pointer
 /// \param iType type index
 /// \return
-const char * export_get_type_name(GarrysMod::Lua::ILuaBase * lua, int iType);
+const char * export_get_type_name(GarrysMod::Lua::ILuaBase * lua, int iType, int * out_name_len);
 
 /// Returns the length of the object at iStackPos
 /// \param lua ILuaBase pointer

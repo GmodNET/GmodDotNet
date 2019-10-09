@@ -52,6 +52,8 @@ namespace GmodNET
 
         static internal Func<IntPtr, int, IntPtr> get_c_function;
 
+        static internal Action<IntPtr> push_nil;
+
         static internal Action<IntPtr, IntPtr, uint> push_string;
 
         static internal Action<IntPtr, double> push_number;
@@ -74,7 +76,7 @@ namespace GmodNET
 
         static internal Func<IntPtr, int ,int> get_type;
 
-        static internal Func<IntPtr, int, IntPtr> get_type_name;
+        static internal Func<IntPtr, int, IntPtr, IntPtr> get_type_name;
 
         static internal Func<IntPtr, int, int> obj_len;
 

@@ -14,11 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Gleb Krasilich")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("GmodNET API library contains all neccessary interfaces to write a GmodNET module")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("0.3.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.3.0")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("0.3.1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.3.1")]
 [assembly: System.Reflection.AssemblyProductAttribute("GmodNET API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GmodNET.API")]
-[assembly: System.Reflection.AssemblyVersionAttribute("0.3.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("0.3.1.0")]
 
 // Создано классом WriteCodeFragment MSBuild.
 

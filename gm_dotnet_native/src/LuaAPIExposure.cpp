@@ -5,6 +5,7 @@
 #include <GarrysMod/Lua/Interface.h>
 #include <GarrysMod/Lua/LuaBase.h>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -140,6 +141,11 @@ CFunc export_get_c_function(ILuaBase * lua, int iStackPos)
     return lua->GetCFunction(iStackPos);
 }
 
+void export_push_nil(ILuaBase * lua)
+{
+    lua->PushNil();
+}
+
 void export_push_string(ILuaBase * lua, const char * string, unsigned int len)
 {
     lua->PushString(string, len);
@@ -214,9 +220,12 @@ int export_get_type(ILuaBase * lua, int iStackPos)
     return lua->GetType(iStackPos);
 }
 
-const char * export_get_type_name(ILuaBase * lua, int iType)
+const char * export_get_type_name(ILuaBase * lua, int iType, int * out_name_len)
 {
-    return lua->GetTypeName(iType);
+    const char * ptr =  lua->GetTypeName(iType);
+    int tmp_len = strlen(ptr);
+    *out_name_len = tmp_len;
+    return ptr;
 }
 
 int export_obj_len(ILuaBase * lua, int iStackPos)

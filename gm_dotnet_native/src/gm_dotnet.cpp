@@ -27,7 +27,7 @@ using namespace GarrysMod::Lua;
 
 int maj_ver = 0;
 int min_ver = 3;
-int misc_ver = 0;
+int misc_ver = 1;
 
 wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
@@ -143,6 +143,7 @@ GMOD_MODULE_OPEN()
             (void*)export_get_number,
             (void*)export_get_bool,
             (void*)export_get_c_function,
+            (void*)export_push_nil,
             (void*)export_push_string,
             (void*)export_push_number,
             (void*)export_push_bool,

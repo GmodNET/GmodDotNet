@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\glebc\\OneDrive\\Code\\Gmod.NET\\gm_dotnet_managed\\GmodNET.API\\GmodNET.API.csproj": {
-      "version": "0.3.0",
+      "version": "0.3.1",
       "restore": {
         "projectUniqueName": "C:\\Users\\glebc\\OneDrive\\Code\\Gmod.NET\\gm_dotnet_managed\\GmodNET.API\\GmodNET.API.csproj",
         "projectName": "GmodNET.API",
