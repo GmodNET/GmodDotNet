@@ -9,3 +9,5 @@ gm_dotnet_managed/GmodNET/bin
 gm_dotnet_managed/GmodNET/obj
 gm_dotnet_managed/GmodNET.API/bin
 gm_dotnet_managed/GmodNET.API/obj
+gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj.user
+gm_dotnet_managed/GmodNET.API/Properties

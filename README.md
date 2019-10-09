@@ -1,3 +1,5 @@
+[![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=Blue&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/)
+
 # Gmod.NET
 
 Cross-platform .NET Module/Plugin platform for Garry's Mod powered by __NET Core__.
@@ -9,11 +11,10 @@ and other .NET languages which runs across all platforms (Windows,
 Linux, MacOs). Gmod.NET allows you to develop Garry's Mod extensions without
 need to close or reload your game or server.
 
-## Current progress
+## Current features
 
-Latest version was heavily reworked due to the change of the runtime from __Mono__ to __CoreCLR__. Right now Gmod.NET is able to be loaded by Garry's Mod, print welcome message to file, gracefully cleanup unload itself, and to be reloaded by running Garry's Mod.
-
-TODO: Managed wrapper around Garry's mod Lua engine API, Module management system.
+GmodNET provides basic functionality to write Garry's Mod modules in C# or any other CIL-compiled language as __NET Core 3.0__
+class libraries. For more information on modules and API check out [project's wiki](https://github.com/GlebChili/GmodDotNet/wiki). Only `x86_64` version of Garry's Mod is currently supported.
 
 ## Building and contributing
 
@@ -23,13 +24,19 @@ __CMake__ as its build (prebuild) system.
 
 Managed part is an msbuild solution developed against `netcoreapp3.0` specification.
 
-## Installation
+## Installation and usage
 
-1) Build __gm_dotnet_native__ binaries and place them in `garrysmod/lua/bin` folder.
+1) Download latest build from the project's [releases page](https://github.com/GlebChili/GmodDotNet/releases).
 
-2) Download latest __NET Core 3.0__ runtime binaries from here https://dotnet.microsoft.com/download/dotnet-core/3.0 and copy `host` and `share` folders to `garrysmod/lua/bin/dotnet`.
+2) Unpack archive to the `%GARRYS_MOD_ROOT_FOLDER%garrysmod/lua/bin/` folder.
 
-3) Build __gm_dotnet_managed__ managed binaries and copy `GmodNET.dll`, `GmodNET.deps.json`, `GmodNET.runtimeconfig.json`, and all dependencies to `garrysmod/lua/bin` folder.
+3) Create a `Modules` folder inside `garrysmod/lua/bin/`.
+
+4) Place your .NET module, ...deps.json file, and all dependencies in `Modules/%exact_name_of_the_module_without_dll/` folder.
+
+5) Start the game and type `lua_run require("dotnet")` in console (type `lua_run require("dotnet")` to load GmodNET client-side)
+
+6) Use `gmod_net_load_all` (`gmod_net_load_all_cl` for client-side) console command to load all managed modules and `gmod_net_unload_all` (`gmod_net_unload_all_cl`) to unload them. Modules can be hot-reloaded, so one doesn't need to quit game to see changes. 
 
 ## License
 
