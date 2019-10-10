@@ -287,6 +287,36 @@ namespace GmodNET.API
         /// <param name="data_pointer">user data pointer</param>
         public void SetUserType(int iStackPos, IntPtr data_pointer);
         /// <summary>
+        /// Returns the data of the UserType at iStackPos if it is of the given type
+        /// </summary>
+        /// <param name="iStackPos">position on the stack</param>
+        /// <param name="iType">type index</param>
+        /// <returns>pointer to the user type</returns>
+        public IntPtr GetUserType(int iStackPos, int iType);
+        /// <summary>
+        /// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack.
+        /// Pops the key from the stack
+        /// </summary>
+        /// <param name="iStackPos">position of the table on the stack</param>
+        public void GetTable(int iStackPos);
+        /// <summary>
+        /// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
+        /// Pops the key and the value from the stack.
+        /// </summary>
+        /// <param name="iStackPos">position of the table on the stack</param>
+        public void SetTable(int iStackPos);
+        /// <summary>
+        /// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack. Does not invoke metamethods.
+        /// </summary>
+        /// <param name="iStackPos">position of the table on the stack</param>
+        public void RawGet(int iStackPos);
+        /// <summary>
+        /// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
+        /// Pops the key and the value from the stack. Does not invoke metamethods.
+        /// </summary>
+        /// <param name="iStackPos">position of the table on the stack</param>
+        public void RawSet(int iStackPos);
+        /// <summary>
         /// Get ILuaBase native pointer from Garry's Mod
         /// </summary>
         /// <returns></returns>

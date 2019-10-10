@@ -98,6 +98,16 @@ namespace GmodNET
 
         static internal Action<IntPtr, int, IntPtr> set_user_type;
 
+        static internal Func<IntPtr, int, int, IntPtr> get_user_type;
+
         static internal Func<IntPtr, IntPtr> get_iluabase_from_the_lua_state;
+
+        static internal Action<IntPtr, int> get_table;
+
+        static internal Action<IntPtr, int> set_table;
+
+        static internal Action<IntPtr, int> raw_get;
+
+        static internal Action<IntPtr, int> raw_set;
     }
 }

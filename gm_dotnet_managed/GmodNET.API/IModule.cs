@@ -24,6 +24,13 @@ namespace GmodNET.API
             get;
         }
         /// <summary>
+        /// Return true if module should be loaded by server only and false otherwise
+        /// </summary>
+        public bool IsServerSideOnly
+        {
+            get;
+        }
+        /// <summary>
         /// This method is called by GmodNET on module load and should be treated as module constructor
         /// </summary>
         /// <param name="LuaInterface">Interface to communicate with Garry's Mod</param>

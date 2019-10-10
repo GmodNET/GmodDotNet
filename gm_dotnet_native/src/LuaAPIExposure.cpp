@@ -307,8 +307,33 @@ void export_set_user_type(ILuaBase * lua, int iStackPos, void * data)
     lua->SetUserType(iStackPos, data);
 }
 
+void * export_get_user_type(ILuaBase * lua, int iStackPos, int iType)
+{
+    return lua->GetUserType<void>(iStackPos, iType);
+}
+
 ILuaBase * export_get_iluabase_from_the_lua_state(lua_State * state)
 {
     return state->luabase;
+}
+
+void export_get_table(ILuaBase * lua, int iStackPos)
+{
+    lua->GetTable(iStackPos);
+}
+
+void export_set_table(ILuaBase * lua, int iStackPos)
+{
+    lua->SetTable(iStackPos);
+}
+
+void export_raw_get(ILuaBase * lua, int iStackPos)
+{
+    lua->RawGet(iStackPos);
+}
+
+void export_raw_set(ILuaBase * lua, int iStackPos)
+{
+    lua->RawSet(iStackPos);
 }
 

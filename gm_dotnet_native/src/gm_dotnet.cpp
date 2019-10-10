@@ -26,8 +26,8 @@ using namespace std;
 using namespace GarrysMod::Lua;
 
 int maj_ver = 0;
-int min_ver = 3;
-int misc_ver = 1;
+int min_ver = 4;
+int misc_ver = 0;
 
 wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
@@ -166,7 +166,12 @@ GMOD_MODULE_OPEN()
             (void*)export_push_metatable,
             (void*)export_push_user_type,
             (void*)export_set_user_type,
-            (void*)export_get_iluabase_from_the_lua_state
+            (void*)export_get_user_type,
+            (void*)export_get_iluabase_from_the_lua_state,
+            (void*)export_get_table,
+            (void*)export_set_table,
+            (void*)export_raw_get,
+            (void*)export_raw_set
     };
 
     cleanup_delegate = managed_delegate(LUA, maj_ver, min_ver, misc_ver, params_to_managed_code);

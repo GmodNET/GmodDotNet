@@ -275,9 +275,40 @@ void export_push_user_type(GarrysMod::Lua::ILuaBase * lua, void * data, int iTyp
 /// \param data user data
 void export_set_user_type(GarrysMod::Lua::ILuaBase * lua, int iStackPos, void * data);
 
+/// Returns the data of the UserType at iStackPos if it is of the given type
+/// \param lua ILuaBase pointer
+/// \param iStackPos position on the stack
+/// \param iType type index
+/// \return pointer to the user type
+void * export_get_user_type(GarrysMod::Lua::ILuaBase * lua, int iStackPos, int iType);
+
 /// Get ILuaBase pointer from the lua_State.
 /// \param state lua_State to extract pointer from
 /// \return extracted ILuaBase pointer
 GarrysMod::Lua::ILuaBase * export_get_iluabase_from_the_lua_state(lua_State * state);
+
+/// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack.
+/// Pops the key from the stack
+/// \param lua ILuaBase pointer
+/// \param iStackPos position of the table on the stack
+void export_get_table(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
+
+/// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
+/// Pops the key and the value from the stack.
+/// \param lua ILuaBase pointer
+/// \param iStackPos position of the table on the stack
+void export_set_table(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
+
+/// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack.
+/// Does not invoke metamethods
+/// \param lua ILuaBase pointer
+/// \param iStackPos position of the table on the stack
+void export_raw_get(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
+
+/// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
+/// Pops the key and the value from the stack. Does not invoke metamethods.
+/// \param lua ILuaBase pointer
+/// \param iStackPos position of the table on the stack
+void export_raw_set(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 
 #endif //GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H

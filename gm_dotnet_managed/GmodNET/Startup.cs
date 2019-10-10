@@ -26,7 +26,7 @@ namespace GmodNET
         //Called by Garry's Mod. Responsible for initial configuration.
         internal static IntPtr Main(IntPtr lua_base, int maj_ver, int min_ver, int misc_ver, IntPtr param)
         {
-            if(!((maj_ver == 0) && (min_ver == 3) && (misc_ver == 1)))
+            if(!((maj_ver == 0) && (min_ver == 4) && (misc_ver == 0)))
             {
                 File.WriteAllText("GmodNETErrorLog.txt", "Version mismatch! \n");
                 return IntPtr.Zero;
@@ -36,7 +36,7 @@ namespace GmodNET
             {
                 unsafe
                 {
-                    Span<IntPtr> params_from_native_code = new Span<IntPtr>((void*)param, 46);
+                    Span<IntPtr> params_from_native_code = new Span<IntPtr>((void*)param, 51);
 
                     LuaInterop.top = CreateNativeCaller<Func<IntPtr, int>>(params_from_native_code[0]);
 
@@ -128,7 +128,17 @@ namespace GmodNET
 
                     LuaInterop.set_user_type = CreateNativeCaller<Action<IntPtr, int, IntPtr>>(params_from_native_code[44]);
 
-                    LuaInterop.get_iluabase_from_the_lua_state = CreateNativeCaller<Func<IntPtr, IntPtr>>(params_from_native_code[45]);
+                    LuaInterop.get_user_type = CreateNativeCaller<Func<IntPtr, int, int, IntPtr>>(params_from_native_code[45]);
+
+                    LuaInterop.get_iluabase_from_the_lua_state = CreateNativeCaller<Func<IntPtr, IntPtr>>(params_from_native_code[46]);
+
+                    LuaInterop.get_table = CreateNativeCaller<Action<IntPtr, int>>(params_from_native_code[47]);
+
+                    LuaInterop.set_table = CreateNativeCaller<Action<IntPtr, int>>(params_from_native_code[48]);
+
+                    LuaInterop.raw_get = CreateNativeCaller<Action<IntPtr, int>>(params_from_native_code[49]);
+
+                    LuaInterop.raw_set = CreateNativeCaller<Action<IntPtr, int>>(params_from_native_code[50]);
                 }
                 FirstRun = false;
             }
@@ -137,7 +147,7 @@ namespace GmodNET
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
-            lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 3 + "." + 1 + ".");
+            lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 4 + "." + 0 + ".");
             lua.Call(1, 0);
             lua.Pop(1);
 

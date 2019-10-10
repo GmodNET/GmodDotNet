@@ -482,6 +482,51 @@ namespace GmodNET
             set_user_type(ptr, iStackPos, data_pointer);
         }
 
+        public IntPtr GetUserType(int iStackPos, int iType)
+        { 
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
+            return get_user_type(ptr, iStackPos, iType);
+        }
+
+        public void GetTable(int iStackPos)
+        {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
+            get_table(ptr, iStackPos);
+        }
+
+        public void SetTable(int iStackPos)
+        {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
+            set_table(ptr, iStackPos);
+        }
+
+        public void RawGet(int iStackPos)
+        {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
+            raw_get(ptr, iStackPos);
+        }
+
+        public void RawSet(int iStackPos)
+        {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
+            raw_set(ptr, iStackPos);
+        }
+
         public IntPtr GetInternalPointer()
         {
             return ptr;

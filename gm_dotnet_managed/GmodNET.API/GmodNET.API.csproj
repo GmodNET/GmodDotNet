@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>0.3.1</Version>
+    <Version>0.4.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>Gleb Krasilich</Authors>
     <Product>GmodNET API</Product>
@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>garrysmod, GmodNET</PackageTags>
+    <PackageReleaseNotes>- IModule.isServerSideOnly readonly property added</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
