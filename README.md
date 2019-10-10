@@ -11,6 +11,10 @@ and other .NET languages which runs across all platforms (Windows,
 Linux, MacOs). Gmod.NET allows you to develop Garry's Mod extensions without
 need to close or reload your game or server.
 
+## Similar projects
+
+Check out [gmod_csModuleLoader](https://github.com/dedady157/gmod_csModuleLoader) by [Bailey Drahoss](https://github.com/dedady157).
+
 ## Current features
 
 GmodNET provides basic functionality to write Garry's Mod modules in C# or any other CIL-compiled language as __NET Core 3.0__
@@ -36,7 +40,7 @@ Managed part is an msbuild solution developed against `netcoreapp3.0` specificat
 
 5) Start the game and type `lua_run require("dotnet")` in console (type `lua_run require("dotnet")` to load GmodNET client-side)
 
-6) Use `gmod_net_load_all` (`gmod_net_load_all_cl` for client-side) console command to load all managed modules and `gmod_net_unload_all` (`gmod_net_unload_all_cl`) to unload them. Modules can be hot-reloaded, so one doesn't need to quit game to see changes. 
+6) Use `gmod_net_load_all` (`gmod_net_load_all_cl` for client-side) console command to load all managed modules and `gmod_net_unload_all` (`gmod_net_unload_all_cl`) to unload them. Modules can be hot-reloaded, so one doesn't need to quit game to see changes.
 
 ## License
 
