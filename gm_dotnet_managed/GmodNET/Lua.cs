@@ -23,16 +23,28 @@ namespace GmodNET
 
         public void Push(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             push(ptr, iStackPos);
         }
 
         public void Pop(int IAmt)
         {
+            if (IAmt <= 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             pop(ptr, IAmt);
         }
 
         public void GetField(int iStackPos, in string key)
         {
+            if (iStackPos == 0)
+            { 
+               throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             byte[] buff = Encoding.UTF8.GetBytes(key);
             unsafe
             {
@@ -45,6 +57,10 @@ namespace GmodNET
 
         public void SetField(int iStackPos, in string key)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             byte[] buff = Encoding.UTF8.GetBytes(key);
             unsafe
             {
@@ -60,13 +76,21 @@ namespace GmodNET
             create_table(ptr);
         }
 
-        public void SetMetaTable(int iStacPos)
+        public void SetMetaTable(int iStackPos)
         {
-            set_metatable(ptr, iStacPos);
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
+            set_metatable(ptr, iStackPos);
         }
 
         public bool GetMetaTable(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             int tmp = get_metatable(ptr, iStackPos);
 
             if(tmp == 0)
@@ -91,6 +115,10 @@ namespace GmodNET
 
         public bool Equal(int iA, int iB)
         {
+            if(iA == 0 || iB == 0)
+            {
+                throw new ArgumentException("Neither iA or iB can't be 0");
+            }
             int tmp = equal(ptr, iA, iB);
             
             if(tmp == 0)
@@ -105,6 +133,10 @@ namespace GmodNET
 
         public bool RawEqual(int iA, int iB)
         {
+            if(iA == 0 || iB == 0)
+            {
+                throw new ArgumentException("Neither iA or iB can't be 0");
+            }
             int tmp = raw_equal(ptr, iA, iB);
 
             if(tmp == 0)
@@ -119,16 +151,28 @@ namespace GmodNET
 
         public void Insert(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             insert(ptr, iStackPos);
         }
 
         public void Remove(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             remove(ptr, iStackPos);
         }
 
         public int Next(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             return next(ptr, iStackPos);
         }
 
@@ -146,6 +190,10 @@ namespace GmodNET
 
         public void CheckType(int iStackPos, int IType)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             check_type(ptr, iStackPos, IType);
         }
 
@@ -163,6 +211,10 @@ namespace GmodNET
 
         public string GetString(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             uint len = 0;
             unsafe
             {
@@ -178,11 +230,19 @@ namespace GmodNET
 
         public double GetNumber(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             return get_number(ptr, iStackPos);
         }
 
         public bool GetBool(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             int tmp = get_bool(ptr, iStackPos);
 
             if(tmp == 0)
@@ -197,6 +257,10 @@ namespace GmodNET
 
         public IntPtr GetCFunction(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             return get_c_function(ptr, iStackPos);
         }
 
@@ -278,6 +342,10 @@ namespace GmodNET
 
         public bool IsType(int iStackPos, int iType)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             int tmp = is_type(ptr, iStackPos, iType);
 
             if(tmp == 0)
@@ -292,6 +360,10 @@ namespace GmodNET
 
         public int GetType(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             return get_type(ptr, iStackPos);
         }
 
@@ -311,11 +383,19 @@ namespace GmodNET
 
         public int ObjLen(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             return obj_len(ptr, iStackPos);
         }
 
         public Vector3 GetAngle(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             Span<float> components = stackalloc float[3];
             unsafe
             {
@@ -330,6 +410,10 @@ namespace GmodNET
 
         public Vector3 GetVector(int iStackPos)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             Span<float> components = stackalloc float[3];
             unsafe
             {
@@ -391,6 +475,10 @@ namespace GmodNET
 
         public void SetUserType(int iStackPos, IntPtr data_pointer)
         {
+            if (iStackPos == 0)
+            { 
+                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+            }
             set_user_type(ptr, iStackPos, data_pointer);
         }
 
