@@ -317,6 +317,11 @@ namespace GmodNET.API
         /// <param name="iStackPos">position of the table on the stack</param>
         public void RawSet(int iStackPos);
         /// <summary>
+        /// Pushes the given pointer on to the stack as light-userdata
+        /// </summary>
+        /// <param name="data">pointer to the user data</param>
+        public void PushUserData(IntPtr data);
+        /// <summary>
         /// Get ILuaBase native pointer from Garry's Mod
         /// </summary>
         /// <returns></returns>

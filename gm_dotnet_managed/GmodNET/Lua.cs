@@ -527,6 +527,11 @@ namespace GmodNET
             raw_set(ptr, iStackPos);
         }
 
+        public void PushUserData(IntPtr data)
+        {
+            push_user_data(ptr, data);
+        }
+
         public IntPtr GetInternalPointer()
         {
             return ptr;

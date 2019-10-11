@@ -109,5 +109,7 @@ namespace GmodNET
         static internal Action<IntPtr, int> raw_get;
 
         static internal Action<IntPtr, int> raw_set;
+
+        static internal Action<IntPtr, IntPtr> push_user_data;
     }
 }

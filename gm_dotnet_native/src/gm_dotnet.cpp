@@ -171,7 +171,8 @@ GMOD_MODULE_OPEN()
             (void*)export_get_table,
             (void*)export_set_table,
             (void*)export_raw_get,
-            (void*)export_raw_set
+            (void*)export_raw_set,
+            (void*)export_push_user_data
     };
 
     cleanup_delegate = managed_delegate(LUA, maj_ver, min_ver, misc_ver, params_to_managed_code);

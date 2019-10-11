@@ -337,3 +337,8 @@ void export_raw_set(ILuaBase * lua, int iStackPos)
     lua->RawSet(iStackPos);
 }
 
+void export_push_user_data(ILuaBase * lua, void * data)
+{
+    lua->PushUserdata(data);
+}
+

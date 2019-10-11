@@ -311,4 +311,9 @@ void export_raw_get(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 /// \param iStackPos position of the table on the stack
 void export_raw_set(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 
+/// Pushes the given pointer on to the stack as light-userdata
+/// \param lua ILuaBase pointer
+/// \param data pointer to the user data
+void export_push_user_data(GarrysMod::Lua::ILuaBase * lua, void * data);
+
 #endif //GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H

@@ -36,7 +36,7 @@ namespace GmodNET
             {
                 unsafe
                 {
-                    Span<IntPtr> params_from_native_code = new Span<IntPtr>((void*)param, 51);
+                    Span<IntPtr> params_from_native_code = new Span<IntPtr>((void*)param, 52);
 
                     LuaInterop.top = CreateNativeCaller<Func<IntPtr, int>>(params_from_native_code[0]);
 
@@ -139,6 +139,8 @@ namespace GmodNET
                     LuaInterop.raw_get = CreateNativeCaller<Action<IntPtr, int>>(params_from_native_code[49]);
 
                     LuaInterop.raw_set = CreateNativeCaller<Action<IntPtr, int>>(params_from_native_code[50]);
+
+                    LuaInterop.push_user_data = CreateNativeCaller<Action<IntPtr, IntPtr>>(params_from_native_code[51]);
                 }
                 FirstRun = false;
             }
