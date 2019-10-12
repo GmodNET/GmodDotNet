@@ -1,9 +1,9 @@
-[![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=Blue&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Downloads](https://img.shields.io/nuget/dt/GmodNET.API?color=green&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/)
+[![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=Blue&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Downloads](https://img.shields.io/nuget/dt/GmodNET.API?color=green&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Discord Server](https://img.shields.io/discord/632622505848471554?label=Our%20Discord&style=for-the-badge)](https://discord.gg/9bP8nMT)
 
 # Gmod.NET
 [![Current Runtime](https://img.shields.io/badge/Current%20Runtime-0.3.1-green?style=flat-square)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi) [![Current API](https://img.shields.io/badge/Current%20API-0.3.1-green?style=flat-square)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi)
 
-Cross-platform .NET Module/Plugin platform for Garry's Mod powered by __NET Core__.
+Cross-platform .NET Module/Plugin platform for Garry's Mod powered by [__.NET Core__](https://dotnet.microsoft.com/).
 
 ## About
 
@@ -18,8 +18,11 @@ Check out [gmod_csModuleLoader](https://github.com/dedady157/gmod_csModuleLoader
 
 ## Current features
 
-GmodNET provides basic functionality to write Garry's Mod modules in C# or any other CIL-compiled language as __NET Core 3.0__
-class libraries. For more information on modules and API check out [project's wiki](https://github.com/GlebChili/GmodDotNet/wiki). Only `x86_64` version of Garry's Mod is currently supported.
+GmodNET provides basic functionality to write Garry's Mod modules in C# or any other CIL-compiled language as [__.NET Core 3.0__](https://dotnet.microsoft.com/) class libraries. For more information on modules and API check out [project's wiki](https://github.com/GlebChili/GmodDotNet/wiki). Only `x86_64` version of Garry's Mod is currently supported.
+
+## Need help?
+
+Check out our [wiki](https://github.com/GlebChili/GmodDotNet/wiki) or join our [discord server](https://discord.gg/9bP8nMT).
 
 ## Building and contributing
 
