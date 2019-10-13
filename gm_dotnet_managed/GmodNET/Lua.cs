@@ -532,6 +532,30 @@ namespace GmodNET
             push_user_data(ptr, data);
         }
 
+        public string CheckString(int iStackPos)
+        {
+            int str_len = 0;
+            unsafe
+            {
+                int * str_len_ptr = &str_len;
+                IntPtr c_str = check_string(ptr, iStackPos, (IntPtr)str_len_ptr);
+                if (c_str == IntPtr.Zero)
+                {
+                    return string.Empty;
+                }
+                else
+                { 
+                    ReadOnlySpan<byte> c_str_wrapped = new ReadOnlySpan<byte>((void*)c_str, str_len);
+                    return Encoding.UTF8.GetString(c_str_wrapped);
+                }
+            }
+        }
+
+        public double CheckNumber(int iStackPos)
+        {
+            return check_number(ptr, iStackPos);
+        }
+
         public IntPtr GetInternalPointer()
         {
             return ptr;

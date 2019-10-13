@@ -316,4 +316,17 @@ void export_raw_set(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 /// \param data pointer to the user data
 void export_push_user_data(GarrysMod::Lua::ILuaBase * lua, void * data);
 
+/// Returns string from the stack, but throws errors and returns if not of the expected type.
+/// \param lua ILuaBase pointer
+/// \param iStackPos position of the "string" on the stack
+/// \param output_string_length output param: length of the string
+/// \return C-string from the stack
+const char * export_check_string(GarrysMod::Lua::ILuaBase * lua, int iStackPos, int * output_string_length);
+
+/// Returns number from the stack, but throws errors and returns if not of the expected type.
+/// \param lua ILuaBase pointer
+/// \param iStackPos position on the stack
+/// \return number from the stack
+double export_check_number(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
+
 #endif //GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H

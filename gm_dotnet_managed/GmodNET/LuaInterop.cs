@@ -111,5 +111,9 @@ namespace GmodNET
         static internal Action<IntPtr, int> raw_set;
 
         static internal Action<IntPtr, IntPtr> push_user_data;
+
+        static internal Func<IntPtr, int, IntPtr, IntPtr> check_string;
+
+        static internal Func<IntPtr, int, double> check_number;
     }
 }

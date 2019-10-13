@@ -322,6 +322,18 @@ namespace GmodNET.API
         /// <param name="data">pointer to the user data</param>
         public void PushUserData(IntPtr data);
         /// <summary>
+        /// Returns string from the stack, but throws errors and returns empty string if not of the expected type.
+        /// </summary>
+        /// <param name="iStackPos">position of the "string" on the stack</param>
+        /// <returns>String on success and empty string otherwise</returns>
+        public string CheckString(int iStackPos);
+        /// <summary>
+        /// Returns number from the stack, but throws errors and returns if not of the expected type.
+        /// </summary>
+        /// <param name="iStackPos">position on the stack</param>
+        /// <returns>number from the stack</returns>
+        public double CheckNumber(int iStackPos);
+        /// <summary>
         /// Get ILuaBase native pointer from Garry's Mod
         /// </summary>
         /// <returns></returns>

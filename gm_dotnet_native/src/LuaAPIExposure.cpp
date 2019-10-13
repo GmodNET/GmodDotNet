@@ -342,3 +342,22 @@ void export_push_user_data(ILuaBase * lua, void * data)
     lua->PushUserdata(data);
 }
 
+const char * export_check_string(ILuaBase * lua, int iStackPos, int * output_string_length)
+{
+    const char * tmp = lua->CheckString(iStackPos);
+
+    if(tmp == nullptr)
+    {
+        return nullptr;
+    }
+
+    *output_string_length = strlen(tmp);
+
+    return tmp;
+}
+
+double export_check_number(ILuaBase * lua, int iStackPos)
+{
+    return lua->CheckNumber(iStackPos);
+}
+
