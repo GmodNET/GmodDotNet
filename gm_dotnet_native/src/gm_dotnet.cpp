@@ -82,7 +82,7 @@ GMOD_MODULE_OPEN()
         fprintf(stderr, "Unable to locate hostfxr_initialize_for_runtime_config function!");
         return 0;
     }
-    hostfxr_initialize_for_runtime_config(STRING_FORMATER("garrysmod/lua/bin/GmodNET.runtimeconfig.json"), &runtime_params, &host_fxr_handle);
+    hostfxr_initialize_for_runtime_config(STRING_FORMATER("garrysmod/lua/bin/GmodNET/GmodNET.runtimeconfig.json"), &runtime_params, &host_fxr_handle);
     if(host_fxr_handle == nullptr)
     {
         fprintf(stderr, "Unable to create hostfxr handle!");
@@ -111,7 +111,7 @@ GMOD_MODULE_OPEN()
 
     typedef cleanup_delegate_fn (*managed_delegate_fn)(ILuaBase * lua_base, int maj_ver, int min_ver, int misc_ver, void ** params);
     managed_delegate_fn managed_delegate = nullptr;
-    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
+    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
                          STRING_FORMATER("Main"), STRING_FORMATER("GmodNET.MainDelegate, GmodNET"), nullptr, (void**)&managed_delegate);
     if(managed_delegate == nullptr)
     {
