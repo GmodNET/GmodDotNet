@@ -49,3 +49,11 @@ Managed part is an msbuild solution developed against `netcoreapp3.0` specificat
 ## License
 
 Whole project is licensed under MIT License.
+
+## Dependencies and code usage
+
+Gmod.NET is making use of or borrows code from the following projects:
+
+1) [CoreCLR](https://github.com/dotnet/coreclr), [CoreFX](https://github.com/dotnet/corefx), and [core-setup](https://github.com/dotnet/core-setup) by [.NET Foundation](https://github.com/dotnet) (MIT License)
+
+2) [pure_lua_SHA](https://github.com/Egor-Skriptunoff/pure_lua_SHA) by [Egor Skriptunoff](https://github.com/Egor-Skriptunoff) (MIT License)
