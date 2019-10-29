@@ -2982,6 +2982,46 @@ if is_secure_mode then
 		
 	end
 	
+	local gmodnet_dll = file.Read("lua/bin/GmodNET/GmodNET.dll", "GAME")
+	
+	if gmodnet_dll == nil then
+		
+		error("GmodNET.dll is missing")
+	
+	end
+	
+	local gmodnet_dll_hash =  sha512(gmodnet_dll)
+	
+	print("Your GmodNET.dll hash:")
+	
+	print(gmodnet_dll_hash)
+	
+	local native_signature = file.Read("lua/bin/gmcl_dotnet.modulesign", "GAME")
+	
+	if native_signature == nil then
+		
+		error("Unble to load native client signature")
+		
+	end
+	
+	local managed_signature = file.Read("lua/bin/GmodNET/GmodNET.modulesign", "GAME")
+	
+	if managed_signature == nil then
+		
+		error("Unable to load GmodNET signature file")
+		
+	end
+	
+	local validation_message = '{\n "NativeHash": "' .. cl_hash .. '",\n "ManagedHash": "' .. gmodnet_dll_hash .. '",\n "NativeSignature": ' .. native_signature .. ',\n "ManagedSignature": ' .. managed_signature .. '\n}'
+	
+	print("Verification message:")
+	
+	print(validation_message)
+	
+	net.Start("gmodnet_verify_base")
+	net.WriteString(validation_message)
+	net.SendToServer()
+	
 else
 	
 	print("GmodNET: server is running in insecure mode. Loading GmodNET...")

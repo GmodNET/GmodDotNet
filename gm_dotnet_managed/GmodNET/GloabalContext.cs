@@ -177,7 +177,7 @@ namespace GmodNET
                 {
                     PrintToConsole("Loading module " + mm.ModuleName + ". Version " + mm.ModuleVersion +".");
 
-                    mm.Load(lua, Startup.ExtructLua);
+                    mm.Load(lua, isServerSide, Startup.ExtructLua);
                 }
             }
 
