@@ -1,6 +1,8 @@
 -- Keep true if you want to verify that client is using unmodified GmodNET runtime
 local is_secure_mode = true
 
+global_dotnet_client_validation_message = ""
+
 local hasher = function()
 	--------------------------------------------------------------------------------------------------------------------------
 -- sha2.lua
@@ -2982,6 +2984,12 @@ if is_secure_mode then
 		
 	end
 	
+	if (gmcl_win ~= nil and gmcl_linux ~= nil) or (gmcl_win ~= nil and gmcl_osx ~= nil) or (gmcl_linux ~= nil and gmcl_osx ~= nil) then
+	
+		error("Don't Be a Tough Guy. Don't Be a Fool! You don't need more than one gmcl_dotnet file in your folder!")
+		
+	end
+	
 	local gmodnet_dll = file.Read("lua/bin/GmodNET/GmodNET.dll", "GAME")
 	
 	if gmodnet_dll == nil then
@@ -3012,15 +3020,30 @@ if is_secure_mode then
 		
 	end
 	
-	local validation_message = '{\n "NativeHash": "' .. cl_hash .. '",\n "ManagedHash": "' .. gmodnet_dll_hash .. '",\n "NativeSignature": ' .. native_signature .. ',\n "ManagedSignature": ' .. managed_signature .. '\n}'
+	global_dotnet_client_validation_message = '{\n "NativeHash": "' .. cl_hash .. '",\n "ManagedHash": "' .. gmodnet_dll_hash .. '",\n "NativeSignature": ' .. native_signature .. ',\n "ManagedSignature": ' .. managed_signature .. '\n}'
 	
 	print("Verification message:")
 	
-	print(validation_message)
+	print(global_dotnet_client_validation_message)
 	
-	net.Start("gmodnet_verify_base")
-	net.WriteString(validation_message)
-	net.SendToServer()
+	hook.Add("InitPostEntity", "gmodnet_response_validation_hook", function()
+		net.Start("gmodnet_verify_request")
+		net.WriteString(global_dotnet_client_validation_message)
+		net.SendToServer()
+	end)
+
+	
+	net.Receive("gmodnet_verify_response", function(leng, ply)
+		local was_verified = net.ReadBool()
+		local message_from_server = net.ReadString()
+		if was_verified then
+			print("Your GmodNET base was verified")
+			require("dotnet")
+		else
+			print("Your GmodNET base is invalid:")
+			print(message_from_server)
+		end
+	end)
 	
 else
 	

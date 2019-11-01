@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Security;
+using GmodNET.API;
 
 namespace GmodNET
 {
@@ -115,5 +116,12 @@ namespace GmodNET
         static internal Func<IntPtr, int, IntPtr, IntPtr> check_string;
 
         static internal Func<IntPtr, int, double> check_number;
+
+        internal static ILua ExtructLua(IntPtr lua_state)
+        { 
+            IntPtr tmp_ptr = LuaInterop.get_iluabase_from_the_lua_state(lua_state);
+
+            return new Lua(tmp_ptr);
+        }
     }
 }

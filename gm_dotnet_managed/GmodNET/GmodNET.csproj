@@ -22,6 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NSec.Cryptography" Version="19.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj">
       <Private>true</Private>
     </ProjectReference>

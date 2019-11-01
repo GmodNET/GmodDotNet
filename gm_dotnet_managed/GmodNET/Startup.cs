@@ -178,13 +178,6 @@ namespace GmodNET
                 CleanupReturns.Remove(CleanupReturns.First());
             }
         }
-
-        internal static ILua ExtructLua(IntPtr lua_state)
-        { 
-            IntPtr tmp_ptr = LuaInterop.get_iluabase_from_the_lua_state(lua_state);
-
-            return new Lua(tmp_ptr);
-        }
     }
 
     internal class ModuleHolder
