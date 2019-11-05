@@ -42,7 +42,7 @@ Managed part is an msbuild solution developed against `netcoreapp3.0` specificat
 
 4) Place your .NET module, ...deps.json file, and all dependencies in `Modules/%exact_name_of_the_module_without_dll/` folder.
 
-5) Start the game and type `lua_run require("dotnet")` in console (type `lua_run require("dotnet")` to load GmodNET client-side)
+5) Start the game and type `lua_run require("dotnet")` in console (type `lua_run_cl require("dotnet")` to load GmodNET client-side)
 
 6) Use `gmod_net_load_all` (`gmod_net_load_all_cl` for client-side) console command to load all managed modules and `gmod_net_unload_all` (`gmod_net_unload_all_cl`) to unload them. Modules can be hot-reloaded, so one doesn't need to quit game to see changes.
 
@@ -57,3 +57,9 @@ Gmod.NET is making use of or borrows code from the following projects:
 1) [CoreCLR](https://github.com/dotnet/coreclr), [CoreFX](https://github.com/dotnet/corefx), and [core-setup](https://github.com/dotnet/core-setup) by [.NET Foundation](https://github.com/dotnet) (MIT License)
 
 2) [pure_lua_SHA](https://github.com/Egor-Skriptunoff/pure_lua_SHA) by [Egor Skriptunoff](https://github.com/Egor-Skriptunoff) (MIT License)
+
+3) [NSec](https://nsec.rocks/) by [Klaus Hartke](https://github.com/ektrah) (MIT License)
+
+4) [Libsodium](libsodium.org) by [Frank Denis](https://github.com/jedisct1) (ISC License)
+
+See other copyright notices in the NOTICE.
