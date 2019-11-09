@@ -358,4 +358,59 @@ namespace GmodNET.API
         /// </summary>
         SPECIAL_REG
     }
+
+    /// <summary>
+    /// Indeces of common lua and gmod types
+    /// </summary>
+    public enum TYPES
+    {
+        NONE = -1,
+        NIL,
+        BOOL,
+        LIGHTUSERDATA,
+        NUMBER,
+        STRING,
+        TABLE,
+        FUNCTION,
+        USERDATA,
+        THREAD,
+
+        // GMod Types
+        ENTITY,
+        Vector, // GMOD: GO TODO - This was renamed... I'll probably forget to fix it before this ends up public
+        ANGLE,
+        PHYSOBJ,
+        SAVE,
+        RESTORE,
+        DAMAGEINFO,
+        EFFECTDATA,
+        MOVEDATA,
+        RECIPIENTFILTER,
+        USERCMD,
+        SCRIPTEDVEHICLE,
+        MATERIAL,
+        PANEL,
+        PARTICLE,
+        PARTICLEEMITTER,
+        TEXTURE,
+        USERMSG,
+        CONVAR,
+        IMESH,
+        MATRIX,
+        SOUND,
+        PIXELVISHANDLE,
+        DLIGHT,
+        VIDEO,
+        FILE,
+        LOCOMOTION,
+        PATH,
+        NAVAREA,
+        SOUNDHANDLE,
+        NAVLADDER,
+        PARTICLESYSTEM,
+        PROJECTEDTEXTURE,
+        PHYSCOLLIDE,
+
+        COUNT
+    }
 }

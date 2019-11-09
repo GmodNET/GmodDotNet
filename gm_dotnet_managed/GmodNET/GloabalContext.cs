@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using GmodNET.API;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +13,24 @@ using System.Text.Encodings;
 
 namespace GmodNET
 {
+    internal struct ManagedModuleInfoForClient
+    {
+        public string Name {get; set; }
+        public string MinVersion {get; set; }
+        public string MaxVersion {get; set; }
+        public string PublicKey {get; set; }
+    }
+    internal struct KeyPair
+    {
+        public string PublicKey {get; set; }
+        public string PrivateKey {get; set; }
+    }
+    internal struct ModuleSignature
+    {
+        public string Version {get; set; }
+        public string Signature {get; set; }
+    }
+
     internal class GlobalContext
     {
         ILua lua;
@@ -19,6 +38,7 @@ namespace GmodNET
         bool isServerSide;
 
         List<ModuleHolder> module_holders;
+        List<ManagedModuleInfoForClient> modules_for_client;
 
         CFuncManagedDelegate LuaLoadBridge;
         CFuncManagedDelegate LuaUnloadBridge;
@@ -27,34 +47,52 @@ namespace GmodNET
 
         bool AreModulesWereLoaded;
 
+        CFuncManagedDelegate ServerListOfModulesListener;
+        CFuncManagedDelegate ClientContinueLoad;
+
         internal GlobalContext(ILua lua)
         { 
+            module_holders = new List<ModuleHolder>();
+            modules_for_client = new List<ManagedModuleInfoForClient>();
+
             this.lua = lua;
 
             AreModulesWereLoaded = false;
 
+            lua.GetField(-10002, "SERVER");
+            isServerSide = lua.GetBool(-1);
+
             LuaLoadBridge = (lua_state) =>
             {
-                LoadAll();
+                ILua lua = LuaInterop.ExtructLua(lua_state);
+
+                LoadAll(lua);
+
+                lua.Pop(lua.Top());
+
                 return 0;
             };
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushCFunction(LuaLoadBridge);
-            lua.SetField(-2, "gmod_net_load_all_function");
-            lua.Pop(1);
 
             LuaUnloadBridge = (lua_state) =>
             {
-                UnloadAll();
+                ILua lua = LuaInterop.ExtructLua(lua_state);
+
+                UnloadAll(lua);
+
+                lua.Pop(lua.Top());
+
                 return 0;
             };
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushCFunction(LuaLoadBridge);
+            lua.SetField(-2, "gmod_net_load_all_function");
+            lua.Pop(lua.Top());
+
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.PushCFunction(LuaUnloadBridge);
             lua.SetField(-2, "gmod_net_unload_all_function");
-            lua.Pop(1);
-
-            lua.GetField(-10002, "SERVER");
-            isServerSide = lua.GetBool(-1);
+            lua.Pop(lua.Top());
 
             if(isServerSide)
             {
@@ -130,6 +168,18 @@ namespace GmodNET
                 lua.Pop(lua.Top());
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "util");
+                lua.GetField(-1, "AddNetworkString");
+                lua.PushString("gmodnet_request_clientside_modules");
+                lua.Call(1, 1);
+                lua.Pop(1);
+
+                lua.GetField(-1, "AddNetworkString");
+                lua.PushString("gmodnet_request_clientside_modules_response");
+                lua.Call(1, 1);
+                lua.Pop(lua.Top());
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "net");
                 lua.GetField(-1, "Receive");
                 lua.PushString("gmodnet_verify_request");
@@ -147,7 +197,265 @@ namespace GmodNET
                 lua.Pop(lua.Top());
             }
 
-            LoadAll();
+            if(isServerSide)
+            {
+                ServerListOfModulesListener = (lua_state) =>
+                {
+                    ILua lua = LuaInterop.ExtructLua(lua_state);
+
+                    int player_reference = lua.ReferenceCreate();
+
+                    lua.Pop(lua.Top());
+
+                    lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                    lua.GetField(-1, "net");
+                    lua.GetField(-1, "Start");
+                    lua.PushString("gmodnet_request_clientside_modules_response");
+                    lua.Call(1, 1);
+                    lua.Pop(1);
+
+                    lua.GetField(-1, "WriteDouble");
+                    lua.PushNumber(modules_for_client.Count);
+                    lua.Call(1, 0);
+
+                    foreach(ManagedModuleInfoForClient info in modules_for_client)
+                    {
+                        lua.GetField(-1, "WriteString");
+                        lua.PushString(JsonSerializer.Serialize<ManagedModuleInfoForClient>(info));
+                        lua.Call(1, 0);
+                    }
+
+                    lua.GetField(-1, "Send");
+                    lua.ReferencePush(player_reference);
+                    lua.Call(1, 0);
+
+                    lua.ReferenceFree(player_reference);
+
+                    lua.Pop(lua.Top());
+
+                    return 0;
+                };
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "net");
+                lua.GetField(-1, "Receive");
+                lua.PushString("gmodnet_request_clientside_modules");
+                lua.PushCFunction(ServerListOfModulesListener);
+                lua.Call(2, 0);
+
+                lua.Pop(lua.Top());
+            }
+
+            if(!isServerSide)
+            {
+                ClientContinueLoad = (lua_state) =>
+                {
+                    if(AreModulesWereLoaded)
+                    {
+                        return 0;
+                    }
+
+                    ILua lua = LuaInterop.ExtructLua(lua_state);
+
+                    lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                    lua.GetField(-1, "net");
+                    lua.GetField(-1, "ReadDouble");
+                    lua.Call(0, 1);
+                    int number_of_entries = (int)lua.GetNumber(-1);
+                    lua.Pop(1);
+
+                    for(int i = 0; i < number_of_entries; i++)
+                    {
+                        try
+                        {
+                            lua.GetField(-1, "ReadString");
+                            lua.Call(0, 1);
+                            string local_msg = lua.GetString(-1);
+                            lua.Pop(1);
+
+                            ManagedModuleInfoForClient module_info = JsonSerializer.Deserialize<ManagedModuleInfoForClient>(local_msg);
+
+                            modules_for_client.Add(module_info);
+                        }
+                        catch(Exception e)
+                        {
+                            PrintToConsole(lua, "Server returned invalid .NET module info: " + e.GetType().ToString() + " " + e.Message);
+                        }
+                    }
+
+                    lua.Pop(lua.Top());
+
+                    DirectoryInfo modules_directory = new DirectoryInfo("garrysmod/lua/bin/Modules");
+
+                    DirectoryInfo[] proper_module_directories = modules_directory.GetDirectories().Where((d) => modules_for_client
+                    .Any((m) => m.Name == d.Name)).ToArray();
+
+                    foreach(DirectoryInfo d in proper_module_directories)
+                    {
+                        ManagedModuleInfoForClient info = modules_for_client.First((m) => m.Name == d.Name);
+
+                        try
+                        {
+                            if(info.PublicKey == null || info.PublicKey == String.Empty)
+                            {
+                                ModuleAssemblyLoadContext context = new ModuleAssemblyLoadContext(d.Name);
+
+                                byte[] module_blob = File.ReadAllBytes(d.FullName + "/" + d.Name + ".dll");
+
+                                Assembly module_asm = context.LoadFromStream(new MemoryStream(module_blob));
+
+                                List<IModule> local_list_of_modules = new List<IModule>();
+
+                                Type[] classes_of_modules = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
+
+                                foreach(Type t in classes_of_modules)
+                                {
+                                    local_list_of_modules.Add((IModule)Activator.CreateInstance(t));
+                                }
+
+                                module_holders.Add(new ModuleHolder(context, local_list_of_modules));
+                            }
+                            else
+                            {
+                                static byte[] hex_converter(string s)
+                                {
+                                    int len = s.Length;
+                                    if(len % 2 != 0)
+                                    {
+                                        throw new Exception("hex string is of odd length");
+                                    }
+
+                                    byte[] res = new byte[len / 2];
+
+                                    for(int i = 0; i < len; i += 2)
+                                    {
+                                        res[i/2] = Convert.ToByte(s.Substring(i, 2), 16);
+                                    }
+
+                                    return res;
+                                }
+
+                                static bool is_in_interval(string version, string first)
+                                {
+                                    string[] first_split = first.Split('.');
+                                    string[] version_split = version.Split('.');
+
+                                    uint first_number = uint.Parse(first_split[0]) * 100000000 + uint.Parse(first_split[1]) * 10000 + uint.Parse(first_split[2]);
+                                    uint version_number = uint.Parse(version_split[0]) * 100000000 + uint.Parse(version_split[1]) * 10000 + uint.Parse(version_split[2]);
+
+                                    return first_number <= version_number;
+                                }
+
+                                ModuleSignature local_signature = JsonSerializer.Deserialize<ModuleSignature>(File.ReadAllText(d.GetFiles()
+                                    .First((f) => f.Name == d.Name + ".modulesign").FullName));
+
+                                Ed25519 ed25519 = SignatureAlgorithm.Ed25519;
+                                Sha512 sha512 = HashAlgorithm.Sha512;
+
+                                byte[] module_blob = File.ReadAllBytes(d.FullName + "/" + d.Name + ".dll");
+
+                                byte[] finale_blob = sha512.Hash(sha512.Hash(module_blob).Concat(Encoding.UTF8.GetBytes(local_signature.Version)).ToArray());
+
+                                PublicKey public_key = PublicKey.Import(ed25519, hex_converter(info.PublicKey), KeyBlobFormat.RawPublicKey);
+
+                                bool SignatureIsValid = ed25519.Verify(public_key, finale_blob, hex_converter(local_signature.Signature));
+
+                                if(SignatureIsValid)
+                                {
+                                    bool version_checked = false;
+                                    if(info.MinVersion == null || info.MinVersion == String.Empty)
+                                    {
+                                        if(info.MaxVersion == null || info.MaxVersion == String.Empty)
+                                        {
+                                            version_checked = true;
+                                        }
+                                        else if (is_in_interval(info.MaxVersion, local_signature.Signature))
+                                        {
+                                            version_checked = true;
+                                        }
+                                        else
+                                        {
+                                            version_checked = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(is_in_interval(local_signature.Version, info.MaxVersion))
+                                        {
+                                            if(info.MaxVersion == null || info.MaxVersion == String.Empty)
+                                            {
+                                                version_checked = true;
+                                            }
+                                            else if(is_in_interval(info.MaxVersion, local_signature.Version))
+                                            {
+                                                version_checked = true;
+                                            }
+                                            else
+                                            {
+                                                version_checked = false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            version_checked = false;
+                                        }
+                                    }
+
+                                    if(version_checked)
+                                    {
+                                        ModuleAssemblyLoadContext module_context = new ModuleAssemblyLoadContext(d.Name);
+
+                                        Assembly module_asm = module_context.LoadFromStream(new MemoryStream(module_blob));
+
+                                        Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
+
+                                        List<IModule> local_modules = new List<IModule>();
+
+                                        foreach(Type t in module_classes)
+                                        {
+                                            local_modules.Add((IModule)Activator.CreateInstance(t));
+                                        }
+
+                                        module_holders.Add(new ModuleHolder(module_context, local_modules));
+                                    }
+                                }
+                            }
+                        }
+                        catch(Exception e)
+                        {
+                            PrintToConsole(lua, "Error while processing .NET mdoule clientside" + e.GetType().ToString() + " " + e.Message);
+                        }
+                    }
+
+                    PrintToConsole(lua, "Loading .NET modules...");
+
+                    foreach(ModuleHolder m in module_holders)
+                    {
+                        foreach(IModule mm in m.modules)
+                        {
+                            PrintToConsole(lua, "Loading module " + mm.ModuleName + " " + mm.ModuleVersion);
+                            mm.Load(this.lua, isServerSide, LuaInterop.ExtructLua);
+                        }
+                    }
+
+                    PrintToConsole(lua, "All managed mdoules were loaded");
+
+                    lua.Pop(lua.Top());
+
+                    return 0;
+                };
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "net");
+                lua.GetField(-1, "Receive");
+                lua.PushString("gmodnet_request_clientside_modules_response");
+                lua.PushCFunction(this.ClientContinueLoad);
+                lua.Call(2, 0);
+
+                lua.Pop(lua.Top());
+            }
+
+            LoadAll(lua);
         }
 
         private GlobalContext()
@@ -163,7 +471,7 @@ namespace GmodNET
             }
         }
 
-        void PrintToConsole(string msg)
+        static void PrintToConsole(ILua lua, string msg)
         {
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
@@ -172,85 +480,205 @@ namespace GmodNET
             lua.Pop(1);
         }
 
-        void LoadAll()
+        private void LoadAll(ILua lua)
         {
-            if(AreModulesWereLoaded)
+            if(isServerSide)
             {
-                PrintToConsole("Unable to load .NET modules: modules are already loaded!");
-                return;
+                LoadAllServerSide(lua);
             }
-            PrintToConsole("Loading managed .NET modules...");
-
-            module_holders = new List<ModuleHolder>();
-
-            string[] module_directories = Directory.GetDirectories("garrysmod/lua/bin/Modules");
-
-            List<string> module_names = new List<string>();
-
-            foreach(string s in module_directories)
+            else
             {
-                module_names.Add(s.Split(new char[] { '\\', '/' }).Last().Split('.')[0]);
+                LoadAllClientSide(lua);
             }
-
-            foreach(string s in module_names)
-            {
-                var con = new ModuleAssemblyLoadContext(s);
-
-                byte[] ass_im = File.ReadAllBytes("garrysmod/lua/bin/Modules/"+s+"/"+s+".dll");
-                Assembly mod_ass = con.LoadFromStream(new MemoryStream(ass_im));
-
-                Type[] module_types = mod_ass.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
-
-                List<IModule> list_of_modules = new List<IModule>();
-
-                foreach (Type t in module_types)
-                { 
-                    list_of_modules.Add((IModule)Activator.CreateInstance(t));
-                }
-
-                module_holders.Add(new ModuleHolder(con, list_of_modules));
-            }
-
-            foreach(ModuleHolder m in module_holders)
-            {
-                foreach(IModule mm in m.modules)
-                {
-                    PrintToConsole("Loading module " + mm.ModuleName + ". Version " + mm.ModuleVersion +".");
-
-                    mm.Load(lua, isServerSide, LuaInterop.ExtructLua);
-                }
-            }
-
-            PrintToConsole("All managed modules were loaded.");
-
-            AreModulesWereLoaded = true;
         }
 
-        void UnloadAll()
+        private void UnloadAll(ILua lua)
         {
-            if (!AreModulesWereLoaded)
+            if(!this.AreModulesWereLoaded)
             {
-                PrintToConsole("Unable to unload .NET modules: modules were already unloaded!");
+                PrintToConsole(lua, "Unable to unload modules: modules are already unloaded");
                 return;
             }
 
-            PrintToConsole("Unloading managed modules...");
+            PrintToConsole(lua, "Unloading .NET modules...");
 
-            foreach(ModuleHolder m in module_holders)
+            foreach(ModuleHolder mh in this.module_holders)
             {
-                foreach(IModule mm in m.modules)
+                foreach(IModule m in mh.modules)
                 {
-                    mm.Unload();
+                    PrintToConsole(lua, "Unloading module " + m.ModuleName);
+                    m.Unload();
                 }
 
-                m.context.Unload();
+                mh.context.Unload();
             }
 
-            module_holders = new List<ModuleHolder>();
+            this.modules_for_client = new List<ManagedModuleInfoForClient>();
+            this.module_holders = new List<ModuleHolder>();
 
-            PrintToConsole("All managed modules were unloaded.");
+            PrintToConsole(lua, "All managed modules were unloaded");
 
-            AreModulesWereLoaded = false;
+            this.AreModulesWereLoaded = false;
+        }
+
+        private void LoadAllServerSide(ILua lua)
+        {
+            if(this.AreModulesWereLoaded)
+            {
+                PrintToConsole(lua, "Unable to load modules: modules are already loaded.");
+                return;
+            }
+
+            PrintToConsole(lua, "Loading .NET modules...");
+
+            DirectoryInfo modules_directory_info;
+            try
+            {
+                modules_directory_info = new DirectoryInfo("garrysmod/lua/bin/Modules");
+            }
+            catch(Exception e)
+            {
+                lua.Pop(lua.Top());
+
+                PrintToConsole(lua, "Unable to access .NET modules directory: " + e.GetType().ToString() + " " + e.Message);
+
+                return;
+            }
+
+            var proper_modules_directories = modules_directory_info.GetDirectories();
+
+            foreach(DirectoryInfo d in proper_modules_directories)
+            {
+                string type_file_content;
+                if(d.GetFiles().Any((f) => f.Name == "TYPE"))
+                {
+                    type_file_content = File.ReadAllText(d.GetFiles().First((f) => f.Name == "TYPE").FullName);
+                }
+                else
+                {
+                    type_file_content = null;
+                }
+
+                int type_mode = type_file_content switch
+                {
+                    "server" => 0,
+                    "client" => 1,
+                    "shared" => 2,
+                    _ => -1
+                };
+
+                string maxversion_file = null;
+                if(d.GetFiles().Any((f) => f.Name == "MAXVERSION"))
+                {
+                    string tmp = File.ReadAllText(d.GetFiles().First((f) => f.Name == "MAXVERSION").FullName);
+                    Regex version_matcher = new Regex(@"\b\d+\.\d+\.\d+$\b", RegexOptions.ECMAScript | RegexOptions.Multiline | RegexOptions.Compiled);
+                    if(version_matcher.IsMatch(tmp))
+                    {
+                        maxversion_file = tmp;
+                    }
+                }
+
+                string minversion_file = null;
+                if(d.GetFiles().Any((f) => f.Name == "MINVERSION"))
+                {
+                    string tmp = File.ReadAllText(d.GetFiles().First((f) => f.Name == "MINVERSION").FullName);
+                    Regex version_matcher = new Regex(@"\b\d+\.\d+\.\d+$\b", RegexOptions.ECMAScript | RegexOptions.Multiline | RegexOptions.Compiled);
+                    if(version_matcher.IsMatch(tmp))
+                    {
+                        minversion_file = tmp;
+                    }
+                }
+
+                KeyPair local_key_pair = new KeyPair{ PublicKey = String.Empty };
+                if(d.GetFiles().Any((f) => f.Name == d.Name + ".modulekey"))
+                {
+                    try
+                    {
+                        local_key_pair = JsonSerializer.Deserialize<KeyPair>(File.ReadAllBytes(d.GetFiles().First((f) => f.Name == d.Name + ".modulekey").FullName));
+                    }
+                    catch
+                    {
+                        local_key_pair = new KeyPair{ PublicKey = String.Empty };
+                    }
+                }
+
+                if(type_mode == 1 || type_mode == 2 || type_mode == -1)
+                {
+                    modules_for_client.Add(new ManagedModuleInfoForClient
+                    {
+                        MinVersion = minversion_file,
+                        MaxVersion = maxversion_file,
+                        Name = d.Name,
+                        PublicKey = local_key_pair.PublicKey
+                    });
+                }
+
+                if(type_mode == 0 || type_mode == 2 || type_mode == -1)
+                {
+                    if(d.GetFiles().Any((f) => f.Name == d.Name + ".dll"))
+                    {
+                        byte[] module_blob = File.ReadAllBytes(d.GetFiles().First((f) => f.Name == d.Name + ".dll").FullName);
+
+                        ModuleAssemblyLoadContext local_context = new ModuleAssemblyLoadContext(d.Name);
+
+                        Assembly module_asm = local_context.LoadFromStream(new MemoryStream(module_blob));
+
+                        List<IModule> local_modules = new List<IModule>();
+
+                        Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
+
+                        foreach(Type t in module_classes)
+                        {
+                            local_modules.Add((IModule)Activator.CreateInstance(t));
+                        }
+
+                        ModuleHolder mh = new ModuleHolder(local_context, local_modules);
+
+                        module_holders.Add(mh);
+                    }
+                }
+            }
+
+            foreach(ModuleHolder mh in module_holders)
+            {
+                foreach(IModule module in mh.modules)
+                {
+                    PrintToConsole(lua, "Loading module " + module.ModuleName + " " + module.ModuleVersion);
+
+                    module.Load(this.lua, isServerSide, LuaInterop.ExtructLua);
+                }
+            }
+
+            PrintToConsole(lua, "All managed modules were loaded.");
+
+            this.AreModulesWereLoaded = true;
+        }
+
+        private void LoadAllClientSide(ILua lua)
+        {
+            if(this.AreModulesWereLoaded)
+            {
+                PrintToConsole(lua, "Unable to load .NET modules: modules are already loaded");
+
+                return;
+            }
+
+            PrintToConsole(lua, "Requesting a list of clientside modules from server...");
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "net");
+            lua.GetField(-1, "Start");
+            lua.PushString("gmodnet_request_clientside_modules");
+            lua.Call(1, 1);
+            lua.Pop(1);
+
+            lua.GetField(-1, "WriteBool");
+            lua.PushBool(true);
+            lua.Call(1, 0);
+
+            lua.GetField(-1, "SendToServer");
+            lua.Call(0, 0);
+            lua.Pop(lua.Top());
         }
     }
 
@@ -375,16 +803,6 @@ namespace GmodNET
             return 0;
         }
 
-        struct KeyPair
-        {
-            public string PublicKey {get; set; }
-            public string PrivateKey {get; set; }
-        }
-        struct ModuleSignature
-        {
-            public string Version {get; set; }
-            public string Signature {get; set; }
-        }
         struct MessageStruct
         {
             public string NativeHash {get; set; }
@@ -459,6 +877,18 @@ namespace GmodNET
             }
 
             return res;
+        }
+    }
+
+    internal class ModuleHolder
+    {
+        internal ModuleAssemblyLoadContext context;
+        internal List<IModule> modules;
+
+        internal ModuleHolder(ModuleAssemblyLoadContext context, List<IModule> modules)
+        {
+            this.context = context;
+            this.modules = modules;
         }
     }
 }

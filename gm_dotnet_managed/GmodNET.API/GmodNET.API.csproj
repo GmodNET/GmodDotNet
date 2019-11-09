@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>0.4.0</Version>
+    <Version>0.4.0-preview</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>Gleb Krasilich</Authors>
     <Product>GmodNET API</Product>
@@ -10,7 +10,11 @@
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>garrysmod, GmodNET</PackageTags>
-    <PackageReleaseNotes>- IModule.isServerSideOnly readonly property added</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added is_serverside parameter for IModule.Load method.
+
+- ILua interface now covers full Garry's Mod native lua API
+
+- Enum of indeces of Garry's Mod types added</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

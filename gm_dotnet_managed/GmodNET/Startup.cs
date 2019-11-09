@@ -179,16 +179,4 @@ namespace GmodNET
             }
         }
     }
-
-    internal class ModuleHolder
-    {
-        internal ModuleAssemblyLoadContext context;
-        internal List<IModule> modules;
-
-        internal ModuleHolder(ModuleAssemblyLoadContext context, List<IModule> modules)
-        {
-            this.context = context;
-            this.modules = modules;
-        }
-    }
 }

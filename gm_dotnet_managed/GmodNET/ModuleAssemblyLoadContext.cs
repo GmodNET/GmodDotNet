@@ -49,5 +49,19 @@ namespace GmodNET
                 return this.LoadFromStream(new MemoryStream(assembly_bytes));
             }
         }
+
+        protected override IntPtr LoadUnmanagedDll (string unmanagedDllName)
+        {
+            string unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+
+            if(unmanagedDllName == null)
+            {
+                return IntPtr.Zero;
+            }
+            else
+            {
+                return this.LoadUnmanagedDllFromPath(unmanagedDllName);
+            }
+        }
     }
 }
