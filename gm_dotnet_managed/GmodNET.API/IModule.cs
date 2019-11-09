@@ -30,20 +30,6 @@ namespace GmodNET.API
             get;
         }
         /// <summary>
-        /// Return true if module should be loaded by server only and false otherwise
-        /// </summary>
-        public bool IsServerSideOnly
-        {
-            get;
-        }
-        /// <summary>
-        /// Return true if this module should be loaded clientside only after signature validation.
-        /// </summary>
-        public bool UseClientsideModuleVerification
-        {
-            get;
-        }
-        /// <summary>
         /// This method is called by GmodNET on module load and should be treated as module constructor
         /// </summary>
         /// <param name="LuaInterface">Interface to communicate with Garry's Mod</param>
@@ -59,6 +45,5 @@ namespace GmodNET.API
         /// </summary>
         /// <param name="version"></param>
         /// <returns>Is version allowed</returns>
-        public bool AllowVersion(string version);
     }
 }
