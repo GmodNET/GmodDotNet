@@ -439,7 +439,7 @@ namespace GmodNET
                         }
                     }
 
-                    PrintToConsole(lua, "All managed modules were loaded");
+                    PrintToConsole(lua, "All managed modules were loaded clientside");
 
                     lua.Pop(lua.Top());
 
@@ -652,7 +652,7 @@ namespace GmodNET
                 }
             }
 
-            PrintToConsole(lua, "All managed modules were loaded.");
+            PrintToConsole(lua, "All managed modules were loaded serverside.");
 
             this.AreModulesWereLoaded = true;
         }

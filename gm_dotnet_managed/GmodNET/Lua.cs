@@ -32,10 +32,15 @@ namespace GmodNET
 
         public void Pop(int IAmt)
         {
-            if (IAmt <= 0)
+            if (IAmt < 0)
             { 
-                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
+                throw new ArgumentOutOfRangeException("iAmt", "Can't pop negative number of items from the stack");
             }
+            if (IAmt == 0)
+            {
+                return;
+            }
+
             pop(ptr, IAmt);
         }
 
