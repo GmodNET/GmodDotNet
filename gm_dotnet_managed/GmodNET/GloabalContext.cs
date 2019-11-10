@@ -250,12 +250,13 @@ namespace GmodNET
             {
                 ClientContinueLoad = (lua_state) =>
                 {
+                    ILua lua = LuaInterop.ExtructLua(lua_state);
+
                     if(AreModulesWereLoaded)
                     {
+                        lua.Pop(lua.Top());
                         return 0;
                     }
-
-                    ILua lua = LuaInterop.ExtructLua(lua_state);
 
                     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                     lua.GetField(-1, "net");
@@ -438,9 +439,11 @@ namespace GmodNET
                         }
                     }
 
-                    PrintToConsole(lua, "All managed mdoules were loaded");
+                    PrintToConsole(lua, "All managed modules were loaded");
 
                     lua.Pop(lua.Top());
+
+                    this.AreModulesWereLoaded = true;
 
                     return 0;
                 };
