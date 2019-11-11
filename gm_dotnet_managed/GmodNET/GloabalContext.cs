@@ -341,8 +341,8 @@ namespace GmodNET
                                     string[] first_split = first.Split('.');
                                     string[] version_split = version.Split('.');
 
-                                    uint first_number = uint.Parse(first_split[0]) * 100000000 + uint.Parse(first_split[1]) * 10000 + uint.Parse(first_split[2]);
-                                    uint version_number = uint.Parse(version_split[0]) * 100000000 + uint.Parse(version_split[1]) * 10000 + uint.Parse(version_split[2]);
+                                    ulong first_number = ulong.Parse(first_split[0]) * 100000000 + ulong.Parse(first_split[1]) * 10000 + ulong.Parse(first_split[2]);
+                                    ulong version_number = ulong.Parse(version_split[0]) * 100000000 + ulong.Parse(version_split[1]) * 10000 + ulong.Parse(version_split[2]);
 
                                     return first_number <= version_number;
                                 }
