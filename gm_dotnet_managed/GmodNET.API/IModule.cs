@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.Loader;
 
 namespace GmodNET.API
 {
@@ -35,7 +36,8 @@ namespace GmodNET.API
         /// <param name="LuaInterface">Interface to communicate with Garry's Mod</param>
         /// <param name="is_serverside">Indicates weather module is loaded serverside</param>
         /// <param name="del">This property will get a delegate which help to get ILua from lua_state pointer. Needed for ILua.PushCFunction functionality.</param>
-        public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del);
+        /// <param name="assembly_context">AseemblyLoadContext of this module.</param>
+        public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del, AssemblyLoadContext assembly_context);
         /// <summary>
         /// Will be called by GmodNET on module unload. In this method module must cleanup and unregister with Garry's Mod native/lua data
         /// </summary>
