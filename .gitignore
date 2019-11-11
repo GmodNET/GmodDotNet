@@ -13,3 +13,5 @@ gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj.user
 gm_dotnet_managed/GmodNET.API/Properties
 gm_dotnet_managed/GmodNET/Properties
 *.user
+gm_dotnet_managed/DefaultContextResolver/bin
+gm_dotnet_managed/DefaultContextResolver/obj

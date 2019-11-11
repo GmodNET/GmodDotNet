@@ -111,6 +111,22 @@ GMOD_MODULE_OPEN()
 
     typedef cleanup_delegate_fn (*managed_delegate_fn)(ILuaBase * lua_base, int maj_ver, int min_ver, int misc_ver, void ** params);
     managed_delegate_fn managed_delegate = nullptr;
+
+    typedef void (*resolver_helper_delegate_fn)();
+    resolver_helper_delegate_fn resolver_helper_delegate = nullptr;
+
+    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET/DefaultContextResolver.dll"),
+            STRING_FORMATER("GmodNET.Resolver.DefaultContextResolver, DefaultContextResolver"), STRING_FORMATER("Main"),
+            STRING_FORMATER("GmodNET.Resolver.MainDelegate, DefaultContextResolver"), nullptr, (void**)&resolver_helper_delegate);
+
+    if(resolver_helper_delegate == nullptr)
+    {
+        fprintf(stderr, "Unable to get resolver helper delegate! \n");
+        return 0;
+    }
+
+    resolver_helper_delegate();
+
     get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
                          STRING_FORMATER("Main"), STRING_FORMATER("GmodNET.MainDelegate, GmodNET"), nullptr, (void**)&managed_delegate);
     if(managed_delegate == nullptr)

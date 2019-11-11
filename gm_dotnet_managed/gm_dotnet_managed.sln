@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GmodNET", "GmodNET\GmodNET.csproj", "{97FA8B85-BF3D-4FB6-B9C7-6F2E61F39D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GmodNET.API", "GmodNET.API\GmodNET.API.csproj", "{49210D87-ADFF-4EF9-B016-E3DD9302117C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GmodNET.API", "GmodNET.API\GmodNET.API.csproj", "{49210D87-ADFF-4EF9-B016-E3DD9302117C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultContextResolver", "DefaultContextResolver\DefaultContextResolver.csproj", "{409EF3A2-679C-43B1-8856-EE1B50E2E304}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{49210D87-ADFF-4EF9-B016-E3DD9302117C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49210D87-ADFF-4EF9-B016-E3DD9302117C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49210D87-ADFF-4EF9-B016-E3DD9302117C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

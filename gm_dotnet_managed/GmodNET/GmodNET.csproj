@@ -22,13 +22,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GmodNET.API" Version="0.4.0-preview">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
     <PackageReference Include="NSec.Cryptography" Version="19.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj">
-      <Private>true</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\DefaultContextResolver\DefaultContextResolver.csproj" />
   </ItemGroup>
 
 </Project>

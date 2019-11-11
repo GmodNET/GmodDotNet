@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using static GmodNET.RuntimeServices;
 using GmodNET.API;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace GmodNET
 {

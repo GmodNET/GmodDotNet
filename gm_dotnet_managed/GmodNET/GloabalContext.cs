@@ -50,6 +50,8 @@ namespace GmodNET
         CFuncManagedDelegate ServerListOfModulesListener;
         CFuncManagedDelegate ClientContinueLoad;
 
+        CFuncManagedDelegate OnEnvironmentShutDown;
+
         internal GlobalContext(ILua lua)
         { 
             module_holders = new List<ModuleHolder>();
@@ -192,7 +194,7 @@ namespace GmodNET
                 lua.GetField(-1, "Add");
                 lua.PushString("Tick");
                 lua.PushString("BaseVerificationHandler_tick_listener");
-                lua.PushCFunction(base_verification_handler.OnServerTick);
+                lua.PushCFunction(base_verification_handler.OnServerTickDelegate);
                 lua.Call(3, 0);
                 lua.Pop(lua.Top());
             }
@@ -299,11 +301,9 @@ namespace GmodNET
                         {
                             if(info.PublicKey == null || info.PublicKey == String.Empty)
                             {
-                                ModuleAssemblyLoadContext context = new ModuleAssemblyLoadContext(d.Name);
+                                ModuleAssemblyLoadContext context = new ModuleAssemblyLoadContext(d.Name); 
 
-                                byte[] module_blob = File.ReadAllBytes(d.FullName + "/" + d.Name + ".dll");
-
-                                Assembly module_asm = context.LoadFromStream(new MemoryStream(module_blob));
+                                Assembly module_asm = context.LoadFromAssemblyPath(d.FullName + "/" + d.Name + ".dll");
 
                                 List<IModule> local_list_of_modules = new List<IModule>();
 
@@ -406,7 +406,7 @@ namespace GmodNET
                                     {
                                         ModuleAssemblyLoadContext module_context = new ModuleAssemblyLoadContext(d.Name);
 
-                                        Assembly module_asm = module_context.LoadFromStream(new MemoryStream(module_blob));
+                                        Assembly module_asm = module_context.LoadFromAssemblyPath(d.FullName + "/" + d.Name + ".dll");
 
                                         Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
 
@@ -458,6 +458,27 @@ namespace GmodNET
                 lua.Pop(lua.Top());
             }
 
+            OnEnvironmentShutDown = (lua_state) =>
+            {
+                ILua lua = LuaInterop.ExtructLua(lua_state);
+
+                this.UnloadAll(lua);
+
+                lua.Pop(lua.Top());
+
+                return 0;
+            };
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "hook");
+            lua.GetField(-1, "Add");
+            lua.PushString("ShutDown");
+            lua.PushString("gmod_net_base_shutdown_listener");
+            lua.PushCFunction(OnEnvironmentShutDown);
+            lua.Call(3, 0);
+
+            lua.Pop(lua.Top());
+
             LoadAll(lua);
         }
 
@@ -497,6 +518,8 @@ namespace GmodNET
 
         private void UnloadAll(ILua lua)
         {
+            List<WeakReference> weak_references = new List<WeakReference>();
+
             if(!this.AreModulesWereLoaded)
             {
                 PrintToConsole(lua, "Unable to unload modules: modules are already unloaded");
@@ -514,10 +537,23 @@ namespace GmodNET
                 }
 
                 mh.context.Unload();
+
+                mh.modules.Clear();
+
+                weak_references.Add(new WeakReference(mh.context));
             }
+
+            this.modules_for_client.Clear();
+            this.module_holders.Clear();
 
             this.modules_for_client = new List<ManagedModuleInfoForClient>();
             this.module_holders = new List<ModuleHolder>();
+
+            while(weak_references.Any(r => r.IsAlive))
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
 
             PrintToConsole(lua, "All managed modules were unloaded");
 
@@ -620,11 +656,9 @@ namespace GmodNET
                 {
                     if(d.GetFiles().Any((f) => f.Name == d.Name + ".dll"))
                     {
-                        byte[] module_blob = File.ReadAllBytes(d.GetFiles().First((f) => f.Name == d.Name + ".dll").FullName);
-
                         ModuleAssemblyLoadContext local_context = new ModuleAssemblyLoadContext(d.Name);
 
-                        Assembly module_asm = local_context.LoadFromStream(new MemoryStream(module_blob));
+                        Assembly module_asm = local_context.LoadFromAssemblyPath(d.GetFiles().First((f) => f.Name == d.Name + ".dll").FullName);
 
                         List<IModule> local_modules = new List<IModule>();
 
@@ -688,10 +722,22 @@ namespace GmodNET
     class BaseVerificationHandler
     {
         List<Tuple<Task<bool>, int>> list_of_validation_tasks;
+
+        CFuncManagedDelegate onServerTickDelegate;
+
+        public CFuncManagedDelegate OnServerTickDelegate
+        {
+            get
+            {
+                return onServerTickDelegate;
+            }
+        }
         
         public BaseVerificationHandler()
         {
             list_of_validation_tasks = new List<Tuple<Task<bool>, int>>();
+
+            onServerTickDelegate = this.OnServerTick;
         }
 
         public int NetMessageListener(IntPtr lua_state)
