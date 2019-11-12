@@ -11,25 +11,10 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install dotnet-sdk-3.0
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
-        - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release -r linux-x64
+        - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
+        - dir
         - mkdir cmake_build
+        - dir
         - cd cmake_build
         - cmake ../gm_dotnet_native
-        - make
-        - cd ..
-        - mkdir build
-        - cd build
-        - mkdir GmodNET
-        - cd GmodNET
-        - mkdir API
-        - cd ..
-        - cd ..
-        - cp cmake_build/*.dll build
-        - cd gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish
-        - cp *.dll *.json *.so ../../../../../../../build/GmodNET
-        - cd ~
-        - cd build
-        - dir
-        - cd GmodNET
-        - dir
-    
+        
