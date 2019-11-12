@@ -16,6 +16,7 @@
 
 . - Enum of indeces of Garry's Mod types added. - IModule.Load method now have parameter which receives AssemblyLoadContext of the module.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/GlebChili/GmodDotNet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
