@@ -47,16 +47,14 @@ jobs:
     - language: cpp
       os: windows
       env:
-        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
+        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
       script:
         - choco install dotnetcore-sdk --version 3.0.100
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
-        - choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' --version 3.15.5
-        - choco install visualstudio2019buildtools
         - mkdir cmake_build
         - cd cmake_build
-        - cmake ../gm_dotnet_native
+        - cmake -G 'Visual Studio 15 2017 Win64' ../gm_dotnet_native
         - export PATH=$MSBUILD_PATH:$PATH
         - msbuild.exe gm_dotnet_native.sln
         - dir
