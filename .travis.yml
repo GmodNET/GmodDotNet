@@ -26,7 +26,7 @@ jobs:
         - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.so build/GmodNET
         - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes build/GmodNET
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
-        - export NOW=$( date '+%F_%H:%M:%S' )
+        - export NOW=$( date '+%F_%H_%M_%S' )
         - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build
       deploy:
         provider: s3
