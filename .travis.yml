@@ -25,13 +25,11 @@ jobs:
         - cd ..
         - cd ..
         - cp cmake_build/*.dll build
-        - cd gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/linux-x64
+        - cd gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish
         - cp *.dll *.json *.so ../../../../../../../build/GmodNET
-        - cd ../../../../../../..
+        - cd ~
         - cd build
-        - echo "Content of build folder:"
         - dir
         - cd GmodNET
-        - echo "Content of build/GmodNET folder:"
         - dir
     
