@@ -71,11 +71,11 @@ jobs:
         - mkdir files_to_publish
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip files_to_publish
         - choco install python3 --version=3.7.4
-        - C:\Python\python.exe -m ensurepip
-        - C:\Python\python.exe -m pip install awscli
+        - C:\\Python\\python.exe -m ensurepip
+        - C:\\Python\\python.exe -m pip install awscli
         - export AWS_ACCESS_KEY_ID=$SPACE_ID
         - export AWS_SECRET_ACCESS_KEY=$SPACE_KEY
-        - C:\Python\python.exe -m aws s3 cp files_to_publish s3://gleb-krasilich/GmodDotNetBuilds/Windows --endpoint=https://fra1.digitaloceanspaces.com
+        - C:\\Python\\python.exe -m aws s3 cp files_to_publish s3://gleb-krasilich/GmodDotNetBuilds/Windows --endpoint=https://fra1.digitaloceanspaces.com
       
         
         
