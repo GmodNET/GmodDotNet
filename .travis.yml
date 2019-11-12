@@ -30,6 +30,7 @@ jobs:
         - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build
         - mkdir files_to_publish
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz files_to_publish
+        - dir
       deploy:
         provider: s3
         endpoint: https://fra1.digitaloceanspaces.com
