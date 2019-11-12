@@ -37,4 +37,6 @@ jobs:
         uplaod-dir: GmodDotNetBuilds/Linux
         file: $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz
         acl: public_read
+        on:
+          all_branches: true
         
