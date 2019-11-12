@@ -33,7 +33,6 @@ jobs:
         - dir
       deploy:
         provider: s3
-        endpoint: https://fra1.digitaloceanspaces.com
         access_key_id: $SPACE_ID
         secret_access_key: $SPACE_KEY
         bucket: gleb-krasilich
@@ -43,4 +42,5 @@ jobs:
         acl: public_read
         on:
           all_branches: true
+        endpoint: fra1.digitaloceanspaces.com
         
