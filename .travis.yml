@@ -29,7 +29,7 @@ jobs:
         - export NOW=$( date '+%F_%H_%M_%S' )
         - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build
         - mkdir files_to_publish
-        cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz files_to_publish
+        - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz files_to_publish
       deploy:
         provider: s3
         endpoint: https://fra1.digitaloceanspaces.com
