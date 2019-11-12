@@ -70,17 +70,11 @@ jobs:
         - 7z a -tzip $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip build
         - mkdir files_to_publish
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip files_to_publish
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script:
-         - choco install python
-         - pip install awscli
-         - export AWS_ACCESS_KEY_ID=$SPACE_ID
-         - export AWS_SECRET_ACCESS_KEY=$SPACE_KEY
-         - aws s3 cp files_to_publish s3://gleb-krasilich/GmodDotNetBuilds/Windows --endpoint=https://fra1.digitaloceanspaces.com
-        on:
-          all_branches: true
+        - choco install python
+        - pip install awscli
+        - export AWS_ACCESS_KEY_ID=$SPACE_ID
+        - export AWS_SECRET_ACCESS_KEY=$SPACE_KEY
+        - aws s3 cp files_to_publish s3://gleb-krasilich/GmodDotNetBuilds/Windows --endpoint=https://fra1.digitaloceanspaces.com
         
         
         
