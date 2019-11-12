@@ -72,6 +72,7 @@ jobs:
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip files_to_publish
         - choco install python3 --version=3.7.4
         - export PATH="/c/Python:/c/Python/Scripts:$PATH"
+        - refreshenv
         - python -m ensurepip
         - python -m pip install awscli
         - export AWS_ACCESS_KEY_ID=$SPACE_ID
