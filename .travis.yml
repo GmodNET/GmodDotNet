@@ -1,6 +1,6 @@
 jobs:
   include:
-    - language: csharp
+    - language: cpp
       mono: none
       dotnet: 3.0.100
       script:
