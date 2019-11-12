@@ -4,7 +4,6 @@ jobs:
       mono: none
       dotnet: 3.0.100
       script:
-        - dotnet restore
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release -r win-x64
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release -r linux-x64
