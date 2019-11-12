@@ -30,7 +30,6 @@ jobs:
         - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build/*
         - mkdir files_to_publish
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz files_to_publish
-        - dir
       deploy:
         provider: s3
         access_key_id: $SPACE_ID
@@ -57,6 +56,32 @@ jobs:
         - cmake -G 'Visual Studio 15 2017 Win64' ../gm_dotnet_native
         - export PATH=$MSBUILD_PATH:$PATH
         - msbuild.exe gm_dotnet_native.sln
-        - dir
+        - cd ..
+        - mkdir build
+        - mkdir build/GmodNET
+        - mkdir build/GmodNET/API
+        - cp cmake_build/Release/*.dll build
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
+        - mkdir build/GmodNET/runtimes
+        - cp -r gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - export NOW=$( date '+%F_%H_%M_%S' )
+        - 7z a -tzip $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip build
+        - mkdir files_to_publish
+        - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip files_to_publish
+      deploy:
+        provider: s3
+        access_key_id: $SPACE_ID
+        secret_access_key: $SPACE_KEY
+        bucket: gleb-krasilich
+        skip_cleanup: true
+        upload-dir: GmodDotNetBuilds/Windows
+        local_dir: files_to_publish
+        acl: public_read
+        on:
+          all_branches: true
+        endpoint: https://fra1.digitaloceanspaces.com
+        
         
         
