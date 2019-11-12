@@ -23,6 +23,7 @@ jobs:
         - cp cmake_build/*.dll build
         - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
         - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
+        - mkdir build/GmodNET/runtimes
         - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
         - export NOW=$( date '+%F_%H_%M_%S' )
