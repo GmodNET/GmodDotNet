@@ -12,9 +12,29 @@ jobs:
         - sudo apt-get install dotnet-sdk-3.0
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
-        - dir
         - mkdir cmake_build
-        - dir
         - cd cmake_build
         - cmake ../gm_dotnet_native
+        - make
+        - cd ..
+        - mkdir build
+        - mkdir build/GmodNET
+        - mkdir build/GmodNET/API
+        - cp cmake_build/*.dll build
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.so build/GmodNET
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes build/GmodNET
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - export NOW=$( date '+%F_%H:%M:%S' )
+        - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build
+      deploy:
+        provider: s3
+        endpoint: https://fra1.digitaloceanspaces.com
+        access_key_id: $SACE_ID
+        secret_access_key: $SPACE_KEY
+        bucket: gleb-krasilich
+        uplaod-dir: GmodDotNetBuilds/Linux
+        file: $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz
+        acl: public_read
         
