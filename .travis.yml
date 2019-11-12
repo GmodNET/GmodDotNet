@@ -27,7 +27,7 @@ jobs:
         - cp -r gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
         - export NOW=$( date '+%F_%H_%M_%S' )
-        - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build
+        - tar czf $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz build/*
         - mkdir files_to_publish
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz files_to_publish
         - dir
@@ -43,4 +43,16 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
+    
+    - language: cpp
+      os: windows
+      script:
+        - choco install dotnetcore-sdk --version 3.0.100
+        - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
+        - mkdir cmake_build
+        - cd cmake_build
+        - cmake ../gm_dotnet_native
+        - msbuild gm_dotnet_native.sln
+        
         
