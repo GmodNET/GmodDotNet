@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GmodNET.API" Version="0.4.0-preview">
+    <PackageReference Include="GmodNET.API" Version="0.4.0-preview2">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="NSec.Cryptography" Version="19.5.0" />

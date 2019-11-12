@@ -50,8 +50,6 @@ namespace GmodNET
         CFuncManagedDelegate ServerListOfModulesListener;
         CFuncManagedDelegate ClientContinueLoad;
 
-        CFuncManagedDelegate OnEnvironmentShutDown;
-
         internal GlobalContext(ILua lua)
         { 
             module_holders = new List<ModuleHolder>();
@@ -424,7 +422,7 @@ namespace GmodNET
                         }
                         catch(Exception e)
                         {
-                            PrintToConsole(lua, "Error while processing .NET mdoule clientside" + e.GetType().ToString() + " " + e.Message);
+                            PrintToConsole(lua, "Error while processing .NET module clientside: " + e.GetType().ToString() + " " + e.Message);
                         }
                     }
 
@@ -458,25 +456,6 @@ namespace GmodNET
                 lua.Pop(lua.Top());
             }
 
-            OnEnvironmentShutDown = (lua_state) =>
-            {
-                ILua lua = LuaInterop.ExtructLua(lua_state);
-
-                //this.UnloadAll(lua);
-
-                //lua.Pop(lua.Top());
-
-                return 0;
-            };
-
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.GetField(-1, "hook");
-            lua.GetField(-1, "Add");
-            lua.PushString("ShutDown");
-            lua.PushString("gmod_net_base_shutdown_listener");
-            lua.PushCFunction(OnEnvironmentShutDown);
-            lua.Call(3, 0);
-
             lua.Pop(lua.Top());
 
             LoadAll(lua);
@@ -492,6 +471,26 @@ namespace GmodNET
             foreach(ModuleHolder m in module_holders)
             {
                 m.context.Unload();
+            }
+        }
+
+        internal void OnNativeUnload()
+        {
+            List<WeakReference> weak_refs = new List<WeakReference>();
+
+            foreach(ModuleHolder mh in module_holders)
+            {
+                mh.context.Unload();
+                weak_refs.Add(new WeakReference(mh.context));
+            }
+
+            module_holders.Clear();
+            modules_for_client.Clear();
+
+            while(weak_refs.Any(r => r.IsAlive))
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 

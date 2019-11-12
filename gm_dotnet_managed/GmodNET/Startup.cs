@@ -169,6 +169,8 @@ namespace GmodNET
 
         internal static void CleanupRealization(GlobalContext context)
         {
+            context.OnNativeUnload();
+
             global_contexts.Remove(context);
 
             if (CleanupReturns.Count > 100)
