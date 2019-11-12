@@ -75,7 +75,7 @@ jobs:
         - C:\\Python\\python.exe -m pip install awscli
         - export AWS_ACCESS_KEY_ID=$SPACE_ID
         - export AWS_SECRET_ACCESS_KEY=$SPACE_KEY
-        - C:\\Python\\python.exe -m aws s3 cp files_to_publish s3://gleb-krasilich/GmodDotNetBuilds/Windows --endpoint=https://fra1.digitaloceanspaces.com
+        - aws s3 cp files_to_publish s3://gleb-krasilich/GmodDotNetBuilds/Windows --endpoint=https://fra1.digitaloceanspaces.com
       
         
         
