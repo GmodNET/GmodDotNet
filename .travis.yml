@@ -53,7 +53,7 @@ jobs:
         - mkdir cmake_build
         - cd cmake_build
         - cmake ../gm_dotnet_native
-        - cmake --build ../cmake_build
+        - MSBuild.exe gm_dotnet_native.sln
         - dir
         
         
