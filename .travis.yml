@@ -42,5 +42,5 @@ jobs:
         acl: public_read
         on:
           all_branches: true
-        endpoint: fra1.digitaloceanspaces.com
+        endpoint: https://fra1.digitaloceanspaces.com
         
