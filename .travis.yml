@@ -71,8 +71,7 @@ jobs:
         - mkdir files_to_publish
         - cp $NOW-$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip files_to_publish
         - choco install python
-        - curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
-        - python get-pip.py
+        - python -m ensurepip
         - pip install awscli
         - export AWS_ACCESS_KEY_ID=$SPACE_ID
         - export AWS_SECRET_ACCESS_KEY=$SPACE_KEY
