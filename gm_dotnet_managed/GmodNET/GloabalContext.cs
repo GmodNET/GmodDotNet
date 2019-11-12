@@ -435,7 +435,7 @@ namespace GmodNET
                         foreach(IModule mm in m.modules)
                         {
                             PrintToConsole(lua, "Loading module " + mm.ModuleName + " " + mm.ModuleVersion);
-                            mm.Load(this.lua, isServerSide, LuaInterop.ExtructLua);
+                            mm.Load(this.lua, isServerSide, LuaInterop.ExtructLua, m.context);
                         }
                     }
 
@@ -462,9 +462,9 @@ namespace GmodNET
             {
                 ILua lua = LuaInterop.ExtructLua(lua_state);
 
-                this.UnloadAll(lua);
+                //this.UnloadAll(lua);
 
-                lua.Pop(lua.Top());
+                //lua.Pop(lua.Top());
 
                 return 0;
             };
@@ -682,7 +682,7 @@ namespace GmodNET
                 {
                     PrintToConsole(lua, "Loading module " + module.ModuleName + " " + module.ModuleVersion);
 
-                    module.Load(this.lua, isServerSide, LuaInterop.ExtructLua);
+                    module.Load(this.lua, isServerSide, LuaInterop.ExtructLua, mh.context);
                 }
             }
 
