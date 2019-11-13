@@ -1,9 +1,10 @@
+env:
+  - GMODNET_VERSION="0.4.0"
+
 jobs:
   include:
     - language: cpp
       dist: bionic
-      env:
-        - GMODNET_VERSION="0.4.0"
       script:
         - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
         - sudo dpkg -i packages-microsoft-prod.deb
@@ -75,7 +76,6 @@ jobs:
     - language: cpp
       os: windows
       env:
-        - GMODNET_VERSION=0.4.0
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
       script:
         - choco install dotnetcore-sdk --version 3.0.100
@@ -142,8 +142,6 @@ jobs:
     - language: cpp
       os: osx
       osx_image: xcode11.2
-      env:
-        - GMODNET_VERSION="0.4.0"
       script:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.sh -O -L
         - chmod +x dotnet-install.sh
@@ -209,8 +207,4 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
-        
-      
-        
-        
         
