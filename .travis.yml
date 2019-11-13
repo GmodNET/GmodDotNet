@@ -147,9 +147,10 @@ jobs:
       script:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.sh -O -L
         - chmod +x dotnet-install.sh
-        - ./dotnet-install.sh --version 3.0.100
-        - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
-        - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
+        - mkdir dnsdk
+        - ./dotnet-install.sh --version 3.0.100 --install-dir dnsdk
+        - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
         - cd cmake_build
         - cmake ../gm_dotnet_native
