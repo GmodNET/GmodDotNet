@@ -146,7 +146,7 @@ jobs:
         - GMODNET_VERSION="0.4.0"
       script:
         - curl https://download.visualstudio.microsoft.com/download/pr/5c281f95-91c4-499d-baa2-31fec919047a/38c6964d72438ac30032bce516b655d9/dotnet-sdk-3.0.100-osx-x64.pkg -O -L
-        - sudo installer -pkg "/Users/travis/GlebChili/GmodDotNet/dotnet-sdk-3.0.100-osx-x64.pkg"
+        - sudo installer -pkg "dotnet-sdk-3.0.100-osx-x64.pkg" -target /
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
