@@ -138,6 +138,76 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
+    
+    - language: cpp
+      os: osx
+      osx_image: xcode11.2
+      env:
+        - GMODNET_VERSION="0.4.0"
+      script:
+        - brew install wget
+        - brew install dotnet-sdk@3.0.100
+        - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
+        - mkdir cmake_build
+        - cd cmake_build
+        - cmake ../gm_dotnet_native
+        - make
+        - cd ..
+        - mkdir build
+        - mkdir build/GmodNET
+        - mkdir build/GmodNET/API
+        - cp cmake_build/*.dll build
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
+        - mkdir build/GmodNET/runtimes
+        - cp -r gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - cd build 
+        - mkdir dotnet
+        - cd dotnet
+        - wget https://download.visualstudio.microsoft.com/download/pr/68123d89-73c0-40b0-ba9b-93667c25663b/001f66f8ec4666421acc16f74209aa99/dotnet-runtime-3.0.0-osx-x64.tar.gz
+        - tar xvf dotnet-runtime-3.0.0-osx-x64.tar.gz
+        - rm -f dotnet-runtime-3.0.0-osx-x64.tar.gz
+        - rm -f dotnet
+        - rm -f LICENSE.txt
+        - rm -f ThirdPartyNotices.txt
+        - cd ..
+        - cd ..
+        - cp LICENSE build
+        - cp NOTICE build        
+        - git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+        - wget https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms-osx
+        - mv gms-osx gms
+        - chmod +x gms
+        - cd build
+        - ./../gms --sign=gmcl_dotnet_osx64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+        - mv signature.modulesign gmcl_dotnet.modulesign
+        - cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+        - mv gmodnet-public.modulekey gmcl_dotnet.modulekey
+        - cd GmodNET
+        - ./../../gms --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+        - mv signature.modulesign GmodNET.modulesign
+        - cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+        - mv gmodnet-public.modulekey GmodNET.modulekey
+        - cd ..
+        - tar czfv ../$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz .
+        - cd ..
+        - mkdir files_to_publish
+        - cp $TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz files_to_publish
+      deploy:
+        provider: s3
+        access_key_id: $SPACE_ID
+        secret_access_key: $SPACE_KEY
+        bucket: gleb-krasilich
+        skip_cleanup: true
+        upload-dir: GmodDotNetBuilds/Osx/$TRAVIS_BRANCH
+        local_dir: files_to_publish
+        acl: public_read
+        on:
+          all_branches: true
+        endpoint: https://fra1.digitaloceanspaces.com
+        
       
         
         
