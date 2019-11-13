@@ -146,7 +146,8 @@ jobs:
         - GMODNET_VERSION="0.4.0"
       script:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.sh -O -L
-        - dotnet-install.sh --version 3.0.100
+        - chmod +x dotnet-install.sh
+        - ./dotnet-install.sh --version 3.0.100
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
