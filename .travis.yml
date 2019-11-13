@@ -132,7 +132,7 @@ jobs:
         secret_access_key: $SPACE_KEY
         bucket: gleb-krasilich
         skip_cleanup: true
-        upload-dir: GmodDotNetBuilds/Windows
+        upload-dir: GmodDotNetBuilds/Windows/$TRAVIS_BRANCH
         local_dir: files_to_publish
         acl: public_read
         on:
