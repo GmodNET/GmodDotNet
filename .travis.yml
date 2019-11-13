@@ -145,8 +145,8 @@ jobs:
       env:
         - GMODNET_VERSION="0.4.0"
       script:
-        - brew install wget
-        - brew install dotnet-sdk@3.0.100,5c281f95-91c4-499d-baa2-31fec919047a:38c6964d72438ac30032bce516b655d9
+        - curl https://download.visualstudio.microsoft.com/download/pr/5c281f95-91c4-499d-baa2-31fec919047a/38c6964d72438ac30032bce516b655d9/dotnet-sdk-3.0.100-osx-x64.pkg -O -L
+        - sudo installer -pkg "dotnet-sdk-3.0.100-osx-x64.pkg"
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
@@ -166,7 +166,7 @@ jobs:
         - cd build 
         - mkdir dotnet
         - cd dotnet
-        - wget https://download.visualstudio.microsoft.com/download/pr/68123d89-73c0-40b0-ba9b-93667c25663b/001f66f8ec4666421acc16f74209aa99/dotnet-runtime-3.0.0-osx-x64.tar.gz
+        - curl https://download.visualstudio.microsoft.com/download/pr/68123d89-73c0-40b0-ba9b-93667c25663b/001f66f8ec4666421acc16f74209aa99/dotnet-runtime-3.0.0-osx-x64.tar.gz -O -L
         - tar xvf dotnet-runtime-3.0.0-osx-x64.tar.gz
         - rm -f dotnet-runtime-3.0.0-osx-x64.tar.gz
         - rm -f dotnet
@@ -177,7 +177,7 @@ jobs:
         - cp LICENSE build
         - cp NOTICE build        
         - git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
-        - wget https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms-osx
+        - curl https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms-osx -O -L
         - mv gms-osx gms
         - chmod +x gms
         - cd build
