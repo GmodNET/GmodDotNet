@@ -75,9 +75,8 @@ jobs:
     
     - language: cpp
       os: windows
-      env:
-        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
       script:
+        - export MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - choco install dotnetcore-sdk --version 3.0.100
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
