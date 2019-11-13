@@ -45,7 +45,7 @@ jobs:
         - wget https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms
         - chmod +x gms
         - cd build
-        - ./../gms --sign=gmcl_dotent_linux64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+        - ./../gms --sign=gmcl_dotnet_linux64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
         - mv signature.modulesign gmcl_dotent.modulesign
         - cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
         - mv gmodnet-public.modulekey gmcl_dotnet.modulekey
