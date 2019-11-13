@@ -100,7 +100,7 @@ jobs:
         - mkdir dotnet
         - cd dotnet
         - curl https://download.visualstudio.microsoft.com/download/pr/f15b7c04-2900-4a14-9c01-ccd66a4323cc/17a6bbd44f0d0a85d219dd9e166a89ca/dotnet-runtime-3.0.0-win-x64.zip -O -L
-        - 7z e -tzip dotnet-runtime-3.0.0-win-x64.zip
+        - 7z x -tzip dotnet-runtime-3.0.0-win-x64.zip
         - rm -f dotnet-runtime-3.0.0-win-x64.zip
         - rm -f dotnet
         - rm -f LICENSE.txt
