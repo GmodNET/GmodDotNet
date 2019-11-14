@@ -288,8 +288,16 @@ namespace GmodNET
 
                     DirectoryInfo modules_directory = new DirectoryInfo("garrysmod/lua/bin/Modules");
 
-                    DirectoryInfo[] proper_module_directories = modules_directory.GetDirectories().Where((d) => modules_for_client
-                    .Any((m) => m.Name == d.Name)).ToArray();
+                    DirectoryInfo[] proper_module_directories;
+                    try
+                    {
+                        proper_module_directories = modules_directory.GetDirectories().Where((d) => modules_for_client
+                        .Any((m) => m.Name == d.Name)).ToArray();
+                    }
+                    catch
+                    {
+                        proper_module_directories = new DirectoryInfo[0];
+                    }
 
                     foreach(DirectoryInfo d in proper_module_directories)
                     {
