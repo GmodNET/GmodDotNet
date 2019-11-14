@@ -18,7 +18,7 @@ Check out [gmod_csModuleLoader](https://github.com/dedady157/gmod_csModuleLoader
 
 ## Current features
 
-GmodNET provides basic functionality to write Garry's Mod modules in C# or any other CIL-compiled language as [__.NET Core 3.0__](https://dotnet.microsoft.com/) class libraries. For more information on modules and API check out [project's wiki](https://github.com/GlebChili/GmodDotNet/wiki). Only `x86_64` version of Garry's Mod is currently supported.
+GmodNET provides functionality to write Garry's Mod modules in C# or any other CIL-compiled language as [__.NET Core 3.0__](https://dotnet.microsoft.com/) class libraries. For more information on modules and API check out [project's wiki](https://github.com/GlebChili/GmodDotNet/wiki). Only `x86_64` version of Garry's Mod is currently supported.
 
 ## Need help?
 
