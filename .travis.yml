@@ -234,7 +234,8 @@ jobs:
         endpoint: https://fra1.digitaloceanspaces.com
     
     - language: node_js
-      node: 12
+      node_js:
+        - 12
       stage: bnotify
       script:
         - cd node
