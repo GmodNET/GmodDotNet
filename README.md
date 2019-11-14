@@ -36,6 +36,7 @@ Managed part is an `dotnet` solution developed against `netcoreapp3.0` specifica
 
 Bootstrap Lua scripts are contained in `lua` folder.
 
+You can find nightly builds of Gmod.NET at [our discord server](https://discord.gg/9bP8nMT) (`#nightly-builds` channel).
 
 
 ## Installation and usage
