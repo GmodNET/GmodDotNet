@@ -583,7 +583,15 @@ namespace GmodNET
                 return;
             }
 
-            var proper_modules_directories = modules_directory_info.GetDirectories();
+            DirectoryInfo[] proper_modules_directories;
+            try
+            {
+                proper_modules_directories = modules_directory_info.GetDirectories();
+            }
+            catch
+            {
+                proper_modules_directories = new DirectoryInfo[0];
+            }
 
             foreach(DirectoryInfo d in proper_modules_directories)
             {
