@@ -29,6 +29,11 @@ namespace GmodNET
 
         protected override System.Reflection.Assembly Load(System.Reflection.AssemblyName assemblyName)
         {
+            if(assemblyName.Name == "GmodNET.API")
+            {
+                return null;
+            }
+
             string path = resolver.ResolveAssemblyToPath(assemblyName);
             if (path == null || path == string.Empty)
             { 
