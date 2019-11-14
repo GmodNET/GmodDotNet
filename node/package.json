@@ -1,0 +1,22 @@
+{
+  "name": "gmod-dot-net-js-utils",
+  "version": "1.0.0",
+  "description": "Utilities for GmodDotNet CI written with Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GlebChili/GmodDotNet.git"
+  },
+  "author": "Gleb Krasilich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GlebChili/GmodDotNet/issues"
+  },
+  "homepage": "https://github.com/GlebChili/GmodDotNet#readme",
+  "dependencies": {
+    "webhook-discord": "^3.5.1"
+  }
+}

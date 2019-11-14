@@ -1,9 +1,14 @@
 env:
   - GMODNET_VERSION="0.4.0"
 
+stages:
+  - build
+  - bnotify
+
 jobs:
   include:
     - language: cpp
+      stage: build
       dist: bionic
       script:
         - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -74,6 +79,7 @@ jobs:
         endpoint: https://fra1.digitaloceanspaces.com
     
     - language: cpp
+      stage: build
       os: windows
       script:
         - export MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
@@ -139,6 +145,7 @@ jobs:
         endpoint: https://fra1.digitaloceanspaces.com
     
     - language: cpp
+      stage: build
       os: osx
       osx_image: xcode11.2
       script:
@@ -206,4 +213,25 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
+        
+    - language: minimal
+      stage: build
+      script: 
+        - mkdir folder_to_deploy
+        - cp lua/autorun/clientside/gm_dotnet_client.lua folder_to_deploy
+        - cp lua/autorun/serverside/gm_dotnet_server.lua folder_to_deploy
+      deploy:
+        provider: s3
+        access_key_id: $SPACE_ID
+        secret_access_key: $SPACE_KEY
+        bucket: gleb-krasilich
+        skip_cleanup: true
+        upload-dir: GmodDotNetBuilds/Lua/$TRAVIS_BRANCH/$TRAVIS_COMMIT
+        local_dir: folder_to_deploy
+        acl: public_read
+        on:
+          all_branches: true
+        endpoint: https://fra1.digitaloceanspaces.com
+      
+      
         
