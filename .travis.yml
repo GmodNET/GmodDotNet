@@ -232,6 +232,14 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
+    
+    - language: node_js
+      node: 12
+      stage: bnotify
+      script:
+        - cd node
+        - npm update
+        - node discord.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
       
       
         
