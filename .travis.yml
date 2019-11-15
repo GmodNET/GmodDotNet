@@ -97,7 +97,7 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/Release/*.dll build
-        - cp -a - v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/. build/GmodNET
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/. build/GmodNET
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
