@@ -3,7 +3,7 @@ env:
 
 stages:
   - build
-  - bnotify
+  - tests
 
 jobs:
   include:
@@ -30,11 +30,10 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/*.dll build
-        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
-        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
-        - mkdir build/GmodNET/runtimes
-        - cp -r gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/ build/GmodNET
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - find build/GmodNET/*.exe | xargs rm -f -v
+        - find build/GmodNET/*.pdb | xargs rm -f -v
         - cd build 
         - mkdir dotnet
         - cd dotnet
@@ -98,11 +97,10 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/Release/*.dll build
-        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
-        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
-        - mkdir build/GmodNET/runtimes
-        - cp -r gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
+        - cp -a gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/ build/GmodNET
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - find build/GmodNET/*.exe | xargs rm -f -v
+        - find build/GmodNET/*.pdb | xargs rm -f -v
         - cd build
         - mkdir dotnet
         - cd dotnet
@@ -166,11 +164,10 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/*.dll build
-        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.dll build/GmodNET
-        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/*.json build/GmodNET
-        - mkdir build/GmodNET/runtimes
-        - cp -r gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/runtimes/* build/GmodNET/runtimes
+        - cp gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/ build/GmodNET
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - find build/GmodNET/*.exe | xargs rm -f -v
+        - find build/GmodNET/*.pdb | xargs rm -f -v
         - cd build 
         - mkdir dotnet
         - cd dotnet
@@ -239,7 +236,7 @@ jobs:
     - language: node_js
       node_js:
         - 12
-      stage: bnotify
+      stage: tests
       name: Discord notifier
       script:
         - cd node
