@@ -410,20 +410,27 @@ namespace GmodNET
 
                                     if(version_checked)
                                     {
-                                        ModuleAssemblyLoadContext module_context = new ModuleAssemblyLoadContext(d.Name);
-
-                                        Assembly module_asm = module_context.LoadFromAssemblyPath(d.FullName + "/" + d.Name + ".dll");
-
-                                        Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
-
-                                        List<IModule> local_modules = new List<IModule>();
-
-                                        foreach(Type t in module_classes)
+                                        try
                                         {
-                                            local_modules.Add((IModule)Activator.CreateInstance(t));
-                                        }
+                                            ModuleAssemblyLoadContext module_context = new ModuleAssemblyLoadContext(d.Name);
 
-                                        module_holders.Add(new ModuleHolder(module_context, local_modules));
+                                            Assembly module_asm = module_context.LoadFromAssemblyPath(d.FullName + "/" + d.Name + ".dll");
+
+                                            Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
+
+                                            List<IModule> local_modules = new List<IModule>();
+
+                                            foreach(Type t in module_classes)
+                                            {
+                                                local_modules.Add((IModule)Activator.CreateInstance(t));
+                                            }
+
+                                            module_holders.Add(new ModuleHolder(module_context, local_modules));
+                                        }
+                                        catch(Exception e)
+                                        {
+                                            PrintToConsole(lua, "Exception was thrown while loading module " + d.Name + ": " + e.GetType().ToString() + " " + e.Message);
+                                        }
                                     }
                                 }
                             }
@@ -441,7 +448,14 @@ namespace GmodNET
                         foreach(IModule mm in m.modules)
                         {
                             PrintToConsole(lua, "Loading module " + mm.ModuleName + " " + mm.ModuleVersion);
-                            mm.Load(this.lua, isServerSide, LuaInterop.ExtructLua, m.context);
+                            try
+                            {
+                                mm.Load(this.lua, isServerSide, LuaInterop.ExtructLua, m.context);
+                            }
+                            catch(Exception e)
+                            {
+                                PrintToConsole(lua, "Exception was thrown while calling 'Load' method: " + e.GetType().ToString() + " " + e.Message);
+                            }
                         }
                     }
 
@@ -540,7 +554,14 @@ namespace GmodNET
                 foreach(IModule m in mh.modules)
                 {
                     PrintToConsole(lua, "Unloading module " + m.ModuleName);
-                    m.Unload();
+                    try
+                    {
+                        m.Unload();
+                    }
+                    catch(Exception e)
+                    {
+                        PrintToConsole(lua, "Exception was thrown while calling module's 'Unload' method: " + e.GetType().ToString() + " " + e.Message);
+                    }
                 }
 
                 mh.context.Unload();
@@ -671,22 +692,29 @@ namespace GmodNET
                 {
                     if(d.GetFiles().Any((f) => f.Name == d.Name + ".dll"))
                     {
-                        ModuleAssemblyLoadContext local_context = new ModuleAssemblyLoadContext(d.Name);
-
-                        Assembly module_asm = local_context.LoadFromAssemblyPath(d.GetFiles().First((f) => f.Name == d.Name + ".dll").FullName);
-
-                        List<IModule> local_modules = new List<IModule>();
-
-                        Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
-
-                        foreach(Type t in module_classes)
+                        try
                         {
-                            local_modules.Add((IModule)Activator.CreateInstance(t));
+                            ModuleAssemblyLoadContext local_context = new ModuleAssemblyLoadContext(d.Name);
+
+                            Assembly module_asm = local_context.LoadFromAssemblyPath(d.GetFiles().First((f) => f.Name == d.Name + ".dll").FullName);
+
+                            List<IModule> local_modules = new List<IModule>();
+
+                            Type[] module_classes = module_asm.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
+
+                            foreach(Type t in module_classes)
+                            {
+                                local_modules.Add((IModule)Activator.CreateInstance(t));
+                            }
+
+                            ModuleHolder mh = new ModuleHolder(local_context, local_modules);
+
+                            module_holders.Add(mh);
                         }
-
-                        ModuleHolder mh = new ModuleHolder(local_context, local_modules);
-
-                        module_holders.Add(mh);
+                        catch(Exception e)
+                        {
+                            PrintToConsole(lua, "Exception was thrown while loading module " + d.Name +": " + e.GetType().ToString() + " " + e.Message);
+                        }
                     }
                 }
             }
@@ -696,8 +724,14 @@ namespace GmodNET
                 foreach(IModule module in mh.modules)
                 {
                     PrintToConsole(lua, "Loading module " + module.ModuleName + " " + module.ModuleVersion);
-
-                    module.Load(this.lua, isServerSide, LuaInterop.ExtructLua, mh.context);
+                    try
+                    {
+                        module.Load(this.lua, isServerSide, LuaInterop.ExtructLua, mh.context);
+                    }
+                    catch(Exception e)
+                    {
+                        PrintToConsole(lua, "Exception was thrown while calling module's 'Load' method: " + e.GetType() + " " + e.Message);
+                    }
                 }
             }
 
