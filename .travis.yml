@@ -34,15 +34,17 @@ jobs:
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
+        - rm -f -v build/GmodNET/GmodNET
+        - rm -f -v build/GmodNET/web.config
         - cd build 
         - mkdir dotnet
         - cd dotnet
-        - wget https://download.visualstudio.microsoft.com/download/pr/a5ff9cbb-d558-49d1-9fd2-410cb1c8b095/a940644f4133b81446cb3733a620983a/dotnet-runtime-3.0.0-linux-x64.tar.gz
-        - tar xvf dotnet-runtime-3.0.0-linux-x64.tar.gz
-        - rm -f dotnet-runtime-3.0.0-linux-x64.tar.gz
-        - rm -f dotnet
-        - rm -f LICENSE.txt
-        - rm -f ThirdPartyNotices.txt
+        - wget https://download.visualstudio.microsoft.com/download/pr/b0c44e05-b7a1-4221-94ec-a0c0d3a11eed/afc61567dd6db8f097e244871889458c/aspnetcore-runtime-3.0.0-linux-x64.tar.gz
+        - tar xvf aspnetcore-runtime-3.0.0-linux-x64.tar.gz
+        - rm -f -v aspnetcore-runtime-3.0.0-linux-x64.tar.gz
+        - rm -f -v dotnet
+        - rm -f -v LICENSE.txt
+        - rm -f -v ThirdPartyNotices.txt
         - cd ..
         - cd ..
         - cp LICENSE build
@@ -101,12 +103,13 @@ jobs:
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
+        - rm -f -v build/GmodNET/web.config
         - cd build
         - mkdir dotnet
         - cd dotnet
-        - curl https://download.visualstudio.microsoft.com/download/pr/f15b7c04-2900-4a14-9c01-ccd66a4323cc/17a6bbd44f0d0a85d219dd9e166a89ca/dotnet-runtime-3.0.0-win-x64.zip -O -L
-        - 7z x -tzip dotnet-runtime-3.0.0-win-x64.zip
-        - rm -f dotnet-runtime-3.0.0-win-x64.zip
+        - curl https://download.visualstudio.microsoft.com/download/pr/02a17191-e966-4b89-9312-2cbad04fa8bd/0bd4537f7683f2c4d3986d30bfbb4344/aspnetcore-runtime-3.0.0-win-x64.zip -O -L
+        - 7z x -tzip aspnetcore-runtime-3.0.0-win-x64.zip
+        - rm -f aspnetcore-runtime-3.0.0-win-x64.zip
         - rm -f dotnet
         - rm -f LICENSE.txt
         - rm -f ThirdPartyNotices.txt
@@ -168,12 +171,14 @@ jobs:
         - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
+        - rm -f -v build/GmodNET/GmodNET
+        - rm -f -v build/GmodNET/web.config
         - cd build 
         - mkdir dotnet
         - cd dotnet
-        - curl https://download.visualstudio.microsoft.com/download/pr/68123d89-73c0-40b0-ba9b-93667c25663b/001f66f8ec4666421acc16f74209aa99/dotnet-runtime-3.0.0-osx-x64.tar.gz -O -L
-        - tar xvf dotnet-runtime-3.0.0-osx-x64.tar.gz
-        - rm -f dotnet-runtime-3.0.0-osx-x64.tar.gz
+        - curl https://download.visualstudio.microsoft.com/download/pr/3ab4125a-c616-4aec-8fdb-763039e99f1c/08a6d2546fbbd4b1b959e6a3da3b9eb4/aspnetcore-runtime-3.0.0-osx-x64.tar.gz -O -L
+        - tar xvf aspnetcore-runtime-3.0.0-osx-x64.tar.gz
+        - rm -f -v aspnetcore-runtime-3.0.0-osx-x64.tar.gz
         - rm -f dotnet
         - rm -f LICENSE.txt
         - rm -f ThirdPartyNotices.txt
