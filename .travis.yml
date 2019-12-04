@@ -1,5 +1,5 @@
 env:
-  - GMODNET_VERSION="0.4.2"
+  - GMODNET_VERSION="0.5.0"
 
 stages:
   - build
@@ -18,7 +18,7 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install apt-transport-https
         - sudo apt-get update
-        - sudo apt-get install dotnet-sdk-3.0
+        - sudo apt-get install dotnet-sdk-3.1
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
@@ -30,8 +30,8 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/*.dll build
-        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/. build/GmodNET
-        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/GmodNET
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
         - rm -f -v build/GmodNET/GmodNET
@@ -39,9 +39,9 @@ jobs:
         - cd build 
         - mkdir dotnet
         - cd dotnet
-        - wget https://download.visualstudio.microsoft.com/download/pr/b0c44e05-b7a1-4221-94ec-a0c0d3a11eed/afc61567dd6db8f097e244871889458c/aspnetcore-runtime-3.0.0-linux-x64.tar.gz
-        - tar xvf aspnetcore-runtime-3.0.0-linux-x64.tar.gz
-        - rm -f -v aspnetcore-runtime-3.0.0-linux-x64.tar.gz
+        - wget https://download.visualstudio.microsoft.com/download/pr/30915c37-fa5a-4930-b4e6-b4130e4596b2/38d531c10dc56950f17f3c604e9a2ebc/aspnetcore-runtime-3.1.0-linux-x64.tar.gz
+        - tar xvf aspnetcore-runtime-3.1.0-linux-x64.tar.gz
+        - rm -f -v aspnetcore-runtime-3.1.0-linux-x64.tar.gz
         - rm -f -v dotnet
         - rm -f -v LICENSE.txt
         - rm -f -v ThirdPartyNotices.txt
@@ -86,7 +86,7 @@ jobs:
       name: Windows builder
       script:
         - export MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-        - choco install dotnetcore-sdk --version 3.0.100
+        - choco install dotnetcore-sdk --version 3.1.100
         - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
@@ -99,17 +99,17 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/Release/*.dll build
-        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/. build/GmodNET
-        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/GmodNET
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
         - rm -f -v build/GmodNET/web.config
         - cd build
         - mkdir dotnet
         - cd dotnet
-        - curl https://download.visualstudio.microsoft.com/download/pr/02a17191-e966-4b89-9312-2cbad04fa8bd/0bd4537f7683f2c4d3986d30bfbb4344/aspnetcore-runtime-3.0.0-win-x64.zip -O -L
-        - 7z x -tzip aspnetcore-runtime-3.0.0-win-x64.zip
-        - rm -f aspnetcore-runtime-3.0.0-win-x64.zip
+        - curl https://download.visualstudio.microsoft.com/download/pr/33fb1832-334a-4b72-ae47-ff9d07722cbd/f0b492014f4f5659a57c0f5f42913152/aspnetcore-runtime-3.1.0-win-x64.zip -O -L
+        - 7z x -tzip aspnetcore-runtime-3.1.0-win-x64.zip
+        - rm -f aspnetcore-runtime-3.1.0-win-x64.zip
         - rm -f dotnet
         - rm -f LICENSE.txt
         - rm -f ThirdPartyNotices.txt
@@ -155,7 +155,7 @@ jobs:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.sh -O -L
         - chmod +x dotnet-install.sh
         - mkdir dnsdk
-        - ./dotnet-install.sh --version 3.0.100 --install-dir dnsdk
+        - ./dotnet-install.sh --version 3.1.100 --install-dir dnsdk
         - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
         - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
@@ -167,8 +167,8 @@ jobs:
         - mkdir build/GmodNET
         - mkdir build/GmodNET/API
         - cp cmake_build/*.dll build
-        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.0/publish/. build/GmodNET
-        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.0/GmodNET.API.dll build/GmodNET/API
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/GmodNET
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/GmodNET/API
         - find build/GmodNET/*.exe | xargs rm -f -v
         - find build/GmodNET/*.pdb | xargs rm -f -v
         - rm -f -v build/GmodNET/GmodNET
@@ -176,9 +176,9 @@ jobs:
         - cd build 
         - mkdir dotnet
         - cd dotnet
-        - curl https://download.visualstudio.microsoft.com/download/pr/3ab4125a-c616-4aec-8fdb-763039e99f1c/08a6d2546fbbd4b1b959e6a3da3b9eb4/aspnetcore-runtime-3.0.0-osx-x64.tar.gz -O -L
-        - tar xvf aspnetcore-runtime-3.0.0-osx-x64.tar.gz
-        - rm -f -v aspnetcore-runtime-3.0.0-osx-x64.tar.gz
+        - curl https://download.visualstudio.microsoft.com/download/pr/16106b5c-2dd0-429b-ac74-79c7d47fc575/cb9f53870983845f81b740b27d412038/aspnetcore-runtime-3.1.0-osx-x64.tar.gz -O -L
+        - tar xvf aspnetcore-runtime-3.1.0-osx-x64.tar.gz
+        - rm -f -v aspnetcore-runtime-3.1.0-osx-x64.tar.gz
         - rm -f dotnet
         - rm -f LICENSE.txt
         - rm -f ThirdPartyNotices.txt
