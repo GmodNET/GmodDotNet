@@ -212,6 +212,9 @@ GMOD_MODULE_CLOSE()
     #ifdef WIN32
     HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/hostfxr.dll");
     hostfxr_close = (hostfxr_close_fn)GetProcAddress(hostfxr_lib, "hostfxr_close");
+    #elif __APPLE__
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/libhostfxr.dylib", RTLD_LAZY);
+    hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
     #else
     void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/libhostfxr.so", RTLD_LAZY);
     hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
