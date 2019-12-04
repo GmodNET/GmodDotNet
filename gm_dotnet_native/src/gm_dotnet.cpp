@@ -26,7 +26,7 @@ using namespace std;
 using namespace GarrysMod::Lua;
 
 int maj_ver = 0;
-int min_ver = 4;
+int min_ver = 5;
 int misc_ver = 0;
 
 wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -60,11 +60,11 @@ GMOD_MODULE_OPEN()
     #endif
     void * hostfxr_pointer = nullptr;
     #ifdef WIN32
-    hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
+    hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/hostfxr.dll");
     #elif __APPLE__
-    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.dylib", RTLD_LAZY);
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/libhostfxr.dylib", RTLD_LAZY);
     #else
-    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.so", RTLD_LAZY);
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/libhostfxr.so", RTLD_LAZY);
     #endif
     if(hostfxr_pointer == nullptr)
     {
@@ -210,10 +210,10 @@ GMOD_MODULE_CLOSE()
     cleanup_delegate = nullptr;
 
     #ifdef WIN32
-    HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/hostfxr.dll");
+    HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/hostfxr.dll");
     hostfxr_close = (hostfxr_close_fn)GetProcAddress(hostfxr_lib, "hostfxr_close");
     #else
-    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.0.0/libhostfxr.so", RTLD_LAZY);
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.0/libhostfxr.so", RTLD_LAZY);
     hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
     #endif
     if(hostfxr_close == nullptr)
