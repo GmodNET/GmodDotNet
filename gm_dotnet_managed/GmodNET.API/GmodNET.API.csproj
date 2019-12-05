@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.5.0-preview</Version>
+    <Version>0.5.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>Gleb Krasilich</Authors>
     <Product>GmodNET API</Product>
