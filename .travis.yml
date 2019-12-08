@@ -86,9 +86,11 @@ jobs:
       name: Windows builder
       script:
         - export MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-        - choco install dotnetcore-sdk --version 3.1.100
-        - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
-        - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
+        - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.ps1 -O -L
+        - mkdir ./netcore
+        - powershell dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
+        - ./netcore/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - ./netcore/dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
         - cd cmake_build
         - cmake -G 'Visual Studio 15 2017 Win64' ../gm_dotnet_native
