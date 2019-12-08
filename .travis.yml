@@ -266,7 +266,7 @@ jobs:
         - wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
         - tar -xvzf steamcmd_linux.tar.gz
         - rm -rfv steamcmd_linux.tar.gz
-        - ./steamcmd.sh +login anonymous +force_install_dir gmod +app_update "4020 -beta x86-64 validate" +quit
+        - ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
         - mkdir gmod/garrysmod/lua/bin
         - mkdir gmod/garrysmod/lua/bin/Modules
         - mkdir gmod/garrysmod/lua/bin/Modules/Tests
