@@ -299,8 +299,48 @@ jobs:
         - cd node
         - npm update
         - node discord-linux-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
-      
-      
+        
+    - language: minimal
+      stage: tests
+      os: windows
+      name: Windows tester
+      script:
+        - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.ps1 -O -L
+        - mkdir ./netcore
+        - powershell -Command Set-ExecutionPolicy -Scope CurrentUser Unrestricted
+        - powershell -File ./dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
+        - ./netcore/dotnet.exe publish gm_dotnet_managed/Tests/Tests.csproj -c Release
+        - curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L 
+        - 7z x -tzip steamcmd.zip
+        - ./steamcmd.exe +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
+        - mkdir gmod/garrysmod/lua/bin
+        - mkdir gmod/garrysmod/lua/bin/Modules
+        - mkdir gmod/garrysmod/lua/bin/Modules/Tests
+        - cp gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/* gmod/garrysmod/lua/bin/Modules/Tests
+        - cd gmod/garrysmod/lua/autorun/server
+        - curl  https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Lua/$TRAVIS_BRANCH/$TRAVIS_COMMIT/gm_dotnet_server.lua -O -L
+        - cd ../../../../..
+        - cd gmod/garrysmod/lua/bin
+        - curl  https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Windows/$TRAVIS_BRANCH/$TRAVIS_BRANCH-$TRAVIS_COMMIT.zip -O -L
+        - 7z x -tzip $TRAVIS_BRANCH-$TRAVIS_COMMIT.zip
+        - rm -rfv $TRAVIS_BRANCH-$TRAVIS_COMMIT.zip
+        - cd ../../../..
+        - cd gmod
+        - dir
+        - ./srcds_win64.exe -game garrysmod -systemtest || true
+        - cd ..
+        - mv gmod/tests-success.txt gmod/tests.txt
+      after_success:
+        - choco install nodejs-lts
+        - cd node
+        - npm update
+        - node discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+      after_failure:
+        - choco install nodejs-lts
+        - cd node
+        - npm update
+        - node discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        
       
       
       
