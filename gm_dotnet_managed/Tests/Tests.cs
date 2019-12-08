@@ -2,6 +2,7 @@
 using System.Runtime.Loader;
 using GmodNET.API;
 using System.Diagnostics;
+using System.IO;
 
 namespace Tests
 {
@@ -41,6 +42,8 @@ namespace Tests
 
                 if(!this.WasServerQuitTrigered)
                 {
+                    File.WriteAllText("tests-success.txt", "Success!");
+
                     lua.Print("Terminating game process");
 
                     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
