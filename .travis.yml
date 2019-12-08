@@ -249,7 +249,47 @@ jobs:
         - node discord.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
         
         
-        
+    - language: minimal
+      stage: tests
+      dist: bionic
+      name: Linux tester
+      script:
+        - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+        - sudo dpkg -i packages-microsoft-prod.deb
+        - sudo add-apt-repository universe
+        - sudo apt-get update
+        - sudo apt-get install apt-transport-https
+        - sudo apt-get update
+        - sudo apt-get install dotnet-sdk-3.1
+        - dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release
+        - sudo apt-get install lib32gcc1
+        - wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+        - tar -xvzf steamcmd_linux.tar.gz
+        - rm -rfv steamcmd_linux.tar.gz
+        - ./steamcmd.sh +login anonymous +force_install_dir gmod +app_update "4020 -beta x86-64 validate" +quit
+        - mkdir gmod/garrysmod/lua/bin
+        - mkdir gmod/garrysmod/lua/bin/Modules
+        - mkdir gmod/garrysmod/lua/bin/Modules/Tests
+        - cp gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/* gmod/garrysmod/lua/bin/Modules/Tests
+        - cd gmod/garrysmod/lua/autorun/server
+        - wget  https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Lua/$TRAVIS_BRANCH/$TRAVIS_COMMIT/gm_dotnet_server.lua
+        - cd ../../../../..
+        - cd gmod/garrysmod/lua/bin
+        - wget  https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Linux/$TRAVIS_BRANCH/$TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz
+        - tar -xvzf $TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz
+        - rm -rfv $TRAVIS_BRANCH-$TRAVIS_COMMIT.tar.gz
+        - cd ../../../..
+        - cd gmod
+        - dir
+        - ./srcds_run_x64 -game garrysmod -systemtest
+        - cd ..
+        - chmod +x test_checker.sh
+        - ./test_checker.sh
+      
+      
+      
+      
+      
       
       
         
