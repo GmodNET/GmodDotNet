@@ -1,1 +1,0 @@
-echo $GMOD_NET_HAS_FAILED

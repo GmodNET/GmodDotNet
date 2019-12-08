@@ -21,6 +21,13 @@ namespace Tests
 
         CFuncManagedDelegate on_tick;
 
+        bool WasServerQuitTrigered;
+
+        public Tests()
+        {
+            WasServerQuitTrigered = false;
+        }
+
         public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del, AssemblyLoadContext assembly_context)
         {
             this.lua = LuaInterface;
@@ -28,22 +35,24 @@ namespace Tests
             this.getter = del;
             this.current_load_context = assembly_context;
 
-            Environment.SetEnvironmentVariable("GMOD_NET_HAS_FAILED", "0");
-
             on_tick = (state) =>
             {
                 ILua lua = getter(state);
-                Environment.SetEnvironmentVariable("GMOD_NET_HAS_FAILED", "1");
 
-                lua.Print("Terminating game process");
+                if(!this.WasServerQuitTrigered)
+                {
+                    lua.Print("Terminating game process");
 
-                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-                lua.GetField(-1, "engine");
-                lua.GetField(-1, "CloseServer");
+                    lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                    lua.GetField(-1, "engine");
+                    lua.GetField(-1, "CloseServer");
 
-                lua.Call(0, 0);
+                    lua.Call(0, 0);
 
-                lua.Pop(lua.Top());
+                    lua.Pop(lua.Top());
+
+                    this.WasServerQuitTrigered = true;
+                }
 
                 return 0;
             };
