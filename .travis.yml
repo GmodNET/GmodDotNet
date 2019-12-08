@@ -88,9 +88,10 @@ jobs:
         - export MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.ps1 -O -L
         - mkdir ./netcore
+        - powershell -Command Set-ExecutionPolicy -Scope CurrentUser Unrestricted
         - powershell -File ./dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
-        - ./netcore/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
-        - ./netcore/dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
+        - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
         - cd cmake_build
         - cmake -G 'Visual Studio 15 2017 Win64' ../gm_dotnet_native
