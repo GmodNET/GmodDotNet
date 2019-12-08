@@ -300,7 +300,7 @@ jobs:
         - npm update
         - node discord-linux-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
         
-    - language: minimal
+    - language: cpp
       stage: tests
       os: windows
       name: Windows tester
