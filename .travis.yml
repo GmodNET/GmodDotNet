@@ -327,7 +327,7 @@ jobs:
         - cd ../../../..
         - cd gmod
         - dir
-        - ./srcds_win64.exe -game garrysmod -systemtest || true
+        - ./srcds_win64.exe -game garrysmod -systemtest
         - cd ..
         - mv gmod/tests-success.txt gmod/tests.txt
       after_success:
