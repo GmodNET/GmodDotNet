@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Gleb Krasilich</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="TYPE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="TYPE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>
