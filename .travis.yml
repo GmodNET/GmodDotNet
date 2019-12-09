@@ -331,13 +331,13 @@ jobs:
       after_success:
         - choco install nodejs.install
         - cd node
-        - 'C:\Program Files\nodejs\npm.cmd' update
-        - 'C:\Program Files\nodejs\node.exe' discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        - powershell 'C:\Program` Files\nodejs\npm.cmd update'
+        - powershell 'C:\Program` Files\nodejs\node.exe discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT'
       after_failure:
         - choco install nodejs.install
         - cd node
-        - 'C:\Program` Files\nodejs\npm.cmd' update
-        - 'C:\Program` Files\nodejs\node.exe' discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        - powershell 'C:\Program` Files\nodejs\npm.cmd update'
+        - powershell 'C:\Program` Files\nodejs\node.exe discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT'
         
       
       
