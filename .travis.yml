@@ -325,21 +325,19 @@ jobs:
         - 7z x -tzip $TRAVIS_BRANCH-$TRAVIS_COMMIT.zip
         - rm -rfv $TRAVIS_BRANCH-$TRAVIS_COMMIT.zip
         - cd ../../../..
-        - chmod +x run_gmod_windows.sh
-        - ./run_gmod_windows.sh
-        - echo $GMOD_TEST_PATH
-        - dir 
+        - powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
+        - sleep 120
         - mv gmod/tests-success.txt gmod/tests.txt
       after_success:
         - choco install nodejs.install
         - cd node
-        - npm update
-        - node discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        - 'C:\Program Files\nodejs\npm.cmd' update
+        - 'C:\Program Files\nodejs\node.exe' discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
       after_failure:
         - choco install nodejs.install
         - cd node
-        - npm update
-        - node discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        - 'C:\Program` Files\nodejs\npm.cmd' update
+        - 'C:\Program` Files\nodejs\node.exe' discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
         
       
       
