@@ -24,9 +24,13 @@ namespace Tests
 
         bool WasServerQuitTrigered;
 
+        long spss;
+
         public Tests()
         {
             WasServerQuitTrigered = false;
+
+            spss = 0;
         }
 
         public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del, AssemblyLoadContext assembly_context)
@@ -40,7 +44,14 @@ namespace Tests
             {
                 ILua lua = getter(state);
 
-                if(!this.WasServerQuitTrigered)
+                this.spss += 1;
+
+                if(this.spss % 60 == 0)
+                {
+                    lua.Print("60 ticks passed");
+                }
+
+                if(!this.WasServerQuitTrigered && this.spss > 60 * 30)
                 {
                     File.WriteAllText("tests-success.txt", "Success!");
 
