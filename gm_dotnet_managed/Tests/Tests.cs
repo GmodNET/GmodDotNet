@@ -44,6 +44,8 @@ namespace Tests
                 {
                     File.WriteAllText("tests-success.txt", "Success!");
 
+                    Environment.SetEnvironmentVariable("GMOD_TEST_PATH", Directory.GetCurrentDirectory());
+
                     lua.Print("Terminating game process");
 
                     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);

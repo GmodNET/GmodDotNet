@@ -328,6 +328,7 @@ jobs:
         - cd gmod
         - dir
         - powershell -Command './srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
+        - echo $GMOD_TEST_PATH
         - dir 
         - mv tests-success.txt tests.txt
         - cd ..
