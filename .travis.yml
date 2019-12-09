@@ -312,7 +312,7 @@ jobs:
         - ./netcore/dotnet.exe publish gm_dotnet_managed/Tests/Tests.csproj -c Release
         - curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L 
         - 7z x -tzip steamcmd.zip
-        - ./steamcmd.exe +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
+        - ./steamcmd.exe +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit || true
         - mkdir gmod/garrysmod/lua/bin
         - mkdir gmod/garrysmod/lua/bin/Modules
         - mkdir gmod/garrysmod/lua/bin/Modules/Tests
@@ -327,7 +327,7 @@ jobs:
         - cd ../../../..
         - cd gmod
         - dir
-        - ./srcds_win64.exe -game garrysmod -systemtest
+        - ./srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 || true
         - cd ..
         - mv gmod/tests-success.txt gmod/tests.txt
       after_success:
