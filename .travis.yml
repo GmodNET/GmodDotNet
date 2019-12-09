@@ -328,18 +328,19 @@ jobs:
         - cd gmod
         - dir
         - powershell -Command './srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16' || true
+        - dir 
+        - mv tests-success.txt tests.txt
         - cd ..
-        - mv gmod/tests-success.txt gmod/tests.txt
       after_success:
         - choco install nodejs-lts
         - cd node
-        - npm update
-        - node discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        - powershell -Command npm update
+        - powershell -Command node discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
       after_failure:
         - choco install nodejs-lts
         - cd node
-        - npm update
-        - node discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
+        - powershell -Command npm update
+        - powershell -Command node discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT
         
       
       
