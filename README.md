@@ -73,6 +73,6 @@ Gmod.NET is making use of or borrows code from the following projects:
 
 3. [NSec](https://nsec.rocks/) by [Klaus Hartke](https://github.com/ektrah) (MIT License)
 
-4. [Libsodium](libsodium.org) by [Frank Denis](https://github.com/jedisct1) (ISC License)
+4. [Libsodium](http://libsodium.org) by [Frank Denis](https://github.com/jedisct1) (ISC License)
 
 See other copyright notices in the NOTICE.
