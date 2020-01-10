@@ -4,6 +4,7 @@ env:
 stages:
   - build
   - tests
+  - notification
 
 jobs:
   include:
@@ -239,18 +240,7 @@ jobs:
         acl: public_read
         on:
           all_branches: true
-        endpoint: https://fra1.digitaloceanspaces.com
-    
-    - language: node_js
-      node_js:
-        - 12
-      stage: tests
-      name: Discord notifier
-      script:
-        - cd node
-        - npm update
-        - node discord.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE
-        
+        endpoint: https://fra1.digitaloceanspaces.com       
         
     - language: minimal
       stage: tests
@@ -292,13 +282,13 @@ jobs:
         - sudo apt-get install -y nodejs
         - cd node
         - npm update
-        - node discord-linux-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE
+        - node discord-linux-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
       after_failure:
         - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
         - sudo apt-get install -y nodejs
         - cd node
         - npm update
-        - node discord-linux-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE
+        - node discord-linux-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
         
     - language: cpp
       stage: tests
@@ -332,12 +322,22 @@ jobs:
         - choco install nodejs.install
         - cd node
         - /c/Program\ Files/nodejs/npm.cmd update
-        - /c/Program\ Files/nodejs/node.exe discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE
+        - /c/Program\ Files/nodejs/node.exe discord-windows-success.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
       after_failure:
         - choco install nodejs.install
         - cd node
         - /c/Program\ Files/nodejs/npm.cmd update
-        - /c/Program\ Files/nodejs/node.exe discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE
+        - /c/Program\ Files/nodejs/node.exe discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
+        
+    - language: node_js
+      node_js:
+        - 12
+      stage: notification
+      name: Discord notifier
+      script:
+        - cd node
+        - npm update
+        - node discord.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
         
       
       
