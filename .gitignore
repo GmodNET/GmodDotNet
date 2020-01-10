@@ -20,3 +20,4 @@ gm_dotnet_managed/DefaultContextResolver/obj
 node/node_modules
 gm_dotnet_managed/Tests/bin
 gm_dotnet_managed/Tests/obj
+*/.idea
