@@ -7,7 +7,7 @@ const whook = require("webhook-discord");
 
 const hook = new whook.Webhook(webhook);
 
-hook.info("Travis CI", "**Successful build**: " + branch + " " + commit + " " + "\"" + commit_message + "\""
+hook.info("Travis CI", "**Successful build**: " + "[" + branch + " " + commit + "] (" + "https://github.com/GlebChili/GmodDotNet/commit" + commit + ")" + " " + "\"" + commit_message + "\""
             + "\n\n Windows: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Windows/" + branch + "/" + branch + "-" + commit + ".zip"
             + "\n\n"
             + "Linux: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Linux/" + branch + "/" + branch + "-" + commit + ".tar.gz"
