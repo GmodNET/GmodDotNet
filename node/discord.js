@@ -8,7 +8,6 @@ const whook = require("webhook-discord");
 const hook = new whook.Webhook(webhook);
 
 hook.info("Travis CI", "**Successful build**: " + branch + " " + commit + " " + "\"" + commit_message + "\""
-            + "\n\n" + "https://github.com/GlebChili/GmodDotNet/commit" + commit
             + "\n\n Windows: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Windows/" + branch + "/" + branch + "-" + commit + ".zip"
             + "\n\n"
             + "Linux: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Linux/" + branch + "/" + branch + "-" + commit + ".tar.gz"
@@ -18,3 +17,5 @@ hook.info("Travis CI", "**Successful build**: " + branch + " " + commit + " " + 
             + "Lua client: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Lua/" + branch + "/" + commit + "/" + "gm_dotnet_client.lua"
             + "\n\n"
             + "Lua server: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/Lua/" + branch + "/" + commit + "/" + "gm_dotnet_server.lua");
+
+hook.info("Travis CI", "Build commit URL: " + "https://github.com/GlebChili/GmodDotNet/commit/" + commit)
