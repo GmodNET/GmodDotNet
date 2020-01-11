@@ -75,4 +75,4 @@ Gmod.NET is making use of or borrows code from the following projects:
 
 4. [Libsodium](http://libsodium.org) by [Frank Denis](https://github.com/jedisct1) (ISC License)
 
-See other copyright notices in the NOTICE.
+See other copyright notices in the NOTICE. 
