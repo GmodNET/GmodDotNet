@@ -25,7 +25,7 @@ namespace GmodNET.Resolver
             {
                 try
                 {
-                    DirectoryInfo info = new DirectoryInfo("garrysmod/lua/bin/GmodNET/API");
+                    DirectoryInfo info = new DirectoryInfo("garrysmod/lua/bin/gmodnet/API");
                     FileInfo file = info.GetFiles().First(f => f.Name == "GmodNET.API.dll");
                     ret = context.LoadFromAssemblyPath(file.FullName);
                 }
