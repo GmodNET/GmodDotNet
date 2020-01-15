@@ -27,7 +27,7 @@ using namespace GarrysMod::Lua;
 
 int maj_ver = 0;
 int min_ver = 5;
-int misc_ver = 0;
+int misc_ver = 1;
 
 wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
@@ -82,7 +82,7 @@ GMOD_MODULE_OPEN()
         fprintf(stderr, "Unable to locate hostfxr_initialize_for_runtime_config function!");
         return 0;
     }
-    hostfxr_initialize_for_runtime_config(STRING_FORMATER("garrysmod/lua/bin/GmodNET/GmodNET.runtimeconfig.json"), &runtime_params, &host_fxr_handle);
+    hostfxr_initialize_for_runtime_config(STRING_FORMATER("garrysmod/lua/bin/gmodnet/GmodNET.runtimeconfig.json"), &runtime_params, &host_fxr_handle);
     if(host_fxr_handle == nullptr)
     {
         fprintf(stderr, "Unable to create hostfxr handle!");
@@ -115,7 +115,7 @@ GMOD_MODULE_OPEN()
     typedef void (*resolver_helper_delegate_fn)();
     resolver_helper_delegate_fn resolver_helper_delegate = nullptr;
 
-    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET/DefaultContextResolver.dll"),
+    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/gmodnet/DefaultContextResolver.dll"),
             STRING_FORMATER("GmodNET.Resolver.DefaultContextResolver, DefaultContextResolver"), STRING_FORMATER("Main"),
             STRING_FORMATER("GmodNET.Resolver.MainDelegate, DefaultContextResolver"), nullptr, (void**)&resolver_helper_delegate);
 
@@ -127,7 +127,7 @@ GMOD_MODULE_OPEN()
 
     resolver_helper_delegate();
 
-    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/GmodNET/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
+    get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/gmodnet/GmodNET.dll"), STRING_FORMATER("GmodNET.Startup, GmodNET"),
                          STRING_FORMATER("Main"), STRING_FORMATER("GmodNET.MainDelegate, GmodNET"), nullptr, (void**)&managed_delegate);
     if(managed_delegate == nullptr)
     {

@@ -11,6 +11,7 @@
     <PackageLicenseExpression>MIT License</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <PackageVersion>0.5.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

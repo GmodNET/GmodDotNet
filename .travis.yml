@@ -1,5 +1,5 @@
 env:
-  - GMODNET_VERSION="0.5.0"
+  - GMODNET_VERSION="0.5.1"
 
 stages:
   - build
@@ -20,7 +20,7 @@ jobs:
         - sudo apt-get install apt-transport-https
         - sudo apt-get update
         - sudo apt-get install dotnet-sdk-3.1
-        - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release
         - dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
         - cd cmake_build
@@ -28,16 +28,16 @@ jobs:
         - make
         - cd ..
         - mkdir build
-        - mkdir build/GmodNET
-        - mkdir build/GmodNET/API
+        - mkdir build/gmodnet
+        - mkdir build/gmodnet/API
         - cp cmake_build/*.dll build
-        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/GmodNET
-        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/GmodNET/API
-        - find build/GmodNET/*.exe | xargs rm -f -v
-        - find build/GmodNET/*.pdb | xargs rm -f -v
-        - rm -f -v build/GmodNET/GmodNET
-        - rm -f -v build/GmodNET/web.config
-        - cd build 
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+        - find build/gmodnet/*.exe | xargs rm -f -v
+        - find build/gmodnet/*.pdb | xargs rm -f -v
+        - rm -f -v build/gmodnet/GmodNET
+        - rm -f -v build/gmodnet/web.config
+        - cd build
         - mkdir dotnet
         - cd dotnet
         - wget https://download.visualstudio.microsoft.com/download/pr/30915c37-fa5a-4930-b4e6-b4130e4596b2/38d531c10dc56950f17f3c604e9a2ebc/aspnetcore-runtime-3.1.0-linux-x64.tar.gz
@@ -49,7 +49,7 @@ jobs:
         - cd ..
         - cd ..
         - cp LICENSE build
-        - cp NOTICE build        
+        - cp NOTICE build
         - git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
         - wget https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms
         - chmod +x gms
@@ -58,7 +58,7 @@ jobs:
         - mv signature.modulesign gmcl_dotnet.modulesign
         - cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
         - mv gmodnet-public.modulekey gmcl_dotnet.modulekey
-        - cd GmodNET
+        - cd gmodnet
         - ./../../gms --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
         - mv signature.modulesign GmodNET.modulesign
         - cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
@@ -80,7 +80,7 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
-    
+
     - language: cpp
       stage: build
       os: windows
@@ -91,7 +91,7 @@ jobs:
         - mkdir ./netcore
         - powershell -Command Set-ExecutionPolicy -Scope CurrentUser Unrestricted
         - powershell -File ./dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
-        - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release
         - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
         - cd cmake_build
@@ -100,14 +100,14 @@ jobs:
         - msbuild.exe gm_dotnet_native.sln
         - cd ..
         - mkdir build
-        - mkdir build/GmodNET
-        - mkdir build/GmodNET/API
+        - mkdir build/gmodnet
+        - mkdir build/gmodnet/API
         - cp cmake_build/Release/*.dll build
-        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/GmodNET
-        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/GmodNET/API
-        - find build/GmodNET/*.exe | xargs rm -f -v
-        - find build/GmodNET/*.pdb | xargs rm -f -v
-        - rm -f -v build/GmodNET/web.config
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+        - find build/gmodnet/*.exe | xargs rm -f -v
+        - find build/gmodnet/*.pdb | xargs rm -f -v
+        - rm -f -v build/gmodnet/web.config
         - cd build
         - mkdir dotnet
         - cd dotnet
@@ -128,7 +128,7 @@ jobs:
         - mv signature.modulesign gmcl_dotnet.modulesign
         - cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
         - mv gmodnet-public.modulekey gmcl_dotnet.modulekey
-        - cd GmodNET
+        - cd gmodnet
         - ./../../gms --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
         - mv signature.modulesign GmodNET.modulesign
         - cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
@@ -150,7 +150,7 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
-    
+
     - language: cpp
       stage: build
       os: osx
@@ -160,7 +160,7 @@ jobs:
         - chmod +x dotnet-install.sh
         - mkdir dnsdk
         - ./dotnet-install.sh --version 3.1.100 --install-dir dnsdk
-        - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release 
+        - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release
         - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
         - cd cmake_build
@@ -168,16 +168,16 @@ jobs:
         - make
         - cd ..
         - mkdir build
-        - mkdir build/GmodNET
-        - mkdir build/GmodNET/API
+        - mkdir build/gmodnet
+        - mkdir build/gmodnet/API
         - cp cmake_build/*.dll build
-        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/GmodNET
-        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/GmodNET/API
-        - find build/GmodNET/*.exe | xargs rm -f -v
-        - find build/GmodNET/*.pdb | xargs rm -f -v
-        - rm -f -v build/GmodNET/GmodNET
-        - rm -f -v build/GmodNET/web.config
-        - cd build 
+        - cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+        - cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+        - find build/gmodnet/*.exe | xargs rm -f -v
+        - find build/gmodnet/*.pdb | xargs rm -f -v
+        - rm -f -v build/gmodnet/GmodNET
+        - rm -f -v build/gmodnet/web.config
+        - cd build
         - mkdir dotnet
         - cd dotnet
         - curl https://download.visualstudio.microsoft.com/download/pr/16106b5c-2dd0-429b-ac74-79c7d47fc575/cb9f53870983845f81b740b27d412038/aspnetcore-runtime-3.1.0-osx-x64.tar.gz -O -L
@@ -189,7 +189,7 @@ jobs:
         - cd ..
         - cd ..
         - cp LICENSE build
-        - cp NOTICE build        
+        - cp NOTICE build
         - git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
         - curl https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms-osx -O -L
         - mv gms-osx gms
@@ -199,7 +199,7 @@ jobs:
         - mv signature.modulesign gmcl_dotnet.modulesign
         - cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
         - mv gmodnet-public.modulekey gmcl_dotnet.modulekey
-        - cd GmodNET
+        - cd gmodnet
         - ./../../gms --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
         - mv signature.modulesign GmodNET.modulesign
         - cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
@@ -221,11 +221,11 @@ jobs:
         on:
           all_branches: true
         endpoint: https://fra1.digitaloceanspaces.com
-        
+
     - language: minimal
       stage: build
       name: Lua assembler
-      script: 
+      script:
         - mkdir folder_to_deploy
         - cp lua/autorun/clientside/gm_dotnet_client.lua folder_to_deploy
         - cp lua/autorun/serverside/gm_dotnet_server.lua folder_to_deploy
@@ -240,8 +240,8 @@ jobs:
         acl: public_read
         on:
           all_branches: true
-        endpoint: https://fra1.digitaloceanspaces.com       
-        
+        endpoint: https://fra1.digitaloceanspaces.com
+
     - language: minimal
       stage: tests
       dist: bionic
@@ -289,7 +289,7 @@ jobs:
         - cd node
         - npm update
         - node discord-linux-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
-        
+
     - language: cpp
       stage: tests
       os: windows
@@ -300,7 +300,7 @@ jobs:
         - powershell -Command Set-ExecutionPolicy -Scope CurrentUser Unrestricted
         - powershell -File ./dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
         - ./netcore/dotnet.exe publish gm_dotnet_managed/Tests/Tests.csproj -c Release
-        - curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L 
+        - curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L
         - 7z x -tzip steamcmd.zip
         - ./steamcmd.exe +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit || true
         - mkdir gmod/garrysmod/lua/bin
@@ -328,7 +328,7 @@ jobs:
         - cd node
         - /c/Program\ Files/nodejs/npm.cmd update
         - /c/Program\ Files/nodejs/node.exe discord-windows-fail.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
-        
+
     - language: node_js
       node_js:
         - 12
@@ -338,10 +338,3 @@ jobs:
         - cd node
         - npm update
         - node discord.js $WEBHOOK_URL $TRAVIS_BRANCH $TRAVIS_COMMIT "$TRAVIS_COMMIT_MESSAGE"
-        
-      
-      
-      
-      
-      
-        
