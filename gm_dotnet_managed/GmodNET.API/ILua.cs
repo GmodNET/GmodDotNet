@@ -14,6 +14,9 @@ namespace GmodNET.API
     /// <returns>Number of return values function pushes on the stack</returns>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int CFuncManagedDelegate(IntPtr lua_state_pointer);
+    /// <summary>
+    /// Managed wrapper around Garry's Mod native ILuaBase
+    /// </summary>
     public interface ILua
     {
         /// <summary>
@@ -50,7 +53,7 @@ namespace GmodNET.API
         /// <summary>
         /// Sets the metatable for the value at iStackPos to the value at the top of the stack. Pops the value off of the top of the stack
         /// </summary>
-        /// <param name="iStacPos">Position of object ot set metatable to</param>
+        /// <param name="iStackPos">Position of object ot set metatable to</param>
         public void SetMetaTable(int iStackPos);
         /// <summary>
         /// Pushes the metatable of the value at iStackPos on to the top of the stack. Upon failure, returns false and does not push anything.

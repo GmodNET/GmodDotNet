@@ -42,10 +42,5 @@ namespace GmodNET.API
         /// Will be called by GmodNET on module unload. In this method module must cleanup and unregister with Garry's Mod native/lua data
         /// </summary>
         public void Unload();
-        /// <summary>
-        /// May given version of the module be loaded clientside. Called only when UseClientsideModuleVerification is true.
-        /// </summary>
-        /// <param name="version"></param>
-        /// <returns>Is version allowed</returns>
     }
 }
