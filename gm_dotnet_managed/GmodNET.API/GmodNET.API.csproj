@@ -13,6 +13,7 @@
     <PackageReleaseNotes>- Migrated to NET Core 3.1</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/GlebChili/GmodDotNet</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
+    <PackageVersion>0.5.1-preview</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
