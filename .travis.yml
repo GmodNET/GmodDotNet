@@ -90,7 +90,7 @@ jobs:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.ps1 -O -L
         - mkdir ./netcore
         - powershell -Command Set-ExecutionPolicy -Scope CurrentUser Unrestricted
-        - powershell -File ./dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
+        - powershell -File ./dotnet-install.ps1 -Version 3.1.101 -InstallDir ./netcore
         - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release
         - ./netcore/dotnet.exe publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
@@ -159,7 +159,7 @@ jobs:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.sh -O -L
         - chmod +x dotnet-install.sh
         - mkdir dnsdk
-        - ./dotnet-install.sh --version 3.1.100 --install-dir dnsdk
+        - ./dotnet-install.sh --version 3.1.101 --install-dir dnsdk
         - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c Release
         - ./dnsdk/dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c Release
         - mkdir cmake_build
