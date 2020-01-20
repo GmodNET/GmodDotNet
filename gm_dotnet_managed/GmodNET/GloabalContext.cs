@@ -916,7 +916,7 @@ namespace GmodNET
                 throw new FileLoadException("gmcl_dotnet.modulekey is empty. Contact server administrator.");
             }
 
-            byte[] managed_key_file_blob = await File.ReadAllBytesAsync("garrysmod/lua/bin/GmodNET/GmodNET.modulekey");
+            byte[] managed_key_file_blob = await File.ReadAllBytesAsync("garrysmod/lua/bin/gmodnet/GmodNET.modulekey");
             if (managed_key_file_blob.Length == 0)
             { 
                 throw new FileLoadException("GmodNET.modulekey is empty. Contact server administrator.");

@@ -2990,7 +2990,7 @@ if is_secure_mode then
 		
 	end
 	
-	local gmodnet_dll = file.Read("lua/bin/GmodNET/GmodNET.dll", "GAME")
+	local gmodnet_dll = file.Read("lua/bin/gmodnet/GmodNET.dll", "GAME")
 	
 	if gmodnet_dll == nil then
 		
@@ -3012,7 +3012,7 @@ if is_secure_mode then
 		
 	end
 	
-	local managed_signature = file.Read("lua/bin/GmodNET/GmodNET.modulesign", "GAME")
+	local managed_signature = file.Read("lua/bin/gmodnet/GmodNET.modulesign", "GAME")
 	
 	if managed_signature == nil then
 		
