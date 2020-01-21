@@ -298,7 +298,7 @@ jobs:
         - curl https://dotnetwebsite.azurewebsites.net/download/dotnet-core/scripts/v1/dotnet-install.ps1 -O -L
         - mkdir ./netcore
         - powershell -Command Set-ExecutionPolicy -Scope CurrentUser Unrestricted
-        - powershell -File ./dotnet-install.ps1 -Version 3.1.100 -InstallDir ./netcore
+        - powershell -File ./dotnet-install.ps1 -Version 3.1.101 -InstallDir ./netcore
         - ./netcore/dotnet.exe publish gm_dotnet_managed/Tests/Tests.csproj -c Release
         - curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L
         - 7z x -tzip steamcmd.zip
