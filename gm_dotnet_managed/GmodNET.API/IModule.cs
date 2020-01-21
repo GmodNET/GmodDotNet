@@ -17,21 +17,21 @@ namespace GmodNET.API
     public interface IModule
     {
         /// <summary>
-        /// Name of the module
+        /// Name of the module.
         /// </summary>
         public string ModuleName
         {
             get;
         }
         /// <summary>
-        /// Module version
+        /// Module version.
         /// </summary>
         public string ModuleVersion
         {
             get;
         }
         /// <summary>
-        /// This method is called by GmodNET on module load and should be treated as module constructor
+        /// This method is called by GmodNET on module load and should be treated as module constructor.
         /// </summary>
         /// <param name="LuaInterface">Interface to communicate with Garry's Mod</param>
         /// <param name="is_serverside">Indicates weather module is loaded serverside</param>
@@ -39,13 +39,8 @@ namespace GmodNET.API
         /// <param name="assembly_context">AseemblyLoadContext of this module.</param>
         public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del, AssemblyLoadContext assembly_context);
         /// <summary>
-        /// Will be called by GmodNET on module unload. In this method module must cleanup and unregister with Garry's Mod native/lua data
+        /// Will be called by GmodNET on module unload. In this method module must cleanup and unregister with Garry's Mod native/lua data.
         /// </summary>
         public void Unload();
-        /// <summary>
-        /// May given version of the module be loaded clientside. Called only when UseClientsideModuleVerification is true.
-        /// </summary>
-        /// <param name="version"></param>
-        /// <returns>Is version allowed</returns>
     }
 }
