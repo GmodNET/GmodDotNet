@@ -157,6 +157,8 @@ namespace Tests
                     ITest curr_test_inst = current_test.Item1;
                     Task<bool> curr_test_promise = current_test.Item2;
 
+                    current_test = null;
+
                     if(curr_test_promise.IsCompletedSuccessfully)
                     {
                         if(curr_test_promise.Result)

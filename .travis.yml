@@ -277,6 +277,8 @@ jobs:
         - ./srcds_run_x64 -game garrysmod -systemtest || true
         - cd ..
         - mv gmod/tests-success.txt gmod/tests.txt
+        - echo "Tests log:"
+        - cat gmod/tests-log.txt
       after_success:
         - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
         - sudo apt-get install -y nodejs
@@ -316,8 +318,10 @@ jobs:
         - rm -rfv $TRAVIS_BRANCH-$TRAVIS_COMMIT.zip
         - cd ../../../..
         - powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
-        - sleep 120
+        - sleep 50
         - mv gmod/tests-success.txt gmod/tests.txt
+        - echo "Tests log:"
+        - cat gmod/tests-log.txt
       after_success:
         - choco install nodejs.install
         - cd node
