@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    class TestToFailWithException : ITest
+    public class TestToFailWithoutException : ITest
     {
         public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
-            taskCompletion.TrySetException(new Exception[] {new Exception("This exception will always occur!")});
+            taskCompletion.TrySetResult(false);
+
             return taskCompletion.Task;
         }
     }
