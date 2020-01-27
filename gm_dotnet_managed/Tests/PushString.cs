@@ -40,7 +40,7 @@ namespace Tests
                 for(int i = 0; i < 5; i++)
                 {
                     lua.GetField(-1, FieldName + "Str" + i.ToString());
-                    string tmp =lua.GetString(-1);
+                    string tmp = lua.GetString(-1);
                     lua.Pop(1);
 
                     if(tmp != TestStrings[i])
