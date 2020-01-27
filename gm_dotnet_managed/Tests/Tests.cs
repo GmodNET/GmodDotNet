@@ -116,7 +116,7 @@ namespace Tests
                         lua.Log("Test run time is " + DateTime.Now.Subtract(tests_start_time).TotalSeconds + " seconds");
                         File.WriteAllText("tests-success.txt", "Success!");
 
-                        lua.Log("Shuting down game...");
+                        lua.Log("Shutting down game...");
                         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                         lua.GetField(-1, "engine");
                         lua.GetField(-1, "CloseServer");
@@ -129,7 +129,7 @@ namespace Tests
                         lua.Log("There are no more tests to run. Some tests have failed. Check log.");
                         lua.Log("Test run time is " + DateTime.Now.Subtract(tests_start_time).TotalSeconds + " seconds");
 
-                        lua.Log("Shuting down game...");
+                        lua.Log("Shutting down game...");
                         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                         lua.GetField(-1, "engine");
                         lua.GetField(-1, "CloseServer");
