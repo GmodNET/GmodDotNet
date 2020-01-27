@@ -22,3 +22,4 @@ gm_dotnet_managed/Tests/bin
 gm_dotnet_managed/Tests/obj
 */.idea
 .DS_Store
+*/.vscode
