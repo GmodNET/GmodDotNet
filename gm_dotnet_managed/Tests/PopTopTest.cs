@@ -39,6 +39,13 @@ namespace Tests
 
                 lua.Pop(second_get - initial_number_of_values);
 
+                int last_get = lua.Top();
+
+                if(last_get != initial_number_of_values)
+                {
+                    throw new PopTopException("Test failed on last check");
+                }
+
                 taskCompletion.TrySetResult(true);
             }
             catch(Exception e)
