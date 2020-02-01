@@ -183,7 +183,7 @@ namespace GmodNET
 
         public void ThrowError(in string error_message)
         {
-            byte[] buff = Encoding.UTF8.GetBytes(error_message);
+            byte[] buff = Encoding.UTF8.GetBytes(error_message + "\0");
             unsafe
             {
                 fixed(byte * tmp_ptr = &buff[0])
