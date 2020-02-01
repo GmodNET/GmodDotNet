@@ -17,4 +17,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="ThrowErrorTest.cs" />
+  </ItemGroup>
+
 </Project>
