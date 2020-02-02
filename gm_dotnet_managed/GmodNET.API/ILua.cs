@@ -348,7 +348,7 @@ namespace GmodNET.API
     }
 
     /// <summary>
-    /// Indeces of common lua and gmod types.
+    /// The indices of common Lua and Garry's Mod built-in types.
     /// </summary>
     public enum TYPES
     {
@@ -398,6 +398,7 @@ namespace GmodNET.API
         PARTICLESYSTEM,
         PROJECTEDTEXTURE,
         PHYSCOLLIDE,
+        SURFACEINFO,
 
         COUNT
     }
