@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.5.2</Version>
+    <Version>0.6.0</Version>
     <ApplicationIcon />
     <StartupObject>GmodNET.BuidReq</StartupObject>
     <Authors>Gleb Krasilich</Authors>
@@ -11,7 +11,7 @@
     <PackageLicenseExpression>MIT License</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageVersion>0.5.2</PackageVersion>
+    <PackageVersion>0.6.0</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

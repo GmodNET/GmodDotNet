@@ -26,8 +26,8 @@ using namespace std;
 using namespace GarrysMod::Lua;
 
 int maj_ver = 0;
-int min_ver = 5;
-int misc_ver = 2;
+int min_ver = 6;
+int misc_ver = 0;
 
 wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 

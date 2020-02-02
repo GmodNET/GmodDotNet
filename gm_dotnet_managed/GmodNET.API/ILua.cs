@@ -64,9 +64,11 @@ namespace GmodNET.API
         /// <summary>
         /// Calls a function. To use it: Push the function on to the stack followed by each argument. 
         /// Pops the function and arguments from the stack, leaves iResults values on the stack.
+        /// This method is obsolete and unsafe. Use ILua.PCall instead.
         /// </summary>
         /// <param name="iArgs">number of arguments of the function</param>
         /// <param name="iResults">number of return values of the function</param>
+        [Obsolete("This method is obsolete, unsafe and may be removed in a future. Use ILua.PCall instead.", false)]
         public void Call(int iArgs, int iResults);
         /// <summary>
         /// Similar to Call. Calls a function in protected mode. Both nargs and nresults have the same meaning as in lua_call.
@@ -115,23 +117,6 @@ namespace GmodNET.API
         /// <param name="iStackPos">position of the table</param>
         /// <returns></returns>
         public int Next(int iStackPos);
-        /// <summary>
-        /// Throws an error and ceases execution of the function.
-        /// </summary>
-        /// <param name="error_message">error message</param>
-        public void ThrowError(in string error_message);
-        /// <summary>
-        /// Checks that the type of the value at iStackPos is iType. Throws and error and ceases execution of the function otherwise.
-        /// </summary>
-        /// <param name="iStackPos">position on the stack of the value to check type of</param>
-        /// <param name="IType">type index</param>
-        public void CheckType(int iStackPos, int IType);
-        /// <summary>
-        /// Throws a pretty error message about the given argument.
-        /// </summary>
-        /// <param name="iArgNum">index of the problematic argument</param>
-        /// <param name="error_message">error message</param>
-        public void ArgError(int iArgNum, in string error_message);
         /// <summary>
         /// Returns the string at iStackPos. iOutLen is set to the length of the string if it is not NULL. 
         /// If the value at iStackPos is a number, it will be converted in to a string.

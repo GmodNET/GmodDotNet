@@ -11,6 +11,7 @@ namespace GmodNET
     internal class Lua : ILua
     {
         IntPtr ptr;
+
         internal Lua(IntPtr ptr)
         {
             this.ptr = ptr;
@@ -108,6 +109,7 @@ namespace GmodNET
             }
         }
 
+        [Obsolete("Unsafe. Use Lua.PCall instead.", false)]
         public void Call(int iArgs, int iResults)
         {
             call(ptr, iArgs, iResults);
@@ -181,6 +183,7 @@ namespace GmodNET
             return next(ptr, iStackPos);
         }
 
+        [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public void ThrowError(in string error_message)
         {
             byte[] buff = Encoding.UTF8.GetBytes(error_message + "\0");
@@ -193,6 +196,7 @@ namespace GmodNET
             }
         }
 
+        [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public void CheckType(int iStackPos, int IType)
         {
             if (iStackPos == 0)
@@ -202,6 +206,7 @@ namespace GmodNET
             check_type(ptr, iStackPos, IType);
         }
 
+        [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public void ArgError(int iArgNum, in string error_message)
         {
             byte[] buff = Encoding.UTF8.GetBytes(error_message);

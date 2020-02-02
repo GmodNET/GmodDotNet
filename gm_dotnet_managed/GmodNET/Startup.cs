@@ -24,7 +24,7 @@ namespace GmodNET
         //Called by Garry's Mod. Responsible for initial configuration.
         internal static IntPtr Main(IntPtr lua_base, int maj_ver, int min_ver, int misc_ver, IntPtr param)
         {
-            if(!((maj_ver == 0) && (min_ver == 5) && (misc_ver == 2)))
+            if(!((maj_ver == 0) && (min_ver == 6) && (misc_ver == 0)))
             {
                 File.WriteAllText("GmodNETErrorLog.txt", "Version mismatch! \n");
                 return IntPtr.Zero;
@@ -151,7 +151,7 @@ namespace GmodNET
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
-            lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 5 + "." + 2 + " Buzuluk");
+            lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 6 + "." + 0 + " Prototype");
             lua.Call(1, 0);
             lua.Pop(1);
 

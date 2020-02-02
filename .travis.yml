@@ -1,5 +1,5 @@
 env:
-  - GMODNET_VERSION="0.5.2"
+  - GMODNET_VERSION="0.6.0"
 
 stages:
   - build
