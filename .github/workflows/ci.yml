@@ -16,5 +16,16 @@ jobs:
       with:
        dotnet-version: '3.1.101'
 
-    - name: Update CMake
+    - name: Install CMake
       run: sudo apt install cmake
+
+    - name: Build Managed part
+      run: dotnet publish -c Release
+      working-directory: ./gm_dotnet_managed/
+
+    - name: Build Native part
+      run: |
+           mkdir cmake_build
+           cd cmake_build
+           cmake ../gm_dotnet_native
+           make
