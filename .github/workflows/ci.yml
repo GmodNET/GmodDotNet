@@ -126,6 +126,7 @@ jobs:
             cd cmake_build
             cmake -G 'Visual Studio 16 2019' -A x64 ../gm_dotnet_native
             msbuild gm_dotnet_native.sln
+            dir
 
      - name: Download .NET Runtime
        shell: bash
