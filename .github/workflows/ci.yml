@@ -7,9 +7,9 @@ jobs:
 
    runs-on: ubuntu-latest
 
-    steps:
-     - name: Checkout
-       uses: actions/checkout@v2.0.0
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v2.0.0
 
-     - name: Get dir
-       run: ls
+    - name: Get dir
+      run: ls
