@@ -71,8 +71,8 @@ jobs:
            mkdir gmod/garrysmod/lua/bin
            mkdir gmod/garrysmod/lua/bin/Modules
            mkdir gmod/garrysmod/lua/bin/Modules/Tests
-           cp gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/* gmod/garrysmod/lua/bin/Modules/Tests
-           cp build/* gmod/garrysmod/lua/bin
+           cp -a gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/. gmod/garrysmod/lua/bin/Modules/Tests
+           cp -a build/. gmod/garrysmod/lua/bin
            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
 
     - name: Run Garry's Mod
