@@ -170,3 +170,40 @@ jobs:
        with:
          name: Windows-Raw-Build
          path: ./build
+
+     - name: Download Steam and Install Garry's Mod Dedicated Server
+       shell: bash
+       run: |
+            curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L
+            powershell -Command 'Expand-Archive -LiteralPath ./steamcmd.zip -DestinationPath ./'
+            ./steamcmd.exe +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit || true
+
+     - name: Prepare test run
+       shell: bash
+       run: |
+            mkdir gmod/garrysmod/lua/bin
+            mkdir gmod/garrysmod/lua/bin/Modules
+            mkdir gmod/garrysmod/lua/bin/Modules/Tests
+            cp -a gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/. gmod/garrysmod/lua/bin/Modules/Tests
+            cp -a build/. gmod/garrysmod/lua/bin
+            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
+
+     - name: Run Garry's Mod
+       shell: bash
+       run: |
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
+            sleep 15
+
+     - name: Check if tests were successful
+       shell: bash
+       run: mv gmod/tests-success.txt gmod/tests.txt
+
+     - name: Print test log
+       shell: bash
+       run: cat gmod/tests-log.txt
+
+     - name: Upload test log
+       uses: actions/upload-artifact@v1.0.0
+       with:
+         name: Windows-Test-Log
+         path: gmod/tests-log.txt
