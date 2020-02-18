@@ -31,6 +31,8 @@ jobs:
            make
 
     - name: Copy build artifacts
+      env:
+        COMMIT: ${{ github.sha }}
       run: |
            mkdir build
            mkdir build/gmodnet
@@ -51,6 +53,8 @@ jobs:
            cd ..
            cp LICENSE build
            cp NOTICE build
+           cd build
+           touch gmodnet-$COMMIT
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1.0.0
@@ -80,7 +84,7 @@ jobs:
       working-directory: ./gmod/
 
     - name: Check if tests were successful
-      run: mv gmod/tests-success.tx gmod/tests.txt
+      run: mv gmod/tests-success.txt gmod/tests.txt
 
     - name: Print test log
       run: cat gmod/tests-log.txt
