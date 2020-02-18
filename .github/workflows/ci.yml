@@ -95,7 +95,7 @@ jobs:
         name: Linux-Test-Log
         path: gmod/tests-log.txt
 
- windows-builder:
+ windows-build:
 
    runs-on: windows-latest
 
@@ -124,7 +124,7 @@ jobs:
        run: |
             mkdir cmake_build
             cd cmake_build
-            cmake -G 'Visual Studio 16 2019 Win64' ../gm_dotnet_native
+            cmake -G 'Visual Studio 16 2019' -A 'Win64' ../gm_dotnet_native
             msbuild gm_dotnet_native.sln
 
      - name: Download .NET Runtime
