@@ -14,7 +14,7 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.4.0
       with:
-       dotnet-version: '3.1.101'
+        dotnet-version: '3.1.101'
 
     - name: Install CMake
       run: sudo apt install cmake
@@ -29,3 +29,31 @@ jobs:
            cd cmake_build
            cmake ../gm_dotnet_native
            make
+
+    - name: Copy build artifacts
+      run: |
+           mkdir build
+           mkdir build/gmodnet
+           mkdir build/gmodnet/API
+           cp cmake_build/*.dll build
+           cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+           cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+           find build/gmodnet/*.exe | xargs rm -f -v
+           rm -f -v build/gmodnet/GmodNET
+           rm -f -v build/gmodnet/web.config
+           cd build
+           mkdir dotnet
+           cd dotnet
+           wget https://download.visualstudio.microsoft.com/download/pr/deeee432-fd3c-4dbc-bc06-cbf166cbcfb7/04747ae7a0ea63e01b6f932cccdcf837/aspnetcore-runtime-3.1.1-linux-x64.tar.gz
+           tar xvf aspnetcore-runtime-3.1.1-linux-x64.tar.gz
+           rm -f -v aspnetcore-runtime-3.1.1-linux-x64.tar.gz
+           cd ..
+           cd ..
+           cp LICENSE build
+           cp NOTICE build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Linux-Raw-Build
+        path: ./build
