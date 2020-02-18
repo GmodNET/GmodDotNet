@@ -11,5 +11,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.0.0
 
-    - name: Get dir
-      run: ls
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.4.0
+      with:
+       dotnet-version: '3.1.101'
+
+    - name: Update CMake
+      run: sudo apt install cmake
