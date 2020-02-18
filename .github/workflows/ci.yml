@@ -80,7 +80,7 @@ jobs:
       working-directory: ./gmod/
 
     - name: Check if tests were successful
-      run: mv gmod/tests-success.txt gmod/tests.txt
+      run: mv gmod/tests-success.tx gmod/tests.txt
 
     - name: Print test log
       run: cat gmod/tests-log.txt
