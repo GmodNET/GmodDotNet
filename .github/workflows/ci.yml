@@ -17,7 +17,7 @@ jobs:
         dotnet-version: '3.1.101'
 
     - name: Install CMake
-      run: sudo apt install cmake
+      run: sudo apt-get install cmake
 
     - name: Build Managed part
       run: dotnet publish -c Release
@@ -57,3 +57,36 @@ jobs:
       with:
         name: Linux-Raw-Build
         path: ./build
+
+    - name: Download Steam and Install Garry's Mod Dedicated Server
+      run: |
+           sudo apt-get install lib32gcc1
+           wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+           tar -xvzf steamcmd_linux.tar.gz
+           rm -rfv steamcmd_linux.tar.gz
+           ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
+
+    - name: Prepare test run
+      run: |
+           mkdir gmod/garrysmod/lua/bin
+           mkdir gmod/garrysmod/lua/bin/Modules
+           mkdir gmod/garrysmod/lua/bin/Modules/Tests
+           cp gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/* gmod/garrysmod/lua/bin/Modules/Tests
+           cp build/* gmod/garrysmod/lua/bin
+           cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
+
+    - name: Run Garry's Mod
+      run: ./srcds_run_x64 -game garrysmod -systemtest || true
+      working-directory: ./gmod/
+
+    - name: Check if tests were successful
+      run: mv gmod/tests-success.txt gmod/tests.txt
+
+    - name: Print test log
+      run: cat gmod/tests-log.txt
+
+    - name: Upload test log
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Linux-Test-Log
+        path: gmod/tests-log.txt
