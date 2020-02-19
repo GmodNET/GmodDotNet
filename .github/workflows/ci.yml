@@ -208,6 +208,31 @@ jobs:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
 
+ prepare-test-artifacts-for-mac:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: Download Steam and Install Garry's Mod Dedicated Server
+        env:
+          STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
+        run: |
+             sudo apt-get install lib32gcc1
+             wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+             tar -xvzf steamcmd_linux.tar.gz
+             rm -rfv steamcmd_linux.tar.gz
+             ./steamcmd.sh +login gmoddotnet $STEAM_PSWD +@sSteamCmdForcePlatformType osx +force_install_dir gmod "+app_update 4000 -beta x86-64 validate" +quit
+
+      - name: Upload Garry's Mod client artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: osx-client-artifact
+          path: ./gmod
+
  mac-test:
 
     runs-on: macos-latest
