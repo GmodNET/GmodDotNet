@@ -224,6 +224,6 @@ jobs:
         env:
           STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
         run: |
-             ./steam_osx -login gmoddotnet $STEAM_PSWD -silent
+             ./steam_osx -login gmoddotnet $STEAM_PSWD -silent || true
              sleep 60
         working-directory: /Applications/Steam.app/Contents/MacOS/
