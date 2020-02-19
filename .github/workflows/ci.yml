@@ -214,18 +214,16 @@ jobs:
 
     steps:
 
-      - name: Install Homebrew
-        run: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
       - name: Install Steam
-        env:
-          STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
-        run: brew install Steam
+        run: |
+             curl -L -O https://steamcdn-a.akamaihd.net/client/installer/steam.dmg
+             hdiutil mount steam.dmg
+             sudo cp -R "/Volumes/Steam/Steam.app" /Applications
 
       - name: Start Steam
         env:
           STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
         run: |
              ./steam_osx -login gmoddotnet $STEAM_PSWD -silent
-             sleep 10
+             sleep 60
         working-directory: /Applications/Steam.app/Contents/MacOS/
