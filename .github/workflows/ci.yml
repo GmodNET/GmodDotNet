@@ -207,3 +207,21 @@ jobs:
        with:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
+
+  mac-test:
+
+    runs-on: macos-latest
+
+    steps:
+
+      - name: Install Steam and Garry's Mod
+        env:
+          STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
+        run: |
+             curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_osx.tar.gz" | tar zxvf -
+             ./steamcmd.sh +login gmoddotnet $STEAM_PSWD +force_install_dir gmod "+app_update 4000 -beta x86-64 validate" +quit
+
+      - name: Run Garry's Mod
+        run: |
+             cd gmod
+             ./hl2_osx -console -textmode -noshaderapi
