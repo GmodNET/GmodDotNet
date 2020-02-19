@@ -214,14 +214,17 @@ jobs:
 
     steps:
 
-      - name: Install Steam and Garry's Mod
+      - name: Install Homebrew
+        run: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+      - name: Install Steam
+        env:
+          STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
+        run: brew install steam
+
+      - name: Start Steam
         env:
           STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
         run: |
-             curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_osx.tar.gz" | tar zxvf -
-             ./steamcmd.sh +login gmoddotnet $STEAM_PSWD +force_install_dir gmod "+app_update 4000 -beta x86-64 validate" +quit
-
-      - name: Run Garry's Mod
-        run: |
-             cd gmod
-             ./hl2_osx -console -textmode -noshaderapi
+             ./steam_osx -login gmoddotnet $STEAM_PSWD -silent
+             sleep 10
