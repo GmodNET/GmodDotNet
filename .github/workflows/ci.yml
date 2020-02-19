@@ -220,7 +220,7 @@ jobs:
       - name: Install Steam
         env:
           STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
-        run: brew install steam
+        run: brew install Steam
 
       - name: Start Steam
         env:
@@ -228,3 +228,4 @@ jobs:
         run: |
              ./steam_osx -login gmoddotnet $STEAM_PSWD -silent
              sleep 10
+        working-directory: /Applications/Steam.app/Contents/MacOS/
