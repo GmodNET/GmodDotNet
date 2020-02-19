@@ -225,7 +225,7 @@ jobs:
              wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
              tar -xvzf steamcmd_linux.tar.gz
              rm -rfv steamcmd_linux.tar.gz
-             ./steamcmd.sh +login gmoddotnet $STEAM_PSWD +@sSteamCmdForcePlatformType osx +force_install_dir gmod "+app_update 4000 -beta x86-64 validate" +quit
+             ./steamcmd.sh +login gmoddotnet $STEAM_PSWD +@sSteamCmdForcePlatformType macos +force_install_dir gmod "+app_update 4000 -beta x86-64 validate" +quit
 
       - name: Upload Garry's Mod client artifact
         uses: actions/upload-artifact@v1.0.0
