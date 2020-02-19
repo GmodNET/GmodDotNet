@@ -217,7 +217,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
-      - name: Download Steam and Install Garry's Mod Dedicated Server
+      - name: Download Steam and Garry's Mod client for Mac OS
         env:
           STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
         run: |
