@@ -208,7 +208,7 @@ jobs:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
 
-  mac-test:
+ mac-test:
 
     runs-on: macos-latest
 
