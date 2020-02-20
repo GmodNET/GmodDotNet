@@ -15,10 +15,7 @@ jobs:
       uses: actions/setup-dotnet@v1.4.0
       with:
         dotnet-version: '3.1.101'
-
-    - name: Install CMake
-      run: sudo apt-get install cmake
-
+      
     - name: Build Managed part
       run: dotnet publish -c Release
       working-directory: ./gm_dotnet_managed/
@@ -107,11 +104,6 @@ jobs:
        uses: actions/setup-dotnet@v1.4.0
        with:
          dotnet-version: '3.1.101'
-
-     - name: Install Cmake
-       uses: jwlawson/actions-setup-cmake@v1.0
-       with:
-         cmake-version: '3.16.x'
 
      - name: Build Managed part
        run: dotnet publish -c Release
