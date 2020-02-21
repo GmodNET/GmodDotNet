@@ -169,7 +169,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
         AWS_REGION: 'us-west-1'
-        AWS_S3_ENDPOINT: 'fra1.digitaloceanspaces.com'
+        AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
         SOURCE_DIR: 'lua_upload'
         DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/'
 
