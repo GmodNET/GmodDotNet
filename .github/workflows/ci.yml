@@ -339,6 +339,8 @@ jobs:
        run: |
             mkdir full_build_upload_dir
             Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-$TRAVIS_COMMIT.zip
+            cd full_build_upload_dir
+            dir
 
      - name: Upload full build as artifact
        if: github.event_name == 'push'
