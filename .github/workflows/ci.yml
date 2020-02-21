@@ -302,6 +302,11 @@ jobs:
        with:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
+         
+    - name: Download GMS
+      if: github.event_name == 'push'
+      shell: bash
+      run: curl -O -L https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms.exe
 
     - name: Download signature key
       if: github.event_name == 'push'
