@@ -303,6 +303,8 @@ jobs:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
 
+    # Finilize full signed build on push
+
      - name: Download GMS
        if: github.event_name == 'push'
        shell: bash
@@ -334,7 +336,9 @@ jobs:
        if: github.event_name == 'push'
        env:
          TRAVIS_COMMIT: ${{ github.sha }}
-       run: Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-$TRAVIS_COMMIT.zip
+       run: |
+            mkdir full_build_upload_dir
+            Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-$TRAVIS_COMMIT.zip
 
      - name: Upload full build as artifact
        if: github.event_name == 'push'
