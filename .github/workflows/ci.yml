@@ -406,7 +406,7 @@ jobs:
           name: Osx-Raw-Build
           path: ./build
 
-      - name: Load signed build as artifact
+      - name: Load Tests managed assemblies
         uses: actions/upload-artifact@v1.0.0
         with:
           name: Tests-Assembly
