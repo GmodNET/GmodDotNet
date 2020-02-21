@@ -303,6 +303,62 @@ jobs:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
 
+# Finilize nightly build for push event
+
+    - name: Download GMS
+      if: github.event_name == 'push'
+      shell: bash
+      run: curl -O -L https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms.exe
+
+    - name: Download signature key
+      if: github.event_name == 'push'
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GMOD_NET_PRIVATE_KEY_REPO_TOKEN }}
+      run: git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+
+    - name: Sign assemblies
+      if: github.event_name == 'push'
+      shell: bash
+      run: |
+           cd build
+           ./../gms.exe --sign=gmcl_dotnet_win64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+           mv signature.modulesign gmcl_dotnet.modulesign
+           cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+           mv gmodnet-public.modulekey gmcl_dotnet.modulekey
+           cd gmodnet
+           ./../../gms.exe --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+           mv signature.modulesign GmodNET.modulesign
+           cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+           mv gmodnet-public.modulekey GmodNET.modulekey
+
+    - name: Pack full build
+      if: github.event_name == 'push'
+      env:
+        TRAVIS_COMMIT: ${{ github.sha }}
+      run: Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-$TRAVIS_COMMIT.zip
+
+    - name: Upload full build as artifact
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: windows-${{ github.sha }}
+        path: full_build_upload_dir/windows-${{ github.sha }}.zip
+
+    - name: Upload full build to storage
+      if: github.event_name == 'push'
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --follow-symlinks
+      env:
+        AWS_S3_BUCKET: 'gleb-krasilich'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
+        AWS_REGION: 'us-west-1'
+        AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
+        SOURCE_DIR: 'full_build_upload_dir'
+        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/windows/'
+
  mac-build:
 
     runs-on: macos-latest
