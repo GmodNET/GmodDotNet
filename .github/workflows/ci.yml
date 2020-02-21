@@ -338,7 +338,7 @@ jobs:
          TRAVIS_COMMIT: ${{ github.sha }}
        run: |
             mkdir full_build_upload_dir
-            Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-$TRAVIS_COMMIT.zip
+            Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-${{ github.sha }}.zip
             cd full_build_upload_dir
             dir
 
