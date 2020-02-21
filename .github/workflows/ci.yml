@@ -349,36 +349,108 @@ jobs:
          name: windows-${{ github.sha }}
          path: full_build_upload_dir/windows-${{ github.sha }}.zip
 
-     - name: Upload full build to storage
-       if: github.event_name == 'push'
-       uses: jakejarvis/s3-sync-action@v0.5.1
-       with:
-         args: --acl public-read --follow-symlinks
-       env:
-         AWS_S3_BUCKET: 'gleb-krasilich'
-         AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
-         AWS_REGION: 'us-west-1'
-         AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
-         SOURCE_DIR: 'full_build_upload_dir'
-         DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/windows/'
-
  mac-build:
 
     runs-on: macos-latest
 
     steps:
 
-      - name: Install Steam
-        run: |
-             curl -L -O https://steamcdn-a.akamaihd.net/client/installer/steam.dmg
-             hdiutil mount steam.dmg
-             sudo cp -R "/Volumes/Steam/Steam.app" /Applications
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
 
-      - name: Start Steam
-        env:
-          STEAM_PSWD: ${{ secrets.STEAM_ACC_PSWD }}
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.4.0
+        with:
+          dotnet-version: '3.1.101'
+
+      - name: Build Managed part
+        run: dotnet publish -c Release
+        working-directory: ./gm_dotnet_managed/
+
+      - name: Build Native part
         run: |
-             ./steam_osx -login gmoddotnet $STEAM_PSWD -silent || true
-             sleep 60
-        working-directory: /Applications/Steam.app/Contents/MacOS/
+             mkdir cmake_build
+             cd cmake_build
+             cmake ../gm_dotnet_native
+             make
+
+      - name: Copy build artifacts
+        env:
+          COMMIT: ${{ github.sha }}
+        run: |
+             mkdir build
+             mkdir build/gmodnet
+             mkdir build/gmodnet/API
+             cp cmake_build/*.dll build
+             cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+             cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+             find build/gmodnet/*.exe | xargs rm -f -v
+             rm -f -v build/gmodnet/GmodNET
+             rm -f -v build/gmodnet/web.config
+             cd build
+             mkdir dotnet
+             cd dotnet
+             curl https://download.visualstudio.microsoft.com/download/pr/eaa2315e-a8df-45dc-9cb1-68829fbf1255/715d7b13a5fa0b9ad5f00ce8132bee0d/aspnetcore-runtime-3.1.1-osx-x64.tar.gz -O -L
+             tar xvf aspnetcore-runtime-3.1.1-osx-x64.tar.gz
+             rm -f -v aspnetcore-runtime-3.1.1-osx-x64.tar.gz
+             cd ..
+             cd ..
+             cp LICENSE build
+             cp NOTICE build
+             cd build
+             touch gmodnet-$COMMIT
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Osx-Raw-Build
+          path: ./build
+
+      - name: Load signed build as artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Tests-Assembly
+          path: gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/
+
+# Finilize full signed build on push
+
+      - name: Download GMS
+        if: github.event_name == 'push'
+        run: |
+             curl -O -L https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms-osx
+             chmod +x gms-osx
+
+      - name: Download signature key
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GMOD_NET_PRIVATE_KEY_REPO_TOKEN }}
+        run: git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+
+      - name: Sign assemblies
+        if: github.event_name == 'push'
+        run: |
+             cd build
+             ./../gms-osx --sign=gmcl_dotnet_osx64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+             mv signature.modulesign gmcl_dotnet.modulesign
+             cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+             mv gmodnet-public.modulekey gmcl_dotnet.modulekey
+             cd gmodnet
+             ./../../gms-osx --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+             mv signature.modulesign GmodNET.modulesign
+             cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+             mv gmodnet-public.modulekey GmodNET.modulekey
+
+      - name: Pack build
+        if: github.event_name == 'push'
+        env:
+          TRAVIS_COMMIT: ${{ github.sha }}
+        run: |
+             cd build
+             tar czfv ../osx-$TRAVIS_COMMIT.tar.gz .
+
+      - name: Load signed build as artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: osx-${{ github.sha }}
+          path: osx-${{ github.sha }}.tar.gz
