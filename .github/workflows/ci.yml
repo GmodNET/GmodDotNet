@@ -303,7 +303,6 @@ jobs:
          name: Windows-Test-Log
          path: gmod/tests-log.txt
 
-# Finilize nightly build for push event
     - name: Download GMS
       if: github.event_name == 'push'
       shell: bash
