@@ -509,6 +509,9 @@ jobs:
              echo "Linux: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/linux/linux-${{ github.sha }}.tar.gz"
              echo "macOS: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/osx/osx-${{ github.sha }}.tar.gz"
 
+      - name: Checkout repository
+        uses: actions/checkout@v2.0.0
+
       - name: Push Discord notification
         run: |
              cd node
