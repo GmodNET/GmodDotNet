@@ -496,3 +496,21 @@ jobs:
           AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
           SOURCE_DIR: 'publish'
           DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/'
+
+      - name: Print build information
+        run: |
+             echo "Nightly build info"
+             echo "Branch ${{ github.ref }}"
+             echo "Commit ${{ github.sha }}"
+             echo "Signed as version $GMODNET_VERSION"
+             echo "Lua clinet https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/gm_dotnet_client.lua"
+             echo "Lua server https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/gm_dotnet_server.lua"
+             echo "Windows: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/windows/windows-${{ github.sha }}.zip"
+             echo "Linux: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/linux/linux-${{ github.sha }}.tar.gz"
+             echo "macOS: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/osx/osx-${{ github.sha }}.tar.gz"
+
+      - name: Push Discord notification
+        run: |
+             cd node
+             npm update
+             node github-discord.js ${{ secrets.DISCORD_WEBHOOK }} ${{ github.ref }} ${{ github.sha }} $GMODNET_VERSION
