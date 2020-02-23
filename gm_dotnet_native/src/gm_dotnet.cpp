@@ -224,7 +224,10 @@ GMOD_MODULE_CLOSE()
         fprintf(stderr, "Unable to load hosfxr_close! \n");
         return 0;
     }
-    hostfxr_close(host_fxr_handle);
+    if(host_fxr_handle != nullptr && hostfxr_close != nullptr)
+    {
+        hostfxr_close(host_fxr_handle);
+    }
 
     host_fxr_handle = nullptr;
     hostfxr_initialize_for_runtime_config = nullptr;
