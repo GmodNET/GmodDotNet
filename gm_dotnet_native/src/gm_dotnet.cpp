@@ -206,7 +206,10 @@ GMOD_MODULE_OPEN()
 //Invoked by Garry's Mod on module unload
 GMOD_MODULE_CLOSE()
 {
-    cleanup_delegate();
+    if(cleanup_delegate != nullptr)
+    {
+        cleanup_delegate();
+    }
     cleanup_delegate = nullptr;
 
     #ifdef WIN32

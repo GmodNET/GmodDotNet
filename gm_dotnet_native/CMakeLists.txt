@@ -2,7 +2,7 @@
 cmake_minimum_required (VERSION 3.10)
 
 #Set CMake build mode
-set(CMAKE_BUILD_TYPE Release CACHE STRING "Build Mode" FORCE)
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build Mode")
 
 #Visual Studio configuration (Debug/Release) to produce
 set(CMAKE_CONFIGURATION_TYPES "Release;" CACHE STRING "Available build configurations for Visual Studio generator")
