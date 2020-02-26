@@ -22,6 +22,10 @@
 #define STRING_FORMATER( STR ) string(STR).c_str()
 #endif
 
+#ifdef __gnu_linux__
+#include <signal.h>
+#endif
+
 using namespace std;
 using namespace GarrysMod::Lua;
 
@@ -199,6 +203,11 @@ GMOD_MODULE_OPEN()
     {
         fprintf(stderr, "Managed runtime returned NULL cleanup_delegate pointer \n");
     }
+
+    // On Linux, try to prevent Google Breakpad from taking control over signal handling
+#ifdef __gnu_linux__
+    signal(SIGSEGV, SIG_DFL);
+#endif
 
     return 0;
 }
