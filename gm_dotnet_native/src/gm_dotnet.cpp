@@ -47,6 +47,20 @@ cleanup_delegate_fn cleanup_delegate = nullptr;
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()
 {
+    // On Linux, try to prevent Google Breakpad from taking control over signal handling
+#ifdef __gnu_linux__
+    LUA->GetField(-10002, "SERVER");
+    bool is_server = LUA->GetBool(-1);
+    LUA->Pop(1);
+
+    if(!is_server)
+    {
+        void *linux_helper_handle = dlopen("garrysmod/lua/bin/linuxhelper.so", RTLD_LAZY);
+        sighandler_t segv_handler = (sighandler_t)dlsym(linux_helper_handle, "segv_signal_handler");
+        signal(SIGSEGV, segv_handler);
+    }
+#endif
+
     char game_char_buffer [300];
     #ifdef WIN32
     int game_path_length = GetModuleFileNameA(nullptr, game_char_buffer, 299);
@@ -203,11 +217,6 @@ GMOD_MODULE_OPEN()
     {
         fprintf(stderr, "Managed runtime returned NULL cleanup_delegate pointer \n");
     }
-
-    // On Linux, try to prevent Google Breakpad from taking control over signal handling
-#ifdef __gnu_linux__
-    signal(SIGSEGV, SIG_DFL);
-#endif
 
     return 0;
 }
