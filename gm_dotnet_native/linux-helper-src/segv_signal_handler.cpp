@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include <ctime>
-#include <bits/sigaction.h>
 #include <execinfo.h>
 #include <unistd.h>
 #include <regex>
