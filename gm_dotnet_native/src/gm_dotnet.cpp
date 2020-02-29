@@ -1,9 +1,9 @@
 //
 // Created by Gleb Krasilich on 02.10.2019.
 //
-#include<GarrysMod/Lua/Interface.h>
-#include<GarrysMod/Lua/LuaBase.h>
-#include<netcore/hostfxr.h>
+#include <GarrysMod/Lua/Interface.h>
+#include <GarrysMod/Lua/LuaBase.h>
+#include <netcore/hostfxr.h>
 #include <codecvt>
 #ifdef WIN32
 #include <Windows.h>
@@ -11,7 +11,7 @@
 #else
 #include <dlfcn.h>
 #include <unistd.h>
-#include<locale>
+#include <locale>
 #endif // WIN32
 #include <string>
 #include "LuaAPIExposure.h"
@@ -47,18 +47,12 @@ cleanup_delegate_fn cleanup_delegate = nullptr;
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()
 {
-    // On Linux, try to prevent Google Breakpad from taking control over signal handling
+    // On Linux, modify SIGSEGV handling
 #ifdef __gnu_linux__
-    LUA->GetField(-10002, "SERVER");
-    bool is_server = LUA->GetBool(-1);
-    LUA->Pop(1);
-
-    if(!is_server)
-    {
-        void *linux_helper_handle = dlopen("garrysmod/lua/bin/linuxhelper.so", RTLD_LAZY);
-        sighandler_t segv_handler = (sighandler_t)dlsym(linux_helper_handle, "segv_signal_handler");
-        signal(SIGSEGV, segv_handler);
-    }
+    void *linux_helper_handle = dlopen("garrysmod/lua/bin/liblinuxhelper.so", RTLD_LAZY);
+    void (*pointer_to_install_sigsegv)(void);
+    pointer_to_install_sigsegv = (void(*)())dlsym(linux_helper_handle, "install_sigsegv_handler");
+    pointer_to_install_sigsegv();
 #endif
 
     char game_char_buffer [300];
@@ -216,6 +210,7 @@ GMOD_MODULE_OPEN()
     if(cleanup_delegate == nullptr)
     {
         fprintf(stderr, "Managed runtime returned NULL cleanup_delegate pointer \n");
+        return 0;
     }
 
     return 0;

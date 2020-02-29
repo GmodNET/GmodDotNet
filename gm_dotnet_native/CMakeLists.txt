@@ -16,13 +16,12 @@ set(EXTERNAL_INCLUDES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external_includes/" CACH
 
 #Project name
 project(gm_dotnet_native)
-add_library(gm_dotnet_native SHARED "src/gm_dotnet.cpp" src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
+add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 #Add linux helper lib
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	add_library(linuxhelper SHARED linux-helper-src/segv_signal_handler.h linux-helper-src/segv_signal_handler.cpp)
-	set_target_properties(linuxhelper PROPERTIES PREFIX "" SUFFIX ".so")
 endif()
 
 if(WIN32)
