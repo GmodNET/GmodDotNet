@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>0.6.0</Version>
+    <ApplicationIcon />
+    <StartupObject>GmodNET.BuidReq</StartupObject>
+    <Authors>Gleb Krasilich</Authors>
+    <Description>GmodNET managed module loader.</Description>
+    <PackageLicenseExpression>MIT License</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageVersion>0.6.0</PackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSec.Cryptography" Version="19.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DefaultContextResolver\DefaultContextResolver.csproj" />
+    <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

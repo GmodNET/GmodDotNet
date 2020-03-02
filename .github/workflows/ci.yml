@@ -1,0 +1,520 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  GMODNET_VERSION: '0.6.0'
+
+jobs:
+ linux-build:
+
+   runs-on: ubuntu-latest
+
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v2.0.0
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.4.0
+      with:
+        dotnet-version: '3.1.102'
+
+    - name: Build Managed part
+      run: dotnet publish -c Release
+      working-directory: ./gm_dotnet_managed/
+
+    - name: Build Native part
+      run: |
+           mkdir cmake_build
+           cd cmake_build
+           cmake ../gm_dotnet_native
+           make
+
+    - name: Copy build artifacts
+      env:
+        COMMIT: ${{ github.sha }}
+      run: |
+           mkdir build
+           mkdir build/gmodnet
+           mkdir build/gmodnet/API
+           cp -v cmake_build/*.dll build
+           cp -v cmake_build/liblinuxhelper.so build
+           cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+           cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+           find build/gmodnet/*.exe | xargs rm -f -v
+           rm -f -v build/gmodnet/GmodNET
+           rm -f -v build/gmodnet/web.config
+           cd build
+           mkdir dotnet
+           cd dotnet
+           wget https://download.visualstudio.microsoft.com/download/pr/2d72ee67-ac4d-42c6-97d9-a26a28201fc8/977ad14b99b6ed03dcefd6655789e43a/aspnetcore-runtime-3.1.2-linux-x64.tar.gz
+           tar xvf aspnetcore-runtime-3.1.2-linux-x64.tar.gz
+           rm -f -v aspnetcore-runtime-3.1.2-linux-x64.tar.gz
+           cd ..
+           cd ..
+           cp LICENSE build
+           cp NOTICE build
+           cd build
+           touch gmodnet-$COMMIT
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Linux-Raw-Build
+        path: ./build
+
+    - name: Download Steam and Install Garry's Mod Dedicated Server
+      run: |
+           sudo apt-get install lib32gcc1
+           wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+           tar -xvzf steamcmd_linux.tar.gz
+           rm -rfv steamcmd_linux.tar.gz
+           ./steamcmd.sh +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit
+
+    - name: Prepare test run
+      run: |
+           mkdir gmod/garrysmod/lua/bin
+           mkdir gmod/garrysmod/lua/bin/Modules
+           mkdir gmod/garrysmod/lua/bin/Modules/Tests
+           cp -a gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/. gmod/garrysmod/lua/bin/Modules/Tests
+           cp -a build/. gmod/garrysmod/lua/bin
+           cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
+
+    - name: Run Garry's Mod
+      run: ./srcds_run_x64 -game garrysmod -systemtest || true
+      working-directory: ./gmod/
+
+    - name: Check if tests were successful
+      run: mv gmod/tests-success.txt gmod/tests.txt
+
+    - name: Print test log
+      run: cat gmod/tests-log.txt
+
+    - name: Upload test log
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Linux-Test-Log
+        path: gmod/tests-log.txt
+
+# Finilize nightly build for push event
+
+    - name: Download GMS
+      if: github.event_name == 'push'
+      run: |
+           wget https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms
+           chmod +x gms
+
+    - name: Download signature key
+      if: github.event_name == 'push'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GMOD_NET_PRIVATE_KEY_REPO_TOKEN }}
+      run: git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+
+    - name: Sign assemblies
+      if: github.event_name == 'push'
+      run: |
+           cd build
+           ./../gms --sign=gmcl_dotnet_linux64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+           mv signature.modulesign gmcl_dotnet.modulesign
+           cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+           mv gmodnet-public.modulekey gmcl_dotnet.modulekey
+           cd gmodnet
+           ./../../gms --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+           mv signature.modulesign GmodNET.modulesign
+           cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+           mv gmodnet-public.modulekey GmodNET.modulekey
+
+    - name: Pack build
+      if: github.event_name == 'push'
+      env:
+        TRAVIS_COMMIT: ${{ github.sha }}
+      run: |
+           cd build
+           tar czfv ../linux-$TRAVIS_COMMIT.tar.gz .
+
+    - name: Load signed build as artifact
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: linux-${{ github.sha }}
+        path: linux-${{ github.sha }}.tar.gz
+
+    - name: Load server lua as artifact
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: server-lua
+        path: lua/autorun/serverside/gm_dotnet_server.lua
+
+    - name: Load client lua as artifact
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: client-lua
+        path: lua/autorun/clientside/gm_dotnet_client.lua
+
+    - name: Prepare lua for deployment
+      if: github.event_name == 'push'
+      run: |
+           mkdir lua_upload
+           cp -v lua/autorun/clientside/gm_dotnet_client.lua lua_upload
+           cp -v lua/autorun/serverside/gm_dotnet_server.lua lua_upload
+
+    - name: Upload lua to storage
+      if: github.event_name == 'push'
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: 'gleb-krasilich'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
+        AWS_REGION: 'us-west-1'
+        AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
+        SOURCE_DIR: 'lua_upload'
+        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/'
+
+    - name: Prepare full build for upload
+      if: github.event_name == 'push'
+      env:
+        TRAVIS_COMMIT: ${{ github.sha }}
+      run: |
+           mkdir full_build_upload_dir
+           cp -v linux-$TRAVIS_COMMIT.tar.gz full_build_upload_dir
+
+    - name: Upload full build to storage
+      if: github.event_name == 'push'
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --follow-symlinks
+      env:
+        AWS_S3_BUCKET: 'gleb-krasilich'
+        AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
+        AWS_REGION: 'us-west-1'
+        AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
+        SOURCE_DIR: 'full_build_upload_dir'
+        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/linux/'
+
+ windows-build:
+
+   runs-on: windows-latest
+
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v2.0.0
+
+     - name: Setup .NET Core SDK
+       uses: actions/setup-dotnet@v1.4.0
+       with:
+         dotnet-version: '3.1.102'
+
+     - name: Build Managed part
+       run: dotnet publish -c Release
+       working-directory: ./gm_dotnet_managed/
+
+     - name: Setup MSBuild
+       uses: warrenbuckley/Setup-MSBuild@v1
+
+     - name: Build Native part
+       run: |
+            mkdir cmake_build
+            cd cmake_build
+            cmake -G 'Visual Studio 16 2019' -A x64 ../gm_dotnet_native
+            msbuild gm_dotnet_native.sln
+            dir
+
+     - name: Download .NET Runtime
+       shell: bash
+       run: |
+            mkdir build
+            cd build
+            mkdir dotnet
+            cd dotnet
+            curl https://download.visualstudio.microsoft.com/download/pr/6cc3f6a7-3a0f-441c-82a2-104fa93ef8b6/3c1395461545eb5321eb2816d4b3fecf/aspnetcore-runtime-3.1.2-win-x64.zip -O -L
+
+     - name: Unpack Runtime
+       run: |
+            cd build/dotnet
+            Expand-Archive -LiteralPath ./aspnetcore-runtime-3.1.2-win-x64.zip -DestinationPath ./
+
+     - name: Delete Runtime zip
+       shell: bash
+       run: |
+            cd build/dotnet
+            rm -rfv aspnetcore-runtime-3.1.2-win-x64.zip
+
+     - name: Copy build artifacts
+       env:
+         COMMIT: ${{ github.sha }}
+       shell: bash
+       run: |
+            mkdir build/gmodnet
+            mkdir build/gmodnet/API
+            cp cmake_build/Release/*.dll build
+            cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+            cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+            find build/gmodnet/*.exe | xargs rm -f -v
+            rm -f -v build/gmodnet/web.config
+            cp LICENSE build
+            cp NOTICE build
+            cd build
+            touch gmodnet-$COMMIT
+
+     - name: Upload build artifacts
+       uses: actions/upload-artifact@v1.0.0
+       with:
+         name: Windows-Raw-Build
+         path: ./build
+
+     - name: Download Steam and Install Garry's Mod Dedicated Server
+       shell: bash
+       run: |
+            curl https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip -O -L
+            powershell -Command 'Expand-Archive -LiteralPath ./steamcmd.zip -DestinationPath ./'
+            ./steamcmd.exe +login anonymous +force_install_dir gmod "+app_update 4020 -beta x86-64 validate" +quit || true
+
+     - name: Prepare test run
+       shell: bash
+       run: |
+            mkdir gmod/garrysmod/lua/bin
+            mkdir gmod/garrysmod/lua/bin/Modules
+            mkdir gmod/garrysmod/lua/bin/Modules/Tests
+            cp -a gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/. gmod/garrysmod/lua/bin/Modules/Tests
+            cp -a build/. gmod/garrysmod/lua/bin
+            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
+
+     - name: Run Garry's Mod
+       shell: bash
+       run: |
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
+            sleep 15
+
+     - name: Check if tests were successful
+       shell: bash
+       run: mv gmod/tests-success.txt gmod/tests.txt
+
+     - name: Print test log
+       shell: bash
+       run: cat gmod/tests-log.txt
+
+     - name: Upload test log
+       uses: actions/upload-artifact@v1.0.0
+       with:
+         name: Windows-Test-Log
+         path: gmod/tests-log.txt
+
+    # Finilize full signed build on push
+
+     - name: Download GMS
+       if: github.event_name == 'push'
+       shell: bash
+       run: curl -O -L https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms.exe
+
+     - name: Download signature key
+       if: github.event_name == 'push'
+       shell: bash
+       env:
+         GITHUB_TOKEN: ${{ secrets.GMOD_NET_PRIVATE_KEY_REPO_TOKEN }}
+       run: git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+
+     - name: Sign assemblies
+       if: github.event_name == 'push'
+       shell: bash
+       run: |
+            cd build
+            ./../gms.exe --sign=gmcl_dotnet_win64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+            mv signature.modulesign gmcl_dotnet.modulesign
+            cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+            mv gmodnet-public.modulekey gmcl_dotnet.modulekey
+            cd gmodnet
+            ./../../gms.exe --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+            mv signature.modulesign GmodNET.modulesign
+            cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+            mv gmodnet-public.modulekey GmodNET.modulekey
+
+     - name: Pack full build
+       if: github.event_name == 'push'
+       env:
+         TRAVIS_COMMIT: ${{ github.sha }}
+       run: |
+            mkdir full_build_upload_dir
+            Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-${{ github.sha }}.zip
+            cd full_build_upload_dir
+            dir
+
+     - name: Upload full build as artifact
+       if: github.event_name == 'push'
+       uses: actions/upload-artifact@v1.0.0
+       with:
+         name: windows-${{ github.sha }}
+         path: full_build_upload_dir/windows-${{ github.sha }}.zip
+
+ mac-build:
+
+    runs-on: macos-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.4.0
+        with:
+          dotnet-version: '3.1.102'
+
+      - name: Build Managed part
+        run: dotnet publish -c Release
+        working-directory: ./gm_dotnet_managed/
+
+      - name: Build Native part
+        run: |
+             mkdir cmake_build
+             cd cmake_build
+             cmake ../gm_dotnet_native
+             make
+
+      - name: Copy build artifacts
+        env:
+          COMMIT: ${{ github.sha }}
+        run: |
+             mkdir build
+             mkdir build/gmodnet
+             mkdir build/gmodnet/API
+             cp cmake_build/*.dll build
+             cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
+             cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+             find build/gmodnet/*.exe | xargs rm -f -v
+             rm -f -v build/gmodnet/GmodNET
+             rm -f -v build/gmodnet/web.config
+             cd build
+             mkdir dotnet
+             cd dotnet
+             curl https://download.visualstudio.microsoft.com/download/pr/9593b373-38a1-454e-844f-da3b5d47b1f8/e6f69a1dda1af567079d949c63c5be85/aspnetcore-runtime-3.1.2-osx-x64.tar.gz -O -L
+             tar xvf aspnetcore-runtime-3.1.2-osx-x64.tar.gz
+             rm -f -v aspnetcore-runtime-3.1.2-osx-x64.tar.gz
+             cd ..
+             cd ..
+             cp LICENSE build
+             cp NOTICE build
+             cd build
+             touch gmodnet-$COMMIT
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Osx-Raw-Build
+          path: ./build
+
+      - name: Load Tests managed assemblies
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: Tests-Assembly
+          path: gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/
+
+# Finilize full signed build on push
+
+      - name: Download GMS
+        if: github.event_name == 'push'
+        run: |
+             curl -O -L https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms-osx
+             chmod +x gms-osx
+
+      - name: Download signature key
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GMOD_NET_PRIVATE_KEY_REPO_TOKEN }}
+        run: git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+
+      - name: Sign assemblies
+        if: github.event_name == 'push'
+        run: |
+             cd build
+             ./../gms-osx --sign=gmcl_dotnet_osx64.dll --key=../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+             mv signature.modulesign gmcl_dotnet.modulesign
+             cp ../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+             mv gmodnet-public.modulekey gmcl_dotnet.modulekey
+             cd gmodnet
+             ./../../gms-osx --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+             mv signature.modulesign GmodNET.modulesign
+             cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+             mv gmodnet-public.modulekey GmodNET.modulekey
+
+      - name: Pack build
+        if: github.event_name == 'push'
+        env:
+          TRAVIS_COMMIT: ${{ github.sha }}
+        run: |
+             cd build
+             tar czfv ../osx-$TRAVIS_COMMIT.tar.gz .
+
+      - name: Load signed build as artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: osx-${{ github.sha }}
+          path: osx-${{ github.sha }}.tar.gz
+
+ deploy-and-notify:
+
+    runs-on: ubuntu-latest
+
+    needs: [linux-build, windows-build, mac-build]
+
+    if: github.event_name == 'push'
+
+    steps:
+
+      - name: Prepare folders
+        run: |
+             mkdir publish
+             cd publish
+             mkdir windows
+             mkdir osx
+
+      - name: Download windows build
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: windows-${{ github.sha }}
+          path: publish/windows
+
+      - name: Download osx build
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: osx-${{ github.sha }}
+          path: publish/osx
+
+      - name: Upload builds to storage
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --acl public-read --follow-symlinks
+        env:
+          AWS_S3_BUCKET: 'gleb-krasilich'
+          AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
+          AWS_REGION: 'us-west-1'
+          AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
+          SOURCE_DIR: 'publish'
+          DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/'
+
+      - name: Print build information
+        run: |
+             echo "Nightly build info"
+             echo "Branch ${{ github.ref }}"
+             echo "Commit ${{ github.sha }}"
+             echo "Signed as version $GMODNET_VERSION"
+             echo "Lua clinet https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/gm_dotnet_client.lua"
+             echo "Lua server https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/gm_dotnet_server.lua"
+             echo "Windows: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/windows/windows-${{ github.sha }}.zip"
+             echo "Linux: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/linux/linux-${{ github.sha }}.tar.gz"
+             echo "macOS: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/osx/osx-${{ github.sha }}.tar.gz"
+
+      - name: Checkout repository
+        uses: actions/checkout@v2.0.0
+
+      - name: Push Discord notification
+        run: |
+             cd node
+             npm update
+             node github-discord.js ${{ secrets.DISCORD_WEBHOOK }} ${{ github.ref }} ${{ github.sha }} $GMODNET_VERSION
