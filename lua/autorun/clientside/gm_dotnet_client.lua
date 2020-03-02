@@ -2943,96 +2943,96 @@ end
 
 if is_secure_mode then
 	print("GmodNET: Server is running in secure mode. Calculating hash...")
-	
+
 	local sha512 = hasher().sha512
-	
+
 	local gmcl_win = file.Read("lua/bin/gmcl_dotnet_win64.dll", "GAME")
-	
+
 	local gmcl_linux = file.Read("lua/bin/gmcl_dotnet_linux64.dll", "GAME")
-	
+
 	local gmcl_osx = file.Read("lua/bin/gmcl_dotnet_osx64.dll", "GAME")
-	
+
 	local cl_hash = ""
-	
+
 	if gmcl_win ~= nil then
-		
+
 		cl_hash = sha512(gmcl_win)
-		
+
 		print("Your gmcl_dotnet hash:")
-		
+
 		print(cl_hash)
-	
+
 	elseif gmcl_linux ~= nil then
-	
+
 		cl_hash = sha512(gmcl_linux)
-		
+
 		print("Your gmcl_dotnet hash:")
-		
+
 		print(cl_hash)
-	
+
 	elseif gmcl_osx ~= nil then
-	
+
 		cl_hash = sha512(gmcl_osx)
-		
+
 		print("Your gmcl_dotnet hash:")
-		
+
 		print(cl_hash)
-	
+
 	else
-		
+
 		error("Unable to locate gmcl_dotnet")
-		
+
 	end
-	
+
 	if (gmcl_win ~= nil and gmcl_linux ~= nil) or (gmcl_win ~= nil and gmcl_osx ~= nil) or (gmcl_linux ~= nil and gmcl_osx ~= nil) then
-	
+
 		error("Don't Be a Tough Guy. Don't Be a Fool! You don't need more than one gmcl_dotnet file in your folder!")
-		
+
 	end
-	
+
 	local gmodnet_dll = file.Read("lua/bin/gmodnet/GmodNET.dll", "GAME")
-	
+
 	if gmodnet_dll == nil then
-		
+
 		error("GmodNET.dll is missing")
-	
+
 	end
-	
+
 	local gmodnet_dll_hash =  sha512(gmodnet_dll)
-	
+
 	print("Your GmodNET.dll hash:")
-	
+
 	print(gmodnet_dll_hash)
-	
+
 	local native_signature = file.Read("lua/bin/gmcl_dotnet.modulesign", "GAME")
-	
+
 	if native_signature == nil then
-		
+
 		error("Unble to load native client signature")
-		
+
 	end
-	
+
 	local managed_signature = file.Read("lua/bin/gmodnet/GmodNET.modulesign", "GAME")
-	
+
 	if managed_signature == nil then
-		
+
 		error("Unable to load GmodNET signature file")
-		
+
 	end
-	
+
 	global_dotnet_client_validation_message = '{\n "NativeHash": "' .. cl_hash .. '",\n "ManagedHash": "' .. gmodnet_dll_hash .. '",\n "NativeSignature": ' .. native_signature .. ',\n "ManagedSignature": ' .. managed_signature .. '\n}'
-	
+
 	print("Verification message:")
-	
+
 	print(global_dotnet_client_validation_message)
-	
+
 	hook.Add("InitPostEntity", "gmodnet_response_validation_hook", function()
 		net.Start("gmodnet_verify_request")
 		net.WriteString(global_dotnet_client_validation_message)
 		net.SendToServer()
 	end)
 
-	
+
 	net.Receive("gmodnet_verify_response", function(leng, ply)
 		local was_verified = net.ReadBool()
 		local message_from_server = net.ReadString()
@@ -3044,13 +3044,12 @@ if is_secure_mode then
 			print(message_from_server)
 		end
 	end)
-	
+
 else
-	
-	print("GmodNET: server is running in insecure mode. Loading GmodNET...")
-	
-	require("dotnet")
-	
+
+  hook.Add("InitPostEntity", "gmodnet_response_validation_hook", function()
+	   print("GmodNET: server is running in insecure mode. Loading GmodNET...")
+	   require("dotnet")
+  end)
+
 end
-	
-	

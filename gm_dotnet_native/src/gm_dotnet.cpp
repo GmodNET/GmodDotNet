@@ -1,9 +1,9 @@
 //
 // Created by Gleb Krasilich on 02.10.2019.
 //
-#include<GarrysMod/Lua/Interface.h>
-#include<GarrysMod/Lua/LuaBase.h>
-#include<netcore/hostfxr.h>
+#include <GarrysMod/Lua/Interface.h>
+#include <GarrysMod/Lua/LuaBase.h>
+#include <netcore/hostfxr.h>
 #include <codecvt>
 #ifdef WIN32
 #include <Windows.h>
@@ -11,7 +11,7 @@
 #else
 #include <dlfcn.h>
 #include <unistd.h>
-#include<locale>
+#include <locale>
 #endif // WIN32
 #include <string>
 #include "LuaAPIExposure.h"
@@ -20,6 +20,10 @@
 #define STRING_FORMATER( STR ) converter.from_bytes(STR).c_str()
 #else
 #define STRING_FORMATER( STR ) string(STR).c_str()
+#endif
+
+#ifdef __gnu_linux__
+#include <signal.h>
 #endif
 
 using namespace std;
@@ -43,6 +47,14 @@ cleanup_delegate_fn cleanup_delegate = nullptr;
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()
 {
+    // On Linux, modify SIGSEGV handling
+#ifdef __gnu_linux__
+    void *linux_helper_handle = dlopen("garrysmod/lua/bin/liblinuxhelper.so", RTLD_LAZY);
+    void (*pointer_to_install_sigsegv)(void);
+    pointer_to_install_sigsegv = (void(*)())dlsym(linux_helper_handle, "install_sigsegv_handler");
+    pointer_to_install_sigsegv();
+#endif
+
     char game_char_buffer [300];
     #ifdef WIN32
     int game_path_length = GetModuleFileNameA(nullptr, game_char_buffer, 299);
@@ -60,11 +72,11 @@ GMOD_MODULE_OPEN()
     #endif
     void * hostfxr_pointer = nullptr;
     #ifdef WIN32
-    hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.1/hostfxr.dll");
+    hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.2/hostfxr.dll");
     #elif __APPLE__
-    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.1/libhostfxr.dylib", RTLD_LAZY);
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.2/libhostfxr.dylib", RTLD_LAZY);
     #else
-    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.1/libhostfxr.so", RTLD_LAZY);
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.2/libhostfxr.so", RTLD_LAZY);
     #endif
     if(hostfxr_pointer == nullptr)
     {
@@ -198,6 +210,7 @@ GMOD_MODULE_OPEN()
     if(cleanup_delegate == nullptr)
     {
         fprintf(stderr, "Managed runtime returned NULL cleanup_delegate pointer \n");
+        return 0;
     }
 
     return 0;
@@ -206,17 +219,20 @@ GMOD_MODULE_OPEN()
 //Invoked by Garry's Mod on module unload
 GMOD_MODULE_CLOSE()
 {
-    cleanup_delegate();
+    if(cleanup_delegate != nullptr)
+    {
+        cleanup_delegate();
+    }
     cleanup_delegate = nullptr;
 
     #ifdef WIN32
-    HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.1/hostfxr.dll");
+    HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.2/hostfxr.dll");
     hostfxr_close = (hostfxr_close_fn)GetProcAddress(hostfxr_lib, "hostfxr_close");
     #elif __APPLE__
-    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.1/libhostfxr.dylib", RTLD_LAZY);
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.2/libhostfxr.dylib", RTLD_LAZY);
     hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
     #else
-    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.1/libhostfxr.so", RTLD_LAZY);
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.2/libhostfxr.so", RTLD_LAZY);
     hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
     #endif
     if(hostfxr_close == nullptr)
@@ -224,7 +240,10 @@ GMOD_MODULE_CLOSE()
         fprintf(stderr, "Unable to load hosfxr_close! \n");
         return 0;
     }
-    hostfxr_close(host_fxr_handle);
+    if(host_fxr_handle != nullptr && hostfxr_close != nullptr)
+    {
+        hostfxr_close(host_fxr_handle);
+    }
 
     host_fxr_handle = nullptr;
     hostfxr_initialize_for_runtime_config = nullptr;
