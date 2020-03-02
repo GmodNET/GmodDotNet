@@ -1,4 +1,4 @@
-[![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=Blue&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Downloads](https://img.shields.io/nuget/dt/GmodNET.API?color=green&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Discord Server](https://img.shields.io/discord/632622505848471554?label=Our%20Discord&style=for-the-badge)](https://discord.gg/9bP8nMT) [![Travis (.org)](https://img.shields.io/travis/GlebChili/GmodDotNet?label=Current%20Build&style=for-the-badge)](https://travis-ci.com/GlebChili/GmodDotNet/)
+[![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=Blue&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Downloads](https://img.shields.io/nuget/dt/GmodNET.API?color=green&style=for-the-badge)](https://www.nuget.org/packages/GmodNET.API/) [![Discord Server](https://img.shields.io/discord/632622505848471554?label=Our%20Discord&style=for-the-badge)](https://discord.gg/9bP8nMT)
 
 # Gmod.NET
 [![Current Runtime](https://img.shields.io/badge/Current%20Runtime-0.5.2-green?style=flat-square)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi) [![Current API](https://img.shields.io/badge/Current%20API-0.5.1-green?style=flat-square)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi)
@@ -75,4 +75,4 @@ Gmod.NET is making use of or borrows code from the following projects:
 
 4. [Libsodium](http://libsodium.org) by [Frank Denis](https://github.com/jedisct1) (ISC License)
 
-See other copyright notices in the NOTICE.
+See other copyright notices in the NOTICE file.
