@@ -13,8 +13,6 @@ namespace GmodNET.Resolver
         public static void Main()
         {
             AssemblyLoadContext.Default.Resolving += GmodNET_API_Resolving;
-
-            File.WriteAllText("resolver_loaded.txt", "resolver main method was called!");
         }
 
         private static Assembly GmodNET_API_Resolving(AssemblyLoadContext context, AssemblyName asm_name)
