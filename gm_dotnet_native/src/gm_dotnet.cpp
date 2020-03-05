@@ -55,6 +55,14 @@ GMOD_MODULE_OPEN()
     pointer_to_install_sigsegv();
 #endif
 
+    // Native welcome message
+    LUA->PushSpecial(SPECIAL_GLOB);
+    LUA->GetField(-1, "print");
+    LUA->PushString((string("GmodNET native ") + to_string(maj_ver) + "." + to_string(min_ver) + "." + to_string(misc_ver) + " " + string(GIT_COMMIT)).c_str());
+    LUA->Call(1, 0);
+    LUA->Pop(1);
+
+    // Start CoreCLR init
     char game_char_buffer [300];
     #ifdef WIN32
     int game_path_length = GetModuleFileNameA(nullptr, game_char_buffer, 299);

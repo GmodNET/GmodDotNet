@@ -1,5 +1,5 @@
 #Specify minimal CMake version
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required (VERSION 3.13)
 
 #Set CMake build mode
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Build Mode")
@@ -13,12 +13,17 @@ set(CMAKE_CXX_STANDARD 17 CACHE INTERNAL "C++ standard version" FORCE)
 #Set path to the external includes header files
 set(EXTERNAL_INCLUDES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external_includes/" CACHE FILEPATH "Path to external header files")
 
+#Set git commit variable
+set(GIT_COMMIT "nocommit" CACHE STRING "Git commit message")
+
 
 #Project name
 project(gm_dotnet_native)
 add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
+#Set up compile definitions
+target_compile_definitions(gm_dotnet_native PUBLIC GIT_COMMIT="${GIT_COMMIT}")
 #Add linux helper lib
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	add_library(linuxhelper SHARED linux-helper-src/segv_signal_handler.h linux-helper-src/segv_signal_handler.cpp)
