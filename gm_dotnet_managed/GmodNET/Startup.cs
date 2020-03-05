@@ -154,6 +154,12 @@ namespace GmodNET
             lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 6 + "." + 0 + " Prototype");
             lua.Call(1, 0);
             lua.Pop(1);
+            
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "print");
+            lua.PushString(RuntimeInformation.FrameworkDescription);
+            lua.Call(1, 0);
+            lua.Pop(1);
 
             GlobalContext n_context = new GlobalContext(lua);
 
