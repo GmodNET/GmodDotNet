@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    // This test calls function with a pcall. Error is not expected.
+    // This test calls function with a pcall.
     public class PCallTest : ITest
     {
         TaskCompletionSource<bool> taskCompletion;

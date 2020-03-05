@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
+    // This is a test for ILua.MCall
     public class MCallTest : ITest
     {
         public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
