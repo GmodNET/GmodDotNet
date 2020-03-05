@@ -55,7 +55,7 @@ jobs:
            cp LICENSE build
            cp NOTICE build
            cd build
-           touch gmodnet-$COMMIT
+           echo "${{ github.sha }}" > gmodnet-build-sha.txt
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1.0.0
@@ -259,7 +259,7 @@ jobs:
             cp LICENSE build
             cp NOTICE build
             cd build
-            touch gmodnet-$COMMIT
+            echo "${{ github.sha }}" > gmodnet-build-sha.txt
 
      - name: Upload build artifacts
        uses: actions/upload-artifact@v1.0.0
@@ -399,7 +399,7 @@ jobs:
              cp LICENSE build
              cp NOTICE build
              cd build
-             touch gmodnet-$COMMIT
+             echo "${{ github.sha }}" > gmodnet-build-sha.txt
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1.0.0
