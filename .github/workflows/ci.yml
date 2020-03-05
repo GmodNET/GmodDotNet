@@ -27,7 +27,7 @@ jobs:
       run: |
            mkdir cmake_build
            cd cmake_build
-           cmake -DGIT_COMMIT:STRING=${ github.sha } ../gm_dotnet_native
+           cmake -DGIT_COMMIT:STRING=${{ github.sha }} ../gm_dotnet_native
            make
 
     - name: Copy build artifacts
@@ -220,7 +220,7 @@ jobs:
        run: |
             mkdir cmake_build
             cd cmake_build
-            cmake -G 'Visual Studio 16 2019' -A x64 -DGIT_COMMIT:STRING=${ github.sha } ../gm_dotnet_native
+            cmake -G 'Visual Studio 16 2019' -A x64 -DGIT_COMMIT:STRING=${{ github.sha }} ../gm_dotnet_native
             msbuild gm_dotnet_native.sln
             dir
 
@@ -372,7 +372,7 @@ jobs:
         run: |
              mkdir cmake_build
              cd cmake_build
-             cmake -DGIT_COMMIT:STRING=${ github.sha } ../gm_dotnet_native
+             cmake -DGIT_COMMIT:STRING=${{ github.sha }} ../gm_dotnet_native
              make
 
       - name: Copy build artifacts
