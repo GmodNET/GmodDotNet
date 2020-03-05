@@ -64,11 +64,11 @@ namespace GmodNET.API
         /// <summary>
         /// Calls a function. To use it: Push the function on to the stack followed by each argument. 
         /// Pops the function and arguments from the stack, leaves iResults values on the stack.
-        /// This method is obsolete and unsafe. Use ILua.PCall instead.
+        /// This method is obsolete and unsafe. Use ILua.MCall or ILua.PCall instead.
         /// </summary>
         /// <param name="iArgs">Number of arguments of the function</param>
         /// <param name="iResults">Number of return values of the function</param>
-        [Obsolete("This method is obsolete, unsafe and may be removed in a future. Use ILua.PCall instead.", false)]
+        [Obsolete("This method is obsolete, unsafe and may be removed in a future. Use ILua.MCall or ILua.PCall instead.", false)]
         public void Call(int iArgs, int iResults);
         /// <summary>
         /// Similar to Call. Calls a function in protected mode. Both nargs and nresults have the same meaning as in lua_call.
