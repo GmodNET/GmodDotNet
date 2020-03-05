@@ -572,5 +572,18 @@ namespace GmodNET
         {
             return ptr;
         }
+
+        public void MCall(int iArgs, int iResults)
+        {
+            int error_code = this.PCall(iArgs, iResults, 0);
+
+            if(error_code != 0)
+            {
+                string error_message = this.GetString(-1);
+                this.Pop(1);
+
+                throw new GmodLuaException(error_code, error_message);
+            }
+        }
     }
 }
