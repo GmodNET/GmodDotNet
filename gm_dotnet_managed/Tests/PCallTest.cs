@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace Tests
 {
     // This test calls function with a pcall. Error is not expected.
-    public class PCallTest_NoError : ITest
+    public class PCallTest : ITest
     {
         TaskCompletionSource<bool> taskCompletion;
 
-        public PCallTest_NoError()
+        public PCallTest()
         {
             taskCompletion = new TaskCompletionSource<bool>();
         }
@@ -38,6 +38,23 @@ namespace Tests
                 }
                 lua.Pop(2);
 
+                string random_error_msg = Guid.NewGuid().ToString();
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "assert");
+                lua.PushBool(false);
+                lua.PushString(random_error_msg);
+                if(lua.PCall(2, 0, 0) == 0)
+                {
+                    throw new PCallTest_Exception("assert(false, ...) didn't throw an error");
+                }
+                string res_err_msg = lua.GetString(-1);
+                if(res_err_msg != random_error_msg)
+                {
+                    throw new PCallTest_Exception("Received error message is invalid");
+                }
+                lua.Pop(2);
+
                 taskCompletion.TrySetResult(true);
             }
             catch(Exception e)
@@ -54,6 +71,18 @@ namespace Tests
         string message;
 
         public PCallTest_NoError_Exception(string message)
+        {
+            this.message = message;
+        }
+
+        public override string Message => message;
+    }
+
+    public class PCallTest_Exception : Exception
+    {
+        string message;
+
+        public PCallTest_Exception(string message)
         {
             this.message = message;
         }
