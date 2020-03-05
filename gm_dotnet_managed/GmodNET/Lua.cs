@@ -542,6 +542,7 @@ namespace GmodNET
             push_user_data(ptr, data);
         }
 
+        [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public string CheckString(int iStackPos)
         {
             int str_len = 0;
@@ -561,6 +562,7 @@ namespace GmodNET
             }
         }
 
+        [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public double CheckNumber(int iStackPos)
         {
             return check_number(ptr, iStackPos);
