@@ -33,11 +33,11 @@ namespace GmodNET.API
         /// <summary>
         /// This method is called by GmodNET on module load and should be treated as module constructor.
         /// </summary>
-        /// <param name="LuaInterface">Interface to communicate with Garry's Mod</param>
+        /// <param name="lua">Interface to communicate with Garry's Mod</param>
         /// <param name="is_serverside">Indicates weather module is loaded serverside</param>
-        /// <param name="del">This property will get a delegate which help to get ILua from lua_state pointer. Needed for ILua.PushCFunction functionality.</param>
+        /// <param name="lua_extructor">This property gets a delegate which helps to get ILua from lua_state native pointer. Needed for ILua.PushCFunction functionality.</param>
         /// <param name="assembly_context">AseemblyLoadContext of this module.</param>
-        public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del, AssemblyLoadContext assembly_context);
+        public void Load(ILua lua, bool is_serverside, GetILuaFromLuaStatePointer lua_extructor, AssemblyLoadContext assembly_context);
         /// <summary>
         /// Will be called by GmodNET on module unload. In this method module must cleanup and unregister with Garry's Mod native/lua data.
         /// </summary>

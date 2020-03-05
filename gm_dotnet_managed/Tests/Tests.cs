@@ -44,11 +44,11 @@ namespace Tests
             IsEverythingSuccessful = false;
         }
 
-        public void Load(ILua LuaInterface, bool is_serverside, GetILuaFromLuaStatePointer del, AssemblyLoadContext assembly_context)
+        public void Load(ILua lua, bool is_serverside, GetILuaFromLuaStatePointer lua_extructor, AssemblyLoadContext assembly_context)
         {
-            this.lua = LuaInterface;
+            this.lua = lua;
             this.isServerSide = is_serverside;
-            this.lua_extructor = del;
+            this.lua_extructor = lua_extructor;
             this.current_load_context = assembly_context;
             this.OnTickDelegate = this.OnTick;
             this.OnTickIdentifier = Guid.NewGuid().ToString();
