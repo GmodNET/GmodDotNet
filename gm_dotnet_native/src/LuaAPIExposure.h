@@ -329,4 +329,9 @@ const char * export_check_string(GarrysMod::Lua::ILuaBase * lua, int iStackPos, 
 /// \return number from the stack
 double export_check_number(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 
+/// Pushes the safe wrapped C-Fucntion as CClosure
+/// \param lua ILuaBase pointer
+/// \param val function to push on stack
+void export_push_c_function_safe(GarrysMod::Lua::ILuaBase * lua, GarrysMod::Lua::CFunc val);
+
 #endif //GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H

@@ -117,6 +117,8 @@ namespace GmodNET
 
         static internal Func<IntPtr, int, double> check_number;
 
+        static internal Action<IntPtr, IntPtr> push_c_function_safe;
+
         internal static ILua ExtructLua(IntPtr lua_state)
         { 
             IntPtr tmp_ptr = LuaInterop.get_iluabase_from_the_lua_state(lua_state);

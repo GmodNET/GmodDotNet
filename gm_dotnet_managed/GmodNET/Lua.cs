@@ -313,11 +313,18 @@ namespace GmodNET
             push_bool(ptr, tmp);
         }
 
-        public void PushCFunction(CFuncManagedDelegate managed_function)
+        public void PushCFunction(CFuncManagedDelegate managed_function, bool use_safe_error_wrapper = true)
         {
             IntPtr marshaled_function = Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(managed_function);
 
-            push_c_function(ptr, marshaled_function);
+            if(use_safe_error_wrapper)
+            {
+                push_c_function_safe(ptr, marshaled_function);
+            }
+            else
+            {
+                push_c_function(ptr, marshaled_function);
+            }
         }
 
         public void PushCFunction(IntPtr native_func_ptr)
