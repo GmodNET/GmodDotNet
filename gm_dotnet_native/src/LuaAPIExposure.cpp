@@ -375,17 +375,18 @@ int ClosureSafeWrapper(lua_State * luaState)
     {
         const char * error_msg = lua->GetString(-1);
         lua->ThrowError(error_msg);
-        return arg_ret_num;
+        return 0;
     }
     else
     {
         return arg_ret_num;
     }
 }
-void export_push_c_function_safe(GarrysMod::Lua::ILuaBase * lua, GarrysMod::Lua::CFunc val)
+void export_push_c_function_safe(GarrysMod::Lua::ILuaBase * lua, GarrysMod::Lua::CFunc safe_wrapper, GarrysMod::Lua::CFunc val)
 {
+    lua->PushCFunction(safe_wrapper);
     lua->PushCFunction(val);
-    lua->PushCClosure(ClosureSafeWrapper, 1);
+    lua->PushCClosure(ClosureSafeWrapper, 2);
 }
 
 
