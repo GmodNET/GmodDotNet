@@ -23,9 +23,9 @@ namespace Tests
             {
                 ILua lua = lua_extructor(lua_state);
 
-                lua.PushString(error_message);
+                throw new GmodLuaException(2, error_message);
 
-                return -1;
+                return 0;
             };
         }
 
@@ -36,7 +36,10 @@ namespace Tests
             try
             {
                 lua.PushCFunction(function_to_throw_error);
-                lua.PCall(0, 0, 0);
+                if(lua.PCall(0, 0, 0) == 0)
+                {
+                    throw new ThrowLuaErrorFromManagedCodeException("Exception was not thrown");
+                }
                 string received_string = lua.GetString(-1);
                 lua.Pop(1);
 
