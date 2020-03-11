@@ -361,3 +361,32 @@ double export_check_number(ILuaBase * lua, int iStackPos)
     return lua->CheckNumber(iStackPos);
 }
 
+// ClosureSafeWrapper is used internally in export_push_c_function_safe
+int ClosureSafeWrapper(lua_State * luaState)
+{
+    ILuaBase * lua = luaState->luabase;
+    //Get actual function pointer form upvalue pseudoindex
+    CFunc func_ptr = lua->GetCFunction(-10003);
+
+    //Call func_ptr
+    int arg_ret_num = func_ptr(luaState);
+
+    if(arg_ret_num < 0)
+    {
+        const char * error_msg = lua->GetString(-1);
+        lua->ThrowError(error_msg);
+        return 0;
+    }
+    else
+    {
+        return arg_ret_num;
+    }
+}
+void export_push_c_function_safe(GarrysMod::Lua::ILuaBase * lua, GarrysMod::Lua::CFunc safe_wrapper, GarrysMod::Lua::CFunc val)
+{
+    lua->PushCFunction(safe_wrapper);
+    lua->PushCFunction(val);
+    lua->PushCClosure(ClosureSafeWrapper, 2);
+}
+
+

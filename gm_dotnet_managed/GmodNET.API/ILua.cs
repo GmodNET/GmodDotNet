@@ -164,9 +164,13 @@ namespace GmodNET.API
         public void PushBool(bool val);
         /// <summary>
         /// Pushes the given managed function on to the stack. The managed function will be converted to the C function.
+        /// If argument use_safe_error_wrapper is true (by default), managed function is wrapped in a C closure, which allows managed code to throw exceptions, which are 
+        /// converted to Lua errors.
+        /// CClosure, not CFunction, is pushed as a result if use_safe_error_wrapper is true.
         /// </summary>
         /// <param name="managed_function">Function to push</param>
-        public void PushCFunction(CFuncManagedDelegate managed_function);
+        /// <param name="use_safe_error_wrapper">If true, managed fucntion is wrapped in a CClosur, which allows managed code to throw exceptions safely</param>
+        public void PushCFunction(CFuncManagedDelegate managed_function, bool use_safe_error_wrapper = true);
         /// <summary>
         /// Pushes the given C-Function on to the stack. Native C function must be of signature "int Func(void*)".
         /// </summary>
