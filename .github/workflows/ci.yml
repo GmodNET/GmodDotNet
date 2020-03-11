@@ -84,11 +84,11 @@ jobs:
       run: ./srcds_run_x64 -game garrysmod -systemtest || true
       working-directory: ./gmod/
 
-    - name: Check if tests were successful
-      run: mv gmod/tests-success.txt gmod/tests.txt
-
     - name: Print test log
       run: cat gmod/tests-log.txt
+
+    - name: Check if tests were successful
+      run: mv gmod/tests-success.txt gmod/tests.txt
 
     - name: Upload test log
       uses: actions/upload-artifact@v1.0.0
@@ -290,13 +290,13 @@ jobs:
             powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
             sleep 15
 
-     - name: Check if tests were successful
-       shell: bash
-       run: mv gmod/tests-success.txt gmod/tests.txt
-
      - name: Print test log
        shell: bash
        run: cat gmod/tests-log.txt
+
+     - name: Check if tests were successful
+       shell: bash
+       run: mv gmod/tests-success.txt gmod/tests.txt
 
      - name: Upload test log
        uses: actions/upload-artifact@v1.0.0
