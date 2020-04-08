@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.4.0
       with:
-        dotnet-version: '3.1.102'
+        dotnet-version: '3.1.201'
 
     - name: Build Managed part
       run: dotnet publish -c Release
@@ -47,9 +47,9 @@ jobs:
            cd build
            mkdir dotnet
            cd dotnet
-           wget https://download.visualstudio.microsoft.com/download/pr/2d72ee67-ac4d-42c6-97d9-a26a28201fc8/977ad14b99b6ed03dcefd6655789e43a/aspnetcore-runtime-3.1.2-linux-x64.tar.gz
-           tar xvf aspnetcore-runtime-3.1.2-linux-x64.tar.gz
-           rm -f -v aspnetcore-runtime-3.1.2-linux-x64.tar.gz
+           wget https://download.visualstudio.microsoft.com/download/pr/7faca87b-7526-4dcd-ae23-4559d2c51ce3/7db1f314c733191ea43e1757e3b2583d/aspnetcore-runtime-3.1.3-linux-x64.tar.gz
+           tar xvf aspnetcore-runtime-3.1.3-linux-x64.tar.gz
+           rm -f -v aspnetcore-runtime-3.1.3-linux-x64.tar.gz
            cd ..
            cd ..
            cp LICENSE build
@@ -207,7 +207,7 @@ jobs:
      - name: Setup .NET Core SDK
        uses: actions/setup-dotnet@v1.4.0
        with:
-         dotnet-version: '3.1.102'
+         dotnet-version: '3.1.201'
 
      - name: Build Managed part
        run: dotnet publish -c Release
@@ -231,18 +231,18 @@ jobs:
             cd build
             mkdir dotnet
             cd dotnet
-            curl https://download.visualstudio.microsoft.com/download/pr/6cc3f6a7-3a0f-441c-82a2-104fa93ef8b6/3c1395461545eb5321eb2816d4b3fecf/aspnetcore-runtime-3.1.2-win-x64.zip -O -L
+            curl https://download.visualstudio.microsoft.com/download/pr/e47eda4e-2956-491a-a4c7-0ffa27b31be0/eb828ea191c5cc1c31be9f4dbbf32dec/aspnetcore-runtime-3.1.3-win-x64.zip -O -L
 
      - name: Unpack Runtime
        run: |
             cd build/dotnet
-            Expand-Archive -LiteralPath ./aspnetcore-runtime-3.1.2-win-x64.zip -DestinationPath ./
+            Expand-Archive -LiteralPath ./aspnetcore-runtime-3.1.3-win-x64.zip -DestinationPath ./
 
      - name: Delete Runtime zip
        shell: bash
        run: |
             cd build/dotnet
-            rm -rfv aspnetcore-runtime-3.1.2-win-x64.zip
+            rm -rfv aspnetcore-runtime-3.1.3-win-x64.zip
 
      - name: Copy build artifacts
        env:
@@ -362,7 +362,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.4.0
         with:
-          dotnet-version: '3.1.102'
+          dotnet-version: '3.1.201'
 
       - name: Build Managed part
         run: dotnet publish -c Release
@@ -391,9 +391,9 @@ jobs:
              cd build
              mkdir dotnet
              cd dotnet
-             curl https://download.visualstudio.microsoft.com/download/pr/9593b373-38a1-454e-844f-da3b5d47b1f8/e6f69a1dda1af567079d949c63c5be85/aspnetcore-runtime-3.1.2-osx-x64.tar.gz -O -L
-             tar xvf aspnetcore-runtime-3.1.2-osx-x64.tar.gz
-             rm -f -v aspnetcore-runtime-3.1.2-osx-x64.tar.gz
+             curl https://download.visualstudio.microsoft.com/download/pr/f2ad068a-1e52-4e46-baa9-8fc4d52bb797/ee2c76d98fc124cfd6214030529412bc/aspnetcore-runtime-3.1.3-osx-x64.tar.gz -O -L
+             tar xvf aspnetcore-runtime-3.1.3-osx-x64.tar.gz
+             rm -f -v aspnetcore-runtime-3.1.3-osx-x64.tar.gz
              cd ..
              cd ..
              cp LICENSE build
