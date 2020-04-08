@@ -65,6 +65,8 @@ jobs:
 
     - name: Download Steam and Install Garry's Mod Dedicated Server
       run: |
+           sudo apt-get update
+           sudo apt full-upgrade
            sudo apt-get install lib32gcc1
            wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
            tar -xvzf steamcmd_linux.tar.gz
