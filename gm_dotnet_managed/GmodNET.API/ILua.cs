@@ -41,7 +41,7 @@ namespace GmodNET.API
         /// <param name="key">Key in the table</param>
         public void GetField(int iStackPos, in string key);
         /// <summary>
-        /// Sets table[key] to the value at the top of the stack.
+        /// Sets table[key] to the value at the top of the stack. Pops value from the stack.
         /// </summary>
         /// <param name="iStackPos">Position of the table on the stack</param>
         /// <param name="key">Key in the table</param>
