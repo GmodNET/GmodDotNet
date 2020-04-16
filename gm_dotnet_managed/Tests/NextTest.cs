@@ -29,7 +29,7 @@ namespace Tests
                 string received_value = lua.GetString(-1);
                 lua.Pop(3);
 
-                if(received_key == key && received_value == value)
+                if(received_key != key || received_value != value)
                 {
                     throw new NextTestException("Received key value pair is invalid");
                 }
