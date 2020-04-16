@@ -16,6 +16,11 @@ namespace GmodNET.API
         /// <returns>Lua global pseudoindex for the upvalue.</returns>
         public static int GetUpValuePseudoIndex(int upvalue_index)
         {
+            if(upvalue_index <= 0)
+            {
+                throw new ArgumentException("Realtive upvalue index must be a positive integer", "upvalue_index");
+            }
+
             return (-10002 - upvalue_index);
         }
     }
