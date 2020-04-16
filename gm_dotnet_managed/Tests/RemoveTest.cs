@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    // Test for ILua.Insert
-    public class InsertTest : ITest
+    // Test for ILua.Remove
+    public class RemoveTest : ITest
     {
         public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
         {
@@ -25,17 +25,16 @@ namespace Tests
                 lua.PushNumber(second);
                 lua.PushNumber(third);
 
-                lua.Insert(-2);
+                lua.Remove(-2);
 
-                int received_first = (int)lua.GetNumber(-3);
-                int received_second = (int)lua.GetNumber(-2);
-                int received_third = (int)lua.GetNumber(-1);
+                int first_received = (int)lua.GetNumber(-2);
+                int second_received = (int)lua.GetNumber(-1);
 
-                lua.Pop(3);
+                lua.Pop(2);
 
-                if(!(received_first == first && received_second == third && received_third == second))
+                if(first_received != first || second_received != third)
                 {
-                    throw new InsertTestException("Received numbers are invalid");
+                    throw new RemoveTestException("Received numbers are invalid");
                 }
 
                 taskCompletion.TrySetResult(true);
@@ -49,9 +48,9 @@ namespace Tests
         }
     }
 
-    public class InsertTestException : Exception
+    public class RemoveTestException : Exception
     {
-        public InsertTestException(string message) : base(message)
+        public RemoveTestException(string message) : base(message)
         {
 
         }
