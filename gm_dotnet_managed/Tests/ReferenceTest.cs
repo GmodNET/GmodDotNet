@@ -21,14 +21,14 @@ namespace Tests
 
                 int reference = lua.ReferenceCreate();
 
-                if(lua.GetString(-1) == random_string)
+                if(lua.GetType(-1) == (int)TYPES.STRING && lua.GetString(-1) == random_string)
                 {
                     throw new ReferenceTestException("String wasn't poped from the stack");
                 }
 
                 lua.ReferencePush(reference);
 
-                if(lua.GetString(-1) != random_string)
+                if(lua.GetType(-1) == (int)TYPES.STRING && lua.GetString(-1) != random_string)
                 {
                     throw new ReferenceTestException("Reference wasn't pushed to the stack");
                 }
@@ -39,9 +39,9 @@ namespace Tests
 
                 lua.ReferencePush(reference);
 
-                if(lua.GetString(-1) == random_string)
+                if(lua.GetType(-1) == (int)TYPES.STRING && lua.GetString(-1) == random_string)
                 {
-                    throw new ReferenceTestException("Reference wasn't freed");
+                   throw new ReferenceTestException("Reference wasn't freed");
                 }
 
                 taskCompletion.TrySetResult(true);
