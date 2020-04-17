@@ -183,7 +183,8 @@ namespace GmodNET.API
         /// <param name="iVars"></param>
         public void PushCClosure(IntPtr native_func_ptr, int iVars);
         /// <summary>
-        /// Allows for values to be stored by reference for later use. Make sure you call ReferenceFree when you are done with a reference.
+        /// Allows for values to be stored by reference for later use. Make sure you call ReferenceFree when you are done with a reference. 
+        /// Pops the value to reference from the stack.
         /// </summary>
         /// <returns></returns>
         public int ReferenceCreate();
