@@ -257,12 +257,13 @@ namespace GmodNET.API
         public void SetState(IntPtr lua_state);
         /// <summary>
         /// Pushes the metatable associated with the given type name.
+        /// Returns the type ID to use for this type.
         /// </summary>
         /// <param name="name">Name of the metatable</param>
         /// <returns>ID (type index) of the metatable</returns>
         public int CreateMetaTable(in string name);
         /// <summary>
-        /// ushes the metatable associated with the given type.
+        /// Pushes the metatable associated with the given type.
         /// </summary>
         /// <param name="iType">Type which contains metatable</param>
         /// <returns>Success indicator</returns>
