@@ -1,5 +1,5 @@
 [![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=blue)](https://www.nuget.org/packages/GmodNET.API/) [![Downloads](https://img.shields.io/nuget/dt/GmodNET.API?color=2db94e)](https://www.nuget.org/packages/GmodNET.API/) [![Discord Server](https://img.shields.io/discord/632622505848471554?label=Our%20Discord&color=2db94e)](https://discord.gg/9bP8nMT)
-![CI](https://github.com/GlebChili/GmodDotNet/workflows/CI/badge.svg?branch=master)
+[![CI](https://github.com/GlebChili/GmodDotNet/workflows/CI/badge.svg?branch=master)](https://github.com/GlebChili/GmodDotNet/actions?query=workflow%3ACI)
 
 # Gmod.NET
 [![Current Runtime](https://img.shields.io/badge/Current%20Runtime-0.5.2-2db94e)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi) [![Current API](https://img.shields.io/badge/Current%20API-0.5.1-2db94e)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi)
