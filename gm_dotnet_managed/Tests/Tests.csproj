@@ -29,4 +29,8 @@
     <Compile Remove="ThrowErrorTest.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NSec.Cryptography" Version="20.2.0" />
+  </ItemGroup>
+
 </Project>
