@@ -49,13 +49,13 @@ namespace GmodNET
         {
             string unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
 
-            if(unmanagedDllName == null)
+            if(unmanaged_dep_path == null)
             {
                 return IntPtr.Zero;
             }
             else
             {
-                return this.LoadUnmanagedDllFromPath(unmanagedDllName);
+                return this.LoadUnmanagedDllFromPath(unmanaged_dep_path);
             }
         }
     }
