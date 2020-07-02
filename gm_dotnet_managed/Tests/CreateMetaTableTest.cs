@@ -56,7 +56,7 @@ namespace Tests
                 lua.PushMetaTable(this.NewTypeId);
 
                 lua.SetMetaTable(-2);
-
+                /*
                 if(!lua.IsType(-1, this.NewTypeId))
                 {
                     throw new Exception("Received type id is invalid");
@@ -68,6 +68,7 @@ namespace Tests
                 {
                     throw new Exception("Received type name is invalid");
                 }
+                */
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
 
