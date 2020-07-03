@@ -314,6 +314,7 @@ namespace GmodNET.API
         /// Pushes the given pointer on to the stack as light-userdata.
         /// </summary>
         /// <param name="data">Pointer to the user data</param>
+        [Obsolete("This method is unsafe and obsolete. Use ILua.PushUserType instead")]
         public void PushUserData(IntPtr data);
         /// <summary>
         /// Get ILuaBase native pointer from Garry's Mod.
