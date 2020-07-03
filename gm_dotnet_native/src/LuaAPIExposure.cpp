@@ -309,7 +309,7 @@ void export_set_user_type(ILuaBase * lua, int iStackPos, void * data)
 
 void * export_get_user_type(ILuaBase * lua, int iStackPos, int iType)
 {
-    return lua->GetUserType<void>(iStackPos, iType);
+    return lua->GetUserType<void*>(iStackPos, iType);
 }
 
 ILuaBase * export_get_iluabase_from_the_lua_state(lua_State * state)
