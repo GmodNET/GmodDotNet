@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    // Test for ILua's PushUserData, PushUserType, GetUserType, SetUserType, and GetType IsType for userdata
+    // Test for ILua's xx PushUserData xx (excluded, see issue 26), PushUserType, GetUserType, SetUserType, and GetType IsType for userdata
     public class UserData : ITest
     {
         int Type_Id;
