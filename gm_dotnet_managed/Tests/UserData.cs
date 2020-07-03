@@ -34,6 +34,7 @@ namespace Tests
 
             try
             {
+                /*
                 //Test PushUserData
                 lua.PushUserData((IntPtr)this.RandomInt);
 
@@ -43,6 +44,7 @@ namespace Tests
                 }
 
                 lua.Pop(1);
+                */
 
                 //Test PushUserType
                 this.Type_Id = lua.CreateMetaTable("UserDataTestType");
