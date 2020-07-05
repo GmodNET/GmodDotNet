@@ -61,7 +61,8 @@ namespace Tests
                 // Test GetTable
                 lua.PushString("TestVal");
                 lua.GetTable(-2);
-                if(lua.GetString(-1) != this.RandomString1)
+                string receivedString1 = lua.GetString(-1);
+                if(receivedString1 != this.RandomString1)
                 {
                     throw new Exception("GetTable returned invalid string");
                 }
@@ -70,7 +71,8 @@ namespace Tests
                 // Test RawGet
                 lua.PushString("TestVal");
                 lua.RawGet(-2);
-                if(lua.GetString(-1) != this.RandomString2)
+                string receivedString2 = lua.GetString(-1);
+                if(receivedString2 != this.RandomString2)
                 {
                     throw new Exception("RawGet returned invalid string");
                 }
