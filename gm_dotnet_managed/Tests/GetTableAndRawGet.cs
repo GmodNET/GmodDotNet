@@ -62,9 +62,18 @@ namespace Tests
                 lua.PushString("TestVal");
                 lua.GetTable(-2);
                 string receivedString1 = lua.GetString(-1);
-                if(receivedString1 != this.RandomString1)
+                if(receivedString1 != this.RandomString2)
                 {
-                    throw new Exception("GetTable returned invalid string");
+                    throw new Exception("GetTable returned invalid string on existing key");
+                }
+                lua.Pop(1);
+
+                lua.PushString("ArbitraryString");
+                lua.GetTable(-2);
+                string receivedString11 = lua.GetString(-1);
+                if(receivedString11 != this.RandomString1)
+                {
+                    throw new Exception("GetTable returned invalid string on non-existing key");
                 }
                 lua.Pop(1);
 
@@ -74,8 +83,19 @@ namespace Tests
                 string receivedString2 = lua.GetString(-1);
                 if(receivedString2 != this.RandomString2)
                 {
-                    throw new Exception("RawGet returned invalid string");
+                    throw new Exception("RawGet returned invalid string on existing key");
                 }
+                lua.Pop(1);
+
+                lua.PushString("ArbitraryString");
+                lua.RawGet(-2);
+                int received_type = lua.GetType(-1);
+                if(received_type != (int)TYPES.NIL)
+                {
+                    throw new Exception("RawGet didn't return NIL on non-existing key");
+                }
+                lua.Pop(1);
+
                 lua.Pop(lua.Top());
 
                 taskCompletion.TrySetResult(true);
