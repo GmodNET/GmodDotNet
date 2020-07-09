@@ -544,8 +544,8 @@ jobs:
            mkdir build
            mkdir build/gmodnet
            mkdir build/gmodnet/API
-           cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
-           cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
+           cp -a -v gm_dotnet_managed/GmodNET/bin/Debug/netcoreapp3.1/publish/. build/gmodnet
+           cp gm_dotnet_managed/GmodNET.API/bin/Debug/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
            find build/gmodnet/*.exe | xargs rm -f -v
            rm -f -v build/gmodnet/GmodNET
            rm -f -v build/gmodnet/web.config
