@@ -551,3 +551,40 @@ jobs:
            rm -f -v build/gmodnet/web.config
            cd build
            echo "${{ github.sha }}" > gmodnet-build-sha.txt
+
+    - name: Download GMS
+      if: github.event_name == 'push'
+      run: |
+           wget https://github.com/GlebChili/GmodNetModuleSigner/releases/download/1.0.0/gms
+           chmod +x gms
+
+    - name: Download signature key
+      if: github.event_name == 'push'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GMOD_NET_PRIVATE_KEY_REPO_TOKEN }}
+      run: git clone https://GlebChili:$GITHUB_TOKEN@github.com/GlebChili/GmodDotNetPrivateKey.git
+
+    - name: Sign assemblies
+      if: github.event_name == 'push'
+      run: |
+           cd build
+           cd gmodnet
+           ./../../gms --sign=GmodNET.dll --key=../../GmodDotNetPrivateKey/gmodnet-private.modulekey --version=$GMODNET_VERSION
+           mv signature.modulesign GmodNET.modulesign
+           cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
+           mv gmodnet-public.modulekey GmodNET.modulekey
+
+    - name: Pack build
+      if: github.event_name == 'push'
+      env:
+        TRAVIS_COMMIT: ${{ github.sha }}
+      run: |
+           cd build
+           tar czfv ../linux-$TRAVIS_COMMIT-debug.tar.gz .
+
+    - name: Load signed build as artifact
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: linux-${{ github.sha }}-debug
+        path: linux-${{ github.sha }}-debug.tar.gz
