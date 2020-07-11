@@ -607,4 +607,4 @@ jobs:
         AWS_REGION: 'us-west-1'
         AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
         SOURCE_DIR: 'publish'
-        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/'
+        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/debug'
