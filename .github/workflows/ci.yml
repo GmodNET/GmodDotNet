@@ -522,9 +522,9 @@ jobs:
 
    runs-on: ubuntu-latest
 
-   on: push
-
    needs: [linux-build, windows-build, mac-build]
+
+   if: github.event_name == 'push'
 
    steps:
     - name: Checkout
