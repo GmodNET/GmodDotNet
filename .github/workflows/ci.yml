@@ -515,7 +515,7 @@ jobs:
       - name: Push Discord notification
         run: |
              cd node
-             npm update
+             npm install
              node github-discord.js ${{ secrets.DISCORD_WEBHOOK }} ${{ github.ref }} ${{ github.sha }} $GMODNET_VERSION
 
  managed-debug-assemblies:
