@@ -617,12 +617,3 @@ jobs:
         AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
         SOURCE_DIR: 'publish'
         DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/debug'
-
- informer:
-
-   runs-on: ubuntu-latest
-
-   steps:
-
-     - name: Print github event content
-       run: echo ${{ toJson(github.event.commits) }}
