@@ -625,4 +625,4 @@ jobs:
    steps:
 
      - name: Print github event content
-       run: echo ${{ github.event.commits[github.event.commits.length  - 1].message }}
+       run: echo ${{ toJSON(github.event.commits) }}
