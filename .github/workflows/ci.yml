@@ -625,4 +625,4 @@ jobs:
    steps:
 
      - name: Print github event content
-       run: echo ${{ toJSON(github.event) }}
+       run: echo ${{ toJson(github.event) }}
