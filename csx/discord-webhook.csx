@@ -42,7 +42,7 @@ DiscordMessage msg = new DiscordMessage
     embeds = new DiscordEmbedded[] { new DiscordEmbedded
         {
             type = "rich",
-            title = "Nightly build for " + branch + " " + commit.Substring(0, 7),
+            title = "Nightly build for `" + branch + "` commit `" + commit.Substring(0, 7) + "`",
             description = discord_text,
             url = "https://github.com/GlebChili/GmodDotNet/commit/" + commit,
             color = 65530
