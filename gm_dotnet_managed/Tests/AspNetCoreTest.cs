@@ -54,6 +54,8 @@ namespace Tests
                     throw new Exception("Embedded web server has returned invalid response");
                 }
 
+                webHost.StopAsync().Wait();
+
                 taskCompletion.TrySetResult(true);
             }
             catch(Exception e)
