@@ -415,6 +415,11 @@ namespace GmodNET
             }
         }
 
+        public bool IsType(int iStackPos, TYPES type)
+        {
+            return this.IsType(iStackPos, (int)type);
+        }
+
         public int GetType(int iStackPos)
         {
             if (iStackPos == 0)
@@ -436,6 +441,11 @@ namespace GmodNET
 
                 return Encoding.UTF8.GetString((byte*)c_str, len);
             }
+        }
+
+        public string GetTypeName(TYPES type)
+        {
+            return this.GetTypeName((int)type);
         }
 
         public int ObjLen(int iStackPos)
@@ -523,6 +533,11 @@ namespace GmodNET
             {
                 return true;
             }
+        }
+
+        public bool PushMetaTable(TYPES type)
+        {
+            return this.PushMetaTable((int)type);
         }
 
         public void PushUserType(IntPtr data_pointer, int iType)
