@@ -40,6 +40,7 @@ namespace GmodNET
         {
             this.module_name = module_name;
             resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
+            customNativeLibraryResolver = null;
         }
 
         protected override System.Reflection.Assembly Load(System.Reflection.AssemblyName assemblyName)
