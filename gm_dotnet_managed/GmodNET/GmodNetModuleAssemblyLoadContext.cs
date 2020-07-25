@@ -30,6 +30,11 @@ namespace GmodNET
                 return customNativeLibraryResolver;
             }
         }
+
+        public override void SetCustomNativeLibraryResolver(Func<ModuleAssemblyLoadContext, string, IntPtr> resolver)
+        {
+            customNativeLibraryResolver = resolver;
+        }
         
         internal GmodNetModuleAssemblyLoadContext(string module_name) : base(isCollectible: true)
         {

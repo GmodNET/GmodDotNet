@@ -12,5 +12,7 @@ namespace GmodNET.API
         public abstract Func<ModuleAssemblyLoadContext, string, IntPtr> CustomNativeLibraryResolver {get; }
 
         public ModuleAssemblyLoadContext(bool isCollectible) : base(isCollectible: isCollectible){ }
+
+        public abstract void SetCustomNativeLibraryResolver(Func<ModuleAssemblyLoadContext, string, IntPtr> resolver);
     }
 }
