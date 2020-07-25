@@ -63,15 +63,29 @@ namespace GmodNET
 
         protected override IntPtr LoadUnmanagedDll (string unmanagedDllName)
         {
-            string unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+            IntPtr lib_pointer = IntPtr.Zero;
 
-            if(unmanaged_dep_path == null)
+            if(customNativeLibraryResolver != null)
             {
-                return IntPtr.Zero;
+                lib_pointer = customNativeLibraryResolver(this, unmanagedDllName);
+            }
+
+            if(lib_pointer != IntPtr.Zero)
+            {
+                return lib_pointer;
             }
             else
             {
-                return this.LoadUnmanagedDllFromPath(unmanaged_dep_path);
+                string unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+
+                if(unmanaged_dep_path == null)
+                {
+                    return IntPtr.Zero;
+                }
+                else
+                {
+                    return this.LoadUnmanagedDllFromPath(unmanaged_dep_path);
+                }
             }
         }
     }
