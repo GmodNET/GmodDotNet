@@ -9,6 +9,6 @@ namespace GmodNET.API
     {
         public abstract string ModuleName {get; }
 
-        public ModuleAssemblyLoadContext() : base(isCollectible: true){ }
+        public ModuleAssemblyLoadContext(bool isCollectible) : base(isCollectible: isCollectible){ }
     }
 }

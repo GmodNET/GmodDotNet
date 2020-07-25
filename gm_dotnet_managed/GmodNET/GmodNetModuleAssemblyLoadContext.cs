@@ -13,6 +13,7 @@ namespace GmodNET
     {
         private AssemblyDependencyResolver resolver;
         private string module_name;
+        private Func<ModuleAssemblyLoadContext, string, IntPtr> customNativeLibraryResolver;
 
         public override string ModuleName
         { 
@@ -22,7 +23,7 @@ namespace GmodNET
             }
         }
         
-        internal GmodNetModuleAssemblyLoadContext(string module_name) : base()
+        internal GmodNetModuleAssemblyLoadContext(string module_name) : base(isCollectible: true)
         {
             this.module_name = module_name;
             resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
