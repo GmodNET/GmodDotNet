@@ -211,17 +211,30 @@ namespace GmodNET.API
         /// <returns></returns>
         public bool IsType(int iStackPos, int iType);
         /// <summary>
+        /// Returns true if the value at iStackPos is of the given type.
+        /// </summary>
+        /// <param name="iStackPos">Position of value to check type of</param>
+        /// <param name="type">Type</param>
+        /// <returns></returns>
+        public bool IsType(int iStackPos, TYPES type);
+        /// <summary>
         /// Returns the type of the value at iStackPos.
         /// </summary>
         /// <param name="iStackPos"></param>
         /// <returns></returns>
         public int GetType(int iStackPos);
         /// <summary>
-        /// Returns the name associated with the given type ID.
+        /// Returns the name associated with the given type ID. Doesn't work with user-defined types.
         /// </summary>
         /// <param name="iType">Type index</param>
         /// <returns></returns>
         public string GetTypeName(int iType);
+        /// <summary>
+        /// Returns the name associated with the given type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns></returns>
+        public string GetTypeName(TYPES type);
         /// <summary>
         /// Returns the length of the object at iStackPos.
         /// </summary>
@@ -265,9 +278,15 @@ namespace GmodNET.API
         /// <summary>
         /// Pushes the metatable associated with the given type.
         /// </summary>
-        /// <param name="iType">Type which contains metatable</param>
+        /// <param name="iType">Index of the type which metatable to push</param>
         /// <returns>Success indicator</returns>
         public bool PushMetaTable(int iType);
+        /// <summary>
+        /// Pushes the metatable associated with the given type.
+        /// </summary>
+        /// <param name="type">Type which metatable to push</param>
+        /// <returns>Success indicator</returns>
+        public bool PushMetaTable(TYPES type);
         /// <summary>
         /// Creates a new UserData of type iType that references the given data.
         /// </summary>
