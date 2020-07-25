@@ -22,7 +22,7 @@ namespace Tests
 
         GetILuaFromLuaStatePointer lua_extructor;
 
-        AssemblyLoadContext current_load_context;
+        ModuleAssemblyLoadContext current_load_context;
 
         CFuncManagedDelegate OnTickDelegate;
 
@@ -44,7 +44,7 @@ namespace Tests
             IsEverythingSuccessful = false;
         }
 
-        public void Load(ILua lua, bool is_serverside, GetILuaFromLuaStatePointer lua_extructor, AssemblyLoadContext assembly_context)
+        public void Load(ILua lua, bool is_serverside, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext assembly_context)
         {
             this.lua = lua;
             this.isServerSide = is_serverside;
