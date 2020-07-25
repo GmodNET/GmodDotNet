@@ -5,15 +5,16 @@ using System.Runtime.Loader;
 using System.IO;
 using System.Reflection;
 using System.Linq;
+using GmodNET.API;
 
 namespace GmodNET
 {
-    internal class GmodNetModuleAssemblyLoadContext : AssemblyLoadContext
+    internal class GmodNetModuleAssemblyLoadContext : ModuleAssemblyLoadContext
     {
         private AssemblyDependencyResolver resolver;
         private string module_name;
 
-        internal string ModuleName
+        public override string ModuleName
         { 
             get
             {
@@ -21,7 +22,7 @@ namespace GmodNET
             }
         }
         
-        internal GmodNetModuleAssemblyLoadContext(string module_name) : base(isCollectible: true)
+        internal GmodNetModuleAssemblyLoadContext(string module_name) : base()
         {
             this.module_name = module_name;
             resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
