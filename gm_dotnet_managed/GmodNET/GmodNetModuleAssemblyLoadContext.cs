@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace GmodNET
 {
-    internal class ModuleAssemblyLoadContext : AssemblyLoadContext
+    internal class GmodNetModuleAssemblyLoadContext : AssemblyLoadContext
     {
         private AssemblyDependencyResolver resolver;
         private string module_name;
@@ -21,7 +21,7 @@ namespace GmodNET
             }
         }
         
-        internal ModuleAssemblyLoadContext(string module_name) : base(isCollectible: true)
+        internal GmodNetModuleAssemblyLoadContext(string module_name) : base(isCollectible: true)
         {
             this.module_name = module_name;
             resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
