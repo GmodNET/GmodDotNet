@@ -84,7 +84,14 @@ namespace GmodNET
                 }
                 else
                 {
-                    return this.LoadUnmanagedDllFromPath(unmanaged_dep_path);
+                    try
+                    {
+                        return this.LoadUnmanagedDllFromPath(unmanaged_dep_path);
+                    }
+                    catch
+                    {
+                        return IntPtr.Zero;
+                    }
                 }
             }
         }
