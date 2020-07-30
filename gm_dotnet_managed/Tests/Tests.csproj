@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSec.Cryptography" Version="20.2.0" />
+    <PackageReference Include="GmodNET.Tests.Native" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
