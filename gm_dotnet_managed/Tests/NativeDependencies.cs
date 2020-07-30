@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using NSec.Cryptography;
+using System.Runtime.InteropServices;
 
 namespace Tests
 {
@@ -11,14 +11,22 @@ namespace Tests
     // libsodium native library
     public class NativeDependencies : ITest
     {
+        [DllImport("gmodTestLib.dll", EntryPoint = "hello")]
+        public static extern int NativeTestFunc(int x);
+
         public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 
             try
             {
-                var blake2_hasher = HashAlgorithm.Blake2b_512;
-                var hash = blake2_hasher.Hash(Encoding.UTF8.GetBytes("Test"));
+                int random_int = new Random().Next(0, 1000);
+                int result = NativeTestFunc(random_int);
+
+                if(result != random_int + 3)
+                {
+                    throw new Exception("NativeTestFunc returned invalid value");
+                }
 
                 taskCompletion.TrySetResult(true);
             }
