@@ -11,7 +11,7 @@ namespace Tests
     // libsodium native library
     public class NativeDependencies : ITest
     {
-        [DllImport("gmodTestLib.dll", EntryPoint = "hello")]
+        [DllImport("gmodTestLib", EntryPoint = "hello")]
         public static extern int NativeTestFunc(int x);
 
         public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
