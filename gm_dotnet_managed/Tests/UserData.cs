@@ -28,7 +28,7 @@ namespace Tests
             RandomInt3 = rand.Next(0, 10000);
         }
 
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 

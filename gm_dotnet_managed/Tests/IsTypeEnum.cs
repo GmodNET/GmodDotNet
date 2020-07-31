@@ -9,7 +9,7 @@ namespace Tests
     // Test for ILua.IsType(TYPES) method
     public class IsTypeEnum : ITest
     {
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 

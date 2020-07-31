@@ -9,7 +9,7 @@ namespace Tests
     // This test checks that lua.Pop() and lua.Top() work properly
     public class PopTopTest : ITest
     {
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 

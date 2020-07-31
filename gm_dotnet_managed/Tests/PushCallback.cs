@@ -27,7 +27,7 @@ namespace Tests
             CallbackDelegate = Callback;
         }
 
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             this.lua_extructor = lua_extructor;
 

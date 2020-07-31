@@ -145,7 +145,7 @@ namespace Tests
 
                     lua.Log("Starting test " + cur_test_inst.GetType().ToString());
 
-                    Task<bool> cur_test_promise = cur_test_inst.Start(lua, this.lua_extructor);
+                    Task<bool> cur_test_promise = cur_test_inst.Start(lua, this.lua_extructor, current_load_context);
 
                     current_test = new Tuple<ITest, Task<bool>>(cur_test_inst, cur_test_promise);
                 }
