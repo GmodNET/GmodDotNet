@@ -1,15 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
 
+  <!-- Public properties to configure runtime. -->
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <!-- Internal properties. Do not change manually. -->
+  <PropertyGroup>
+    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet</BaseGmodNETPublishInst>
+  </PropertyGroup>
+  
   <ItemGroup>
     
   </ItemGroup>
 
   <Target Name="BuildRuntime">
     <Message Text="Starting GmodNET Runtime build process" Importance="high" />
+    <Message Text="Executing '$(BaseGmodNETPublishInst)" Importance="high" />
+    <Exec Command="$(BaseGmodNETPublishInst)" ConsoleToMsBuild="true" />
   </Target>
 
 </Project>
