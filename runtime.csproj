@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
 
-  <!-- Public properties to configure runtime. -->
+  <!-- Public properties to configure runtime build. -->
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
