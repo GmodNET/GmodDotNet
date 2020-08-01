@@ -7,9 +7,9 @@
 
   <!-- Internal properties. Do not change manually. -->
   <PropertyGroup>
-    <OutDir>$(MSBuildThisFileDirectory)/build</OutDir>
-    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o $(OutDir)/gmodnet</BaseGmodNETPublishInst>
-    <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o $(OutDir)/gmodnet/API</GmodNETAPIBuildInst>
+    <OutDir>$(MSBuildThisFileDirectory)build/</OutDir>
+    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o $(OutDir)gmodnet</BaseGmodNETPublishInst>
+    <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o $(OutDir)gmodnet/API</GmodNETAPIBuildInst>
   </PropertyGroup>
   
   <ItemGroup>
