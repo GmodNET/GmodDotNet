@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <Target Name="BuildProj">
-    <Message Text="Custom build!!!" />
+    <Message Text="Custom build!!!" Importance="high" />
   </Target>
 
 </Project>
