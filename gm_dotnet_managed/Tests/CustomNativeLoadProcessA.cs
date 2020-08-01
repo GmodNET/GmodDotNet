@@ -26,7 +26,7 @@ namespace Tests
                         }
                         else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                         {
-                            return NativeLibrary.Load("dl");
+                            return NativeLibrary.Load("libdl.so");
                         }
                         else
                         {
