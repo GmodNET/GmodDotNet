@@ -18,7 +18,14 @@ namespace Tests
             {
                 try
                 {
-                    IntPtr test_lib_handle = NativeLibrary.Load("SomeRandomLibraryName");
+                    if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        LoadLibraryA("Kernel32");
+                    }
+                    else
+                    {
+                        dlopen("libdl", 0);
+                    }
                 }
                 catch(DllNotFoundException e)
                 {
@@ -32,5 +39,11 @@ namespace Tests
 
             return taskCompletion.Task;
         }
+
+        [DllImport("SomeRandomLibraryName", CharSet = CharSet.Ansi)]
+        public static extern IntPtr LoadLibraryA(string lib_name);
+
+        [DllImport("SomeRandomLibraryName")]
+        public static extern IntPtr dlopen(string lib_name, int flag);
     }
 }
