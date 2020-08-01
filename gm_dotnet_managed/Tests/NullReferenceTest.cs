@@ -7,7 +7,7 @@ namespace Tests
     // This test checks that CoreCLR can catch NullReferenceException (which is important on *nix systems since it uses SIGSEGV handling to detect)
     public class NullReferenceTest : ITest
     {
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 

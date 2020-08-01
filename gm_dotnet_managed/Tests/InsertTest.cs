@@ -9,7 +9,7 @@ namespace Tests
     // Test for ILua.Insert
     public class InsertTest : ITest
     {
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 

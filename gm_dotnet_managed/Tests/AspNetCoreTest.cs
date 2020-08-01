@@ -28,7 +28,7 @@ namespace Tests
             randomString = Guid.NewGuid().ToString();
         }
 
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             try
             {
