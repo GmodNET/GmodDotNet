@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Loader;
+using System.Reflection;
 
 namespace GmodNET.API
 {
@@ -13,8 +14,9 @@ namespace GmodNET.API
         /// <summary>
         /// Get associated module name.
         /// </summary>
-        public abstract string ModuleName {get; }
+        public virtual string ModuleName => moduleName;
 
+        string moduleName;
 
         /// <summary>
         /// Get current custom native library resolver delegate.
@@ -24,8 +26,12 @@ namespace GmodNET.API
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleAssemblyLoadContext" /> class with a value that indicates whether unloading is enabled.
         /// </summary>
-        /// <param name="isCollectible"></param>
-        public ModuleAssemblyLoadContext(bool isCollectible) : base(isCollectible: isCollectible){ }
+        /// <param name="isCollectible"><c>true</c> to enable <see cref="AssemblyLoadContext.Unload()"/>; otherwise, <c>false</c>. </param>
+        /// <param name="module_name">The name of the corresponding module.</param>
+        public ModuleAssemblyLoadContext(string module_name, bool isCollectible) : base(isCollectible: isCollectible)
+        { 
+            moduleName = module_name;
+        }
 
         /// <summary>
         /// Sets <paramref name="resolver"/> as new custom native library resolution middleware for the current instance of <see cref="ModuleAssemblyLoadContext"/>.

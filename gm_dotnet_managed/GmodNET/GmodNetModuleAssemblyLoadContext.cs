@@ -36,7 +36,7 @@ namespace GmodNET
             customNativeLibraryResolver = resolver;
         }
         
-        internal GmodNetModuleAssemblyLoadContext(string module_name) : base(isCollectible: true)
+        internal GmodNetModuleAssemblyLoadContext(string module_name) : base(module_name: module_name, isCollectible: true)
         {
             this.module_name = module_name;
             resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
