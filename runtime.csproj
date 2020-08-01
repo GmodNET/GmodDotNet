@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildProj">
+<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <Target Name="BuildProj">
+  <Target Name="BuildRuntime">
     <Message Text="Custom build!!!" Importance="high" />
   </Target>
 
