@@ -24,9 +24,13 @@ namespace Tests
                         {
                             return NativeLibrary.Load("Kernel32");
                         }
-                        else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                        else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                         {
                             return NativeLibrary.Load("libdl.so");
+                        }
+                        else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                        {
+                            return NativeLibrary.Load("libdl.dylib");
                         }
                         else
                         {
