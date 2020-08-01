@@ -4,8 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    
+  </ItemGroup>
+
   <Target Name="BuildRuntime">
-    <Message Text="Custom build!!!" Importance="high" />
+    <Message Text="Starting GmodNET Runtime build process" Importance="high" />
   </Target>
 
 </Project>
