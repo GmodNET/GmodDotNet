@@ -39,14 +39,18 @@ namespace Tests
                     }
                 });
 
-                IntPtr test_lib_handle = NativeLibrary.Load("SomeRandomLibraryName");
-
-                if(test_lib_handle == IntPtr.Zero)
+                if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    throw new Exception("Native library handle is zero");
+                    LoadLibraryA("Kernel32");
                 }
-
-                assembly_context.SetCustomNativeLibraryResolver(null);
+                else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    dlopen("libdl", 0);
+                }
+                else
+                {
+                    throw new PlatformNotSupportedException("The current OS platform is not supported by GmodNET.Tests");
+                }
 
                 taskCompletion.TrySetResult(true);
             }
@@ -55,7 +59,15 @@ namespace Tests
                 taskCompletion.TrySetException(new Exception[] { e });
             }
 
+            assembly_context.SetCustomNativeLibraryResolver(null);
+
             return taskCompletion.Task;
         }
+
+        [DllImport("SomeRandomLibraryName", CharSet = CharSet.Ansi)]
+        public static extern IntPtr LoadLibraryA(string lib_name);
+
+        [DllImport("SomeRandomLibraryName")]
+        public static extern IntPtr dlopen(string lib_name, int flag);
     }
 }
