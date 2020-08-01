@@ -8,6 +8,7 @@
   <!-- Internal properties. Do not change manually. -->
   <PropertyGroup>
     <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet</BaseGmodNETPublishInst>
+    <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API</GmodNETAPIBuildInst>
   </PropertyGroup>
   
   <ItemGroup>
@@ -18,6 +19,9 @@
     <Message Text="Starting GmodNET Runtime build process" Importance="high" />
     <Message Text="Executing '$(BaseGmodNETPublishInst)" Importance="high" />
     <Exec Command="$(BaseGmodNETPublishInst)" ConsoleToMsBuild="true" />
+    <Delete Files="build/gmodnet/GmodNET.exe;build/gmodnet/GmodNET;build/gmodnet/web.config" />
+    <Message Text="Executing $(GmodNETAPIBuildInst)" Importance="high" />
+    <Exec Command="$(GmodNETAPIBuildInst)" ConsoleToMsBuild="true" />
   </Target>
 
 </Project>
