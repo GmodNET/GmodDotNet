@@ -3,6 +3,10 @@
   <!-- Public properties to configure runtime build. -->
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <BundledNETCoreVersion>3.1.6</BundledNETCoreVersion>
+
+    <BundledAspVersion>$(BundledNETCoreVersion)</BundledAspVersion>
   </PropertyGroup>
 
   <!-- Internal properties. Do not change manually. -->
@@ -18,6 +22,10 @@
     <CmakeBuildWinInst>cd obj/cmake_build &amp;&amp; cmake --build ./ -- /p:Configuration=Release</CmakeBuildWinInst>
     
     <CmakeBuildLinuxAndMacInst>cd obj/cmake_build &amp;&amp; cmake --build ./</CmakeBuildLinuxAndMacInst>
+
+    <NETCoreUrl>https://www.nuget.org/api/v2/package/Microsoft.NETCore.App.Runtime.$(NETCoreSdkRuntimeIdentifier)/$(BundledNETCoreVersion)</NETCoreUrl>
+
+    <AspNETUrl>https://www.nuget.org/api/v2/package/Microsoft.AspNetCore.App.Runtime.$(NETCoreSdkRuntimeIdentifier)/$(BundledAspVersion)</AspNETUrl>
   </PropertyGroup>
   
   <ItemGroup>
@@ -32,6 +40,9 @@
     <MakeDir Directories="obj/cmake_build" />
     <Exec Command="$(CmakeGenerateInst)" ConsoleToMsBuild="true" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" Targets="CmakeBuildWindows" />
+    <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'" Targets="CmakeBuildLinux" />
+    <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'" Targets="CmakeBuildMac" />
+    <CallTarget Targets="BundleNetRuntime" />
 
     <CallTarget Targets="RuntimeCleanUp" />
     <OnError ExecuteTargets="RuntimeCleanUp" />
@@ -46,11 +57,26 @@
 
   <Target Name="CmakeBuildLinux">
     <Exec Command="$(CmakeBuildLinuxAndMacInst)" ConsoleToMsBuild="true" />
+    <Copy SourceFiles="build/gmsv_dotnet_linux64.dll" DestinationFiles="build/gmcl_dotnet_linux64.dll" />
+  </Target>
+
+  <Target Name="CmakeBuildMac">
+    <Exec Command="$(CmakeBuildLinuxAndMacInst)" ConsoleToMsBuild="true" />
+    <Copy SourceFiles="build/gmsv_dotnet_osx64.dll" DestinationFiles="build/gmcl_dotnet_osx64.dll" />
   </Target>
 
   <Target Name="RuntimeCleanUp">
     <Message Text="Making clean-up"  Importance="high" />
     <RemoveDir Directories="obj/cmake_build" />
+    <RemoveDir Directories="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)" />
+    <RemoveDir Directories="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" />
+  </Target>
+
+  <Target Name="BundleNetRuntime">
+    <DownloadFile DestinationFileName="netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion).zip" DestinationFolder="obj" SourceUrl="$(NETCoreUrl)" SkipUnchangedFiles="true" />
+    <DownloadFile DestinationFileName="aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" DestinationFolder="obj" SourceUrl="$(AspNETUrl)" SkipUnchangedFiles="true" />
+    <Unzip DestinationFolder="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion).zip" />
+    <Unzip DestinationFolder="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" SourceFiles="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" />
   </Target>
 
 </Project>
