@@ -9,6 +9,8 @@
   <PropertyGroup>
     <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/</BaseGmodNETPublishInst>
     <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API/</GmodNETAPIBuildInst>
+    <CmakeGenerateInst>cd obj/cmake_build &amp;&amp; cmake ../../gm_dotnet_native</CmakeGenerateInst>
+    <CmakeBuildInst>cd obj/cmake_build &amp;&amp; cmake ../../gm_dotnet_native</CmakeBuildInst>
   </PropertyGroup>
   
   <ItemGroup>
@@ -22,6 +24,10 @@
     <Delete Files="build/gmodnet/GmodNET.exe;build/gmodnet/GmodNET;build/gmodnet/web.config" />
     <Message Text="Executing $(GmodNETAPIBuildInst)" Importance="high" />
     <Exec Command="$(GmodNETAPIBuildInst)" ConsoleToMsBuild="true" />
+    <MakeDir Directories="obj/cmake_build" />
+    <Message Text="Executing $(CmakeGenerate)"  Importance="high" />
+    <Exec Command="$(CmakeGenerateInst)" ConsoleToMsBuild="true" />
+    <RemoveDir Directories="obj/cmake_build" />
   </Target>
 
 </Project>
