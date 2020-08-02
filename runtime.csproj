@@ -77,6 +77,10 @@
     <DownloadFile DestinationFileName="aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" DestinationFolder="obj" SourceUrl="$(AspNETUrl)" SkipUnchangedFiles="true" />
     <Unzip DestinationFolder="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion).zip" />
     <Unzip DestinationFolder="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" SourceFiles="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" />
+    <Copy DestinationFolder="build/dotnet" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/**.*" OverwriteReadOnlyFiles="true" />
+    <Copy DestinationFolder="build/dotnet" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/lib/$(TargetFramework)/**.*" OverwriteReadOnlyFiles="true" />
+    <Copy DestinationFolder="build/dotnet" SourceFiles="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/**.*" OverwriteReadOnlyFiles="true" />
+    <Copy DestinationFolder="build/dotnet" SourceFiles="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/lib/$(TargetFramework)/**.*" OverwriteReadOnlyFiles="true" /> 
   </Target>
 
 </Project>
