@@ -16,9 +16,6 @@ set(EXTERNAL_INCLUDES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external_includes/" CACH
 #Set git commit variable
 set(GIT_COMMIT "nocommit" CACHE STRING "Git commit message")
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../build)
-
-
 #Project name
 project(gm_dotnet_native)
 add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
@@ -26,20 +23,22 @@ add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/L
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 #Set up compile definitions
 target_compile_definitions(gm_dotnet_native PUBLIC GIT_COMMIT="${GIT_COMMIT}")
+#Set path for output
+set_target_properties(gm_dotnet_native PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
 #Add linux helper lib
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	add_library(linuxhelper SHARED linux-helper-src/segv_signal_handler.h linux-helper-src/segv_signal_handler.cpp)
+	set_target_properties(linuxhelper PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
+			RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
 endif()
 
 if(WIN32)
 	set_target_properties(gm_dotnet_native PROPERTIES OUTPUT_NAME "gmsv_dotnet_win64")
-	add_custom_target(create_client_lib ALL DEPENDS gm_dotnet_native COMMAND COPY /B /Y \"${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\\gmsv_dotnet_win64.dll\" /B /Y \"${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\\gmcl_dotnet_win64.dll\")
 else()
 	if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 		set_target_properties(gm_dotnet_native PROPERTIES OUTPUT_NAME "gmsv_dotnet_linux64" SUFFIX ".dll" PREFIX "")
-		add_custom_target(create_client_lib ALL DEPENDS gm_dotnet_native COMMAND cp -f -T ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gmsv_dotnet_linux64.dll ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gmcl_dotnet_linux64.dll)
 	elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 		set_target_properties(gm_dotnet_native PROPERTIES OUTPUT_NAME "gmsv_dotnet_osx64" SUFFIX ".dll" PREFIX "")
-		add_custom_target(create_client_lib ALL DEPENDS gm_dotnet_native COMMAND cp -f ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gmsv_dotnet_osx64.dll ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gmcl_dotnet_osx64.dll)
 	endif()
 endif()

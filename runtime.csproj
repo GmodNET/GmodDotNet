@@ -8,9 +8,16 @@
   <!-- Internal properties. Do not change manually. -->
   <PropertyGroup>
     <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/</BaseGmodNETPublishInst>
+    
     <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API/</GmodNETAPIBuildInst>
-    <CmakeGenerateInst>cd obj/cmake_build &amp;&amp; cmake ../../gm_dotnet_native</CmakeGenerateInst>
-    <CmakeBuildInst>cd obj/cmake_build &amp;&amp; cmake ../../gm_dotnet_native</CmakeBuildInst>
+    
+    <CmakeGenerateWinFlags Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">-G "Visual Studio 16 2019" -A x64</CmakeGenerateWinFlags>
+    
+    <CmakeGenerateInst>cd obj/cmake_build &amp;&amp; cmake ../../gm_dotnet_native $(CmakeGenerateWinFlags)</CmakeGenerateInst>
+    
+    <CmakeBuildWinInst>cd obj/cmake_build &amp;&amp; cmake --build ./ -- /p:Configuration=Release</CmakeBuildWinInst>
+    
+    <CmakeBuildLinuxAndMacInst>cd obj/cmake_build &amp;&amp; cmake --build ./</CmakeBuildLinuxAndMacInst>
   </PropertyGroup>
   
   <ItemGroup>
@@ -19,14 +26,30 @@
 
   <Target Name="BuildRuntime">
     <Message Text="Starting GmodNET Runtime build process" Importance="high" />
-    <Message Text="Executing '$(BaseGmodNETPublishInst)" Importance="high" />
     <Exec Command="$(BaseGmodNETPublishInst)" ConsoleToMsBuild="true" />
     <Delete Files="build/gmodnet/GmodNET.exe;build/gmodnet/GmodNET;build/gmodnet/web.config" />
-    <Message Text="Executing $(GmodNETAPIBuildInst)" Importance="high" />
     <Exec Command="$(GmodNETAPIBuildInst)" ConsoleToMsBuild="true" />
     <MakeDir Directories="obj/cmake_build" />
-    <Message Text="Executing $(CmakeGenerate)"  Importance="high" />
     <Exec Command="$(CmakeGenerateInst)" ConsoleToMsBuild="true" />
+    <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" Targets="CmakeBuildWindows" />
+
+    <CallTarget Targets="RuntimeCleanUp" />
+    <OnError ExecuteTargets="RuntimeCleanUp" />
+  </Target>
+
+  <Target Name="CmakeBuildWindows">
+    <Exec Command="$(CmakeBuildWinInst)" ConsoleToMsBuild="true" />
+    <Copy SourceFiles="build/Release/gmsv_dotnet_win64.dll" DestinationFiles="build/gmsv_dotnet_win64.dll" />
+    <Copy SourceFiles="build/gmsv_dotnet_win64.dll" DestinationFiles="build/gmcl_dotnet_win64.dll" />
+    <RemoveDir Directories="build/Release" />
+  </Target>
+
+  <Target Name="CmakeBuildLinux">
+    <Exec Command="$(CmakeBuildLinuxAndMacInst)" ConsoleToMsBuild="true" />
+  </Target>
+
+  <Target Name="RuntimeCleanUp">
+    <Message Text="Making clean-up"  Importance="high" />
     <RemoveDir Directories="obj/cmake_build" />
   </Target>
 
