@@ -18,7 +18,7 @@ namespace Tests
             uuid = Guid.NewGuid().ToString();
         }
 
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             task_completion = new TaskCompletionSource<bool>();
 

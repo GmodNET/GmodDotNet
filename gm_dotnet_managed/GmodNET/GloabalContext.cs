@@ -307,7 +307,7 @@ namespace GmodNET
                         {
                             if(info.PublicKey == null || info.PublicKey == String.Empty)
                             {
-                                ModuleAssemblyLoadContext context = new ModuleAssemblyLoadContext(d.Name); 
+                                GmodNetModuleAssemblyLoadContext context = new GmodNetModuleAssemblyLoadContext(d.Name); 
 
                                 Assembly module_asm = context.LoadFromAssemblyPath(d.FullName + "/" + d.Name + ".dll");
 
@@ -412,7 +412,7 @@ namespace GmodNET
                                     {
                                         try
                                         {
-                                            ModuleAssemblyLoadContext module_context = new ModuleAssemblyLoadContext(d.Name);
+                                            GmodNetModuleAssemblyLoadContext module_context = new GmodNetModuleAssemblyLoadContext(d.Name);
 
                                             Assembly module_asm = module_context.LoadFromAssemblyPath(d.FullName + "/" + d.Name + ".dll");
 
@@ -694,7 +694,7 @@ namespace GmodNET
                     {
                         try
                         {
-                            ModuleAssemblyLoadContext local_context = new ModuleAssemblyLoadContext(d.Name);
+                            GmodNetModuleAssemblyLoadContext local_context = new GmodNetModuleAssemblyLoadContext(d.Name);
 
                             Assembly module_asm = local_context.LoadFromAssemblyPath(d.GetFiles().First((f) => f.Name == d.Name + ".dll").FullName);
 
@@ -980,10 +980,10 @@ namespace GmodNET
 
     internal class ModuleHolder
     {
-        internal ModuleAssemblyLoadContext context;
+        internal GmodNetModuleAssemblyLoadContext context;
         internal List<IModule> modules;
 
-        internal ModuleHolder(ModuleAssemblyLoadContext context, List<IModule> modules)
+        internal ModuleHolder(GmodNetModuleAssemblyLoadContext context, List<IModule> modules)
         {
             this.context = context;
             this.modules = modules;

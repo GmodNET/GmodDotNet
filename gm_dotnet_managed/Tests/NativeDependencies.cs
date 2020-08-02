@@ -14,7 +14,7 @@ namespace Tests
         [DllImport("gmodTestLib", EntryPoint = "hello")]
         public static extern int NativeTestFunc(int x);
 
-        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor)
+        public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
         {
             TaskCompletionSource<bool> taskCompletion = new TaskCompletionSource<bool>();
 
