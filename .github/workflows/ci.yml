@@ -19,43 +19,8 @@ jobs:
       with:
         dotnet-version: '3.1.302'
 
-    - name: Build Managed part
-      run: dotnet publish -c Release
-      working-directory: ./gm_dotnet_managed/
-
-    - name: Build Native part
-      run: |
-           mkdir cmake_build
-           cd cmake_build
-           cmake -DGIT_COMMIT:STRING=${{ github.sha }} ../gm_dotnet_native
-           make
-
-    - name: Copy build artifacts
-      env:
-        COMMIT: ${{ github.sha }}
-      run: |
-           mkdir build
-           mkdir build/gmodnet
-           mkdir build/gmodnet/API
-           cp -v cmake_build/*.dll build
-           cp -v cmake_build/liblinuxhelper.so build
-           cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
-           cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
-           find build/gmodnet/*.exe | xargs rm -f -v
-           rm -f -v build/gmodnet/GmodNET
-           rm -f -v build/gmodnet/web.config
-           cd build
-           mkdir dotnet
-           cd dotnet
-           wget https://download.visualstudio.microsoft.com/download/pr/9eadec7a-dd7e-476d-a348-c4bf946a0bad/c11b5123931ee17faba27e5debe74731/aspnetcore-runtime-3.1.6-linux-x64.tar.gz
-           tar xvf aspnetcore-runtime-3.1.6-linux-x64.tar.gz
-           rm -f -v aspnetcore-runtime-3.1.6-linux-x64.tar.gz
-           cd ..
-           cd ..
-           cp LICENSE build
-           cp NOTICE build
-           cd build
-           echo "${{ github.sha }}" > gmodnet-build-sha.txt
+    - name: Buld Gmod.NET
+      run: dotnet build runtime.csproj -c Release
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1.0.0
@@ -72,6 +37,7 @@ jobs:
 
     - name: Prepare test run
       run: |
+           dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release
            mkdir gmod/garrysmod/lua/bin
            mkdir gmod/garrysmod/lua/bin/Modules
            mkdir gmod/garrysmod/lua/bin/Modules/Tests
@@ -208,57 +174,8 @@ jobs:
        with:
          dotnet-version: '3.1.302'
 
-     - name: Build Managed part
-       run: dotnet publish -c Release
-       working-directory: ./gm_dotnet_managed/
-
-     - name: Setup MSBuild
-       uses: warrenbuckley/Setup-MSBuild@v1
-
-     - name: Build Native part
-       run: |
-            mkdir cmake_build
-            cd cmake_build
-            cmake -G 'Visual Studio 16 2019' -A x64 -DGIT_COMMIT:STRING=${{ github.sha }} ../gm_dotnet_native
-            msbuild gm_dotnet_native.sln
-            dir
-
-     - name: Download .NET Runtime
-       shell: bash
-       run: |
-            mkdir build
-            cd build
-            mkdir dotnet
-            cd dotnet
-            curl https://download.visualstudio.microsoft.com/download/pr/ef32bac8-be30-4609-b801-59744b9b8270/f5e2bf611cb36f4141d849ec583dc554/aspnetcore-runtime-3.1.6-win-x64.zip -O -L
-
-     - name: Unpack Runtime
-       run: |
-            cd build/dotnet
-            Expand-Archive -LiteralPath ./aspnetcore-runtime-3.1.6-win-x64.zip -DestinationPath ./
-
-     - name: Delete Runtime zip
-       shell: bash
-       run: |
-            cd build/dotnet
-            rm -rfv aspnetcore-runtime-3.1.6-win-x64.zip
-
-     - name: Copy build artifacts
-       env:
-         COMMIT: ${{ github.sha }}
-       shell: bash
-       run: |
-            mkdir build/gmodnet
-            mkdir build/gmodnet/API
-            cp cmake_build/Release/*.dll build
-            cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
-            cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
-            find build/gmodnet/*.exe | xargs rm -f -v
-            rm -f -v build/gmodnet/web.config
-            cp LICENSE build
-            cp NOTICE build
-            cd build
-            echo "${{ github.sha }}" > gmodnet-build-sha.txt
+     - name: Buld Gmod.NET
+       run: dotnet build runtime.csproj -c Release
 
      - name: Upload build artifacts
        uses: actions/upload-artifact@v1.0.0
@@ -276,6 +193,7 @@ jobs:
      - name: Prepare test run
        shell: bash
        run: |
+            dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release
             mkdir gmod/garrysmod/lua/bin
             mkdir gmod/garrysmod/lua/bin/Modules
             mkdir gmod/garrysmod/lua/bin/Modules/Tests
@@ -363,42 +281,8 @@ jobs:
         with:
           dotnet-version: '3.1.302'
 
-      - name: Build Managed part
-        run: dotnet publish -c Release
-        working-directory: ./gm_dotnet_managed/
-
-      - name: Build Native part
-        run: |
-             mkdir cmake_build
-             cd cmake_build
-             cmake -DGIT_COMMIT:STRING=${{ github.sha }} ../gm_dotnet_native
-             make
-
-      - name: Copy build artifacts
-        env:
-          COMMIT: ${{ github.sha }}
-        run: |
-             mkdir build
-             mkdir build/gmodnet
-             mkdir build/gmodnet/API
-             cp cmake_build/*.dll build
-             cp -a -v gm_dotnet_managed/GmodNET/bin/Release/netcoreapp3.1/publish/. build/gmodnet
-             cp gm_dotnet_managed/GmodNET.API/bin/Release/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
-             find build/gmodnet/*.exe | xargs rm -f -v
-             rm -f -v build/gmodnet/GmodNET
-             rm -f -v build/gmodnet/web.config
-             cd build
-             mkdir dotnet
-             cd dotnet
-             curl https://download.visualstudio.microsoft.com/download/pr/23d6c3a0-6c26-4bfa-80fb-8204c4d214c3/7e34432dca2915d823acb07287f75238/aspnetcore-runtime-3.1.6-osx-x64.tar.gz -O -L
-             tar xvf aspnetcore-runtime-3.1.6-osx-x64.tar.gz
-             rm -f -v aspnetcore-runtime-3.1.6-osx-x64.tar.gz
-             cd ..
-             cd ..
-             cp LICENSE build
-             cp NOTICE build
-             cd build
-             echo "${{ github.sha }}" > gmodnet-build-sha.txt
+      - name: Buld Gmod.NET
+        run: dotnet build runtime.csproj -c Release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v1.0.0
@@ -544,24 +428,8 @@ jobs:
       with:
         dotnet-version: '3.1.302'
 
-    - name: Build Managed part
-      run: dotnet publish -c Debug
-      working-directory: ./gm_dotnet_managed/
-
-    - name: Copy build artifacts
-      env:
-        COMMIT: ${{ github.sha }}
-      run: |
-           mkdir build
-           mkdir build/gmodnet
-           mkdir build/gmodnet/API
-           cp -a -v gm_dotnet_managed/GmodNET/bin/Debug/netcoreapp3.1/publish/. build/gmodnet
-           cp gm_dotnet_managed/GmodNET.API/bin/Debug/netcoreapp3.1/GmodNET.API.dll build/gmodnet/API
-           find build/gmodnet/*.exe | xargs rm -f -v
-           rm -f -v build/gmodnet/GmodNET
-           rm -f -v build/gmodnet/web.config
-           cd build
-           echo "${{ github.sha }}" > gmodnet-build-sha.txt
+    - name: Buld Gmod.NET
+      run: dotnet build runtime.csproj -c Debug
 
     - name: Download GMS
       if: github.event_name == 'push'
