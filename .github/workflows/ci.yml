@@ -291,6 +291,7 @@ jobs:
           path: ./build
 
       - name: Load Tests managed assemblies
+        run: dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Debug
         uses: actions/upload-artifact@v1.0.0
         with:
           name: Tests-Assembly
