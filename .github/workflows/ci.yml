@@ -290,8 +290,10 @@ jobs:
           name: Osx-Raw-Build
           path: ./build
 
-      - name: Load Tests managed assemblies
+      - name: Build Tests project
         run: dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Debug
+
+      - name: Load Tests project
         uses: actions/upload-artifact@v1.0.0
         with:
           name: Tests-Assembly
