@@ -78,7 +78,7 @@
     <Unzip DestinationFolder="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion).zip" />
     <Unzip DestinationFolder="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" SourceFiles="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" />
     <CallTarget Targets="GetNetRuntimeFiles" />
-    <Copy SourceFiles="@(NetRuntimeFiles)" DestinationFolder="build/dotnet" OverwriteReadOnlyFiles="true">
+    <Copy SourceFiles="@(NetRuntimeFiles)" DestinationFolder="build/dotnet" OverwriteReadOnlyFiles="true" />
   </Target>
 
   <Target Name="GetNetRuntimeFiles">
