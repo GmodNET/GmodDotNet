@@ -11,7 +11,7 @@
 
   <!-- Internal properties. Do not change manually. -->
   <PropertyGroup>
-    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/</BaseGmodNETPublishInst>
+    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/ --self-contained -r $(NETCoreSdkRuntimeIdentifier)</BaseGmodNETPublishInst>
     
     <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API/</GmodNETAPIBuildInst>
     
