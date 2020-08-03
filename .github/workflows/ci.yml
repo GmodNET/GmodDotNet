@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: '3.1.302'
 
-    - name: Buld Gmod.NET
+    - name: Build Gmod.NET
       run: dotnet build runtime.csproj -c Release
 
     - name: Upload build artifacts
@@ -174,7 +174,7 @@ jobs:
        with:
          dotnet-version: '3.1.302'
 
-     - name: Buld Gmod.NET
+     - name: Build Gmod.NET
        run: dotnet build runtime.csproj -c Release
 
      - name: Upload build artifacts
@@ -281,7 +281,7 @@ jobs:
         with:
           dotnet-version: '3.1.302'
 
-      - name: Buld Gmod.NET
+      - name: Build Gmod.NET
         run: dotnet build runtime.csproj -c Release
 
       - name: Upload build artifacts
