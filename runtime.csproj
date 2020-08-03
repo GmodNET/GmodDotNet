@@ -87,7 +87,7 @@
       <NetRuntimeFiles Include="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/lib/$(TargetFramework)/*.*" />
       <NetRuntimeFiles Include="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/*.*" />
       <NetRuntimeFiles Include="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/lib/$(TargetFramework)/*.*" />
-    <ItemGroup>
+    </ItemGroup>
   </Target>
 
 </Project>
