@@ -11,7 +11,7 @@
 
   <!-- Internal properties. Do not change manually. -->
   <PropertyGroup>
-    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/ --self-contained -r $(NETCoreSdkRuntimeIdentifier)</BaseGmodNETPublishInst>
+    <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/</BaseGmodNETPublishInst>
     
     <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API/</GmodNETAPIBuildInst>
     
@@ -29,7 +29,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    
+    <PackageReference Include="GmodNET.Build.BundledRuntime" Version="$(BundledNETCoreVersion)" GeneratePathProperty="true" />
   </ItemGroup>
 
   <Target Name="BuildRuntime">
@@ -42,7 +42,7 @@
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" Targets="CmakeBuildWindows" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'" Targets="CmakeBuildLinux" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'" Targets="CmakeBuildMac" />
-    <CallTarget Targets="BundleNetRuntime" />
+    <CallTarget Targets="CopyNetRuntimeFiles" />
 
     <CallTarget Targets="RuntimeCleanUp" />
     <OnError ExecuteTargets="RuntimeCleanUp" />
@@ -72,22 +72,15 @@
     <RemoveDir Directories="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" />
   </Target>
 
-  <Target Name="BundleNetRuntime">
-    <DownloadFile DestinationFileName="netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion).zip" DestinationFolder="obj" SourceUrl="$(NETCoreUrl)" SkipUnchangedFiles="true" />
-    <DownloadFile DestinationFileName="aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" DestinationFolder="obj" SourceUrl="$(AspNETUrl)" SkipUnchangedFiles="true" />
-    <Unzip DestinationFolder="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion).zip" />
-    <Unzip DestinationFolder="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" SourceFiles="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion).zip" />
-    <CallTarget Targets="CopyNetRuntimeFiles" />
-  </Target>
-
   <Target Name="CopyNetRuntimeFiles">
     <ItemGroup>
-      <NetRuntimeFiles Include="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/*.*" />
-      <NetRuntimeFiles Include="obj/netcore-$(NETCoreSdkRuntimeIdentifier)-$(BundledNETCoreVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/lib/$(TargetFramework)/*.*" />
-      <NetRuntimeFiles Include="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/native/*.*" />
-      <NetRuntimeFiles Include="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/lib/$(TargetFramework)/*.*" />
+      <NetFxrFiles Include="$(PkgGmodNET_Build_BundledRuntime)/$(NETCoreSdkRuntimeIdentifier)/host/fxr/$(BundledNETCoreVersion)/*.*" />
+      <NetRuntimeFiles Include="$(PkgGmodNET_Build_BundledRuntime)/$(NETCoreSdkRuntimeIdentifier)/shared/Microsoft.NETCore.App/$(BundledNETCoreVersion)/*.*" />
+      <NetAspFiles Include="$(PkgGmodNET_Build_BundledRuntime)/$(NETCoreSdkRuntimeIdentifier)/shared/Microsoft.AspNetCore.App/$(BundledAspVersion)/*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(NetRuntimeFiles)" DestinationFolder="build/dotnet" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="@(NetFxrFiles)" DestinationFolder="build/dotnet/host/fxr/$(BundledNETCoreVersion)" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="@(NetRuntimeFiles)" DestinationFolder="build/dotnet/shared/Microsoft.NETCore.App/$(BundledNETCoreVersion)" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="@(NetAspFiles)" DestinationFolder="build/dotnet/shared/Microsoft.AspNetCore.App/$(BundledAspVersion)" OverwriteReadOnlyFiles="true" />
   </Target>
 
 </Project>
