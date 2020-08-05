@@ -64,39 +64,39 @@ GMOD_MODULE_OPEN()
 
     // Start CoreCLR init
     char game_char_buffer [300];
-    #ifdef WIN32
+#ifdef WIN32
     int game_path_length = GetModuleFileNameA(nullptr, game_char_buffer, 299);
-    #else
+#else
     int game_path_length = readlink("/proc/self/exe", game_char_buffer, 299);
     game_char_buffer[game_path_length] = '\0';
-    #endif
+#endif
     char dotnet_folder [] = "garrysmod/lua/bin/dotnet";
-    #ifdef WIN32
+#ifdef WIN32
     wstring game_char_buffer_formated = converter.from_bytes(game_char_buffer);
     wstring dotnet_folder_formated = converter.from_bytes(dotnet_folder);
     hostfxr_initialize_parameters runtime_params = {sizeof(hostfxr_initialize_parameters), game_char_buffer_formated.c_str(), dotnet_folder_formated.c_str()};
-    #else
+#else
     hostfxr_initialize_parameters runtime_params = {sizeof(hostfxr_initialize_parameters), game_char_buffer, dotnet_folder};
-    #endif
+#endif
     void * hostfxr_pointer = nullptr;
-    #ifdef WIN32
-    hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/gmodnet/hostfxr.dll");
-    #elif __APPLE__
-    hostfxr_pointer = dlopen("garrysmod/lua/bin/gmodnet/libhostfxr.dylib", RTLD_LAZY);
+#ifdef WIN32
+    hostfxr_pointer = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.6/hostfxr.dll");
+#elif __APPLE__
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.6/libhostfxr.dylib", RTLD_LAZY);
     #else
-    hostfxr_pointer = dlopen("garrysmod/lua/bin/gmodnet/libhostfxr.so", RTLD_LAZY);
-    #endif
+    hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.6/libhostfxr.so", RTLD_LAZY);
+#endif
     if(hostfxr_pointer == nullptr)
     {
-         fprintf(stderr, "Unable to load hostfxr! \n");
-         return 0;
+        fprintf(stderr, "Unable to load hostfxr! \n");
+        return 0;
     }
 
-    #ifdef WIN32
+#ifdef WIN32
     hostfxr_initialize_for_runtime_config = (hostfxr_initialize_for_runtime_config_fn)GetProcAddress((HMODULE)hostfxr_pointer, "hostfxr_initialize_for_runtime_config");
-    #else
+#else
     hostfxr_initialize_for_runtime_config = (hostfxr_initialize_for_runtime_config_fn)dlsym(hostfxr_pointer, "hostfxr_initialize_for_runtime_config");
-    #endif
+#endif
     if(hostfxr_initialize_for_runtime_config == nullptr)
     {
         fprintf(stderr, "Unable to locate hostfxr_initialize_for_runtime_config function!");
@@ -109,18 +109,18 @@ GMOD_MODULE_OPEN()
         return 0;
     }
 
-    #ifdef WIN32
+#ifdef WIN32
     hostfxr_get_runtime_delegate = (hostfxr_get_runtime_delegate_fn)GetProcAddress((HMODULE)hostfxr_pointer, "hostfxr_get_runtime_delegate");
-    #else
+#else
     hostfxr_get_runtime_delegate = (hostfxr_get_runtime_delegate_fn)dlsym(hostfxr_pointer, "hostfxr_get_runtime_delegate");
-    #endif
+#endif
     if(hostfxr_get_runtime_delegate == nullptr)
     {
         fprintf(stderr, "Unable to locate hostfxr_get_runtime_delegate! \n");
         return 0;
     }
     typedef void (*get_function_pointer_fn)(const char_t * assembly_path, const char_t * type_name, const char_t * method_name, const char_t * delegate_type_name,
-            void * reserved, void ** delegate);
+                                            void * reserved, void ** delegate);
     get_function_pointer_fn get_function_pointer = nullptr;
     hostfxr_get_runtime_delegate(host_fxr_handle, hdt_load_assembly_and_get_function_pointer, (void **)&get_function_pointer);
     if(get_function_pointer == nullptr)
@@ -136,8 +136,8 @@ GMOD_MODULE_OPEN()
     resolver_helper_delegate_fn resolver_helper_delegate = nullptr;
 
     get_function_pointer(STRING_FORMATER("garrysmod/lua/bin/gmodnet/DefaultContextResolver.dll"),
-            STRING_FORMATER("GmodNET.Resolver.DefaultContextResolver, DefaultContextResolver"), STRING_FORMATER("Main"),
-            STRING_FORMATER("GmodNET.Resolver.MainDelegate, DefaultContextResolver"), nullptr, (void**)&resolver_helper_delegate);
+                         STRING_FORMATER("GmodNET.Resolver.DefaultContextResolver, DefaultContextResolver"), STRING_FORMATER("Main"),
+                         STRING_FORMATER("GmodNET.Resolver.MainDelegate, DefaultContextResolver"), nullptr, (void**)&resolver_helper_delegate);
 
     if(resolver_helper_delegate == nullptr)
     {
@@ -234,16 +234,16 @@ GMOD_MODULE_CLOSE()
     }
     cleanup_delegate = nullptr;
 
-    #ifdef WIN32
-    HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/gmodnet/hostfxr.dll");
+#ifdef WIN32
+    HMODULE hostfxr_lib = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/3.1.6/hostfxr.dll");
     hostfxr_close = (hostfxr_close_fn)GetProcAddress(hostfxr_lib, "hostfxr_close");
-    #elif __APPLE__
-    void * hostfxr_lib = dlopen("garrysmod/lua/bin/gmodnet/libhostfxr.dylib", RTLD_LAZY);
+#elif __APPLE__
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.6/libhostfxr.dylib", RTLD_LAZY);
     hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
     #else
-    void * hostfxr_lib = dlopen("garrysmod/lua/bin/gmodnet/libhostfxr.so", RTLD_LAZY);
+    void * hostfxr_lib = dlopen("garrysmod/lua/bin/dotnet/host/fxr/3.1.6/libhostfxr.so", RTLD_LAZY);
     hostfxr_close = (hostfxr_close_fn)dlsym(hostfxr_lib, "hostfxr_close");
-    #endif
+#endif
     if(hostfxr_close == nullptr)
     {
         fprintf(stderr, "Unable to load hosfxr_close! \n");
