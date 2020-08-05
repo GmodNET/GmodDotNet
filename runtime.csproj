@@ -6,28 +6,28 @@
 
     <BundledNETCoreVersion>3.1.6</BundledNETCoreVersion>
 
-    <BundledAspVersion>$(BundledNETCoreVersion)</BundledAspVersion>
+    <BundledAspVersion>$(BundledAspNetCoreVersion)</BundledAspVersion>
   </PropertyGroup>
 
   <!-- Internal properties. Do not change manually. -->
   <PropertyGroup>
     <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/</BaseGmodNETPublishInst>
-    
+
     <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API/</GmodNETAPIBuildInst>
-    
+
     <CmakeGenerateWinFlags Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">-G "Visual Studio 16 2019" -A x64</CmakeGenerateWinFlags>
-    
+
     <CmakeGenerateInst>cd obj/cmake_build &amp;&amp; cmake ../../gm_dotnet_native $(CmakeGenerateWinFlags)</CmakeGenerateInst>
-    
+
     <CmakeBuildWinInst>cd obj/cmake_build &amp;&amp; cmake --build ./ -- /p:Configuration=Release</CmakeBuildWinInst>
-    
+
     <CmakeBuildLinuxAndMacInst>cd obj/cmake_build &amp;&amp; cmake --build ./</CmakeBuildLinuxAndMacInst>
 
     <NETCoreUrl>https://www.nuget.org/api/v2/package/Microsoft.NETCore.App.Runtime.$(NETCoreSdkRuntimeIdentifier)/$(BundledNETCoreVersion)</NETCoreUrl>
 
     <AspNETUrl>https://www.nuget.org/api/v2/package/Microsoft.AspNetCore.App.Runtime.$(NETCoreSdkRuntimeIdentifier)/$(BundledAspVersion)</AspNETUrl>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="GmodNET.Build.BundledRuntime" Version="$(BundledNETCoreVersion)" GeneratePathProperty="true" />
   </ItemGroup>
