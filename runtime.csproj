@@ -6,7 +6,17 @@
 
     <BundledNETCoreVersion>3.1.6</BundledNETCoreVersion>
 
-    <BundledAspVersion>$(BundledAspNetCoreVersion)</BundledAspVersion>
+    <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
+      https://download.visualstudio.microsoft.com/download/pr/ef32bac8-be30-4609-b801-59744b9b8270/f5e2bf611cb36f4141d849ec583dc554/aspnetcore-runtime-3.1.6-win-x64.zip
+    </NETCoreDownloadUrl>
+
+    <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'">
+      https://download.visualstudio.microsoft.com/download/pr/9eadec7a-dd7e-476d-a348-c4bf946a0bad/c11b5123931ee17faba27e5debe74731/aspnetcore-runtime-3.1.6-linux-x64.tar.gz
+    </NETCoreDownloadUrl>
+
+    <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
+      https://download.visualstudio.microsoft.com/download/pr/23d6c3a0-6c26-4bfa-80fb-8204c4d214c3/7e34432dca2915d823acb07287f75238/aspnetcore-runtime-3.1.6-osx-x64.tar.gz
+    </NETCoreDownloadUrl>
   </PropertyGroup>
 
   <!-- Internal properties. Do not change manually. -->
@@ -22,14 +32,10 @@
     <CmakeBuildWinInst>cd obj/cmake_build &amp;&amp; cmake --build ./ -- /p:Configuration=Release</CmakeBuildWinInst>
 
     <CmakeBuildLinuxAndMacInst>cd obj/cmake_build &amp;&amp; cmake --build ./</CmakeBuildLinuxAndMacInst>
-
-    <NETCoreUrl>https://www.nuget.org/api/v2/package/Microsoft.NETCore.App.Runtime.$(NETCoreSdkRuntimeIdentifier)/$(BundledNETCoreVersion)</NETCoreUrl>
-
-    <AspNETUrl>https://www.nuget.org/api/v2/package/Microsoft.AspNetCore.App.Runtime.$(NETCoreSdkRuntimeIdentifier)/$(BundledAspVersion)</AspNETUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GmodNET.Build.BundledRuntime" Version="$(BundledNETCoreVersion)" GeneratePathProperty="true" />
+    
   </ItemGroup>
 
   <Target Name="BuildRuntime">
@@ -42,7 +48,7 @@
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" Targets="CmakeBuildWindows" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'" Targets="CmakeBuildLinux" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'" Targets="CmakeBuildMac" />
-    <CallTarget Targets="CopyNetRuntimeFiles" />
+    <CallTarget Targets="BundleRuntime" />
 
     <CallTarget Targets="RuntimeCleanUp" />
     <OnError ExecuteTargets="RuntimeCleanUp" />
@@ -72,15 +78,11 @@
     <RemoveDir Directories="obj/aspnet-$(NETCoreSdkRuntimeIdentifier)-$(BundledAspVersion)" />
   </Target>
 
-  <Target Name="CopyNetRuntimeFiles">
-    <ItemGroup>
-      <NetFxrFiles Include="$(PkgGmodNET_Build_BundledRuntime)/$(NETCoreSdkRuntimeIdentifier)/host/fxr/$(BundledNETCoreVersion)/*.*" />
-      <NetRuntimeFiles Include="$(PkgGmodNET_Build_BundledRuntime)/$(NETCoreSdkRuntimeIdentifier)/shared/Microsoft.NETCore.App/$(BundledNETCoreVersion)/*.*" />
-      <NetAspFiles Include="$(PkgGmodNET_Build_BundledRuntime)/$(NETCoreSdkRuntimeIdentifier)/shared/Microsoft.AspNetCore.App/$(BundledAspVersion)/*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(NetFxrFiles)" DestinationFolder="build/dotnet/host/fxr/$(BundledNETCoreVersion)" OverwriteReadOnlyFiles="true" />
-    <Copy SourceFiles="@(NetRuntimeFiles)" DestinationFolder="build/dotnet/shared/Microsoft.NETCore.App/$(BundledNETCoreVersion)" OverwriteReadOnlyFiles="true" />
-    <Copy SourceFiles="@(NetAspFiles)" DestinationFolder="build/dotnet/shared/Microsoft.AspNetCore.App/$(BundledAspVersion)" OverwriteReadOnlyFiles="true" />
+  <Target Name="BundleRuntime">
+    <DownloadFile SourceUrl="$(NETCoreDownloadUrl)" DestinationFolder="obj" DestinationFileName="netcore-$(NETCoreSdkRuntimeIdentifier).arch" SkipUnchangedFiles="true" />
+    <MakeDir Directories="build/dotnet" />
+    <Unzip Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier).arch" DestinationFolder="build/dotnet" OverwriteReadOnlyFiles="true" />
+    <Exec Condition="$(NETCoreSdkRuntimeIdentifier) != 'win-x64'" Command="tar xvfz obj/netcore-$(NETCoreSdkRuntimeIdentifier).arch -C build/dotnet" ConsoleToMsBuild="true" />
   </Target>
 
 </Project>
