@@ -80,7 +80,7 @@ jobs:
            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
 
     - name: Run Garry's Mod
-      run: ./srcds_run_x64 -game garrysmod -systemtest || true
+      run: ./srcds_run_x64 -game garrysmod -systemtest +sv_hibernate_think 1 || true
       working-directory: ./gmod/
 
     - name: Print test log
@@ -286,7 +286,7 @@ jobs:
      - name: Run Garry's Mod
        shell: bash
        run: |
-            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16'
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
             sleep 15
 
      - name: Print test log
