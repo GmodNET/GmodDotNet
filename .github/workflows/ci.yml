@@ -293,7 +293,7 @@ jobs:
         uses: actions/upload-artifact@v1.0.0
         with:
           name: Tests-Assembly
-          path: gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/
+          path: gm_dotnet_managed/Tests/bin/Debug/netcoreapp3.1/publish/
 
 # Finilize full signed build on push
 
