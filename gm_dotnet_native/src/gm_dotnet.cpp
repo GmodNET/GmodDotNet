@@ -58,7 +58,7 @@ GMOD_MODULE_OPEN()
     // Native welcome message
     LUA->PushSpecial(SPECIAL_GLOB);
     LUA->GetField(-1, "print");
-    LUA->PushString((string("GmodNET native ") + to_string(maj_ver) + "." + to_string(min_ver) + "." + to_string(misc_ver) + " " + string(GIT_COMMIT)).c_str());
+    LUA->PushString((string("Gmod dotnet loader ") + string(SEM_VERSION)).c_str());
     LUA->Call(1, 0);
     LUA->Pop(1);
 
