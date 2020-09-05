@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Authors>Gleb Krasilich</Authors>
-    <PackageVersion>0.6.0</PackageVersion>
+    <VersionFilePath>../../runtime.version.json</VersionFilePath>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -31,6 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="GmodNET.Tests.Native" Version="1.0.0" />
+	<PackageReference Include="GmodNET.VersionTool.Target" Version="0.2.0-alpha.1.21507807.dev" />
   </ItemGroup>
 
 </Project>

@@ -3,27 +3,24 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.6.0</Version>
-    <ApplicationIcon />
+	<VersionFilePath>../../runtime.version.json</VersionFilePath>
     <StartupObject>GmodNET.BuidReq</StartupObject>
-    <Authors>Gleb Krasilich</Authors>
     <Description>GmodNET managed module loader.</Description>
-    <PackageLicenseExpression>MIT License</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageVersion>0.6.0</PackageVersion>
+	<Company>GmodNET</Company>
+	<Product>$(Description)</Product>
+	<Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NSec.Cryptography" Version="19.5.0" />
+    <PackageReference Include="GmodNET.VersionTool.Target" Version="0.2.0-alpha.1.21507807.dev" />
   </ItemGroup>
 
   <ItemGroup>
