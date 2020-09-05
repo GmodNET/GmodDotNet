@@ -28,3 +28,4 @@ obj/
 bin/
 **/.vs/
 nupkgs/
+Modules/

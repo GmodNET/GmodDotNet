@@ -50,7 +50,10 @@
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'" Targets="CmakeBuildLinux" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'" Targets="CmakeBuildMac" />
     <CallTarget Targets="BundleRuntime" />
+
     <Exec Command="dotnet pack gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o nupkgs/" ConsoleToMsBuild="true" />
+
+    <Exec Command="dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o Modules/Tests/" ConsoleToMsBuild="true" />
 
     <CallTarget Targets="RuntimeCleanUp" />
     <OnError ExecuteTargets="RuntimeCleanUp" />
@@ -85,6 +88,12 @@
     <MakeDir Directories="build/dotnet" />
     <Unzip Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" SourceFiles="obj/netcore-$(NETCoreSdkRuntimeIdentifier).arch" DestinationFolder="build/dotnet" OverwriteReadOnlyFiles="true" />
     <Exec Condition="$(NETCoreSdkRuntimeIdentifier) != 'win-x64'" Command="tar xvfz obj/netcore-$(NETCoreSdkRuntimeIdentifier).arch -C build/dotnet" ConsoleToMsBuild="true" />
+  </Target>
+
+  <Target Name="DeleteOldBuilds" BeforeTargets="BuildRuntime">
+    <RemoveDir Directories="build" />
+    <RemoveDir Directories="nupkgs" />
+    <RemoveDir Directories="Modules" />
   </Target>
 
 </Project>
