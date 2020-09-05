@@ -26,3 +26,5 @@ gm_dotnet_managed/Tests/obj
 build/
 obj/
 bin/
+**/.vs/
+nupkgs/

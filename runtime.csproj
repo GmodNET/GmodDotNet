@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
 
   <!-- Public properties to configure runtime build. -->
   <PropertyGroup>
@@ -50,6 +50,7 @@
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'" Targets="CmakeBuildLinux" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'" Targets="CmakeBuildMac" />
     <CallTarget Targets="BundleRuntime" />
+    <Exec Command="dotnet pack gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o nupkgs/" ConsoleToMsBuild="true" />
 
     <CallTarget Targets="RuntimeCleanUp" />
     <OnError ExecuteTargets="RuntimeCleanUp" />
