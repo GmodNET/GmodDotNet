@@ -93,12 +93,23 @@ jobs:
            cd build
            tar czfv ../linux-$TRAVIS_COMMIT.tar.gz .
 
+    - name: Pack with MSBuild
+      if: github.event_name == 'push'
+      run: dotnet build runtime.csproj -target:PackRuntimeBuild
+
     - name: Load signed build as artifact
       if: github.event_name == 'push'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: linux-${{ github.sha }}
         path: linux-${{ github.sha }}.tar.gz
+
+    - name: Load versioned build as artifact
+      if: github.event_name == 'push'
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: linux-versioned-build
+        path: packed-build
 
     - name: Load server lua as artifact
       if: github.event_name == 'push'
