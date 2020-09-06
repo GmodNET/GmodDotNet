@@ -129,7 +129,7 @@ GMOD_MODULE_OPEN()
         return 0;
     }
 
-    typedef cleanup_delegate_fn (*managed_delegate_fn)(ILuaBase * lua_base, int maj_ver, int min_ver, int misc_ver, void ** params);
+    typedef cleanup_delegate_fn (*managed_delegate_fn)(ILuaBase * lua_base, const char* version_string, int version_string_length, void ** params);
     managed_delegate_fn managed_delegate = nullptr;
 
     typedef void (*resolver_helper_delegate_fn)();
@@ -214,7 +214,7 @@ GMOD_MODULE_OPEN()
             (void*)export_push_c_function_safe
     };
 
-    cleanup_delegate = managed_delegate(LUA, maj_ver, min_ver, misc_ver, params_to_managed_code);
+    cleanup_delegate = managed_delegate(LUA, string(SEM_VERSION).c_str(), string(SEM_VERSION).length(), params_to_managed_code);
 
     if(cleanup_delegate == nullptr)
     {
