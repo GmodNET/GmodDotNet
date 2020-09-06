@@ -53,7 +53,7 @@
 
     <Exec Command="dotnet pack gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o nupkgs/" ConsoleToMsBuild="true" />
 
-    <Exec Command="dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o Modules/Tests/" ConsoleToMsBuild="true" />
+    <Exec Command="dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Debug -o Modules/Tests/" ConsoleToMsBuild="true" />
 
     <CallTarget Targets="RuntimeCleanUp" />
     <OnError ExecuteTargets="RuntimeCleanUp" />
