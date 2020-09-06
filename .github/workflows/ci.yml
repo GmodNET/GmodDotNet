@@ -387,6 +387,9 @@ jobs:
 
     steps:
 
+      - name: Checkout repository
+        uses: actions/checkout@v2.0.0
+
       - name: Prepare folders
         run: |
              mkdir publish
@@ -470,9 +473,6 @@ jobs:
              echo "Linux: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/linux/linux-${{ github.sha }}.tar.gz"
              echo "macOS: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/osx/osx-${{ github.sha }}.tar.gz"
 
-      - name: Checkout repository
-        uses: actions/checkout@v2.0.0
-
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.4.0
         with:
@@ -481,7 +481,7 @@ jobs:
       - name: Upload API nuget package
         run: |
              dotnet nuget update source gmodnet-packages --username CI --password ${{ secrets.DEVOPS_PASSWORD }} --store-password-in-clear-text
-             dotnet nuget push nuget-publish/*.nupkg --source gmodnet-packages --api-key az --skip-duplicate
+             dotnet nuget push nuget-publish/**.nupkg --source gmodnet-packages --api-key az --skip-duplicate
 
       - name: Restore local dotnet tools
         run: |
