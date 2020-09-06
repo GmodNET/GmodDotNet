@@ -390,6 +390,8 @@ jobs:
       - name: Prepare folders
         run: |
              mkdir publish
+             mkdir versioned-publish
+             mkdir nuget-publish
              cd publish
              mkdir windows
              mkdir osx
@@ -406,6 +408,30 @@ jobs:
           name: osx-${{ github.sha }}
           path: publish/osx
 
+      - name: Download versioned build (windows)
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: windows-versioned-build
+          path: versioned-publish
+
+      - name: Download versioned build (linux)
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: linux-versioned-build
+          path: versioned-publish
+
+      - name: Download versioned build (osx)
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: osx-versioned-build
+          path: versioned-publish
+
+      - name: Download nuget packages from previous stage
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: nupkgs
+          path: nuget-publish
+
       - name: Upload builds to storage
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -418,6 +444,19 @@ jobs:
           AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
           SOURCE_DIR: 'publish'
           DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/'
+
+      - name: Upload versioned builds to storage
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --acl public-read --follow-symlinks
+        env:
+          AWS_S3_BUCKET: 'gleb-krasilich'
+          AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
+          AWS_REGION: 'us-west-1'
+          AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
+          SOURCE_DIR: 'versioned-publish'
+          DEST_DIR: 'GmodNETStorage/storage'
 
       - name: Print build information
         run: |
@@ -438,6 +477,11 @@ jobs:
         uses: actions/setup-dotnet@v1.4.0
         with:
           dotnet-version: '3.1.301'
+
+      - name: Upload API nuget package
+        run: |
+             dotnet nuget update source gmodnet-packages --username CI --password ${{ secrets.DEVOPS_PASSWORD }} --store-password-in-clear-text
+             dotnet nuget push nuget-publish/*.nupkg --source gmodnet-packages --api-key az --skip-duplicate
 
       - name: Restore local dotnet tools
         run: |
