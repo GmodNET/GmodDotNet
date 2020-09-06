@@ -27,8 +27,6 @@
 
     <CmakeGenerateWinFlags Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">-G "Visual Studio 16 2019" -A x64</CmakeGenerateWinFlags>
 
-    <CmakeGenerateInst>cd obj/cmake_build &amp;&amp; cmake -DSEM_VERSION:STRING=$(RuntimeVersion) ../../gm_dotnet_native $(CmakeGenerateWinFlags)</CmakeGenerateInst>
-
     <CmakeBuildWinInst>cd obj/cmake_build &amp;&amp; cmake --build ./ -- /p:Configuration=Release</CmakeBuildWinInst>
 
     <CmakeBuildLinuxAndMacInst>cd obj/cmake_build &amp;&amp; cmake --build ./</CmakeBuildLinuxAndMacInst>
@@ -110,6 +108,11 @@
 		<Exec Command="dotnet tool run gmodnet-vt getVersion api.version.json --skip-build-data" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="ApiVersionShort" />
 		</Exec>
+    <CreateProperty Value="cd obj/cmake_build &amp;&amp; cmake -DSEM_VERSION:STRING=$(RuntimeVersion) ../../gm_dotnet_native $(CmakeGenerateWinFlags)">
+            <Output
+                TaskParameter="Value"
+                PropertyName="CmakeGenerateInst" />
+        </CreateProperty>
   </Target>
 
 </Project>
