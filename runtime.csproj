@@ -94,9 +94,10 @@
     <RemoveDir Directories="build" />
     <RemoveDir Directories="nupkgs" />
     <RemoveDir Directories="Modules" />
+    <RemoveDir Directories="packed-build" />
   </Target>
 
-  <Target Name="GetVersionFromTool" BeforeTargets="BuildRuntime">
+  <Target Name="GetVersionFromTool" BeforeTargets="BuildRuntime;PackRuntimeBuild">
     <Exec Command="dotnet tool restore" />
     <Exec Command="dotnet tool run gmodnet-vt getVersion runtime.version.json" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="RuntimeVersion" />
@@ -115,6 +116,11 @@
                 TaskParameter="Value"
                 PropertyName="CmakeGenerateInst" />
         </CreateProperty>
+  </Target>
+
+  <Target Name="PackRuntimeBuild">
+    <MakeDir Directories="packed-build" />
+    <ZipDirectory DestinationFile="packed-build/gmod-dot-net-windows.$(RuntimeVersionShort).zip" SourceDirectory="build" Condition="'$(NETCoreSdkRuntimeIdentifier)' == 'win-x64'" />
   </Target>
 
 </Project>
