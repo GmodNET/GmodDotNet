@@ -28,6 +28,12 @@ jobs:
         name: Linux-Raw-Build
         path: ./build
 
+    - name: Upload nupkgs
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: nupkgs
+        path: nupkgs
+
     - name: Download Steam and Install Garry's Mod Dedicated Server
       run: |
            wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
@@ -104,7 +110,7 @@ jobs:
         name: linux-${{ github.sha }}
         path: linux-${{ github.sha }}.tar.gz
 
-    - name: Load versioned build as artifact
+    - name: Upload versioned build as artifact
       if: github.event_name == 'push'
       uses: actions/upload-artifact@v1.0.0
       with:
@@ -278,7 +284,7 @@ jobs:
          name: windows-${{ github.sha }}
          path: full_build_upload_dir/windows-${{ github.sha }}.zip
 
-     - name: Load versioned build as artifact
+     - name: Upload versioned build as artifact
        if: github.event_name == 'push'
        uses: actions/upload-artifact@v1.0.0
        with:
@@ -364,7 +370,7 @@ jobs:
           name: osx-${{ github.sha }}
           path: osx-${{ github.sha }}.tar.gz
 
-      - name: Load versioned build as artifact
+      - name: Upload versioned build as artifact
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v1.0.0
         with:
