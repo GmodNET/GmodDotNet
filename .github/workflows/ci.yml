@@ -267,12 +267,23 @@ jobs:
             cd full_build_upload_dir
             dir
 
+     - name: Pack with MSBuild
+       if: github.event_name == 'push'
+       run: dotnet build runtime.csproj -target:PackRuntimeBuild
+
      - name: Upload full build as artifact
        if: github.event_name == 'push'
        uses: actions/upload-artifact@v1.0.0
        with:
          name: windows-${{ github.sha }}
          path: full_build_upload_dir/windows-${{ github.sha }}.zip
+
+     - name: Load versioned build as artifact
+       if: github.event_name == 'push'
+       uses: actions/upload-artifact@v1.0.0
+       with:
+         name: windows-versioned-build
+         path: packed-build
 
  mac-build:
 
@@ -342,12 +353,23 @@ jobs:
              cd build
              tar czfv ../osx-$TRAVIS_COMMIT.tar.gz .
 
+      - name: Pack with MSBuild
+        if: github.event_name == 'push'
+        run: dotnet build runtime.csproj -target:PackRuntimeBuild
+
       - name: Load signed build as artifact
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v1.0.0
         with:
           name: osx-${{ github.sha }}
           path: osx-${{ github.sha }}.tar.gz
+
+      - name: Load versioned build as artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: osx-versioned-build
+          path: packed-build
 
  deploy-and-notify:
 
