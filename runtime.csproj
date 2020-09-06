@@ -120,7 +120,12 @@
 
   <Target Name="PackRuntimeBuild">
     <MakeDir Directories="packed-build" />
+
     <ZipDirectory DestinationFile="packed-build/gmod-dot-net-windows.$(RuntimeVersionShort).zip" SourceDirectory="build" Condition="'$(NETCoreSdkRuntimeIdentifier)' == 'win-x64'" />
+
+    <Exec Condition="'$(NETCoreSdkRuntimeIdentifier)' == 'linux-x64'" Command="cd build &amp;&amp; tar czfv ../packed-build/gmod-dot-net-linux.$(RuntimeVersionShort).tar.gz ." />
+
+    <Exec Condition="'$(NETCoreSdkRuntimeIdentifier)' == 'osx-x64'" Command="cd build &amp;&amp; tar czfv ../packed-build/gmod-dot-net-osx.$(RuntimeVersionShort).tar.gz ." />
   </Target>
 
 </Project>
