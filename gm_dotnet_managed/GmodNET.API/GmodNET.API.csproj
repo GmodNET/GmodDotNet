@@ -8,7 +8,7 @@
     <Description>GmodNET API library contains all necessary interfaces to write a GmodNET module.</Description>
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>garrysmod, GmodNET</PackageTags>
+    <PackageTags>garrysmod; GmodNET</PackageTags>
     <PackageProjectUrl>https://github.com/GlebChili/GmodDotNet</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
 	<Company>GmodNET</Company>
