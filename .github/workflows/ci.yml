@@ -508,7 +508,7 @@ jobs:
       - name: Send Discord message
         run: |
              cd csx
-             dotnet script discord-webhook.csx ${{ secrets.DISCORD_WEBHOOK }} ${{ github.ref }} ${{ github.sha }} $GMODNET_VERSION
+             dotnet script discord-webhook.csx ${{ secrets.DISCORD_WEBHOOK }} ${{ github.sha }}
 
  managed-debug-assemblies:
 
