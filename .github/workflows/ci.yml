@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   GMODNET_VERSION: '0.6.0'
+  DOTNET_SDK_VERSION: '3.1.302'
 
 jobs:
  linux-build:
@@ -17,7 +18,7 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.4.0
       with:
-        dotnet-version: '3.1.302'
+        dotnet-version: env.DOTNET_SDK_VERSION
 
     - name: Build Gmod.NET
       run: dotnet build runtime.csproj -c Release
@@ -185,7 +186,7 @@ jobs:
      - name: Setup .NET Core SDK
        uses: actions/setup-dotnet@v1.4.0
        with:
-         dotnet-version: '3.1.302'
+         dotnet-version: env.DOTNET_SDK_VERSION
 
      - name: Build Gmod.NET
        run: dotnet build runtime.csproj -c Release
@@ -303,7 +304,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.4.0
         with:
-          dotnet-version: '3.1.302'
+          dotnet-version: env.DOTNET_SDK_VERSION
 
       - name: Build Gmod.NET
         run: dotnet build runtime.csproj -c Release
@@ -393,7 +394,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.4.0
         with:
-          dotnet-version: '3.1.301'
+          dotnet-version: env.DOTNET_SDK_VERSION
 
       - name: Prepare folders
         run: |
@@ -524,7 +525,7 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.4.0
       with:
-        dotnet-version: '3.1.302'
+        dotnet-version: env.DOTNET_SDK_VERSION
 
     - name: Buld Gmod.NET
       run: dotnet build runtime.csproj -c Debug
