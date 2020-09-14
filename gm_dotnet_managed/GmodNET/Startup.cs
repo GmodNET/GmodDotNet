@@ -26,10 +26,13 @@ namespace GmodNET
         //Called by Garry's Mod. Responsible for initial configuration.
         internal static IntPtr Main(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param)
         {
+            string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
+            string friendly_version = full_assembly_version.Split("+")[0];
+            string version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
+
             unsafe
             {
                 string native_version = Encoding.UTF8.GetString((byte*)native_version_string.ToPointer(), version_string_length);
-                string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
 
                 if (native_version != full_assembly_version)
                 {
@@ -161,10 +164,16 @@ namespace GmodNET
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
-            lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 6 + "." + 0 + " Prototype");
+            lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " " + version_codename);
             lua.Call(1, 0);
             lua.Pop(1);
-            
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "print");
+            lua.PushString("(full build version: " + full_assembly_version + ")");
+            lua.Call(1, 0);
+            lua.Pop(1);
+
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
             lua.PushString(RuntimeInformation.FrameworkDescription);
