@@ -97,7 +97,7 @@
     <RemoveDir Directories="packed-build" />
   </Target>
 
-  <Target Name="GetVersionFromTool" BeforeTargets="BuildRuntime;PackRuntimeBuild">
+  <Target Name="GetVersionFromTool" BeforeTargets="BuildRuntime;PackRuntimeBuild;PackLuaForPublish">
     <Exec Command="dotnet tool restore" />
     <Exec Command="dotnet tool run gmodnet-vt getVersion runtime.version.json" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="RuntimeVersion" />
@@ -126,6 +126,12 @@
     <Exec Condition="'$(NETCoreSdkRuntimeIdentifier)' == 'linux-x64'" Command="cd build &amp;&amp; tar czfv ../packed-build/gmod-dot-net-linux.$(RuntimeVersionShort).tar.gz ." />
 
     <Exec Condition="'$(NETCoreSdkRuntimeIdentifier)' == 'osx-x64'" Command="cd build &amp;&amp; tar czfv ../packed-build/gmod-dot-net-osx.$(RuntimeVersionShort).tar.gz ." />
+  </Target>
+
+  <Target Name="PackLuaForPublish">
+    <MakeDir Directories="lua-publish" />
+    <Copy SourceFiles="lua/autorun/serverside/gm_dotnet_server.lua" DestinationFiles="lua-publish/gmod-dot-net-lua-server.$(RuntimeVersionShort).lua" />
+    <Copy SourceFiles="lua/autorun/clientside/gm_dotnet_client.lua" DestinationFiles="lua-publish/gmod-dot-net-lua-client.$(RuntimeVersionShort).lua" />
   </Target>
 
 </Project>

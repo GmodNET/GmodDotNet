@@ -30,3 +30,4 @@ bin/
 nupkgs/
 Modules/
 packed-build/
+lua-publish/
