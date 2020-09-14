@@ -164,7 +164,7 @@ namespace GmodNET
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
-            lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " " + version_codename);
+            lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " codename " + version_codename);
             lua.Call(1, 0);
             lua.Pop(1);
 
