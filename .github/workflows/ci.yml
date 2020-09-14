@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.4.0
       with:
-        dotnet-version: env.DOTNET_SDK_VERSION
+        dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
     - name: Build Gmod.NET
       run: dotnet build runtime.csproj -c Release
