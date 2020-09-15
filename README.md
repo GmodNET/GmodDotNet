@@ -74,7 +74,7 @@ Bootstrap Lua scripts are contained in `lua` folder.
 
 ### Nightly builds
 
-You can find latest nightly builds GmodDotNet runtime at http://nightly.gmodnet.xyz/. To use nightly NuGet packages connect to our nightly NuGet feed: https://dev.azure.com/GmodNET/gmodnet-artifacts/_packaging?_a=feed&feed=gmodnet-packages.
+You can find latest nightly builds GmodDotNet runtime at http://nightly.gmodnet.xyz/. To use nightly NuGet packages connect to [our nightly NuGet feed](https://dev.azure.com/GmodNET/gmodnet-artifacts/_packaging?_a=feed&feed=gmodnet-packages).
 
 ## Installation and usage
 
