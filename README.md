@@ -61,18 +61,20 @@ __NOTE__: `runtime.csproj` is not a real C# project file but a kind of build scr
 
 You may also want to copy the content of `lua` folder to the corresponding destinations in `garrysmod/lua`.
 
+### Folder structure
+
 Gmod.NET is subdivided into three subprojects.
 
-Garry's Mod binary native module is
-contained in `gm_dotnet_native` folder. It is written in __C++__ and uses
-__CMake__ as its build (prebuild) system.
+Garry's Mod binary native module and helper libraries are
+contained in `gm_dotnet_native` folder and organized as CMake project.
 
-Managed part is an `dotnet` solution developed against `netcoreapp3.1` specification and contained in `gm_dotnet_managed` folder.
+Managed part is contained in `gm_dotnet_managed` folder and organized with .NET soultion file `gm_dotnet_managed.sln`.
 
 Bootstrap Lua scripts are contained in `lua` folder.
 
-You can find nightly builds of Gmod.NET at [our discord server](https://discord.gg/9bP8nMT) (`#nightly-builds` channel).
+### Nightly builds
 
+You can find latest nightly builds GmodDotNet runtime at http://nightly.gmodnet.xyz/. To use nightly NuGet packages connect to our nightly NuGet feed: https://dev.azure.com/GmodNET/gmodnet-artifacts/_packaging?_a=feed&feed=gmodnet-packages.
 
 ## Installation and usage
 
