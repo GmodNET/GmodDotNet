@@ -2,7 +2,7 @@
 [![CI](https://github.com/GlebChili/GmodDotNet/workflows/CI/badge.svg?branch=master)](https://github.com/GlebChili/GmodDotNet/actions?query=workflow%3ACI)
 
 # Gmod.NET
-[![Current Runtime](https://img.shields.io/badge/Current%20Runtime-0.5.2-2db94e)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi) [![Current API](https://img.shields.io/badge/Current%20API-0.5.1-2db94e)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi)
+[![Current Runtime](https://img.shields.io/badge/Current%20Runtime-0.6.0-2db94e)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi) [![Current API](https://img.shields.io/badge/Current%20API-0.6.0-2db94e)](https://github.com/GlebChili/GmodDotNet/wiki/GmodNET-Runtime-and-GmodNET.API-version-correspondence#gmodnet-and-gmodnetapi)
 
 Cross-platform .NET Module/Plugin platform for Garry's Mod powered by [__.NET Core__](https://dotnet.microsoft.com/).
 
