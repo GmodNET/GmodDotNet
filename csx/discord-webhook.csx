@@ -23,14 +23,12 @@ struct DiscordMessage
     public DiscordEmbedded[] embeds {get; set;}
 }
 
-GmodNET.VersionTool.Core.VersionGenerator api_ver_gen = new GmodNET.VersionTool.Core.VersionGenerator("../api.version.json");
-GmodNET.VersionTool.Core.VersionGenerator runtime_ver_gen = new GmodNET.VersionTool.Core.VersionGenerator("../runtime.version.json");
+GmodNET.VersionTool.Core.VersionGenerator ver_gen = new GmodNET.VersionTool.Core.VersionGenerator("../version.json");
 
-string discord_text = "API version: " + api_ver_gen.VersionWithoutBuildData + "\n\n"
-                        + "Runtime version: " + runtime_ver_gen.VersionWithoutBuildData + "\n\n"
+string discord_text = "Version: `" + ver_gen.VersionWithoutBuildData + "`\n\n"
                         + @"Get last nightly builds at http://nightly.gmodnet.xyz";
 
-string branch = runtime_ver_gen.BranchName;
+string branch = ver_gen.BranchName;
 
 DiscordMessage msg = new DiscordMessage
 {
