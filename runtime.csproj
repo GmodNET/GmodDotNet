@@ -4,18 +4,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
-    <BundledNETCoreVersion>3.1.6</BundledNETCoreVersion>
+    <BundledNETCoreVersion>3.1.8</BundledNETCoreVersion>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/ef32bac8-be30-4609-b801-59744b9b8270/f5e2bf611cb36f4141d849ec583dc554/aspnetcore-runtime-3.1.6-win-x64.zip
+      https://download.visualstudio.microsoft.com/download/pr/145378a7-34ed-4b5b-a44f-964b3bbda2d7/4e61d9bc9003af03c8132c6b752d5d75/aspnetcore-runtime-3.1.8-win-x64.zip
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/9eadec7a-dd7e-476d-a348-c4bf946a0bad/c11b5123931ee17faba27e5debe74731/aspnetcore-runtime-3.1.6-linux-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/f7c8f82a-8c47-497d-875b-2ac210599ec5/e8aea0c195efed8a9aff2ba687db8c26/aspnetcore-runtime-3.1.8-linux-x64.tar.gz
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/23d6c3a0-6c26-4bfa-80fb-8204c4d214c3/7e34432dca2915d823acb07287f75238/aspnetcore-runtime-3.1.6-osx-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/e87fff5e-7407-470b-afc4-eec92e51c5a6/47bada16baeceabcfa3b955727465f0d/aspnetcore-runtime-3.1.8-osx-x64.tar.gz
     </NETCoreDownloadUrl>
   </PropertyGroup>
 
