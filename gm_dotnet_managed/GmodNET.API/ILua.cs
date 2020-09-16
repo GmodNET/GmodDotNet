@@ -33,7 +33,7 @@ namespace GmodNET.API
         /// Pops iAmt values from the top of the stack.
         /// </summary>
         /// <param name="IAmt">Amount of values to pop</param>
-        public void Pop(int IAmt);
+        public void Pop(int IAmt = 1);
         /// <summary>
         /// Pushes table[key] on to the stack.
         /// </summary>

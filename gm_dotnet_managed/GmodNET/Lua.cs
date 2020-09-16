@@ -71,7 +71,7 @@ namespace GmodNET
             push(ptr, iStackPos);
         }
 
-        public void Pop(int IAmt)
+        public void Pop(int IAmt = 1)
         {
             if (IAmt < 0)
             { 
