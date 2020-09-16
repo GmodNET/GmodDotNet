@@ -99,16 +99,16 @@
 
   <Target Name="GetVersionFromTool" BeforeTargets="BuildRuntime;PackRuntimeBuild;PackLuaForPublish">
     <Exec Command="dotnet tool restore" />
-    <Exec Command="dotnet tool run gmodnet-vt getVersion runtime.version.json" ConsoleToMsBuild="true">
+    <Exec Command="dotnet tool run gmodnet-vt getVersion version.json" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="RuntimeVersion" />
 		</Exec>
-		<Exec Command="dotnet tool run gmodnet-vt getVersion runtime.version.json --skip-build-data" ConsoleToMsBuild="true">
+		<Exec Command="dotnet tool run gmodnet-vt getVersion version.json --skip-build-data" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="RuntimeVersionShort" />
 		</Exec>
-    <Exec Command="dotnet tool run gmodnet-vt getVersion api.version.json" ConsoleToMsBuild="true">
+    <Exec Command="dotnet tool run gmodnet-vt getVersion version.json" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="ApiVersion" />
 		</Exec>
-		<Exec Command="dotnet tool run gmodnet-vt getVersion api.version.json --skip-build-data" ConsoleToMsBuild="true">
+		<Exec Command="dotnet tool run gmodnet-vt getVersion version.json --skip-build-data" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="ApiVersionShort" />
 		</Exec>
     <CreateProperty Value="cd obj/cmake_build &amp;&amp; cmake -DSEM_VERSION:STRING=$(RuntimeVersion) ../../gm_dotnet_native $(CmakeGenerateWinFlags)">

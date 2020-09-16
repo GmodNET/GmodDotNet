@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-	<VersionFilePath>../../runtime.version.json</VersionFilePath>
+	<VersionFilePath>../../version.json</VersionFilePath>
     <StartupObject>GmodNET.BuidReq</StartupObject>
     <Description>GmodNET managed module loader.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
