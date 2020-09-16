@@ -27,18 +27,54 @@ Check out our [wiki](https://github.com/GlebChili/GmodDotNet/wiki) or join our [
 
 ## Building and contributing
 
+### Build instructions
+
+To build GmodDotNet you need to have following software installed and registered with your PATH environment variable:
+
+1. Latest version of git
+
+2. Latest version of CMake
+
+3. Latest version of dotnet SDK
+
+4. (On Windows) Latest version of Visual Studio 2019 with C++ package
+
+5. (On macOS) Latest version of Xcode
+
+6. (On Linux) Latest versions of make and gcc (or clang)
+
+Build steps:
+
+1. Clone this git repository (building outside of git repository is not supported)
+
+2. In the root of the cloned repository run `dotnet build runtime.csproj -c Debug` or `dotnet build runtime.csproj -c Release` instruction in your command prompt.
+
+__NOTE__: `runtime.csproj` is not a real C# project file but a kind of build script. To work with the managed part of GmodDotNet open `gm_dotnet_managed/gm_dotnet_managed.sln` solution file in your IDE instead.
+
+`runtime.csproj` build script will produce following folders in the root of repository:
+
+1. `build` folder contains the full build of GmodDotNet runtime (both native and managed). The content of this folder should be copied to `garrysmod/lua/bin`.
+
+2. `Modules` folder contains tests suit. To run tests this folder should be copied to `garrysmod/lua/bin`.
+
+3. `nupkgs` folder contains `GmodNET.API` NuGet package.
+
+You may also want to copy the content of `lua` folder to the corresponding destinations in `garrysmod/lua`.
+
+### Folder structure
+
 Gmod.NET is subdivided into three subprojects.
 
-Garry's Mod binary native module is
-contained in `gm_dotnet_native` folder. It is written in __C++__ and uses
-__CMake__ as its build (prebuild) system.
+Garry's Mod binary native module and helper libraries are
+contained in `gm_dotnet_native` folder and organized as CMake project.
 
-Managed part is an `dotnet` solution developed against `netcoreapp3.1` specification and contained in `gm_dotnet_managed` folder.
+Managed part is contained in `gm_dotnet_managed` folder and organized with .NET soultion file `gm_dotnet_managed.sln`.
 
 Bootstrap Lua scripts are contained in `lua` folder.
 
-You can find nightly builds of Gmod.NET at [our discord server](https://discord.gg/9bP8nMT) (`#nightly-builds` channel).
+### Nightly builds
 
+You can find latest nightly builds GmodDotNet runtime at http://nightly.gmodnet.xyz/. To use nightly NuGet packages connect to [our nightly NuGet feed](https://dev.azure.com/GmodNET/gmodnet-artifacts/_packaging?_a=feed&feed=gmodnet-packages).
 
 ## Installation and usage
 

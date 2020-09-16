@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Tests
 {
@@ -14,7 +15,7 @@ namespace Tests
     {
         public string ModuleName => "Test suit for Gmod.NET";
 
-        public string ModuleVersion => "1.0.0";
+        public string ModuleVersion => FileVersionInfo.GetVersionInfo(typeof(Tests).Assembly.Location).ProductVersion;
 
         ILua lua;
 

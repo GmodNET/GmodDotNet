@@ -2,29 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.6.0-preview</Version>
+	<VersionFilePath>../../api.version.json</VersionFilePath>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Authors>Gleb Krasilich</Authors>
     <Product>GmodNET API</Product>
     <Description>GmodNET API library contains all necessary interfaces to write a GmodNET module.</Description>
     <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>garrysmod, GmodNET</PackageTags>
-    <PackageReleaseNotes>- TBD</PackageReleaseNotes>
+    <PackageTags>garrysmod; GmodNET</PackageTags>
     <PackageProjectUrl>https://github.com/GlebChili/GmodDotNet</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
-    <PackageVersion>0.6.0-preview</PackageVersion>
+	<Company>GmodNET</Company>
+	<Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
+	<Product>$(Description)</Product>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType></DebugType>
     <DocumentationFile>bin\Release\netcoreapp3.1\GmodNET.API.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\netcoreapp3.1\GmodNET.API.xml</DocumentationFile>
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="GmodNET.VersionTool.Target" Version="0.2.0-alpha.1.22426226.dev">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 
 </Project>

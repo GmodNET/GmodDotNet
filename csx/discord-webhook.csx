@@ -1,13 +1,12 @@
 #! "netcoreapp3.1"
+#r "nuget: GmodNET.VersionTool.Core, 0.2.0-alpha.1.21507807.dev"
 
 using System.Net.Http;
 using System.Text.Json;
 
 // Params order: Webhook URL, branch, commit, version
 string webhook = Args[0];
-string branch = Args[1];
-string commit = Args[2];
-string version = Args[3];
+string commit = Args[1];
 
 struct DiscordEmbedded
 {
@@ -24,25 +23,21 @@ struct DiscordMessage
     public DiscordEmbedded[] embeds {get; set;}
 }
 
-string discord_text = "Signed as version " + version
-                    + "\n\n Windows: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/windows" + "/" + "windows-" + commit + ".zip"
-                    + "\n\n"
-                    + "Linux: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/linux" + "/" + "linux-" + commit + ".tar.gz"
-                    + "\n\n"
-                    + "macOS: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/osx" + "/" + "osx-" + commit + ".tar.gz"
-                    + "\n\n"
-                    + "Lua client: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/" + commit + "/" + "gm_dotnet_client.lua"
-                    + "\n\n"
-                    + "Lua server: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/" + commit + "/" + "gm_dotnet_server.lua"
-                    + "\n\n"
-                    + "Debug assemblies: " + "https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/debug/debug-" + commit + ".tar.gz";
+GmodNET.VersionTool.Core.VersionGenerator api_ver_gen = new GmodNET.VersionTool.Core.VersionGenerator("../api.version.json");
+GmodNET.VersionTool.Core.VersionGenerator runtime_ver_gen = new GmodNET.VersionTool.Core.VersionGenerator("../runtime.version.json");
+
+string discord_text = "API version: " + api_ver_gen.VersionWithoutBuildData + "\n\n"
+                        + "Runtime version: " + runtime_ver_gen.VersionWithoutBuildData + "\n\n"
+                        + @"Get last nightly builds at http://nightly.gmodnet.xyz";
+
+string branch = runtime_ver_gen.BranchName;
 
 DiscordMessage msg = new DiscordMessage
 {
     embeds = new DiscordEmbedded[] { new DiscordEmbedded
         {
             type = "rich",
-            title = "Nightly build for `" + branch + "` commit `" + commit.Substring(0, 7) + "`",
+            title = "Nightly build of `GmodDotNet` for branch `" + branch + "` commit `" + commit.Substring(0, 7) + "`",
             description = discord_text,
             url = "https://github.com/GlebChili/GmodDotNet/commit/" + commit,
             color = 65530

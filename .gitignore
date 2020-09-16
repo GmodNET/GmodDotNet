@@ -23,4 +23,11 @@ gm_dotnet_managed/Tests/obj
 */.idea
 .DS_Store
 */.vscode
-build
+build/
+obj/
+bin/
+**/.vs/
+nupkgs/
+Modules/
+packed-build/
+lua-publish/

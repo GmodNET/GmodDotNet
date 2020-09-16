@@ -5,11 +5,13 @@ using static GmodNET.RuntimeServices;
 using GmodNET.API;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Diagnostics;
 
 namespace GmodNET
 {
     // This delegate is needed for native interop and its signature nust match Startup.Main's one.
-    internal delegate IntPtr MainDelegate(IntPtr lua_base, int maj_ver, int min_ver, int misc_ver, IntPtr param);
+    internal delegate IntPtr MainDelegate(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param);
 
     // Startup class is ressponsible for bootstraping manged code 
     internal static class Startup
@@ -22,12 +24,21 @@ namespace GmodNET
         static bool FirstRun = true;
 
         //Called by Garry's Mod. Responsible for initial configuration.
-        internal static IntPtr Main(IntPtr lua_base, int maj_ver, int min_ver, int misc_ver, IntPtr param)
+        internal static IntPtr Main(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param)
         {
-            if(!((maj_ver == 0) && (min_ver == 6) && (misc_ver == 0)))
+            string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
+            string friendly_version = full_assembly_version.Split("+")[0];
+            string version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
+
+            unsafe
             {
-                File.WriteAllText("GmodNETErrorLog.txt", "Version mismatch! \n");
-                return IntPtr.Zero;
+                string native_version = Encoding.UTF8.GetString((byte*)native_version_string.ToPointer(), version_string_length);
+
+                if (native_version != full_assembly_version)
+                {
+                    File.WriteAllText("GmodNETErrorLog.txt", "Version mismatch! \n");
+                    return IntPtr.Zero;
+                }
             }
             
             if(true)
@@ -153,10 +164,16 @@ namespace GmodNET
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
-            lua.PushString("GmodNET by Gleb Krasilich. Version " + 0 + "." + 6 + "." + 0 + " Prototype");
+            lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " codename " + version_codename);
             lua.Call(1, 0);
             lua.Pop(1);
-            
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "print");
+            lua.PushString("(full build version: " + full_assembly_version + ")");
+            lua.Call(1, 0);
+            lua.Pop(1);
+
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
             lua.PushString(RuntimeInformation.FrameworkDescription);
