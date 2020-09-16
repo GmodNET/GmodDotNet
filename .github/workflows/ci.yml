@@ -44,7 +44,7 @@ jobs:
 
     - name: Prepare test run
       run: |
-           dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o gmod/garrysmod/lua/bin/Modules/Tests
+           cp -a Modules/. gmod/garrysmod/lua/bin
            cp -a build/. gmod/garrysmod/lua/bin
            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
 
@@ -207,11 +207,7 @@ jobs:
      - name: Prepare test run
        shell: bash
        run: |
-            dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release
-            mkdir gmod/garrysmod/lua/bin
-            mkdir gmod/garrysmod/lua/bin/Modules
-            mkdir gmod/garrysmod/lua/bin/Modules/Tests
-            cp -a gm_dotnet_managed/Tests/bin/Release/netcoreapp3.1/publish/. gmod/garrysmod/lua/bin/Modules/Tests
+            cp -a Modules/. gmod/garrysmod/lua/bin
             cp -a build/. gmod/garrysmod/lua/bin
             cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
 
@@ -314,15 +310,6 @@ jobs:
         with:
           name: Osx-Raw-Build
           path: ./build
-
-      - name: Build Tests project
-        run: dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Debug
-
-      - name: Load Tests project
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: Tests-Assembly
-          path: gm_dotnet_managed/Tests/bin/Debug/netcoreapp3.1/publish/
 
 # Finilize full signed build on push
 
