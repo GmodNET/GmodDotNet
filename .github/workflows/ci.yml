@@ -44,7 +44,7 @@ jobs:
 
     - name: Prepare test run
       run: |
-           dotnet publish gm_dotnet_managed/Tests/Tests.csproj gmod/garrysmod/lua/bin/Modules/Tests
+           dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o gmod/garrysmod/lua/bin/Modules/Tests
            cp -a build/. gmod/garrysmod/lua/bin
            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
 
@@ -207,7 +207,7 @@ jobs:
      - name: Prepare test run
        shell: bash
        run: |
-            dotnet publish gm_dotnet_managed/Tests/Tests.csproj gmod/garrysmod/lua/bin/Modules/Tests
+            dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o gmod/garrysmod/lua/bin/Modules/Tests
             cp -a build/. gmod/garrysmod/lua/bin
             cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
 
