@@ -156,9 +156,9 @@ namespace GmodNET
                     LuaInterop.check_number = CreateNativeCaller<Func<IntPtr, int, double>>(params_from_native_code[53]);
 
                     LuaInterop.push_c_function_safe = CreateNativeCaller<Action<IntPtr, IntPtr, IntPtr>>(params_from_native_code[54]);
-                }
 
-                GmodInterop.lua_extructor = LuaInterop.ExtructLua;
+                    GmodInterop.lua_extructor = &LuaInterop.ExtructLua;
+                }
 
                 FirstRun = false;
             }

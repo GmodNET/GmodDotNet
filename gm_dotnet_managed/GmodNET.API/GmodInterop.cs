@@ -11,7 +11,7 @@ namespace GmodNET.API
     /// </summary>
     public static class GmodInterop
     {
-        internal static Func<IntPtr, ILua> lua_extructor;
+        internal unsafe static delegate* managed<IntPtr, ILua> lua_extructor;
 
         /// <summary>
         /// Extructs an instance of <see cref="ILua"/> implementation from a pointer to the Garry's Mod native lua_state structure.
@@ -20,7 +20,10 @@ namespace GmodNET.API
         /// <returns>An implementation of <see cref="ILua"/> interface to work with given lua state.</returns>
         public static ILua GetLuaFromState(IntPtr lua_state)
         {
-            return lua_extructor(lua_state);
+            unsafe
+            {
+                return lua_extructor(lua_state);
+            }
         }
     }
 }
