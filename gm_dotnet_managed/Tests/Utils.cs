@@ -18,7 +18,7 @@ namespace Tests
 
         public static void Log(this GmodNET.API.ILua lua, string message)
         {
-            string timed_message = "[" + DateTime.Now.ToString() + "] " + message;
+            string timed_message = "::error::[" + DateTime.Now.ToString() + "] " + message;
             lua.Print(timed_message);
             File.AppendAllText("tests-log.txt", timed_message + Environment.NewLine);
         }

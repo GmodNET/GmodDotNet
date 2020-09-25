@@ -166,13 +166,13 @@ namespace Tests
                         }
                         else
                         {
-                            lua.Log(@"FAILED TEST " + curr_test_inst.GetType().ToString() +". An exception was not thrown");
+                            lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() +". An exception was not thrown");
                             this.IsEverythingSuccessful = false;
                         }
                     }
                     else if(curr_test_promise.IsFaulted)
                     {
-                        lua.Log(@"::error::FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions:");
+                        lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions:");
                         foreach (Exception e in curr_test_promise.Exception.InnerExceptions)
                         {
                             lua.Log(e.GetType().ToString() + " - " + e.Message);
