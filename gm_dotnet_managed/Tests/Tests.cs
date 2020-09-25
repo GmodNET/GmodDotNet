@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Runtime.Loader;
 using GmodNET.API;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Tests
 {
@@ -168,13 +166,13 @@ namespace Tests
                         }
                         else
                         {
-                            lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() +". An exception was not thrown");
+                            lua.Log(@"#ERROR: FAILED TEST " + curr_test_inst.GetType().ToString() +". An exception was not thrown");
                             this.IsEverythingSuccessful = false;
                         }
                     }
                     else if(curr_test_promise.IsFaulted)
                     {
-                        lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions:");
+                        lua.Log(@"#ERROR: TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions:");
                         foreach (Exception e in curr_test_promise.Exception.InnerExceptions)
                         {
                             lua.Log(e.GetType().ToString() + " - " + e.Message);
