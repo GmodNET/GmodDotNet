@@ -15,22 +15,11 @@ namespace Tests
             lua.Pop(1);
         }
 
-        public static void Log(this GmodNET.API.ILua lua, string message, bool isError = false, Exception exception = null)
+        public static void Log(this GmodNET.API.ILua lua, string message, bool isError = false)
         {
             string timed_message = "[" + DateTime.Now.ToString() + "] " + message;
 
-            string info_suffix = "::error";
-
-            if(exception != null)
-            {
-                StackTrace st = new(exception);
-                StackFrame sf = st.GetFrame(0);
-
-                info_suffix += " file=" + sf.GetFileName();
-                info_suffix += ",line=" + sf.GetFileLineNumber();
-            }
-
-            info_suffix += "::";
+            string info_suffix = "::error::";
 
             if(isError)
             {

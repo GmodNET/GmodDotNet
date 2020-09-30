@@ -177,7 +177,7 @@ namespace Tests
                         {
                             exception_msg += "\n" + e.GetType().ToString() + " - " + e.Message;
                         }
-                        lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions: " + exception_msg, true, curr_test_promise.Exception.InnerException);
+                        lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions: " + exception_msg, true);
                         this.IsEverythingSuccessful = false;
                     }
                 }
