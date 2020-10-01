@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.IO;
 
 namespace Tests
@@ -16,9 +15,17 @@ namespace Tests
             lua.Pop(1);
         }
 
-        public static void Log(this GmodNET.API.ILua lua, string message)
+        public static void Log(this GmodNET.API.ILua lua, string message, bool isError = false)
         {
             string timed_message = "[" + DateTime.Now.ToString() + "] " + message;
+
+            string info_suffix = "::error::";
+
+            if(isError)
+            {
+                timed_message = info_suffix + timed_message;
+            }
+
             lua.Print(timed_message);
             File.AppendAllText("tests-log.txt", timed_message + Environment.NewLine);
         }
