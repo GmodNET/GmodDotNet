@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Runtime.Loader;
 using GmodNET.API;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Tests
 {
@@ -127,7 +125,7 @@ namespace Tests
                     }
                     else
                     {
-                        lua.Log("There are no more tests to run. Some tests have failed. Check log.");
+                        lua.Log("There are no more tests to run. Some tests have failed. Check log.", true);
                         lua.Log("Test run time is " + DateTime.Now.Subtract(tests_start_time).TotalSeconds + " seconds");
 
                         lua.Log("Shutting down game...");
@@ -168,17 +166,18 @@ namespace Tests
                         }
                         else
                         {
-                            lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() +". An exception was not thrown");
+                            lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() +". An exception was not thrown", true);
                             this.IsEverythingSuccessful = false;
                         }
                     }
                     else if(curr_test_promise.IsFaulted)
                     {
-                        lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions:");
+                        string exception_msg = "";
                         foreach (Exception e in curr_test_promise.Exception.InnerExceptions)
                         {
-                            lua.Log(e.GetType().ToString() + " - " + e.Message);
+                            exception_msg += "\n" + e.GetType().ToString() + " - " + e.Message;
                         }
+                        lua.Log("FAILED TEST " + curr_test_inst.GetType().ToString() + ". List of exceptions: " + exception_msg, true);
                         this.IsEverythingSuccessful = false;
                     }
                 }
