@@ -387,7 +387,7 @@ namespace GmodNET
                 throw new ArgumentNullException("function_pointer", "Parameter can't be nullptr.");
             }
 
-            push_c_function(ptr, (IntPtr)function_pointer);
+            push_c_function(ptr, int_ptr);
         }
 
         public void PushCClosure(IntPtr native_func_ptr, int iVars)
