@@ -5,6 +5,7 @@ using System.Text;
 using GmodNET.API;
 using System.Runtime.InteropServices;
 using static GmodNET.LuaInterop;
+using System.Runtime.CompilerServices;
 
 namespace GmodNET
 {
@@ -367,9 +368,26 @@ namespace GmodNET
             }
         }
 
-        public void PushCFunction(IntPtr native_func_ptr)
+        public unsafe void PushCFunction(IntPtr native_func_ptr)
         {
+            if(native_func_ptr == IntPtr.Zero)
+            {
+                throw new ArgumentNullException("native_func_ptr", "Parameter can't be nullptr.");
+            }
+
             push_c_function(ptr, native_func_ptr);
+        }
+
+        public unsafe void PushCFunction(delegate* unmanaged[Cdecl]<IntPtr, int> function_pointer)
+        {
+            IntPtr int_ptr = (IntPtr)function_pointer;
+
+            if (int_ptr == IntPtr.Zero)
+            {
+                throw new ArgumentNullException("function_pointer", "Parameter can't be nullptr.");
+            }
+
+            push_c_function(ptr, int_ptr);
         }
 
         public void PushCClosure(IntPtr native_func_ptr, int iVars)
