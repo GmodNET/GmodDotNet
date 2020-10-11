@@ -5,6 +5,7 @@
 #include <netcore/hostfxr.h>
 #include <GarrysMod/Lua/LuaBase.h>
 #include "cleanup_function_type.h"
+#include "LuaAPIExposure.h"
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -18,9 +19,9 @@
 #endif
 
 typedef int(*get_function_pointer_fn)(
-        char* typeName,
-        char* methodName,
-        char* delegateTypeName,
+        const char* typeName,
+        const char* methodName,
+        const char* delegateTypeName,
         void* loadContext,
         void* reserved,
         void* outFunctionPointer
@@ -56,6 +57,64 @@ hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_comm
 hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
         reinterpret_cast<hostfxr_get_runtime_delegate_fn>(dlsym(hostfxr_library_handle, "hostfxr_get_runtime_delegate"));
 #endif
+
+void * params_to_managed_code[] = {
+        (void*)export_top,
+        (void*)export_push,
+        (void*)export_pop,
+        (void*)export_get_field,
+        (void*)export_set_field,
+        (void*)export_create_table,
+        (void*)export_set_metatable,
+        (void*)export_get_metatable,
+        (void*)export_call,
+        (void*)export_p_call,
+        (void*)exports_equal,
+        (void*)export_raw_equal,
+        (void*)export_insert,
+        (void*)export_remove,
+        (void*)export_next,
+        (void*)export_throw_error,
+        (void*)export_check_type,
+        (void*)export_arg_error,
+        (void*)export_get_string,
+        (void*)export_get_number,
+        (void*)export_get_bool,
+        (void*)export_get_c_function,
+        (void*)export_push_nil,
+        (void*)export_push_string,
+        (void*)export_push_number,
+        (void*)export_push_bool,
+        (void*)export_push_c_function,
+        (void*)export_push_c_closure,
+        (void*)export_reference_create,
+        (void*)export_reference_free,
+        (void*)export_reference_push,
+        (void*)export_push_special,
+        (void*)export_is_type,
+        (void*)export_get_type,
+        (void*)export_get_type_name,
+        (void*)export_obj_len,
+        (void*)export_get_angle,
+        (void*)export_get_vector,
+        (void*)export_push_angle,
+        (void*)export_push_vector,
+        (void*)export_set_state,
+        (void*)export_create_metatable,
+        (void*)export_push_metatable,
+        (void*)export_push_user_type,
+        (void*)export_set_user_type,
+        (void*)export_get_user_type,
+        (void*)export_get_iluabase_from_the_lua_state,
+        (void*)export_get_table,
+        (void*)export_set_table,
+        (void*)export_raw_get,
+        (void*)export_raw_set,
+        (void*)export_push_user_data,
+        (void*)export_check_string,
+        (void*)export_check_number,
+        (void*)export_push_c_function_safe
+};
 
 extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILuaBase* lua)
 {
