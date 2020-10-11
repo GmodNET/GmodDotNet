@@ -57,7 +57,7 @@ hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
         reinterpret_cast<hostfxr_get_runtime_delegate_fn>(dlsym(hostfxr_library_handle, "hostfxr_get_runtime_delegate"));
 #endif
 
-extern "C" DYNANAMIC_EXPORT void* InitNetRuntime()
+extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILuaBase* lua)
 {
     if(managed_main == nullptr)
     {
