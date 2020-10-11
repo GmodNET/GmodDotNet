@@ -25,6 +25,7 @@ add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-s
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 #Set up compile definitions
 target_compile_definitions(gm_dotnet_native PUBLIC SEM_VERSION="${SEM_VERSION}")
+target_compile_definitions(dotnethelper PUBLIC SEM_VERSION="${SEM_VERSION}")
 #Set path for output
 set_target_properties(gm_dotnet_native PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
