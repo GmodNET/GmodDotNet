@@ -1,19 +1,18 @@
 //
 // Created by Gleb Krasilich on 11.10.2020.
 //
+#include <iostream>
 #include <netcore/hostfxr.h>
 #ifdef WIN32
 #include <Windows.h>
 #else
 #include <dlfcn.h>
-#include <unistd.h>
-#include <locale>
 #endif
 
 #ifdef WIN32
-#define DYMANAMIC_EXPORT _declspec(dllexport)
+#define DYNANAMIC_EXPORT _declspec(dllexport)
 #else
-#define DYMANAMIC_EXPORT __attribute__((visibility("default")))
+#define DYNANAMIC_EXPORT __attribute__((visibility("default")))
 #endif
 
 hostfxr_handle* handle = nullptr;
@@ -26,8 +25,37 @@ hostfxr_pointer = dlopen("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.1.20451.14/
 void* hostfxr_library_handle = dlopen("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.1.20451.14/libhostfxr.so", RTLD_LAZY);
 #endif
 
-extern "C" DYMANAMIC_EXPORT void* InitNetRuntime()
+#ifdef WIN32
+hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_command_line =
+        reinterpret_cast<hostfxr_initialize_for_dotnet_command_line_fn>(GetProcAddress(static_cast<HMODULE>(hostfxr_library_handle),
+                                                                                       "hostfxr_initialize_for_dotnet_command_line"));
+hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
+        reinterpret_cast<hostfxr_get_runtime_delegate_fn>(GetProcAddress(static_cast<HMODULE>(hostfxr_library_handle),
+                                                                         "hostfxr_get_runtime_delegate"));
+#else
+hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_command_line =
+        reinterpret_cast<hostfxr_initialize_for_dotnet_command_line_fn>(dlsym(hostfxr_library_handle, "hostfxr_initialize_for_dotnet_command_line"));
+hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
+        reinterpret_cast<hostfxr_get_runtime_delegate_fn>(dlsym(hostfxr_library_handle, "hostfxr_get_runtime_delegate"));
+#endif
+
+extern "C" DYNANAMIC_EXPORT void* InitNetRuntime()
 {
+    if(handle == nullptr)
+    {
+#ifdef WIN32
+        const wchar_t* dotnet_args[1] = {L"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
+#else
+        const char* dotnet_args[1] = {"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
+#endif
+        int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, nullptr, handle);
+        if(init_success_code != 0)
+        {
+            std::cerr << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
+            return nullptr;
+        }
+
+    }
     return nullptr;
 }
 
