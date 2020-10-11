@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GmodNET", "GmodNET\GmodNET.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GmodNET.API", "GmodNET.API\GmodNET.API.csproj", "{49210D87-ADFF-4EF9-B016-E3DD9302117C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultContextResolver", "DefaultContextResolver\DefaultContextResolver.csproj", "{409EF3A2-679C-43B1-8856-EE1B50E2E304}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{10B08F0F-A44E-40F2-A76C-59ED701BB342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{10B08F0F-A44E-40F2-A76C-59ED701BB342}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{49210D87-ADFF-4EF9-B016-E3DD9302117C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49210D87-ADFF-4EF9-B016-E3DD9302117C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49210D87-ADFF-4EF9-B016-E3DD9302117C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{409EF3A2-679C-43B1-8856-EE1B50E2E304}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10B08F0F-A44E-40F2-A76C-59ED701BB342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10B08F0F-A44E-40F2-A76C-59ED701BB342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10B08F0F-A44E-40F2-A76C-59ED701BB342}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DefaultContextResolver\DefaultContextResolver.csproj" />
     <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj">
       <Private>false</Private>
     </ProjectReference>
