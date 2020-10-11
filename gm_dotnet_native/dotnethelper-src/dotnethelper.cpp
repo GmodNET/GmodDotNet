@@ -3,6 +3,8 @@
 //
 #include <iostream>
 #include <netcore/hostfxr.h>
+#include <GarrysMod/Lua/LuaBase.h>
+#include "cleanup_function_type.h"
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -14,6 +16,22 @@
 #else
 #define DYNANAMIC_EXPORT __attribute__((visibility("default")))
 #endif
+
+typedef int(*get_function_pointer_fn)(
+        char* typeName,
+        char* methodName,
+        char* delegateTypeName,
+        void* loadContext,
+        void* reserved,
+        void* outFunctionPointer
+        );
+
+typedef cleanup_function_fn(*managed_main_fn)(
+        GarrysMod::Lua::ILuaBase* lua,
+        char* versionString,
+        int versionStringLength,
+        void** internalFunctionsParam
+        );
 
 hostfxr_handle* handle = nullptr;
 
