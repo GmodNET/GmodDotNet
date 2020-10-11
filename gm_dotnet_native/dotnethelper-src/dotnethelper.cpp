@@ -6,6 +6,7 @@
 #include <GarrysMod/Lua/LuaBase.h>
 #include "cleanup_function_type.h"
 #include "LuaAPIExposure.h"
+#include <string>
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -29,7 +30,7 @@ typedef int(*get_function_pointer_fn)(
 
 typedef cleanup_function_fn(*managed_main_fn)(
         GarrysMod::Lua::ILuaBase* lua,
-        char* versionString,
+        const char* versionString,
         int versionStringLength,
         void** internalFunctionsParam
         );
@@ -169,6 +170,6 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
             return nullptr;
         }
     }
-    return nullptr;
+    return managed_main(lua, std::string(SEM_VERSION).c_str(), std::string(SEM_VERSION).length(), params_to_managed_code);
 }
 
