@@ -37,7 +37,8 @@ GMOD_MODULE_OPEN()
     HMODULE dotnethelper_handle = LoadLibraryA("garrysmod/lua/bin/dotnethelper.dll");
     InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(GetProcAddress(dotnethelper_handle, "InitNetRuntime"));
 #elif __APPLE__
-
+    void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.dylib", RTLD_LAZY);
+    InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, "InitNetRuntime"));
 #elif __gnu_linux__
     void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.so", RTLD_LAZY);
     InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, "InitNetRuntime"));
