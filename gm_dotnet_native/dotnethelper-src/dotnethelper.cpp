@@ -33,8 +33,6 @@ typedef cleanup_function_fn(*managed_main_fn)(
         void** internalFunctionsParam
         );
 
-hostfxr_handle* handle = nullptr;
-
 managed_main_fn managed_main = nullptr;
 
 #ifdef WIN32
@@ -61,26 +59,34 @@ hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
 
 extern "C" DYNANAMIC_EXPORT void* InitNetRuntime()
 {
-    if(handle == nullptr)
+    if(managed_main == nullptr)
     {
         if(hostfxr_initialize_for_dotnet_command_line == nullptr || hostfxr_get_runtime_delegate == nullptr)
         {
             std::cerr << "Unable to load hostfxr library" << std::endl;
             return nullptr;
         }
+
+        hostfxr_handle* runtime_environment_handle = nullptr;
+
 #ifdef WIN32
         const wchar_t* dotnet_args[1] = {L"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
 #else
         const char* dotnet_args[1] = {"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
 #endif
-        int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, nullptr, handle);
+        int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, nullptr, runtime_environment_handle);
         if(init_success_code != 0)
         {
             std::cerr << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
             return nullptr;
         }
+        if(runtime_environment_handle == nullptr)
+        {
+            std::cerr << "runtime_environment_handle is null" << std::endl;
+        }
         get_function_pointer_fn get_function_pointer = nullptr;
-        int get_runtime_delegate_success_code = hostfxr_get_runtime_delegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&get_function_pointer));
+        int get_runtime_delegate_success_code =
+                hostfxr_get_runtime_delegate(runtime_environment_handle, hdt_get_function_pointer, reinterpret_cast<void**>(&get_function_pointer));
         if(get_runtime_delegate_success_code != 0)
         {
             std::cerr << "Unable to get delegate of dotnet runtime. Error code: " << get_runtime_delegate_success_code << std::endl;
