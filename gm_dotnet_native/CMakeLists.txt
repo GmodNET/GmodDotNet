@@ -18,8 +18,9 @@ set(SEM_VERSION "no_version" CACHE STRING "SemVer of native part")
 
 #Project name
 project(gm_dotnet_native)
-add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/LuaAPIExposure.cpp dotnethelper-src/cleanup_function_type.h)
-add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-src/cleanup_function_type.h)
+add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp dotnethelper-src/cleanup_function_type.h)
+add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-src/cleanup_function_type.h
+		dotnethelper-src/LuaAPIExposure.h dotnethelper-src/LuaAPIExposure.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 #Set up compile definitions

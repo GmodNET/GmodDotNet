@@ -97,6 +97,18 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
             std::cerr << "get_function_pointer is null" << std::endl;
             return nullptr;
         }
+        int get_managed_main_success_code = get_function_pointer("GmodNET.Startup, GmodNET", "Main", "GmodNET.MainDelegate, GmodNET",
+                                                                 nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
+        if(get_managed_main_success_code != 0)
+        {
+            std::cerr << "Unable to load managed entry point: Error code: " << get_managed_main_success_code << std::endl;
+            return nullptr;
+        }
+        if(managed_main == nullptr)
+        {
+            std::cerr << "Unable to load managed entry point: managed_main is null" << std::endl;
+            return nullptr;
+        }
     }
     return nullptr;
 }

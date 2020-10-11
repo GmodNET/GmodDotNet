@@ -14,7 +14,7 @@
 #include <locale>
 #endif // WIN32
 #include <string>
-#include "LuaAPIExposure.h"
+#include "../dotnethelper-src/LuaAPIExposure.h"
 
 #ifdef WIN32
 #define STRING_FORMATER( STR ) converter.from_bytes(STR).c_str()
