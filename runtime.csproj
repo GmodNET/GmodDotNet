@@ -23,8 +23,6 @@
   <PropertyGroup>
     <BaseGmodNETPublishInst>dotnet publish gm_dotnet_managed/GmodNET/GmodNET.csproj -c $(Configuration) -o build/gmodnet/</BaseGmodNETPublishInst>
 
-    <GmodNETAPIBuildInst>dotnet build gm_dotnet_managed/GmodNET.API/GmodNET.API.csproj -c $(Configuration) -o build/gmodnet/API/</GmodNETAPIBuildInst>
-
     <CmakeGenerateWinFlags Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">-G "Visual Studio 16 2019" -A x64</CmakeGenerateWinFlags>
 
     <CmakeBuildWinInst>cd obj/cmake_build &amp;&amp; cmake --build ./ -- /p:Configuration=Release</CmakeBuildWinInst>
@@ -40,8 +38,6 @@
     <Message Text="Starting GmodNET Runtime build process" Importance="high" />
     <Exec Command="$(BaseGmodNETPublishInst)" ConsoleToMsBuild="true" />
     <Delete Files="build/gmodnet/GmodNET.exe;build/gmodnet/GmodNET;build/gmodnet/web.config" />
-    <Exec Command="$(GmodNETAPIBuildInst)" ConsoleToMsBuild="true" />
-    <Delete Files="build/gmodnet/API/GmodNET.API.deps.json;build/gmodnet/API/GmodNET.API.xml" />
     <MakeDir Directories="obj/cmake_build" />
     <Exec Command="$(CmakeGenerateInst)" ConsoleToMsBuild="true" />
     <CallTarget Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'" Targets="CmakeBuildWindows" />
