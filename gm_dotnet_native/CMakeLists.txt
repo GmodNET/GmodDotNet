@@ -29,6 +29,8 @@ target_compile_definitions(dotnethelper PUBLIC SEM_VERSION="${SEM_VERSION}")
 #Set path for output
 set_target_properties(gm_dotnet_native PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
+set_target_properties(dotnethelper PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
 #Add linux helper lib
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	add_library(linuxhelper SHARED linux-helper-src/segv_signal_handler.h linux-helper-src/segv_signal_handler.cpp)
