@@ -19,6 +19,7 @@ set(SEM_VERSION "no_version" CACHE STRING "SemVer of native part")
 #Project name
 project(gm_dotnet_native)
 add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
+add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 #Set up compile definitions
