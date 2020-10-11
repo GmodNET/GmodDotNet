@@ -58,7 +58,6 @@
   <Target Name="CmakeBuildWindows">
     <Exec Command="$(CmakeBuildWinInst)" ConsoleToMsBuild="true" />
     <Copy SourceFiles="build/Release/gmsv_dotnet_win64.dll" DestinationFiles="build/gmsv_dotnet_win64.dll" />
-    <Copy SourceFiles="build/Release/dotnethelper.dll" DestinationFiles="build/dotnethelper.dll" />
     <Copy SourceFiles="build/gmsv_dotnet_win64.dll" DestinationFiles="build/gmcl_dotnet_win64.dll" />
     <RemoveDir Directories="build/Release" />
   </Target>
