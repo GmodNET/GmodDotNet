@@ -2,13 +2,11 @@
 // Created by Gleb Krasilich on 02.10.2019.
 //
 #include <GarrysMod/Lua/Interface.h>
-#include <GarrysMod/Lua/LuaBase.h>
 #include <codecvt>
 #ifdef WIN32
 #include <Windows.h>
 #else
 #include <dlfcn.h>
-#include <locale>
 #endif // WIN32
 #include <string>
 #include "../dotnethelper-src/cleanup_function_type.h"
@@ -41,7 +39,8 @@ GMOD_MODULE_OPEN()
 #elif __APPLE__
 
 #elif __gnu_linux__
-
+    void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.so", RTLD_LAZY);
+    InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, "InitNetRuntime"));
 #endif
     if(InitNetRuntime == nullptr)
     {
