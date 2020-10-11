@@ -7,6 +7,7 @@
 #include "cleanup_function_type.h"
 #include "LuaAPIExposure.h"
 #include <string>
+#include <fstream>
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -119,11 +120,14 @@ void * params_to_managed_code[] = {
 
 extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILuaBase* lua)
 {
+    std::ofstream error_log_file;
+    error_log_file.open("dotnet-loader_error.log");
+
     if(managed_main == nullptr)
     {
         if(hostfxr_initialize_for_dotnet_command_line == nullptr || hostfxr_get_runtime_delegate == nullptr)
         {
-            std::cerr << "Unable to load hostfxr library" << std::endl;
+            error_log_file << "Unable to load hostfxr library" << std::endl;
             return nullptr;
         }
 
@@ -137,36 +141,36 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
         int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, nullptr, runtime_environment_handle);
         if(init_success_code != 0)
         {
-            std::cerr << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
+            error_log_file << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
             return nullptr;
         }
         if(runtime_environment_handle == nullptr)
         {
-            std::cerr << "runtime_environment_handle is null" << std::endl;
+            error_log_file << "runtime_environment_handle is null" << std::endl;
         }
         get_function_pointer_fn get_function_pointer = nullptr;
         int get_runtime_delegate_success_code =
                 hostfxr_get_runtime_delegate(runtime_environment_handle, hdt_get_function_pointer, reinterpret_cast<void**>(&get_function_pointer));
         if(get_runtime_delegate_success_code != 0)
         {
-            std::cerr << "Unable to get delegate of dotnet runtime. Error code: " << get_runtime_delegate_success_code << std::endl;
+            error_log_file << "Unable to get delegate of dotnet runtime. Error code: " << get_runtime_delegate_success_code << std::endl;
             return nullptr;
         }
         if(get_function_pointer == nullptr)
         {
-            std::cerr << "get_function_pointer is null" << std::endl;
+            error_log_file << "get_function_pointer is null" << std::endl;
             return nullptr;
         }
         int get_managed_main_success_code = get_function_pointer("GmodNET.Startup, GmodNET", "Main", "GmodNET.MainDelegate, GmodNET",
                                                                  nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
         if(get_managed_main_success_code != 0)
         {
-            std::cerr << "Unable to load managed entry point: Error code: " << get_managed_main_success_code << std::endl;
+            error_log_file << "Unable to load managed entry point: Error code: " << get_managed_main_success_code << std::endl;
             return nullptr;
         }
         if(managed_main == nullptr)
         {
-            std::cerr << "Unable to load managed entry point: managed_main is null" << std::endl;
+            error_log_file << "Unable to load managed entry point: managed_main is null" << std::endl;
             return nullptr;
         }
     }
