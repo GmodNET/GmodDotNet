@@ -147,7 +147,7 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
             return nullptr;
         }
 
-        hostfxr_handle* runtime_environment_handle = nullptr;
+        hostfxr_handle runtime_environment_handle;
 
         hostfxr_set_error_writer(dotnet_error_writer);
 
@@ -172,7 +172,7 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
 #else
         dotnet_runtime_params.dotnet_root = "garrysmod/lua/bin/dotnet";
 #endif
-        int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, runtime_environment_handle);
+        int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, &runtime_environment_handle);
         if(init_success_code != 0)
         {
             error_log_file << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
