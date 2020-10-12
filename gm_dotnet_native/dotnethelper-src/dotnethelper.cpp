@@ -136,7 +136,7 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
 {
     if(!error_log_file.is_open())
     {
-        error_log_file.open("dotnet-loader_error.log");
+        error_log_file.open("dotnet_loader_error.log");
     }
 
     if(managed_main == nullptr)
