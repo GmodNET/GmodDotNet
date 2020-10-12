@@ -12,6 +12,7 @@
 #include <Windows.h>
 #else
 #include <dlfcn.h>
+#include <unistd.h>
 #endif
 
 #ifdef WIN32
@@ -138,7 +139,23 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
 #else
         const char* dotnet_args[1] = {"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
 #endif
-        int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, nullptr, runtime_environment_handle);
+        hostfxr_initialize_parameters dotnet_runtime_params;
+        dotnet_runtime_params.size = sizeof(hostfxr_initialize_parameters);
+#ifdef WIN32
+        char_t game_exe_path[301];
+        int game_exe_path_len = GetModuleFileNameW(nullptr, game_exe_path, 300);
+#else
+        char game_exe_path[301];
+        int game_exe_path_len = readlink("/proc/self/exe", game_exe_path, 300);
+        game_exe_path[game_exe_path_len] = '\0';
+#endif
+        dotnet_runtime_params.host_path = game_exe_path;
+#ifdef WIN32
+        dotnet_runtime_params.dotnet_root = L"garrysmod/lua/bin/dotnet";
+#else
+        dotnet_runtime_params.dotnet_root = "garrysmod/lua/bin/dotnet";
+#endif
+        int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, &dotnet_runtime_params, runtime_environment_handle);
         if(init_success_code != 0)
         {
             error_log_file << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
