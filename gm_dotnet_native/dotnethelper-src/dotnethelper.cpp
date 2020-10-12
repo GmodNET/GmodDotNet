@@ -37,6 +37,8 @@ typedef cleanup_function_fn(*managed_main_fn)(
         void** internalFunctionsParam
         );
 
+std::ofstream error_log_file;
+
 managed_main_fn managed_main = nullptr;
 
 #ifdef WIN32
@@ -54,12 +56,23 @@ hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_comm
 hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
         reinterpret_cast<hostfxr_get_runtime_delegate_fn>(GetProcAddress(static_cast<HMODULE>(hostfxr_library_handle),
                                                                          "hostfxr_get_runtime_delegate"));
+
+hostfxr_set_error_writer_fn hostfxr_set_error_writer =
+        reinterpret_cast<hostfxr_set_error_writer_fn>(GetProcAddress(static_cast<HMODULE>(hostfxr_library_handle),
+                                                                     "hostfxr_set_error_writer"));
 #else
 hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_command_line =
         reinterpret_cast<hostfxr_initialize_for_dotnet_command_line_fn>(dlsym(hostfxr_library_handle, "hostfxr_initialize_for_dotnet_command_line"));
 hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate =
         reinterpret_cast<hostfxr_get_runtime_delegate_fn>(dlsym(hostfxr_library_handle, "hostfxr_get_runtime_delegate"));
+hostfxr_set_error_writer_fn hostfxr_set_error_writer =
+        reinterpret_cast<hostfxr_set_error_writer_fn>(dlsym(hostfxr_library_handle, "hostfxr_set_error_writer"));
 #endif
+
+void HOSTFXR_CALLTYPE dotnet_error_writer(const char_t *message)
+{
+    error_log_file << message << std::endl;
+}
 
 void * params_to_managed_code[] = {
         reinterpret_cast<void*>(export_top),
@@ -121,12 +134,14 @@ void * params_to_managed_code[] = {
 
 extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILuaBase* lua)
 {
-    std::ofstream error_log_file;
-    error_log_file.open("dotnet-loader_error.log");
+    if(!error_log_file.is_open())
+    {
+        error_log_file.open("dotnet-loader_error.log");
+    }
 
     if(managed_main == nullptr)
     {
-        if(hostfxr_initialize_for_dotnet_command_line == nullptr || hostfxr_get_runtime_delegate == nullptr)
+        if(hostfxr_initialize_for_dotnet_command_line == nullptr || hostfxr_get_runtime_delegate == nullptr || hostfxr_set_error_writer == nullptr)
         {
             error_log_file << "Unable to load hostfxr library" << std::endl;
             return nullptr;
@@ -134,10 +149,12 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
 
         hostfxr_handle* runtime_environment_handle = nullptr;
 
+        hostfxr_set_error_writer(dotnet_error_writer);
+
 #ifdef WIN32
-        const wchar_t* dotnet_args[1] = {L"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
+        const char_t* dotnet_args[2] = {L"exec", L"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
 #else
-        const char* dotnet_args[1] = {"garrysmod/lua/bin/gmodnet/GmodNET.dll"};
+        const char_t* dotnet_args[2] = {"exec", "garrysmod/lua/bin/gmodnet/GmodNET.dll"};
 #endif
         hostfxr_initialize_parameters dotnet_runtime_params;
         dotnet_runtime_params.size = sizeof(hostfxr_initialize_parameters);
@@ -155,7 +172,7 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
 #else
         dotnet_runtime_params.dotnet_root = "garrysmod/lua/bin/dotnet";
 #endif
-        int init_success_code = hostfxr_initialize_for_dotnet_command_line(1, dotnet_args, &dotnet_runtime_params, runtime_environment_handle);
+        int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, runtime_environment_handle);
         if(init_success_code != 0)
         {
             error_log_file << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
