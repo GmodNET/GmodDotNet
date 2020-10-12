@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <netcore/hostfxr.h>
+#include <netcore/coreclr_delegates.h>
 #include <GarrysMod/Lua/LuaBase.h>
 #include "cleanup_function_type.h"
 #include "LuaAPIExposure.h"
@@ -20,15 +21,6 @@
 #else
 #define DYNANAMIC_EXPORT __attribute__((visibility("default")))
 #endif
-
-typedef int(*get_function_pointer_fn)(
-        const char* typeName,
-        const char* methodName,
-        const char* delegateTypeName,
-        void* loadContext,
-        void* reserved,
-        void* outFunctionPointer
-        );
 
 typedef cleanup_function_fn(*managed_main_fn)(
         GarrysMod::Lua::ILuaBase* lua,
@@ -195,8 +187,13 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
             error_log_file << "get_function_pointer is null" << std::endl;
             return nullptr;
         }
+#ifdef WIN32
+        int get_managed_main_success_code = get_function_pointer(L"GmodNET.Startup, GmodNET", L"Main", L"GmodNET.MainDelegate, GmodNET",
+                                                                 nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
+#else
         int get_managed_main_success_code = get_function_pointer("GmodNET.Startup, GmodNET", "Main", "GmodNET.MainDelegate, GmodNET",
                                                                  nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
+#endif
         if(get_managed_main_success_code != 0)
         {
             error_log_file << "Unable to load managed entry point: Error code: " << get_managed_main_success_code << std::endl;
