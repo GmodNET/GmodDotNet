@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   GMODNET_VERSION: '0.6.0'
-  DOTNET_SDK_VERSION: '5.0.100-rc.1.20452.10'
+  DOTNET_SDK_VERSION: '5.0.100-rc.2.20479.15'
 
 jobs:
  linux-build:
