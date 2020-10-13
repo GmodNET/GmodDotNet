@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 
-    <BundledNETCoreVersion>5.0.0-rc.2.20475.17</BundledNETCoreVersion>
+    <BundledNETCoreVersion>5.0.0-rc.2.20475.5</BundledNETCoreVersion>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
       https://download.visualstudio.microsoft.com/download/pr/5208bb4a-0704-44c2-b8c1-95871f23f2c9/7c0c1fded168bb35ff4ddd5c3fb85736/aspnetcore-runtime-5.0.0-rc.2.20475.17-win-x64.zip
