@@ -43,7 +43,7 @@ namespace Tests
             {
                 unsafe
                 {
-                    lua.PushCFunction((delegate* unmanaged[Cdecl]<IntPtr, int>)(delegate* managed<IntPtr, int>)&TestFunc);
+                    lua.PushCFunction(&TestFunc);
                     lua.MCall(0, 2);
 
                     string ret_string = lua.GetString(-1);
