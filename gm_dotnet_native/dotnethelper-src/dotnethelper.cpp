@@ -188,10 +188,10 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
             return nullptr;
         }
 #ifdef WIN32
-        int get_managed_main_success_code = get_function_pointer(L"GmodNET.Startup, GmodNET", L"Main", L"GmodNET.MainDelegate, GmodNET",
+        int get_managed_main_success_code = get_function_pointer(L"GmodNET.Startup, GmodNET", L"Main", UNMANAGEDCALLERSONLY_METHOD,
                                                                  nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
 #else
-        int get_managed_main_success_code = get_function_pointer("GmodNET.Startup, GmodNET", "Main", "GmodNET.MainDelegate, GmodNET",
+        int get_managed_main_success_code = get_function_pointer("GmodNET.Startup, GmodNET", "Main", UNMANAGEDCALLERSONLY_METHOD,
                                                                  nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
 #endif
         if(get_managed_main_success_code != 0)

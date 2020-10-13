@@ -10,10 +10,7 @@ using System.Diagnostics;
 
 namespace GmodNET
 {
-    // This delegate is needed for native interop and its signature nust match Startup.Main's one.
-    internal delegate IntPtr MainDelegate(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param);
-
-    // Startup class is ressponsible for bootstraping manged code 
+    // Startup class is ressponsible for bootstraping managed code 
     internal static class Startup
     {
         static List<GlobalContext> global_contexts = new List<GlobalContext>();
@@ -24,6 +21,7 @@ namespace GmodNET
         static bool FirstRun = true;
 
         //Called by Garry's Mod. Responsible for initial configuration.
+        [UnmanagedCallersOnly]
         internal static IntPtr Main(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param)
         {
             string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
