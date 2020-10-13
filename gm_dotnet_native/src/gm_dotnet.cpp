@@ -38,11 +38,14 @@ GMOD_MODULE_OPEN()
     InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(GetProcAddress(dotnethelper_handle, "InitNetRuntime"));
 #elif __APPLE__
     void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.dylib", RTLD_LAZY);
-    InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, "InitNetRuntime"));
 #elif __gnu_linux__
     void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.so", RTLD_LAZY);
+#endif
+
+#ifndef WIN32
     InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, "InitNetRuntime"));
 #endif
+
     if(InitNetRuntime == nullptr)
     {
         LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
@@ -60,7 +63,7 @@ GMOD_MODULE_OPEN()
     {
         LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
         LUA->GetField(-1, "print");
-        LUA->PushString("::error::Unable to load dotnet runtime, check standard error stream of the process.");
+        LUA->PushString("::error::Unable to load dotnet runtime, check dotnet_loader_error.log and managed_error.log files.");
         LUA->Call(1, 0);
         LUA->Pop(1);
 
