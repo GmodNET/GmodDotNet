@@ -34,11 +34,11 @@ std::ofstream error_log_file;
 managed_main_fn managed_main = nullptr;
 
 #ifdef WIN32
-void* hostfxr_library_handle = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.1.20451.14/hostfxr.dll");
+void* hostfxr_library_handle = LoadLibraryA("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.2.20475.17/hostfxr.dll");
 #elif __APPLE__
-void* hostfxr_library_handle = dlopen("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.1.20451.14/libhostfxr.dylib", RTLD_LAZY);
+void* hostfxr_library_handle = dlopen("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.2.20475.17/libhostfxr.dylib", RTLD_LAZY);
 #elif __gnu_linux__
-void* hostfxr_library_handle = dlopen("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.1.20451.14/libhostfxr.so", RTLD_LAZY);
+void* hostfxr_library_handle = dlopen("garrysmod/lua/bin/dotnet/host/fxr/5.0.0-rc.2.20475.17/libhostfxr.so", RTLD_LAZY);
 #endif
 
 #ifdef WIN32
