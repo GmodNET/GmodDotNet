@@ -18,9 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj">
-      <Private>false</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

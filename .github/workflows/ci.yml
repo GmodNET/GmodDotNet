@@ -51,6 +51,7 @@ jobs:
     - name: Run Garry's Mod
       run: ./srcds_run_x64 -game garrysmod -systemtest +sv_hibernate_think 1 || true
       working-directory: ./gmod/
+      timeout-minutes: 5
 
     - name: Print test log
       run: cat gmod/tests-log.txt
