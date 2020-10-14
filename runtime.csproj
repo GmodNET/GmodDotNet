@@ -108,7 +108,7 @@
 		<Exec Command="dotnet tool run gmodnet-vt getVersion version.json --skip-build-data" ConsoleToMsBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="ApiVersionShort" />
 		</Exec>
-    <CreateProperty Value="cd obj/cmake_build &amp;&amp; cmake -DSEM_VERSION:STRING=$(RuntimeVersion) ../../gm_dotnet_native $(CmakeGenerateWinFlags)">
+    <CreateProperty Value="cd obj/cmake_build &amp;&amp; cmake -DSEM_VERSION:STRING=$(RuntimeVersion) -DNET_CORE_VERSION:STRING=$(BundledNETCoreVersion) ../../gm_dotnet_native $(CmakeGenerateWinFlags)">
             <Output
                 TaskParameter="Value"
                 PropertyName="CmakeGenerateInst" />
