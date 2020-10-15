@@ -19,7 +19,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="NSec.Cryptography" Version="19.5.0" />
 	  <PackageReference Include="GmodNET.VersionTool.Target" Version="0.2.0-alpha.1.22426226.dev">
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
