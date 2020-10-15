@@ -49,7 +49,6 @@ namespace Tests
         {
             this.lua = lua;
             this.isServerSide = is_serverside;
-            this.lua_extructor = lua_extructor;
             this.current_load_context = assembly_context;
             this.OnTickDelegate = this.OnTick;
             this.OnTickIdentifier = Guid.NewGuid().ToString();

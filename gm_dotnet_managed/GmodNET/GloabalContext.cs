@@ -27,6 +27,8 @@ namespace GmodNET
             lua.GetField(-10002, "SERVER");
             isServerSide = lua.GetBool(-1);
 
+            module_contexts = new Dictionary<string, GmodNetModuleAssemblyLoadContext>();
+
             load_module_delegate = (lua_state) =>
             {
                 ILua lua = GmodInterop.GetLuaFromState(lua_state);
