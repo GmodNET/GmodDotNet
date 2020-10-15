@@ -25,7 +25,7 @@ namespace GmodNET.API
             get;
         }
         /// <summary>
-        /// This method is called by GmodNET on module load and should be treated as module constructor.
+        /// This method is called by GmodNET on module load and should be treated as module initializer.
         /// </summary>
         /// <param name="lua">Interface to communicate with Garry's Mod</param>
         /// <param name="is_serverside">Indicates weather module is loaded serverside</param>
