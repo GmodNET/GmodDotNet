@@ -127,8 +127,6 @@
 
   <Target Name="PackLuaForPublish">
     <MakeDir Directories="lua-publish" />
-    <Copy SourceFiles="lua/autorun/serverside/gm_dotnet_server.lua" DestinationFiles="lua-publish/gmod-dot-net-lua-server.$(RuntimeVersionShort).lua" />
-    <Copy SourceFiles="lua/autorun/clientside/gm_dotnet_client.lua" DestinationFiles="lua-publish/gmod-dot-net-lua-client.$(RuntimeVersionShort).lua" />
   </Target>
 
 </Project>

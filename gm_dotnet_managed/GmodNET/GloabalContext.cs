@@ -141,7 +141,7 @@ namespace GmodNET
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
             lua.PushCFunction(Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(load_module_delegate));
-            lua.SetField(-2, "dotnet_internal_load");
+            lua.SetField(-2, "dotnet_load");
             lua.Pop(1);
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
