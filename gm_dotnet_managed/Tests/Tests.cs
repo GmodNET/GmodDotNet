@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
+    public delegate ILua GetILuaFromLuaStatePointer(IntPtr lua_state);
+
     // Test runner. Upon success of all tests 'File.WriteAllText("tests-success.txt", "Success!");' should be called. Information should be logged to "tests-log.txt" file
     public class Tests : IModule
     {
@@ -15,11 +17,11 @@ namespace Tests
 
         public string ModuleVersion => FileVersionInfo.GetVersionInfo(typeof(Tests).Assembly.Location).ProductVersion;
 
+        GetILuaFromLuaStatePointer lua_extructor = GmodInterop.GetLuaFromState;
+
         ILua lua;
 
         bool isServerSide;
-
-        GetILuaFromLuaStatePointer lua_extructor;
 
         ModuleAssemblyLoadContext current_load_context;
 
@@ -43,7 +45,7 @@ namespace Tests
             IsEverythingSuccessful = false;
         }
 
-        public void Load(ILua lua, bool is_serverside, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext assembly_context)
+        public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
         {
             this.lua = lua;
             this.isServerSide = is_serverside;
