@@ -53,7 +53,7 @@ namespace GmodNET
 
                     GmodNetModuleAssemblyLoadContext module_context = new GmodNetModuleAssemblyLoadContext(module_name);
 
-                    Assembly module_assembly = module_context.LoadFromAssemblyPath("garrysmod/lua/bin/Modules/" + module_name + "/" + module_name + ".dll");
+                    Assembly module_assembly = module_context.LoadFromAssemblyPath(Path.GetFullPath("garrysmod/lua/bin/Modules/" + module_name + "/" + module_name + ".dll"));
 
                     Type[] module_types = module_assembly.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
 
