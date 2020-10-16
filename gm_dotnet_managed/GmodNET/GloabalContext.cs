@@ -152,7 +152,7 @@ namespace GmodNET
 
         ~GlobalContext()
         {
-            
+            OnNativeUnload();
         }
 
         internal void OnNativeUnload()
@@ -168,6 +168,8 @@ namespace GmodNET
                     File.AppendAllText("managed_error.log", e.ToString());
                 }
             }
+
+            module_contexts.Clear();
         }
     }
 }
