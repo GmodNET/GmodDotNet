@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq;
 using GmodNET.API;
+using System.Runtime.InteropServices;
 
 namespace GmodNET
 {
@@ -14,6 +15,7 @@ namespace GmodNET
         private AssemblyDependencyResolver resolver;
         private string module_name;
         private Func<ModuleAssemblyLoadContext, string, IntPtr> customNativeLibraryResolver;
+        private List<IntPtr> native_libray_handles;
 
         public override string ModuleName
         { 
@@ -41,6 +43,16 @@ namespace GmodNET
             this.module_name = module_name;
             resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
             customNativeLibraryResolver = null;
+            native_libray_handles = new List<IntPtr>();
+
+            this.Unloading += (context) =>
+            {
+                foreach(IntPtr h in native_libray_handles)
+                {
+                    NativeLibrary.Free(h);
+                }
+                native_libray_handles.Clear();
+            };
         }
 
         protected override System.Reflection.Assembly Load(System.Reflection.AssemblyName assemblyName)
@@ -78,7 +90,7 @@ namespace GmodNET
             {
                 string unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
 
-                if(unmanaged_dep_path == null)
+                if(String.IsNullOrEmpty(unmanaged_dep_path))
                 {
                     return IntPtr.Zero;
                 }
@@ -86,7 +98,9 @@ namespace GmodNET
                 {
                     try
                     {
-                        return this.LoadUnmanagedDllFromPath(unmanaged_dep_path);
+                        IntPtr lib_handle = NativeLibrary.Load(unmanaged_dep_path);
+                        native_libray_handles.Add(lib_handle);
+                        return lib_handle;
                     }
                     catch
                     {
