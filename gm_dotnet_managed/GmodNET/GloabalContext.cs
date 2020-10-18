@@ -119,7 +119,8 @@ namespace GmodNET
 
                     lua.PrintToConsole("Unloading module " + module_name + "...");
 
-                    WeakReference context_weak_reference = new WeakReference(module_contexts[module_name]);
+                    WeakReference<GmodNetModuleAssemblyLoadContext> context_weak_reference = 
+                      new WeakReference<GmodNetModuleAssemblyLoadContext>(module_contexts[module_name].Item1);
 
                     foreach(GCHandle h in module_contexts[module_name].Item2)
                     {
@@ -130,7 +131,7 @@ namespace GmodNET
                     module_contexts[module_name].Item1.Unload();
                     module_contexts.Remove(module_name);
 
-                    while(context_weak_reference.IsAlive)
+                    while(context_weak_reference.TryGetTarget(out _))
                     {
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
@@ -164,7 +165,7 @@ namespace GmodNET
         {
             try
             {
-                List<WeakReference> context_referencies = new List<WeakReference>();
+                List<WeakReference<GmodNetModuleAssemblyLoadContext>> context_referencies = new List<WeakReference<GmodNetModuleAssemblyLoadContext>>();
 
                 foreach (KeyValuePair<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>> pair in module_contexts)
                 {
@@ -174,13 +175,13 @@ namespace GmodNET
                         h.Free();
                     }
 
-                    context_referencies.Add(new WeakReference(pair.Value.Item1));
+                    context_referencies.Add(new WeakReference<GmodNetModuleAssemblyLoadContext>(pair.Value.Item1));
                     pair.Value.Item1.Unload();
                 }
 
                 module_contexts.Clear();
 
-                while(context_referencies.Any((reference) => reference.IsAlive))
+                while(context_referencies.Any((reference) => reference.TryGetTarget(out _)))
                 {
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
