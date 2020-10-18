@@ -15,7 +15,7 @@ namespace GmodNET
     {
         static List<GlobalContext> global_contexts = new List<GlobalContext>();
 
-        internal delegate void CleanupDelegate();
+        internal delegate void CleanupDelegate(IntPtr lua_pointer);
         static List<CleanupDelegate> CleanupReturns = new List<CleanupDelegate>();
 
         static bool FirstRun = true;
@@ -186,7 +186,7 @@ namespace GmodNET
 
                 global_contexts.Add(n_context);
 
-                CleanupDelegate n_cleanup_delegate = () => CleanupRealization(n_context);
+                CleanupDelegate n_cleanup_delegate = (lua_pointer) => CleanupRealization(n_context, lua_pointer);
 
 
                 CleanupReturns.Add(n_cleanup_delegate);
@@ -201,9 +201,11 @@ namespace GmodNET
             }
         }
 
-        internal static void CleanupRealization(GlobalContext context)
+        internal static void CleanupRealization(GlobalContext context, IntPtr lua_pointer)
         {
-            context.OnNativeUnload();
+            ILua lua = GmodInterop.GetLuaFromState(lua_pointer);
+
+            context.OnNativeUnload(lua);
 
             global_contexts.Remove(context);
 

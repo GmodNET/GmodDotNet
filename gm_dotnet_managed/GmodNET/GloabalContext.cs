@@ -14,7 +14,7 @@ namespace GmodNET
 
         bool isServerSide;
 
-        Dictionary<string, GmodNetModuleAssemblyLoadContext> module_contexts;
+        Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>> module_contexts;
 
         CFuncManagedDelegate load_module_delegate;
 
@@ -27,7 +27,7 @@ namespace GmodNET
             lua.GetField(-10002, "SERVER");
             isServerSide = lua.GetBool(-1);
 
-            module_contexts = new Dictionary<string, GmodNetModuleAssemblyLoadContext>();
+            module_contexts = new Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>>();
 
             load_module_delegate = (lua_state) =>
             {
@@ -59,9 +59,13 @@ namespace GmodNET
 
                     List<IModule> modules = new List<IModule>();
 
+                    List<GCHandle> gc_handles = new List<GCHandle>();
+
                     foreach(Type t in module_types)
                     {
-                        modules.Add((IModule)Activator.CreateInstance(t));
+                        IModule current_module = (IModule)Activator.CreateInstance(t);
+                        modules.Add(current_module);
+                        gc_handles.Add(GCHandle.Alloc(current_module));
                     }
 
                     if(modules.Count == 0)
@@ -80,7 +84,7 @@ namespace GmodNET
                         lua.PrintToConsole("Class-module " + m.ModuleName + " was loaded.");
                     }
 
-                    module_contexts.Add(module_name, module_context);
+                    module_contexts.Add(module_name, Tuple.Create(module_context, gc_handles));
 
                     return 0;
                 }
@@ -117,7 +121,13 @@ namespace GmodNET
 
                     WeakReference context_weak_reference = new WeakReference(module_contexts[module_name]);
 
-                    module_contexts[module_name].Unload();
+                    foreach(GCHandle h in module_contexts[module_name].Item2)
+                    {
+                        ((IModule)h.Target).Unload(lua);
+                        h.Free();
+                    }
+
+                    module_contexts[module_name].Item1.Unload();
                     module_contexts.Remove(module_name);
 
                     while(context_weak_reference.IsAlive)
@@ -150,26 +160,37 @@ namespace GmodNET
             lua.Pop(1);
         }
 
-        ~GlobalContext()
+        internal void OnNativeUnload(ILua lua)
         {
-            OnNativeUnload();
-        }
-
-        internal void OnNativeUnload()
-        {
-            foreach(KeyValuePair<string, GmodNetModuleAssemblyLoadContext> pair in module_contexts)
+            try
             {
-                try
+                List<WeakReference> context_referencies = new List<WeakReference>();
+
+                foreach (KeyValuePair<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>> pair in module_contexts)
                 {
-                    pair.Value.Unload();
+                    foreach (GCHandle h in pair.Value.Item2)
+                    {
+                        ((IModule)h.Target).Unload(lua);
+                        h.Free();
+                    }
+
+                    context_referencies.Add(new WeakReference(pair.Value.Item1));
+                    pair.Value.Item1.Unload();
                 }
-                catch(Exception e)
+
+                module_contexts.Clear();
+
+                while(context_referencies.Any((reference) => reference.IsAlive))
                 {
-                    File.AppendAllText("managed_error.log", e.ToString());
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
                 }
             }
-
-            module_contexts.Clear();
+            catch(Exception e)
+            {
+                File.AppendAllText("managed_error.log", e.ToString());
+                throw;
+            }
         }
     }
 }

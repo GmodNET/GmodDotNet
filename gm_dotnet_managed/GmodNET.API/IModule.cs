@@ -31,5 +31,10 @@ namespace GmodNET.API
         /// <param name="is_serverside">Indicates weather module is loaded serverside</param>
         /// <param name="assembly_context">AseemblyLoadContext of this module.</param>
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context);
+        /// <summary>
+        /// Called by GmodDotNet runtime on game/server quit and manual module unload.
+        /// </summary>
+        /// <param name="lua">Lua interface to interact with.</param>
+        public void Unload(ILua lua);
     }
 }

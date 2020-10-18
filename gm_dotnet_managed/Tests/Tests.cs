@@ -97,7 +97,7 @@ namespace Tests
             }
         }
 
-        public void Unload()
+        public void Unload(ILua lua)
         {
             
         }
