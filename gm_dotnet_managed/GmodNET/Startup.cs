@@ -203,7 +203,7 @@ namespace GmodNET
 
         internal static void CleanupRealization(GlobalContext context, IntPtr lua_pointer)
         {
-            ILua lua = GmodInterop.GetLuaFromState(lua_pointer);
+            ILua lua = new Lua(lua_pointer);
 
             context.OnNativeUnload(lua);
 

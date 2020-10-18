@@ -188,6 +188,11 @@ namespace GmodNET
 
                 while(context_referencies.Any((reference) => reference.TryGetTarget(out _)))
                 {
+                    lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                    lua.GetField(-1, "collectgarbage");
+                    lua.MCall(0, 0);
+                    lua.Pop(1);
+
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                 }
