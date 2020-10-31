@@ -16,15 +16,24 @@ set(EXTERNAL_INCLUDES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external_includes/" CACH
 #Set git commit variable
 set(SEM_VERSION "no_version" CACHE STRING "SemVer of native part")
 
+#Set .NET Core Runtime version variable
+set(NET_CORE_VERSION "1.0.0" CACHE STRING "Version of bundled .NET Core Runtime")
+
 #Project name
 project(gm_dotnet_native)
-add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp src/LuaAPIExposure.h src/LuaAPIExposure.cpp)
+add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp dotnethelper-src/cleanup_function_type.h)
+add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-src/cleanup_function_type.h
+		dotnethelper-src/LuaAPIExposure.h dotnethelper-src/LuaAPIExposure.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}")
 #Set up compile definitions
 target_compile_definitions(gm_dotnet_native PUBLIC SEM_VERSION="${SEM_VERSION}")
+target_compile_definitions(dotnethelper PUBLIC SEM_VERSION="${SEM_VERSION}")
+target_compile_definitions(dotnethelper PUBLIC NET_CORE_VERSION="${NET_CORE_VERSION}")
 #Set path for output
 set_target_properties(gm_dotnet_native PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
+set_target_properties(dotnethelper PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
 #Add linux helper lib
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
