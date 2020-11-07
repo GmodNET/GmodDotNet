@@ -17,7 +17,7 @@ namespace Tests
             {
                 lua.PushNumber(1);
 
-                lua.PushString("I love Dima. Dima is the best.");
+                lua.PushString("Dima is the best boy.");
 
                 lua.PushBool(true);
 
