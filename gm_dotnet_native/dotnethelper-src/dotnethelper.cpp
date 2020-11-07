@@ -37,7 +37,7 @@ typedef cleanup_function_fn(*managed_main_fn)(
 
 std::ofstream error_log_file;
 
-managed_delegate_executor_fn managed_delegate_executor;
+managed_delegate_executor_fn managed_delegate_executor = nullptr;
 
 managed_main_fn managed_main = nullptr;
 
