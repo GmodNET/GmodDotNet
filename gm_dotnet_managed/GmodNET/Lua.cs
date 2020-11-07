@@ -665,5 +665,17 @@ namespace GmodNET
                 throw new GmodLuaException(error_code, error_message);
             }
         }
+
+        public void PushManagedFunction(Func<ILua, int> function)
+        {
+            IntPtr delegate_handle = GCHandle.ToIntPtr(GCHandle.Alloc(function, GCHandleType.Normal));
+
+            this.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            this.GetField(-1, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            int managed_function_type_id = (int)this.GetNumber(-1);
+            this.Pop(2);
+
+            this.PushUserType(delegate_handle, managed_function_type_id);
+        }
     }
 }

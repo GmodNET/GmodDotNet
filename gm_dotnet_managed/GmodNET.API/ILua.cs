@@ -355,6 +355,11 @@ namespace GmodNET.API
         /// <param name="iArgs">Number of arguments of the function to call</param>
         /// <param name="iResults">Number of returns of the function to call</param>
         public void MCall(int iArgs, int iResults);
+        /// <summary>
+        /// Push a managed function or delegate to the lua stack.
+        /// </summary>
+        /// <param name="function">A managed function or delegate to push.</param>
+        public void PushManagedFunction(Func<ILua, int> function);
     }
 
     /// <summary>
