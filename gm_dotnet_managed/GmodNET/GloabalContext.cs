@@ -29,6 +29,16 @@ namespace GmodNET
 
             module_contexts = new Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>>();
 
+            int managed_func_type_id = lua.CreateMetaTable("ManagedFunction");
+            lua.PushCFunction(ManagedFunctionMetaMethods.NativeDelegateExecutor);
+            lua.SetField(-2, "__call");
+            lua.Pop(1);
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushNumber(managed_func_type_id);
+            lua.SetField(-2, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            lua.Pop(1);
+
             load_module_delegate = (lua_state) =>
             {
                 ILua lua = GmodInterop.GetLuaFromState(lua_state);
