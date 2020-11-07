@@ -11,6 +11,8 @@ namespace GmodNET
     {
         internal static readonly string ManagedFunctionIdField = "gmodnet-managed-delegate-type-id-fe74e198-5ff8-44d4-be32-8abc4a996fd0";
 
+        internal static IntPtr NativeDelegateExecutor = IntPtr.Zero;
+
         [UnmanagedCallersOnly]
         internal static int ManagedDelegateExecutor(IntPtr lua_state)
         {
