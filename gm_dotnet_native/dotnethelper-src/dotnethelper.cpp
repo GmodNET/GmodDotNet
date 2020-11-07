@@ -31,7 +31,7 @@ typedef cleanup_function_fn(*managed_main_fn)(
         const char* versionString,
         int versionStringLength,
         void** internalFunctionsParam,
-        void* native_delegate_executor_ptr,
+        GarrysMod::Lua::CFunc native_delegate_executor_ptr,
         /* Out Param */ managed_delegate_executor_fn* managed_delegate_executor_ptr
         );
 
