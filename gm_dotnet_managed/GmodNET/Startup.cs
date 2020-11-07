@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using GmodNET.Helpers;
 
 namespace GmodNET
 {
@@ -182,6 +183,11 @@ namespace GmodNET
                 lua.MCall(1, 0);
                 lua.Pop(1);
 
+                GameConsoleWriter.Load();
+
+                Console.WriteLine("Hi");
+                Console.WriteLine("it is working?");
+
                 GlobalContext n_context = new GlobalContext(lua);
 
                 global_contexts.Add(n_context);
@@ -208,6 +214,8 @@ namespace GmodNET
             context.OnNativeUnload(lua);
 
             global_contexts.Remove(context);
+
+            GameConsoleWriter.Unload();
 
             if (CleanupReturns.Count > 100)
             { 
