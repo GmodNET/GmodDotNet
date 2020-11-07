@@ -22,14 +22,22 @@
 #define DYNANAMIC_EXPORT __attribute__((visibility("default")))
 #endif
 
+typedef int (*managed_delegate_executor_fn)(
+        lua_State * luaState
+);
+
 typedef cleanup_function_fn(*managed_main_fn)(
         GarrysMod::Lua::ILuaBase* lua,
         const char* versionString,
         int versionStringLength,
-        void** internalFunctionsParam
+        void** internalFunctionsParam,
+        void* native_delegate_executor_ptr,
+        /* Out Param */ managed_delegate_executor_fn* managed_delegate_executor_ptr
         );
 
 std::ofstream error_log_file;
+
+managed_delegate_executor_fn managed_delegate_executor;
 
 managed_main_fn managed_main = nullptr;
 
@@ -65,6 +73,22 @@ hostfxr_set_error_writer_fn hostfxr_set_error_writer =
 void HOSTFXR_CALLTYPE dotnet_error_writer(const char_t *message)
 {
     error_log_file << message << std::endl;
+}
+
+int native_delegate_executor(lua_State * luaState)
+{
+    int return_val = managed_delegate_executor(luaState);
+
+    if(return_val >= 0)
+    {
+        return return_val;
+    }
+    else
+    {
+        const char* error_message = luaState->luabase->GetString(-1);
+        luaState->luabase->ThrowError(error_message);
+        return 0;
+    }
 }
 
 void * params_to_managed_code[] = {
@@ -206,6 +230,7 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
             return nullptr;
         }
     }
-    return managed_main(lua, std::string(SEM_VERSION).c_str(), std::string(SEM_VERSION).length(), params_to_managed_code);
+    return managed_main(lua, std::string(SEM_VERSION).c_str(), std::string(SEM_VERSION).length(), params_to_managed_code,
+                        native_delegate_executor, &managed_delegate_executor);
 }
 
