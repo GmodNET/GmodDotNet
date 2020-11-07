@@ -23,7 +23,7 @@ namespace GmodNET
         //Called by Garry's Mod. Responsible for initial configuration.
         [UnmanagedCallersOnly]
         internal static unsafe IntPtr Main(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param, 
-                                           IntPtr native_delegate_executor_ptr, IntPtr* managed_delegate_executor_ptr)
+                                           IntPtr native_delegate_executor_ptr, out delegate* unmanaged<IntPtr, int> managed_delegate_executor_ptr)
         {
             try
             {
@@ -155,8 +155,12 @@ namespace GmodNET
 
                     GmodInterop.lua_extractor = &LuaInterop.ExtructLua;
 
+                    ManagedFunctionMetaMethods.NativeDelegateExecutor = native_delegate_executor_ptr;
+
                     FirstRun = false;
                 }
+
+                managed_delegate_executor_ptr = &ManagedFunctionMetaMethods.ManagedDelegateExecutor;
 
                 ILua lua = new Lua(lua_base);
 
@@ -192,7 +196,7 @@ namespace GmodNET
             catch(Exception e)
             {
                 File.WriteAllText("managed_error.log", e.ToString());
-
+                managed_delegate_executor_ptr = &ManagedFunctionMetaMethods.ManagedDelegateExecutor;
                 return IntPtr.Zero;
             }
         }
