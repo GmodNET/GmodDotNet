@@ -8,21 +8,33 @@ namespace GmodNET.Helpers
     public class GameConsoleWriter : TextWriter
     {
         private static GameConsoleWriter instance;
+        private int references;
         public override Encoding Encoding => throw new NotImplementedException();
-        public override string NewLine { get => "\n"; } // by default it's `\r\n`, what causes problems
+        public override string NewLine { get => "\n"; } // by default it's \r\n, what causes problems
         public override void Write(string value)
         {
             Tier0.Msg(value);
         }
         public static void Load()
         {
-            instance = new GameConsoleWriter();
-            Console.SetOut(instance);
+            if (instance == null)
+            {
+                instance = new GameConsoleWriter { references = 1 };
+                Console.SetOut(instance);
+            }
+            else
+            {
+                instance.references++;
+            }
         }
         public static void Unload()
         {
-            Console.SetOut(TextWriter.Null);
-            instance = null;
+            instance.references--;
+            if (instance.references == 0)
+            {
+                Console.SetOut(TextWriter.Null);
+                instance = null;
+            }
         }
     }
 }

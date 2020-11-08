@@ -199,7 +199,7 @@ namespace GmodNET
 
                 return Marshal.GetFunctionPointerForDelegate<CleanupDelegate>(n_cleanup_delegate);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 File.WriteAllText("managed_error.log", e.ToString());
 
@@ -218,7 +218,7 @@ namespace GmodNET
             GameConsoleWriter.Unload();
 
             if (CleanupReturns.Count > 100)
-            { 
+            {
                 CleanupReturns.Remove(CleanupReturns.First());
             }
         }

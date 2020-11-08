@@ -2,7 +2,7 @@
 
 namespace GmodNET.SourceSDK
 {
-    public class Tier0
+    public static class Tier0
     {
         /// <summary>
         /// Prints white colored message to game console
