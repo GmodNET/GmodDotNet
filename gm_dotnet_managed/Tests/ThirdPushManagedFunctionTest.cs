@@ -29,6 +29,12 @@ namespace Tests
             {
                 lua.PushManagedFunction((lua) =>
                 {
+                    int stack_items = lua.Top();
+                    if(stack_items != 3)
+                    {
+                        throw new Exception("The number of items on the execution stack is incorrect");
+                    }
+
                     string first = lua.GetString(1);
                     string second = lua.GetString(2);
                     double third = lua.GetNumber(3);

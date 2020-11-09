@@ -28,6 +28,8 @@ namespace GmodNET
 
                 IntPtr managed_delegate_handle = lua.GetUserType(1, managed_delegate_type_id);
 
+                lua.Remove(1);
+
                 Func<ILua, int> managed_delegate = (Func<ILua, int>)GCHandle.FromIntPtr(managed_delegate_handle).Target;
 
                 return Math.Max(0, managed_delegate(lua));
