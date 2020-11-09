@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using GmodNET.API;
@@ -37,6 +38,23 @@ namespace GmodNET
                 lua.PushString(".NET Exception: " + e.ToString());
                 return -1;
             }
+        }
+
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvCdecl) })]
+        internal static int ManagedDelegateGC(IntPtr lua_state)
+        {
+            ILua lua = GmodInterop.GetLuaFromState(lua_state);
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, ManagedFunctionIdField);
+            int managed_delegate_type_id = (int)lua.GetNumber(-1);
+            lua.Pop(2);
+
+            IntPtr managed_delegate_handle = lua.GetUserType(1, managed_delegate_type_id);
+
+            GCHandle.FromIntPtr(managed_delegate_handle).Free();
+
+            return 0;
         }
     }
 }

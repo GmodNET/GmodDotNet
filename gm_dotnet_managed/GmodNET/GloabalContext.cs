@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace GmodNET
 {
@@ -32,6 +33,11 @@ namespace GmodNET
             int managed_func_type_id = lua.CreateMetaTable("ManagedFunction");
             lua.PushCFunction(ManagedFunctionMetaMethods.NativeDelegateExecutor);
             lua.SetField(-2, "__call");
+            unsafe
+            {
+                lua.PushCFunction(&ManagedFunctionMetaMethods.ManagedDelegateGC);
+            }
+            lua.SetField(-2, "__gc");
             lua.Pop(1);
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
