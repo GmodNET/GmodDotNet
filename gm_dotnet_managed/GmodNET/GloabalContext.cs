@@ -31,8 +31,6 @@ namespace GmodNET
             module_contexts = new Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>>();
 
             int managed_func_type_id = lua.CreateMetaTable("ManagedFunction");
-            lua.PushCFunction(ManagedFunctionMetaMethods.NativeDelegateExecutor);
-            lua.SetField(-2, "__call");
             unsafe
             {
                 lua.PushCFunction(&ManagedFunctionMetaMethods.ManagedDelegateGC);
