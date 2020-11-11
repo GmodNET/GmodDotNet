@@ -676,6 +676,7 @@ namespace GmodNET
             this.Pop(2);
 
             this.PushUserType(delegate_handle, managed_function_type_id);
+            this.PushCClosure(ManagedFunctionMetaMethods.NativeDelegateExecutor, 1);
         }
     }
 }

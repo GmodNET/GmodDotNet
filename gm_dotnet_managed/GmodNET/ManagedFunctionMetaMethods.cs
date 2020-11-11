@@ -26,9 +26,7 @@ namespace GmodNET
                 int managed_delegate_type_id = (int)lua.GetNumber(-1);
                 lua.Pop(2);
 
-                IntPtr managed_delegate_handle = lua.GetUserType(1, managed_delegate_type_id);
-
-                lua.Remove(1);
+                IntPtr managed_delegate_handle = lua.GetUserType(GmodInterop.GetUpvalueIndex(1, false), managed_delegate_type_id);
 
                 Func<ILua, int> managed_delegate = (Func<ILua, int>)GCHandle.FromIntPtr(managed_delegate_handle).Target;
 
