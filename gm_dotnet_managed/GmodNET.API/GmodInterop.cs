@@ -25,5 +25,22 @@ namespace GmodNET.API
                 return lua_extractor(lua_state);
             }
         }
+
+        /// <summary>
+        /// Get an upvlaue pseudo-index of the Lua closure.
+        /// </summary>
+        /// <param name="upvalue">A relative index of the upvalue.</param>
+        /// <returns>A pseudo-index to access upvalue.</returns>
+        public static int GetUpvalueIndex(byte upvalue, bool managed_offset = true)
+        {
+            if(managed_offset)
+            {
+                return (-10003 - upvalue);
+            }
+            else
+            {
+                return (-10002 - upvalue);
+            }
+        }
     }
 }
