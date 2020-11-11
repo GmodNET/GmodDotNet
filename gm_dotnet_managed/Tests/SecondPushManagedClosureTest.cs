@@ -67,7 +67,7 @@ namespace Tests
                     throw new Exception("First return string is incorrect.");
                 }
 
-                if(ret_1 != random3 + random2)
+                if(ret_2 != random3 + random2)
                 {
                     throw new Exception("Second return string is incorrect.");
                 }
