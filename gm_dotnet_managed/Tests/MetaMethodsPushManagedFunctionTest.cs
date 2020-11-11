@@ -42,6 +42,11 @@ namespace Tests
                 string ret_string = lua.GetString(-1);
                 lua.Pop(1);
 
+                lua.PushMetaTable(custom_type_id);
+                lua.PushNil();
+                lua.SetField(-2, "__call");
+                lua.Pop(1);
+
                 if((stack_state - lua.Top()) != 0)
                 {
                     throw new Exception("Lua stack has some values left");
