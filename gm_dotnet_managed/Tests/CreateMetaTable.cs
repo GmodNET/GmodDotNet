@@ -42,7 +42,7 @@ namespace Tests
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "tostring");
                 lua.Push(-3);
-                lua.Call(1, 1);
+                lua.MCall(1, 1);
 
                 string get_val = lua.GetString(-1);
 

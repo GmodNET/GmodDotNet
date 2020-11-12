@@ -67,7 +67,7 @@ namespace Tests
                 lua.PushString("Tick");
                 lua.PushString(this.OnTickIdentifier);
                 lua.PushManagedFunction(this.OnTickDelegate);
-                lua.Call(3, 0);
+                lua.MCall(3, 0);
                 lua.Pop(2);
 
                 //Get the list of tests
@@ -124,7 +124,7 @@ namespace Tests
                         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                         lua.GetField(-1, "engine");
                         lua.GetField(-1, "CloseServer");
-                        lua.Call(0, 0);
+                        lua.MCall(0, 0);
 
                         WasServerQuitTrigered = true;
                     }
@@ -137,7 +137,7 @@ namespace Tests
                         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                         lua.GetField(-1, "engine");
                         lua.GetField(-1, "CloseServer");
-                        lua.Call(0, 0);
+                        lua.MCall(0, 0);
 
                         WasServerQuitTrigered = true;
                     }
