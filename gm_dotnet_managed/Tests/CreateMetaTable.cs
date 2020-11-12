@@ -12,7 +12,7 @@ namespace Tests
         TaskCompletionSource<bool> taskCompletion;
         string global_field_id;
         string to_str_msg;
-        CFuncManagedDelegate MetaToStringDelegate;
+        Func<ILua, int> MetaToStringDelegate;
 
         GetILuaFromLuaStatePointer lua_extructor;
 
@@ -35,7 +35,7 @@ namespace Tests
             {
                 lua.CreateTable();
                 lua.CreateTable();
-                lua.PushCFunction(MetaToStringDelegate);
+                lua.PushManagedFunction(MetaToStringDelegate);
                 lua.SetField(-2, "__tostring");
                 lua.SetMetaTable(-2);
 
@@ -63,10 +63,8 @@ namespace Tests
             return taskCompletion.Task;
         }
 
-        int MetaToString(IntPtr lua_state)
+        int MetaToString(ILua lua)
         {
-            ILua lua = lua_extructor(lua_state);
-
             lua.Pop(lua.Top());
 
             lua.PushString(to_str_msg);
