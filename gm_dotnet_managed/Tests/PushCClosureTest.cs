@@ -4,35 +4,39 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace Tests
 {
     // Test for ILua.PushCClosure
     public class PushCClosureTest : ITest
     {
-        string string_to_add;
-        CFuncManagedDelegate closure_del;
+        static string string_to_add;
         GetILuaFromLuaStatePointer lua_extructor;
         IntPtr closure_ptr;
+
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvCdecl) })]
+        static int ClosureTestFunc(IntPtr lua_state)
+        {
+            ILua lua = GmodInterop.GetLuaFromState(lua_state);
+
+            lua.Pop(lua.Top());
+
+            string upvalue = lua.GetString(GmodInterop.GetUpvalueIndex(1, false));
+
+            lua.PushString(upvalue + string_to_add);
+
+            return 1;
+        }
 
         public PushCClosureTest()
         {
             string_to_add = Guid.NewGuid().ToString();
 
-            closure_del = (lua_state) =>
+            unsafe
             {
-                ILua lua = lua_extructor(lua_state);
-
-                lua.Pop(lua.Top());
-
-                string upvalue = lua.GetString(InteropMethods.GetUpValuePseudoIndex(1));
-
-                lua.PushString(upvalue + string_to_add);
-
-                return 1;
-            };
-
-            closure_ptr = Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(closure_del);
+                closure_ptr = (IntPtr)(delegate* unmanaged[Cdecl]<IntPtr, int>)&ClosureTestFunc;
+            }
         }
 
         public Task<bool> Start(ILua lua, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext _)
@@ -55,7 +59,7 @@ namespace Tests
 
                 lua.Pop(1);
 
-                if(received_string != (closure_upvalue + this.string_to_add))
+                if(received_string != (closure_upvalue + string_to_add))
                 {
                     throw new PushCClosureTestException("Received string is invalid");
                 }
