@@ -13,8 +13,6 @@ namespace GmodNET
     {
         IntPtr ptr;
 
-        static IntPtr SafeWrapperPointer;
-
         internal Lua(IntPtr ptr)
         {
             this.ptr = ptr;
