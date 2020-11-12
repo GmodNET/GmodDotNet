@@ -11,14 +11,12 @@ namespace Tests
     {
         GetILuaFromLuaStatePointer lua_extructor;
 
-        CFuncManagedDelegate eq_func;
+        Func<ILua, int> eq_func;
 
         public EqualityTest()
         {
-            eq_func = (lua_state) =>
+            eq_func = (lua) =>
             {
-                ILua lua = this.lua_extructor(lua_state);
-
                 lua.Pop(lua.Top());
 
                 lua.PushBool(true);
@@ -37,7 +35,7 @@ namespace Tests
             {
                 // Create metatable
                 lua.CreateTable();
-                lua.PushCFunction(this.eq_func);
+                lua.PushManagedFunction(this.eq_func);
                 lua.SetField(-2, "__eq");
 
                 // Create first table to compare
