@@ -665,5 +665,37 @@ namespace GmodNET
                 throw new GmodLuaException(error_code, error_message);
             }
         }
+
+        public void PushManagedFunction(Func<ILua, int> function)
+        {
+            IntPtr delegate_handle = GCHandle.ToIntPtr(GCHandle.Alloc(function, GCHandleType.Normal));
+
+            this.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            this.GetField(-1, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            int managed_function_type_id = (int)this.GetNumber(-1);
+            this.Pop(2);
+
+            this.PushUserType(delegate_handle, managed_function_type_id);
+            this.PushCClosure(ManagedFunctionMetaMethods.NativeDelegateExecutor, 1);
+        }
+
+        public void PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues)
+        {
+            if(number_of_upvalues == byte.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException("number_of_upvalues", "Number of upvalues must be less than 255");
+            }
+
+            IntPtr delegate_handle = GCHandle.ToIntPtr(GCHandle.Alloc(function, GCHandleType.Normal));
+
+            this.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            this.GetField(-1, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            int managed_function_type_id = (int)this.GetNumber(-1);
+            this.Pop(2);
+
+            this.PushUserType(delegate_handle, managed_function_type_id);
+            this.Insert(-(number_of_upvalues + 1));
+            this.PushCClosure(ManagedFunctionMetaMethods.NativeDelegateExecutor, number_of_upvalues + 1);
+        }
     }
 }

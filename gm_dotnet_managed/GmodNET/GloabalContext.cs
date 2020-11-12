@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace GmodNET
 {
@@ -28,6 +29,19 @@ namespace GmodNET
             isServerSide = lua.GetBool(-1);
 
             module_contexts = new Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>>();
+
+            int managed_func_type_id = lua.CreateMetaTable("ManagedFunction");
+            unsafe
+            {
+                lua.PushCFunction(&ManagedFunctionMetaMethods.ManagedDelegateGC);
+            }
+            lua.SetField(-2, "__gc");
+            lua.Pop(1);
+
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushNumber(managed_func_type_id);
+            lua.SetField(-2, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            lua.Pop(1);
 
             load_module_delegate = (lua_state) =>
             {

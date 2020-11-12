@@ -355,6 +355,17 @@ namespace GmodNET.API
         /// <param name="iArgs">Number of arguments of the function to call</param>
         /// <param name="iResults">Number of returns of the function to call</param>
         public void MCall(int iArgs, int iResults);
+        /// <summary>
+        /// Push a managed function or delegate to the lua stack.
+        /// </summary>
+        /// <param name="function">A managed function or delegate to push.</param>
+        public void PushManagedFunction(Func<ILua, int> function);
+        /// <summary>
+        /// Push managed function or delegate together with upvalues as Lua closure. Upvalues must be pushed first. Pops upvalues from the stack.
+        /// </summary>
+        /// <param name="function">Managed function or delegate to form closure from.</param>
+        /// <param name="number_of_upvalues">Number of upvalues.</param>
+        public void PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues);
     }
 
     /// <summary>
