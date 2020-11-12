@@ -25,7 +25,7 @@ namespace Tests
 
         ModuleAssemblyLoadContext current_load_context;
 
-        CFuncManagedDelegate OnTickDelegate;
+        Func<ILua, int> OnTickDelegate;
 
         bool WasServerQuitTrigered;
 
@@ -66,7 +66,7 @@ namespace Tests
                 lua.GetField(-1, "Add");
                 lua.PushString("Tick");
                 lua.PushString(this.OnTickIdentifier);
-                lua.PushCFunction(this.OnTickDelegate);
+                lua.PushManagedFunction(this.OnTickDelegate);
                 lua.Call(3, 0);
                 lua.Pop(2);
 
@@ -99,13 +99,17 @@ namespace Tests
 
         public void Unload(ILua lua)
         {
-            
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "hook");
+            lua.GetField(-1, "Remove");
+            lua.PushString("Tick");
+            lua.PushString(this.OnTickIdentifier);
+            lua.MCall(2, 0);
+            lua.Pop(2);
         }
 
-        int OnTick(IntPtr lua_state)
+        int OnTick(ILua lua)
         {
-            ILua lua = lua_extructor(lua_state);
-
             if(current_test == null)
             {
                 if (ListOfTests.Count == 0 && !WasServerQuitTrigered)
