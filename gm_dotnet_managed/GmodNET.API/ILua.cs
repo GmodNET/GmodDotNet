@@ -7,14 +7,6 @@ using System.Runtime.InteropServices;
 namespace GmodNET.API
 {
     /// <summary>
-    /// Delegate which can be converted to native CFunc pointer, pushed on Garry's Mod Lua stack, and called be Garry's Mod.
-    /// When pushed to Garry's Mod, make sure that delegate instance will not be garbage collected.
-    /// </summary>
-    /// <param name="lua_state_pointer">Pointer to the lua_state. Use IModule.GetILuaFromLuaStatePointerMethod to get ILua interface from it</param>
-    /// <returns>Number of return values function pushes on the stack</returns>
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int CFuncManagedDelegate(IntPtr lua_state_pointer);
-    /// <summary>
     /// Managed wrapper around Garry's Mod native ILuaBase.
     /// </summary>
     public interface ILua
@@ -162,15 +154,6 @@ namespace GmodNET.API
         /// </summary>
         /// <param name="val">Bool value to push</param>
         public void PushBool(bool val);
-        /// <summary>
-        /// Pushes the given managed function on to the stack. The managed function will be converted to the C function.
-        /// If argument use_safe_error_wrapper is true (by default), managed function is wrapped in a C closure, which allows managed code to throw exceptions, which are 
-        /// converted to Lua errors.
-        /// CClosure, not CFunction, is pushed as a result if use_safe_error_wrapper is true.
-        /// </summary>
-        /// <param name="managed_function">Function to push</param>
-        /// <param name="use_safe_error_wrapper">If true, managed fucntion is wrapped in a CClosur, which allows managed code to throw exceptions safely</param>
-        public void PushCFunction(CFuncManagedDelegate managed_function, bool use_safe_error_wrapper = true);
         /// <summary>
         /// Pushes the given C-Function on to the stack. Native C function must be of signature "int Func(void*)".
         /// </summary>

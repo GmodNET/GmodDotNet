@@ -19,7 +19,7 @@ namespace Tests
                     Console.WriteLine(*ptr);
                 }
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
                 // Null reference successfully caught
                 taskCompletion.TrySetResult(true);

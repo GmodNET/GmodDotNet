@@ -13,7 +13,7 @@ namespace Tests
         string hook_id;
         GetILuaFromLuaStatePointer lua_extructor;
 
-        CFuncManagedDelegate spawn_func;
+        Func<ILua, int> spawn_func;
 
         public SpawnEntity()
         {
@@ -30,8 +30,8 @@ namespace Tests
 
             try
             {
-                lua.PushCFunction(this.spawn_func);
-                lua.Call(0, 0);
+                lua.PushManagedFunction(this.spawn_func);
+                lua.MCall(0, 0);
             }
             catch(Exception e)
             {
@@ -41,17 +41,15 @@ namespace Tests
             return taskCompletion.Task;
         }
 
-        int SpawnFunc(IntPtr lua_state)
+        int SpawnFunc(ILua lua)
         {
             try
             {
-                ILua lua = this.lua_extructor(lua_state);
-
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "ents");
                 lua.GetField(-1, "Create");
                 lua.PushString("prop_physics");
-                lua.Call(1, 1);
+                lua.MCall(1, 1);
 
                 if(lua.GetType(-1) != (int)TYPES.ENTITY)
                 {
@@ -61,20 +59,20 @@ namespace Tests
                 lua.GetField(-1, "SetModel");
                 lua.Push(-2);
                 lua.PushString("models/props_c17/oildrum001.mdl");
-                lua.Call(2, 0);
+                lua.MCall(2, 0);
 
                 lua.GetField(-1, "SetPos");
                 lua.Push(-2);
                 lua.PushVector(new System.Numerics.Vector3(0));
-                lua.Call(2, 0);
+                lua.MCall(2, 0);
 
                 lua.GetField(-1, "Spawn");
                 lua.Push(-2);
-                lua.Call(1, 0);
+                lua.MCall(1, 0);
 
                 lua.GetField(-1, "IsValid");
                 lua.Push(-2);
-                lua.Call(1, 1);
+                lua.MCall(1, 1);
                 if(!lua.GetBool(-1))
                 {
                     throw new SpawnEntityException("Entity is not valid");
