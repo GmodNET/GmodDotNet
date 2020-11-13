@@ -339,11 +339,6 @@ jobs:
              dotnet nuget update source gmodnet-packages --username CI --password ${{ secrets.DEVOPS_PASSWORD }} --store-password-in-clear-text
              dotnet nuget push nuget-publish/**.nupkg --source gmodnet-packages --api-key az --skip-duplicate
 
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: '3.1.402'
-
       - name: Restore local dotnet tools
         run: |
              cd csx
