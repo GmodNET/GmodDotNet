@@ -13,49 +13,9 @@ namespace GmodNET
     {
         IntPtr ptr;
 
-        static CFuncManagedDelegate SafeWrapper;
-        static int SafeWrapperImpl(IntPtr lua_state)
-        {
-            ILua local_lua_interface = LuaInterop.ExtructLua(lua_state);
-            try
-            {
-                //Get managed func
-                IntPtr delegate_handle_ptr = local_lua_interface.GetCFunction(-10004);
-                GCHandle delegate_handle = GCHandle.FromIntPtr(delegate_handle_ptr);
-                CFuncManagedDelegate function_delegate = (CFuncManagedDelegate)delegate_handle.Target;
-                int num_of_ret_args = function_delegate(lua_state);
-                return Math.Max(0, num_of_ret_args);
-            }
-            catch(Exception e)
-            {
-                if(local_lua_interface.Top() >= 2)
-                {
-                    local_lua_interface.Pop(2);
-                }
-
-                if(e is GmodLuaException)
-                {
-                    local_lua_interface.PushString(e.Message);
-                }
-                else
-                {
-                    local_lua_interface.PushString(".NET Core " + e.ToString());
-                }
-
-                return -1;
-            }
-        }
-        static IntPtr SafeWrapperPointer;
-
         internal Lua(IntPtr ptr)
         {
             this.ptr = ptr;
-        }
-
-        static Lua()
-        {
-            SafeWrapper = SafeWrapperImpl;
-            SafeWrapperPointer = Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(SafeWrapper);
         }
 
         public int Top()
@@ -354,20 +314,6 @@ namespace GmodNET
             push_bool(ptr, tmp);
         }
 
-        public void PushCFunction(CFuncManagedDelegate managed_function, bool use_safe_error_wrapper = true)
-        {
-            if(use_safe_error_wrapper)
-            {
-                GCHandle managed_func_handle = GCHandle.Alloc(managed_function, GCHandleType.Weak);
-                push_c_function_safe(ptr, SafeWrapperPointer, GCHandle.ToIntPtr(managed_func_handle));
-            }
-            else
-            {
-                IntPtr marshaled_function = Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(managed_function);
-                push_c_function(ptr, marshaled_function);
-            }
-        }
-
         public unsafe void PushCFunction(IntPtr native_func_ptr)
         {
             if(native_func_ptr == IntPtr.Zero)
@@ -664,6 +610,38 @@ namespace GmodNET
 
                 throw new GmodLuaException(error_code, error_message);
             }
+        }
+
+        public void PushManagedFunction(Func<ILua, int> function)
+        {
+            IntPtr delegate_handle = GCHandle.ToIntPtr(GCHandle.Alloc(function, GCHandleType.Normal));
+
+            this.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            this.GetField(-1, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            int managed_function_type_id = (int)this.GetNumber(-1);
+            this.Pop(2);
+
+            this.PushUserType(delegate_handle, managed_function_type_id);
+            this.PushCClosure(ManagedFunctionMetaMethods.NativeDelegateExecutor, 1);
+        }
+
+        public void PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues)
+        {
+            if(number_of_upvalues == byte.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException("number_of_upvalues", "Number of upvalues must be less than 255");
+            }
+
+            IntPtr delegate_handle = GCHandle.ToIntPtr(GCHandle.Alloc(function, GCHandleType.Normal));
+
+            this.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            this.GetField(-1, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            int managed_function_type_id = (int)this.GetNumber(-1);
+            this.Pop(2);
+
+            this.PushUserType(delegate_handle, managed_function_type_id);
+            this.Insert(-(number_of_upvalues + 1));
+            this.PushCClosure(ManagedFunctionMetaMethods.NativeDelegateExecutor, number_of_upvalues + 1);
         }
     }
 }

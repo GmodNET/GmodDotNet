@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace GmodNET
 {
@@ -16,9 +17,9 @@ namespace GmodNET
 
         Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>> module_contexts;
 
-        CFuncManagedDelegate load_module_delegate;
+        Func<ILua, int> load_module_delegate;
 
-        CFuncManagedDelegate unload_module_delegate;
+        Func<ILua, int> unload_module_delegate;
 
         internal GlobalContext(ILua lua)
         { 
@@ -29,10 +30,21 @@ namespace GmodNET
 
             module_contexts = new Dictionary<string, Tuple<GmodNetModuleAssemblyLoadContext, List<GCHandle>>>();
 
-            load_module_delegate = (lua_state) =>
+            int managed_func_type_id = lua.CreateMetaTable("ManagedFunction");
+            unsafe
             {
-                ILua lua = GmodInterop.GetLuaFromState(lua_state);
+                lua.PushCFunction(&ManagedFunctionMetaMethods.ManagedDelegateGC);
+            }
+            lua.SetField(-2, "__gc");
+            lua.Pop(1);
 
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushNumber(managed_func_type_id);
+            lua.SetField(-2, ManagedFunctionMetaMethods.ManagedFunctionIdField);
+            lua.Pop(1);
+
+            load_module_delegate = (lua) =>
+            {
                 try
                 {
                     string module_name = lua.GetString(1);
@@ -97,10 +109,8 @@ namespace GmodNET
                 }
             };
 
-            unload_module_delegate = (lua_state) =>
+            unload_module_delegate = (lua) =>
             {
-                ILua lua = GmodInterop.GetLuaFromState(lua_state);
-
                 try
                 {
                     string module_name = lua.GetString(1);
@@ -156,12 +166,12 @@ namespace GmodNET
             };
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushCFunction(Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(load_module_delegate));
+            lua.PushManagedFunction(load_module_delegate);
             lua.SetField(-2, "dotnet_load");
             lua.Pop(1);
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushCFunction(Marshal.GetFunctionPointerForDelegate<CFuncManagedDelegate>(unload_module_delegate));
+            lua.PushManagedFunction(unload_module_delegate);
             lua.SetField(-2, "dotnet_unload");
             lua.Pop(1);
         }

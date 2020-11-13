@@ -26,7 +26,7 @@ namespace Tests
                 {
                     lua.MCall(1, 1);
                 }
-                catch(GmodLuaException e)
+                catch(GmodLuaException)
                 {
                     throw new MCallTestException("Exception was thrown by MCall, but it is not expected.");
                 }
@@ -56,7 +56,7 @@ namespace Tests
 
                     taskCompletion.TrySetResult(true);
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     throw new MCallTestException("Wrong exception type was thrown");
                 }
