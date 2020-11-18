@@ -342,13 +342,15 @@ namespace GmodNET.API
         /// Push a managed function or delegate to the lua stack.
         /// </summary>
         /// <param name="function">A managed function or delegate to push.</param>
-        public void PushManagedFunction(Func<ILua, int> function);
+        /// <returns>A GCHandle instance, allocated for managed delegate. For advanced scenarios.</returns>
+        public GCHandle PushManagedFunction(Func<ILua, int> function);
         /// <summary>
         /// Push managed function or delegate together with upvalues as Lua closure. Upvalues must be pushed first. Pops upvalues from the stack.
         /// </summary>
         /// <param name="function">Managed function or delegate to form closure from.</param>
         /// <param name="number_of_upvalues">Number of upvalues.</param>
-        public void PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues);
+        /// <returns>A GCHandle instance, allocated for managed delegate. For advanced scenarios.</returns>
+        public GCHandle PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues);
     }
 
     /// <summary>
