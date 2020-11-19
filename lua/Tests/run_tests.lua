@@ -1,2 +1,2 @@
 require("dotnet")
-dotnet_load("Tests")
+dotnet.load("Tests")
