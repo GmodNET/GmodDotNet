@@ -40,13 +40,15 @@ namespace GmodNET
             lua.Pop(1);
 
             lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.PushManagedFunction(LoadModule);
-            lua.SetField(-2, "dotnet_load");
-            lua.Pop(1);
+            lua.CreateTable();
 
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.PushManagedFunction(LoadModule);
+            lua.SetField(-2, "load");
+
             lua.PushManagedFunction(UnloadModule);
-            lua.SetField(-2, "dotnet_unload");
+            lua.SetField(-2, "unload");
+
+            lua.SetField(-2, "dotnet");
             lua.Pop(1);
         }
 
