@@ -117,6 +117,7 @@ namespace GmodNET
             }
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         WeakReference<GmodNetModuleAssemblyLoadContext> UnloadHelper(string module_name)
         {
             WeakReference<GmodNetModuleAssemblyLoadContext> context_weak_reference =
