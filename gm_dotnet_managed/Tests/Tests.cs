@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
+    public delegate ILua GetILuaFromLuaStatePointer(IntPtr lua_state);
+
     // Test runner. Upon success of all tests 'File.WriteAllText("tests-success.txt", "Success!");' should be called. Information should be logged to "tests-log.txt" file
     public class Tests : IModule
     {
@@ -15,15 +17,15 @@ namespace Tests
 
         public string ModuleVersion => FileVersionInfo.GetVersionInfo(typeof(Tests).Assembly.Location).ProductVersion;
 
+        GetILuaFromLuaStatePointer lua_extructor = GmodInterop.GetLuaFromState;
+
         ILua lua;
 
         bool isServerSide;
 
-        GetILuaFromLuaStatePointer lua_extructor;
-
         ModuleAssemblyLoadContext current_load_context;
 
-        CFuncManagedDelegate OnTickDelegate;
+        Func<ILua, int> OnTickDelegate;
 
         bool WasServerQuitTrigered;
 
@@ -43,11 +45,10 @@ namespace Tests
             IsEverythingSuccessful = false;
         }
 
-        public void Load(ILua lua, bool is_serverside, GetILuaFromLuaStatePointer lua_extructor, ModuleAssemblyLoadContext assembly_context)
+        public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
         {
             this.lua = lua;
             this.isServerSide = is_serverside;
-            this.lua_extructor = lua_extructor;
             this.current_load_context = assembly_context;
             this.OnTickDelegate = this.OnTick;
             this.OnTickIdentifier = Guid.NewGuid().ToString();
@@ -65,8 +66,8 @@ namespace Tests
                 lua.GetField(-1, "Add");
                 lua.PushString("Tick");
                 lua.PushString(this.OnTickIdentifier);
-                lua.PushCFunction(this.OnTickDelegate);
-                lua.Call(3, 0);
+                lua.PushManagedFunction(this.OnTickDelegate);
+                lua.MCall(3, 0);
                 lua.Pop(2);
 
                 //Get the list of tests
@@ -96,15 +97,19 @@ namespace Tests
             }
         }
 
-        public void Unload()
+        public void Unload(ILua lua)
         {
-            
+            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+            lua.GetField(-1, "hook");
+            lua.GetField(-1, "Remove");
+            lua.PushString("Tick");
+            lua.PushString(this.OnTickIdentifier);
+            lua.MCall(2, 0);
+            lua.Pop(2);
         }
 
-        int OnTick(IntPtr lua_state)
+        int OnTick(ILua lua)
         {
-            ILua lua = lua_extructor(lua_state);
-
             if(current_test == null)
             {
                 if (ListOfTests.Count == 0 && !WasServerQuitTrigered)
@@ -119,7 +124,7 @@ namespace Tests
                         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                         lua.GetField(-1, "engine");
                         lua.GetField(-1, "CloseServer");
-                        lua.Call(0, 0);
+                        lua.MCall(0, 0);
 
                         WasServerQuitTrigered = true;
                     }
@@ -132,7 +137,7 @@ namespace Tests
                         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                         lua.GetField(-1, "engine");
                         lua.GetField(-1, "CloseServer");
-                        lua.Call(0, 0);
+                        lua.MCall(0, 0);
 
                         WasServerQuitTrigered = true;
                     }

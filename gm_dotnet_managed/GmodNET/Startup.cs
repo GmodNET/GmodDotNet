@@ -15,33 +15,31 @@ namespace GmodNET
     {
         static List<GlobalContext> global_contexts = new List<GlobalContext>();
 
-        internal delegate void CleanupDelegate();
+        internal delegate void CleanupDelegate(IntPtr lua_pointer);
         static List<CleanupDelegate> CleanupReturns = new List<CleanupDelegate>();
 
         static bool FirstRun = true;
 
         //Called by Garry's Mod. Responsible for initial configuration.
         [UnmanagedCallersOnly]
-        internal static IntPtr Main(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param)
+        internal static unsafe IntPtr Main(IntPtr lua_base, IntPtr native_version_string, int version_string_length, IntPtr param, 
+                                           IntPtr native_delegate_executor_ptr, IntPtr* managed_delegate_executor_ptr)
         {
-            string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
-            string friendly_version = full_assembly_version.Split("+")[0];
-            string version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
-
-            unsafe
+            try
             {
+                string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
+                string friendly_version = full_assembly_version.Split("+")[0];
+                string version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
+
+               
                 string native_version = Encoding.UTF8.GetString((byte*)native_version_string.ToPointer(), version_string_length);
 
                 if (native_version != full_assembly_version)
                 {
-                    File.WriteAllText("GmodNETErrorLog.txt", "Version mismatch! \n");
-                    return IntPtr.Zero;
+                    throw new Exception("GmodNET version does not match with the version of dotnet_loader.");
                 }
-            }
-            
-            if(true)
-            {
-                unsafe
+
+                if (FirstRun)
                 {
                     Span<IntPtr> params_from_native_code = new Span<IntPtr>((void*)param, 55);
 
@@ -63,7 +61,7 @@ namespace GmodNET
 
                     LuaInterop.call = CreateNativeCaller<Action<IntPtr, int, int>>(params_from_native_code[8]);
 
-                    LuaInterop.pcall = CreateNativeCaller<Func<IntPtr, int ,int, int, int>>(params_from_native_code[9]);
+                    LuaInterop.pcall = CreateNativeCaller<Func<IntPtr, int, int, int, int>>(params_from_native_code[9]);
 
                     LuaInterop.equal = CreateNativeCaller<Func<IntPtr, int, int, int>>(params_from_native_code[10]);
 
@@ -83,7 +81,7 @@ namespace GmodNET
 
                     LuaInterop.get_string = CreateNativeCaller<Func<IntPtr, int, IntPtr, IntPtr>>(params_from_native_code[18]);
 
-                    LuaInterop.get_number = CreateNativeCaller<Func<IntPtr, int ,double>>(params_from_native_code[19]);
+                    LuaInterop.get_number = CreateNativeCaller<Func<IntPtr, int, double>>(params_from_native_code[19]);
 
                     LuaInterop.get_bool = CreateNativeCaller<Func<IntPtr, int, int>>(params_from_native_code[20]);
 
@@ -111,7 +109,7 @@ namespace GmodNET
 
                     LuaInterop.is_type = CreateNativeCaller<Func<IntPtr, int, int, int>>(params_from_native_code[32]);
 
-                    LuaInterop.get_type = CreateNativeCaller<Func<IntPtr, int ,int>>(params_from_native_code[33]);
+                    LuaInterop.get_type = CreateNativeCaller<Func<IntPtr, int, int>>(params_from_native_code[33]);
 
                     LuaInterop.get_type_name = CreateNativeCaller<Func<IntPtr, int, IntPtr, IntPtr>>(params_from_native_code[34]);
 
@@ -156,46 +154,58 @@ namespace GmodNET
                     LuaInterop.push_c_function_safe = CreateNativeCaller<Action<IntPtr, IntPtr, IntPtr>>(params_from_native_code[54]);
 
                     GmodInterop.lua_extractor = &LuaInterop.ExtructLua;
+
+                    ManagedFunctionMetaMethods.NativeDelegateExecutor = native_delegate_executor_ptr;
+
+                    FirstRun = false;
                 }
 
-                FirstRun = false;
+                *managed_delegate_executor_ptr = (IntPtr)(delegate* unmanaged<IntPtr, int>)&ManagedFunctionMetaMethods.ManagedDelegateExecutor;
+
+                ILua lua = new Lua(lua_base);
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "print");
+                lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " codename " + version_codename);
+                lua.MCall(1, 0);
+                lua.Pop(1);
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "print");
+                lua.PushString("(full build version: " + full_assembly_version + ")");
+                lua.MCall(1, 0);
+                lua.Pop(1);
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "print");
+                lua.PushString(RuntimeInformation.FrameworkDescription);
+                lua.MCall(1, 0);
+                lua.Pop(1);
+
+                GlobalContext n_context = new GlobalContext(lua);
+
+                global_contexts.Add(n_context);
+
+                CleanupDelegate n_cleanup_delegate = (lua_pointer) => CleanupRealization(n_context, lua_pointer);
+
+
+                CleanupReturns.Add(n_cleanup_delegate);
+
+                return Marshal.GetFunctionPointerForDelegate<CleanupDelegate>(n_cleanup_delegate);
             }
-
-            ILua lua = new Lua(lua_base);
-
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.GetField(-1, "print");
-            lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " codename " + version_codename);
-            lua.Call(1, 0);
-            lua.Pop(1);
-
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.GetField(-1, "print");
-            lua.PushString("(full build version: " + full_assembly_version + ")");
-            lua.Call(1, 0);
-            lua.Pop(1);
-
-            lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
-            lua.GetField(-1, "print");
-            lua.PushString(RuntimeInformation.FrameworkDescription);
-            lua.Call(1, 0);
-            lua.Pop(1);
-
-            GlobalContext n_context = new GlobalContext(lua);
-
-            global_contexts.Add(n_context);
-
-            CleanupDelegate n_cleanup_delegate = () => CleanupRealization(n_context);
-
-
-            CleanupReturns.Add(n_cleanup_delegate);
-
-            return Marshal.GetFunctionPointerForDelegate<CleanupDelegate>(n_cleanup_delegate);
+            catch(Exception e)
+            {
+                File.WriteAllText("managed_error.log", e.ToString());
+                *managed_delegate_executor_ptr = (IntPtr)(delegate* unmanaged<IntPtr, int>)&ManagedFunctionMetaMethods.ManagedDelegateExecutor;
+                return IntPtr.Zero;
+            }
         }
 
-        internal static void CleanupRealization(GlobalContext context)
+        internal static void CleanupRealization(GlobalContext context, IntPtr lua_pointer)
         {
-            context.OnNativeUnload();
+            ILua lua = new Lua(lua_pointer);
+
+            context.OnNativeUnload(lua);
 
             global_contexts.Remove(context);
 

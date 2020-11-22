@@ -27,7 +27,7 @@ namespace Tests
                         dlopen("libdl", 0);
                     }
                 }
-                catch(DllNotFoundException e)
+                catch(DllNotFoundException)
                 {
                     taskCompletion.TrySetResult(true);
                 }

@@ -11,7 +11,7 @@ namespace Tests
             lua.PushSpecial(GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB);
             lua.GetField(-1, "print");
             lua.PushString(message);
-            lua.Call(1, 0);
+            lua.MCall(1, 0);
             lua.Pop(1);
         }
 

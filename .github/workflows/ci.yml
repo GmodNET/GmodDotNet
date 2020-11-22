@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   GMODNET_VERSION: '0.6.0'
-  DOTNET_SDK_VERSION: '5.0.100-rc.2.20479.15'
+  DOTNET_SDK_VERSION: '5.0.100'
 
 jobs:
  linux-build:
@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v2.0.0
 
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.4.0
+      uses: actions/setup-dotnet@v1.7.2
       with:
         dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
@@ -46,7 +46,7 @@ jobs:
       run: |
            dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o gmod/garrysmod/lua/bin/Modules/Tests
            cp -a build/. gmod/garrysmod/lua/bin
-           cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
+           cp lua/Tests/run_tests.lua gmod/garrysmod/lua/autorun
 
     - name: Run Garry's Mod
       run: ./srcds_run_x64 -game garrysmod -systemtest +sv_hibernate_think 1 || true
@@ -105,76 +105,12 @@ jobs:
       if: github.event_name == 'push'
       run: dotnet build runtime.csproj -target:PackRuntimeBuild
 
-    - name: Load signed build as artifact
-      if: github.event_name == 'push'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: linux-${{ github.sha }}
-        path: linux-${{ github.sha }}.tar.gz
-
     - name: Upload versioned build as artifact
       if: github.event_name == 'push'
       uses: actions/upload-artifact@v1.0.0
       with:
         name: linux-versioned-build
         path: packed-build
-
-    - name: Load server lua as artifact
-      if: github.event_name == 'push'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: server-lua
-        path: lua/autorun/serverside/gm_dotnet_server.lua
-
-    - name: Load client lua as artifact
-      if: github.event_name == 'push'
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: client-lua
-        path: lua/autorun/clientside/gm_dotnet_client.lua
-
-    - name: Prepare lua for deployment
-      if: github.event_name == 'push'
-      run: |
-           mkdir lua_upload
-           cp -v lua/autorun/clientside/gm_dotnet_client.lua lua_upload
-           cp -v lua/autorun/serverside/gm_dotnet_server.lua lua_upload
-
-    - name: Upload lua to storage
-      if: github.event_name == 'push'
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      with:
-        args: --acl public-read --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: 'gleb-krasilich'
-        AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
-        AWS_REGION: 'us-west-1'
-        AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
-        SOURCE_DIR: 'lua_upload'
-        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/'
-
-    - name: Prepare full build for upload
-      if: github.event_name == 'push'
-      env:
-        TRAVIS_COMMIT: ${{ github.sha }}
-      run: |
-           mkdir full_build_upload_dir
-           cp -v linux-$TRAVIS_COMMIT.tar.gz full_build_upload_dir
-
-    - name: Upload full build to storage
-      if: github.event_name == 'push'
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      with:
-        args: --acl public-read --follow-symlinks
-      env:
-        AWS_S3_BUCKET: 'gleb-krasilich'
-        AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
-        AWS_REGION: 'us-west-1'
-        AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
-        SOURCE_DIR: 'full_build_upload_dir'
-        DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/linux/'
 
  windows-build:
 
@@ -185,7 +121,7 @@ jobs:
        uses: actions/checkout@v2.0.0
 
      - name: Setup .NET Core SDK
-       uses: actions/setup-dotnet@v1.4.0
+       uses: actions/setup-dotnet@v1.7.2
        with:
          dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
@@ -210,7 +146,7 @@ jobs:
        run: |
             dotnet publish gm_dotnet_managed/Tests/Tests.csproj -c Release -o gmod/garrysmod/lua/bin/Modules/Tests
             cp -a build/. gmod/garrysmod/lua/bin
-            cp lua/autorun/serverside/gm_dotnet_server.lua gmod/garrysmod/lua/autorun/server
+            cp lua/Tests/run_tests.lua gmod/garrysmod/lua/autorun
 
      - name: Run Garry's Mod
        shell: bash
@@ -261,26 +197,9 @@ jobs:
             cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
             mv gmodnet-public.modulekey GmodNET.modulekey
 
-     - name: Pack full build
-       if: github.event_name == 'push'
-       env:
-         TRAVIS_COMMIT: ${{ github.sha }}
-       run: |
-            mkdir full_build_upload_dir
-            Compress-Archive -Path ./build/* -DestinationPath ./full_build_upload_dir/windows-${{ github.sha }}.zip
-            cd full_build_upload_dir
-            dir
-
      - name: Pack with MSBuild
        if: github.event_name == 'push'
        run: dotnet build runtime.csproj -target:PackRuntimeBuild
-
-     - name: Upload full build as artifact
-       if: github.event_name == 'push'
-       uses: actions/upload-artifact@v1.0.0
-       with:
-         name: windows-${{ github.sha }}
-         path: full_build_upload_dir/windows-${{ github.sha }}.zip
 
      - name: Upload versioned build as artifact
        if: github.event_name == 'push'
@@ -299,7 +218,7 @@ jobs:
         uses: actions/checkout@v2.0.0
 
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.4.0
+        uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
@@ -340,24 +259,9 @@ jobs:
              cp ../../GmodDotNetPrivateKey/gmodnet-public.modulekey .
              mv gmodnet-public.modulekey GmodNET.modulekey
 
-      - name: Pack build
-        if: github.event_name == 'push'
-        env:
-          TRAVIS_COMMIT: ${{ github.sha }}
-        run: |
-             cd build
-             tar czfv ../osx-$TRAVIS_COMMIT.tar.gz .
-
       - name: Pack with MSBuild
         if: github.event_name == 'push'
         run: dotnet build runtime.csproj -target:PackRuntimeBuild
-
-      - name: Load signed build as artifact
-        if: github.event_name == 'push'
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: osx-${{ github.sha }}
-          path: osx-${{ github.sha }}.tar.gz
 
       - name: Upload versioned build as artifact
         if: github.event_name == 'push'
@@ -380,7 +284,7 @@ jobs:
         uses: actions/checkout@v2.0.0
 
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.4.0
+        uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
@@ -392,18 +296,6 @@ jobs:
              cd publish
              mkdir windows
              mkdir osx
-
-      - name: Download windows build
-        uses: actions/download-artifact@v1.0.0
-        with:
-          name: windows-${{ github.sha }}
-          path: publish/windows
-
-      - name: Download osx build
-        uses: actions/download-artifact@v1.0.0
-        with:
-          name: osx-${{ github.sha }}
-          path: publish/osx
 
       - name: Download versioned build (windows)
         uses: actions/download-artifact@v1.0.0
@@ -429,19 +321,6 @@ jobs:
           name: nupkgs
           path: nuget-publish
 
-      - name: Upload builds to storage
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --acl public-read --follow-symlinks
-        env:
-          AWS_S3_BUCKET: 'gleb-krasilich'
-          AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
-          AWS_REGION: 'us-west-1'
-          AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
-          SOURCE_DIR: 'publish'
-          DEST_DIR: 'GmodDotNetBuilds/GitHubWorkflow/'
-
       - name: Upload versioned builds to storage
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -455,43 +334,10 @@ jobs:
           SOURCE_DIR: 'versioned-publish'
           DEST_DIR: 'GmodNETStorage/storage'
 
-      - name: Prepare Lua for publish
-        run: dotnet build runtime.csproj -t:PackLuaForPublish
-
-      - name: Upload versioned lua to storage
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --acl public-read --follow-symlinks
-        env:
-          AWS_S3_BUCKET: 'gleb-krasilich'
-          AWS_ACCESS_KEY_ID: ${{ secrets.DOS_STORAGE_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.DOS_STORAGE_SECRETE }}
-          AWS_REGION: 'us-west-1'
-          AWS_S3_ENDPOINT: 'https://fra1.digitaloceanspaces.com'
-          SOURCE_DIR: 'lua-publish'
-          DEST_DIR: 'GmodNETStorage/storage'
-
-      - name: Print build information
-        run: |
-             echo "Nightly build info"
-             echo "Branch ${{ github.ref }}"
-             echo "Commit ${{ github.sha }}"
-             echo "Signed as version $GMODNET_VERSION"
-             echo "Lua clinet https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/gm_dotnet_client.lua"
-             echo "Lua server https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/Lua/${{ github.sha }}/gm_dotnet_server.lua"
-             echo "Windows: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/windows/windows-${{ github.sha }}.zip"
-             echo "Linux: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/linux/linux-${{ github.sha }}.tar.gz"
-             echo "macOS: https://gleb-krasilich.fra1.digitaloceanspaces.com/GmodDotNetBuilds/GitHubWorkflow/osx/osx-${{ github.sha }}.tar.gz"
-
       - name: Upload API nuget package
         run: |
              dotnet nuget update source gmodnet-packages --username CI --password ${{ secrets.DEVOPS_PASSWORD }} --store-password-in-clear-text
              dotnet nuget push nuget-publish/**.nupkg --source gmodnet-packages --api-key az --skip-duplicate
-
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.4.0
-        with:
-          dotnet-version: '3.1.402'
 
       - name: Restore local dotnet tools
         run: |

@@ -9,7 +9,7 @@ namespace Tests
     // Test for ILua.CreateMetaTable and ILua.PushMetaTable
     public class CreateMetaTableTest : ITest
     {
-        CFuncManagedDelegate ToStringImpl;
+        Func<ILua, int> ToStringImpl;
         string RandomString;
 
         GetILuaFromLuaStatePointer lua_extructor;
@@ -22,10 +22,8 @@ namespace Tests
 
             NewTypeId = 0;
 
-            ToStringImpl = (lua_state) =>
+            ToStringImpl = (lua) =>
             {
-                ILua lua = this.lua_extructor(lua_state);
-
                 lua.PushString(this.RandomString);
 
                 return 1;
@@ -42,7 +40,7 @@ namespace Tests
 
                 this.NewTypeId = lua.CreateMetaTable("TestType1");
 
-                lua.PushCFunction(this.ToStringImpl);
+                lua.PushManagedFunction(this.ToStringImpl);
 
                 lua.SetField(-2, "__tostring");
 
@@ -84,6 +82,14 @@ namespace Tests
                 }
 
                 lua.Pop(3);
+
+                lua.PushMetaTable(NewTypeId);
+
+                lua.PushNil();
+
+                lua.SetField(-2, "__tostring");
+
+                lua.Pop(1);
 
                 taskCompletion.TrySetResult(true);
             }

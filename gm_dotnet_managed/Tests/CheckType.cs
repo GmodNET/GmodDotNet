@@ -11,7 +11,7 @@ namespace Tests
     public class CheckType : ITest
     {
         TaskCompletionSource<bool> taskCompletion;
-        CFuncManagedDelegate test_func;
+        Func<ILua, int> test_func;
 
         public CheckType()
         {
@@ -102,7 +102,7 @@ namespace Tests
                 lua.Pop(1);
 
 
-                lua.PushCFunction(this.test_func);
+                lua.PushManagedFunction(this.test_func);
                 curr_type = lua.GetType(-1);
                 curr_name = lua.GetTypeName(curr_type);
                 if(curr_type != (int)TYPES.FUNCTION || curr_name != "function")

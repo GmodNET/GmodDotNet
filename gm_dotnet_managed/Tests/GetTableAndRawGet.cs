@@ -14,7 +14,7 @@ namespace Tests
 
         int TypeId;
 
-        CFuncManagedDelegate indexDelegate;
+        Func<ILua, int> indexDelegate;
 
         GetILuaFromLuaStatePointer lua_extructor;
 
@@ -25,10 +25,8 @@ namespace Tests
             RandomString1 = Guid.NewGuid().ToString();
             RandomString2 = Guid.NewGuid().ToString();
 
-            indexDelegate = (lua_State) =>
+            indexDelegate = (lua) =>
             {
-                ILua lua = this.lua_extructor(lua_State);
-
                 lua.Pop(lua.Top());
 
                 lua.PushString(this.RandomString1);
@@ -47,7 +45,7 @@ namespace Tests
                  
                 // Create new metatable and populate it
                 this.TypeId = lua.CreateMetaTable("GetTableAndRawGetMetaTable");
-                lua.PushCFunction(this.indexDelegate);
+                lua.PushManagedFunction(this.indexDelegate);
                 lua.SetField(-2, "__index");
                 lua.Pop(1);
 
@@ -97,6 +95,11 @@ namespace Tests
                 lua.Pop(1);
 
                 lua.Pop(lua.Top());
+
+                lua.PushMetaTable(TypeId);
+                lua.PushNil();
+                lua.SetField(-2, "__index");
+                lua.Pop(1);
 
                 taskCompletion.TrySetResult(true);
             }

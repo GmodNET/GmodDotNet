@@ -1,4 +1,4 @@
-#! "netcoreapp3.1"
+#! "net5.0"
 #r "nuget: GmodNET.VersionTool.Core, 0.2.0-alpha.1.21507807.dev"
 
 using System.Net.Http;

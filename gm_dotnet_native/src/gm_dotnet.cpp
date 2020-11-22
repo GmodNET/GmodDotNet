@@ -78,7 +78,7 @@ GMOD_MODULE_CLOSE()
 {
     if(cleanup_function != nullptr)
     {
-        cleanup_function();
+        cleanup_function(LUA);
     }
 
     return 0;

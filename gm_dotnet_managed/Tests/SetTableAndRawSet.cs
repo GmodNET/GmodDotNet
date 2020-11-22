@@ -14,7 +14,7 @@ namespace Tests
         string random1;
         string random2;
 
-        CFuncManagedDelegate newIndexImpl;
+        Func<ILua, int> newIndexImpl;
 
         public SetTableAndRawSet()
         {
@@ -23,10 +23,8 @@ namespace Tests
             random1 = Guid.NewGuid().ToString();
             random2 = Guid.NewGuid().ToString();
 
-            newIndexImpl = (lua_state) =>
+            newIndexImpl = (lua) =>
             {
-                ILua lua = lua_extructor(lua_state);
-
                 lua.Pop(lua.Top());
 
                 return 0;
@@ -43,7 +41,7 @@ namespace Tests
 
                 // Create new type
                 this.type_id = lua.CreateMetaTable("SetTableAndRawSetTestType");
-                lua.PushCFunction(this.newIndexImpl);
+                lua.PushManagedFunction(this.newIndexImpl);
                 lua.SetField(-2, "__newindex");
                 lua.Pop(1);
 
@@ -88,6 +86,11 @@ namespace Tests
                     throw new Exception("RawSet didn't set a value to a key");
                 }
 
+                lua.Pop(1);
+
+                lua.PushMetaTable(type_id);
+                lua.PushNil();
+                lua.SetField(-2, "__newindex");
                 lua.Pop(1);
 
                 taskCompletion.TrySetResult(true);
