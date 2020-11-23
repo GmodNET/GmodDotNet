@@ -162,6 +162,8 @@ namespace GmodNET
 
                 *managed_delegate_executor_ptr = (IntPtr)(delegate* unmanaged<IntPtr, int>)&ManagedFunctionMetaMethods.ManagedDelegateExecutor;
 
+                GameConsoleWriter.Load();
+
                 ILua lua = new Lua(lua_base);
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
@@ -208,6 +210,8 @@ namespace GmodNET
             context.OnNativeUnload(lua);
 
             global_contexts.Remove(context);
+
+            GameConsoleWriter.Unload();
 
             if (CleanupReturns.Count > 100)
             { 
