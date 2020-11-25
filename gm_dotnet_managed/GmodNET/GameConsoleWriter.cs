@@ -18,4 +18,12 @@ public class GameConsoleWriter : TextWriter
     {
         Msg(value);
     }
+    public override void Write(char value)
+    {
+        Write(value.ToString());
+    }
+    public override void Write(char[] value)
+    {
+        Write(new string(value));
+    }
 }
