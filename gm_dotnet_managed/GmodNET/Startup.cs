@@ -157,12 +157,12 @@ namespace GmodNET
 
                     ManagedFunctionMetaMethods.NativeDelegateExecutor = native_delegate_executor_ptr;
 
+                    Console.SetOut(new GameConsoleWriter());
+
                     FirstRun = false;
                 }
 
                 *managed_delegate_executor_ptr = (IntPtr)(delegate* unmanaged<IntPtr, int>)&ManagedFunctionMetaMethods.ManagedDelegateExecutor;
-
-                GameConsoleWriter.Load();
 
                 ILua lua = new Lua(lua_base);
 
@@ -210,8 +210,6 @@ namespace GmodNET
             context.OnNativeUnload(lua);
 
             global_contexts.Remove(context);
-
-            GameConsoleWriter.Unload();
 
             if (CleanupReturns.Count > 100)
             { 
