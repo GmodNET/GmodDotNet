@@ -7,7 +7,7 @@ using System.Text;
 /// </summary>
 public class GameConsoleWriter : TextWriter
 {
-    public override string NewLine { get => "\n"; }
+    public override string NewLine => "\n";
     public override Encoding Encoding => Encoding.UTF8;
 
     [DllImport("tier0", CallingConvention = CallingConvention.Cdecl)]
