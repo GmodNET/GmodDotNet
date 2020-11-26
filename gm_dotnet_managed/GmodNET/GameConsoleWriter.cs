@@ -49,7 +49,6 @@ public class GameConsoleWriter : TextWriter
         for (int i = 0; i < count; i++) stringBuilder.Append(buffer[index + i]);
         Write(stringBuilder.ToString());
     }
-    // TODO: it is work?
     public override void Write(ReadOnlySpan<char> buffer)
     {
         Write(new string(buffer));
@@ -123,5 +122,45 @@ public class GameConsoleWriter : TextWriter
     public override void WriteLine(uint value)
     {
         Write(value.ToString() + NewLine);
+    }
+    public override void WriteLine(long value)
+    {
+        Write(value.ToString() + NewLine);
+    }
+    public override void WriteLine(ulong value)
+    {
+        Write(value.ToString() + NewLine);
+    }
+    public override void WriteLine(float value)
+    {
+        Write(value.ToString() + NewLine);
+    }
+    public override void WriteLine(double value)
+    {
+        Write(value.ToString() + NewLine);
+    }
+    public override void WriteLine(decimal value)
+    {
+        Write(value.ToString() + NewLine);
+    }
+    public override void WriteLine(object? value)
+    {
+        if (value == null)
+        {
+            WriteLine();
+        }
+        else
+        {
+            // Call WriteLine(value.ToString), not Write(Object), WriteLine().
+            // This makes calls to WriteLine(Object) atomic.
+            if (value is IFormattable f)
+            {
+                WriteLine(f.ToString(null, FormatProvider));
+            }
+            else
+            {
+                WriteLine(value.ToString());
+            }
+        }
     }
 }
