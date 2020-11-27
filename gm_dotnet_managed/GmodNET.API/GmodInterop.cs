@@ -23,7 +23,7 @@ namespace GmodNET.API
         /// <returns>An implementation of <see cref="ILua"/> interface to work with given lua state.</returns>
         /// <remarks>
         /// This method is designed to be used with static functions annotated with <see cref="System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute"/> attribute.
-        /// See example for more info.
+        /// See [example](https://gist.github.com/GlebChili/444d8cb1d641d62f94495e546f681b89) for more info.
         /// </remarks>
         public static ILua GetLuaFromState(IntPtr lua_state)
         {
