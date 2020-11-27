@@ -53,7 +53,7 @@ public class GameConsoleWriter : TextWriter
     {
         Write(new string(buffer));
     }
-    public override void Write(StringBuilder? value)
+    public override void Write(StringBuilder value)
     {
         if (value != null)
         {
@@ -69,7 +69,7 @@ public class GameConsoleWriter : TextWriter
     {
         Write(value.ToString() + NewLine);
     }
-    public override void WriteLine(char[]? buffer)
+    public override void WriteLine(char[] buffer)
     {
         Write(new string(buffer) + NewLine);
     }
@@ -100,7 +100,7 @@ public class GameConsoleWriter : TextWriter
     {
         Write(new string(buffer) + NewLine);
     }
-    public override void WriteLine(StringBuilder? value)
+    public override void WriteLine(StringBuilder value)
     {
         if (value != null)
         {
@@ -143,7 +143,7 @@ public class GameConsoleWriter : TextWriter
     {
         Write(value.ToString() + NewLine);
     }
-    public override void WriteLine(object? value)
+    public override void WriteLine(object value)
     {
         if (value == null)
         {
