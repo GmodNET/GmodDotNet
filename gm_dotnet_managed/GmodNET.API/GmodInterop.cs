@@ -34,7 +34,7 @@ namespace GmodNET.API
         }
 
         /// <summary>
-        /// Get an upvlaue pseudo-index of the Lua closure.
+        /// Gets an upvlaue pseudo-index of the Lua closure.
         /// </summary>
         /// <param name="upvalue">A relative index of the upvalue.</param>
         /// <param name="managed_offset">Use upvalue offset for managed closures</param>
