@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+
 
 namespace GmodNET.API
 {
     /// <summary>
-    /// Provides helper methods for Garry's Mod interop.
+    /// Provides helper methods for better interoperability with Garry's Mod.
     /// </summary>
     public static class GmodInterop
     {
         internal unsafe static delegate* managed<IntPtr, ILua> lua_extractor;
 
         /// <summary>
-        /// Extructs an instance of <see cref="ILua"/> implementation from a pointer to the Garry's Mod native lua_state structure.
+        /// Gets an instance of <see cref="ILua"/> implementation from a pointer to the Garry's Mod's native lua_state structure.
         /// </summary>
-        /// <param name="lua_state">A pointer to the Garry's Mod native lua_state structure.</param>
+        /// <param name="lua_state">A pointer to the Garry's Mod's native lua_state structure.</param>
         /// <returns>An implementation of <see cref="ILua"/> interface to work with given lua state.</returns>
+        /// <remarks>
+        /// This method is designed to be used with static functions annotated with <see cref="System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute"/> attribute.
+        /// See example for more info.
+        /// </remarks>
         public static ILua GetLuaFromState(IntPtr lua_state)
         {
             unsafe
