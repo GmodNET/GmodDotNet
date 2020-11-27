@@ -17,7 +17,7 @@ public class GameConsoleWriter : TextWriter
 
     public override void Write(string value)
     {
-        Msg(value);
+        Msg(new string(value));
     }
     public override void Write(char value)
     {
