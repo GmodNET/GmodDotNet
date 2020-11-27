@@ -43,7 +43,7 @@ namespace Tests
                 // StringBuilder
                 StringBuilder stringBuilder = new("☭");
                 stringBuilder.Append(" USSR ");
-                stringBuilder.Append("☭");
+                stringBuilder.Append('☭');
                 Console.Write(stringBuilder);
                 Console.WriteLine();
                 Console.Write((StringBuilder)null);
@@ -95,7 +95,7 @@ namespace Tests
                 // StringBuilder
                 StringBuilder stringBuilderNewLine = new("☭");
                 stringBuilderNewLine.Append(" USSR ");
-                stringBuilderNewLine.Append("☭");
+                stringBuilderNewLine.Append('☭');
                 Console.WriteLine(stringBuilderNewLine);
                 Console.WriteLine((StringBuilder)null);
                 // decimal
@@ -139,7 +139,7 @@ namespace Tests
                     // StringBuilder
                     StringBuilder stringBuilderNewLine = new("☭");
                     stringBuilderNewLine.Append(" USSR ");
-                    stringBuilderNewLine.Append("☭");
+                    stringBuilderNewLine.Append('☭');
                     Console.WriteLine(stringBuilderNewLine);
                     Console.WriteLine((StringBuilder)null);
                     // decimal
@@ -178,7 +178,7 @@ namespace Tests
                     // StringBuilder
                     StringBuilder stringBuilderNewLine = new("☭");
                     stringBuilderNewLine.Append(" USSR ");
-                    stringBuilderNewLine.Append("☭");
+                    stringBuilderNewLine.Append('☭');
                     await Console.Out.WriteLineAsync(stringBuilderNewLine);
                     await Console.Out.WriteLineAsync((StringBuilder)null);
                 });
