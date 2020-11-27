@@ -184,6 +184,15 @@ namespace Tests
                 });
                 asyncAwaitTask.Wait();
                 #endregion
+                #region 1000 characters
+                StringBuilder limitStringBuilder = new();
+                Random random = new(0);
+                for (uint i = 0; i < 1000; i++)
+                {
+                    limitStringBuilder.Append(random.Next(0, 10));
+                }
+                Console.WriteLine(limitStringBuilder);
+                #endregion
 
                 taskCompletion.TrySetResult(true);
             }
