@@ -41,9 +41,9 @@ namespace Tests
                 Console.Out.Write((ReadOnlySpan<char>)null);
                 Console.WriteLine();
                 // StringBuilder
-                StringBuilder stringBuilder = new("Str");
-                stringBuilder.Append("ing");
-                stringBuilder.Append("Builder");
+                StringBuilder stringBuilder = new("☭");
+                stringBuilder.Append(" USSR ");
+                stringBuilder.Append("☭");
                 Console.Write(stringBuilder);
                 Console.WriteLine();
                 Console.Write((StringBuilder)null);
@@ -93,9 +93,9 @@ namespace Tests
                 Console.Out.WriteLine(new ReadOnlySpan<char>(new char[] { 'R', 'e', 'a', 'd', 'O', 'n', 'l', 'y', 'S', 'p', 'a', 'n' }));
                 Console.Out.WriteLine((ReadOnlySpan<char>)null);
                 // StringBuilder
-                StringBuilder stringBuilderNewLine = new("Str");
-                stringBuilderNewLine.Append("ing");
-                stringBuilderNewLine.Append("Builder");
+                StringBuilder stringBuilderNewLine = new("☭");
+                stringBuilderNewLine.Append(" USSR ");
+                stringBuilderNewLine.Append("☭");
                 Console.WriteLine(stringBuilderNewLine);
                 Console.WriteLine((StringBuilder)null);
                 // decimal
@@ -137,9 +137,9 @@ namespace Tests
                     Console.Out.WriteLine(new ReadOnlySpan<char>(new char[] { 'R', 'e', 'a', 'd', 'O', 'n', 'l', 'y', 'S', 'p', 'a', 'n' }));
                     Console.Out.WriteLine((ReadOnlySpan<char>)null);
                     // StringBuilder
-                    StringBuilder stringBuilderNewLine = new("Str");
-                    stringBuilderNewLine.Append("ing");
-                    stringBuilderNewLine.Append("Builder");
+                    StringBuilder stringBuilderNewLine = new("☭");
+                    stringBuilderNewLine.Append(" USSR ");
+                    stringBuilderNewLine.Append("☭");
                     Console.WriteLine(stringBuilderNewLine);
                     Console.WriteLine((StringBuilder)null);
                     // decimal
@@ -176,9 +176,9 @@ namespace Tests
                     // char[] index length
                     await Console.Out.WriteLineAsync(new char[] { 'c', 'h', 'a', 'r', ' ', 'a', 'r', 'r', 'a', 'y' }, 0, 10);
                     // StringBuilder
-                    StringBuilder stringBuilderNewLine = new("Str");
-                    stringBuilderNewLine.Append("ing");
-                    stringBuilderNewLine.Append("Builder");
+                    StringBuilder stringBuilderNewLine = new("☭");
+                    stringBuilderNewLine.Append(" USSR ");
+                    stringBuilderNewLine.Append("☭");
                     await Console.Out.WriteLineAsync(stringBuilderNewLine);
                     await Console.Out.WriteLineAsync((StringBuilder)null);
                 });
