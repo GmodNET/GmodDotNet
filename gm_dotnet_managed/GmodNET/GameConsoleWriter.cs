@@ -19,7 +19,10 @@ namespace GmodNET
 
         public override void Write(string value)
         {
-            Msg(new string(value));
+            if (!String.IsNullOrEmpty(value))
+            {
+                Msg(value);
+            }
         }
         public override void Write(char value)
         {
@@ -31,25 +34,7 @@ namespace GmodNET
         }
         public override void Write(char[] buffer, int index, int count)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException(nameof(buffer));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count));
-            }
-            if (buffer.Length - index < count)
-            {
-                throw new ArgumentException();
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < count; i++) stringBuilder.Append(buffer[index + i]);
-            Write(stringBuilder.ToString());
+            Write(new string(buffer, index, count));
         }
         public override void Write(ReadOnlySpan<char> buffer)
         {
@@ -65,7 +50,13 @@ namespace GmodNET
         // \n begins here
         public override void WriteLine(string value)
         {
-            Write(new string(value) + NewLine);
+            if (!String.IsNullOrEmpty(value))
+            {
+                Write(value + NewLine);
+            }
+            else {
+                WriteLine();
+            }
         }
         public override void WriteLine(char value)
         {
@@ -77,26 +68,7 @@ namespace GmodNET
         }
         public override void WriteLine(char[] buffer, int index, int count)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException(nameof(buffer));
-            }
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
-            if (count < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count));
-            }
-            if (buffer.Length - index < count)
-            {
-                throw new ArgumentException();
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < count; i++) stringBuilder.Append(buffer[index + i]);
-            stringBuilder.Append(NewLine);
-            Write(stringBuilder.ToString());
+            Write(new string(buffer, index, count) + NewLine);
         }
         public override void WriteLine(ReadOnlySpan<char> buffer)
         {
