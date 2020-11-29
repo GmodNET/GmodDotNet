@@ -8,7 +8,7 @@ namespace GmodNET
     /// <summary>
     /// Redirects Console's output to game's console
     /// </summary>
-    public class GameConsoleWriter : TextWriter
+    internal class GameConsoleWriter : TextWriter
     {
         public override string NewLine => "\n";
         public override Encoding Encoding => Encoding.UTF8;
