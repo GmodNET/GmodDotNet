@@ -157,6 +157,8 @@ namespace GmodNET
 
                     ManagedFunctionMetaMethods.NativeDelegateExecutor = native_delegate_executor_ptr;
 
+                    Console.SetOut(new GameConsoleWriter());
+
                     FirstRun = false;
                 }
 
