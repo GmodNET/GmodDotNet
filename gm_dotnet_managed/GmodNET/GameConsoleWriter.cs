@@ -54,7 +54,8 @@ namespace GmodNET
             {
                 Write(value + NewLine);
             }
-            else {
+            else
+            {
                 WriteLine();
             }
         }
