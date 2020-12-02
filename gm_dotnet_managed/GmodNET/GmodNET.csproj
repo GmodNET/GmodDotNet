@@ -7,7 +7,7 @@
     <StartupObject>GmodNET.BuidReq</StartupObject>
     <Description>GmodNET managed module loader.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/GmodNET/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
 	  <Company>GmodNET</Company>
 	  <Product>$(Description)</Product>
