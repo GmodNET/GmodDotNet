@@ -381,7 +381,7 @@ namespace GmodNET.API
     }
 
     /// <summary>
-    /// Enumeration of indices for the Lua special tables. Designed to be used with <see cref="ILua.PushSpecial(SPECIAL_TABLES)"/>.
+    /// Enumeration of the indices for the Lua special tables. Designed to be used with <see cref="ILua.PushSpecial(SPECIAL_TABLES)"/>.
     /// 
     /// </summary>
     public enum SPECIAL_TABLES
