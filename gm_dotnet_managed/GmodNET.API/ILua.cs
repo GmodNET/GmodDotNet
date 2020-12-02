@@ -403,58 +403,274 @@ namespace GmodNET.API
     }
 
     /// <summary>
-    /// The indices of common Lua and Garry's Mod built-in types.
+    /// Enumeration of type ids of common Lua and Garry's Mod built-in types. 
+    /// Designed to be used with <see cref="ILua.GetTypeName(TYPES)"/> and <see cref="ILua.IsType(int, TYPES)"/>.
     /// </summary>
     public enum TYPES
     {
+        /// <summary>
+        /// NONE
+        /// </summary>
         NONE = -1,
+
+        /// <summary>
+        /// An id for Lua type NIL.
+        /// </summary>
         NIL,
+
+        /// <summary>
+        /// An id for Lua type BOOL.
+        /// </summary>
         BOOL,
+
+        /// <summary>
+        /// An id for Lua type LIGHTUSERDATA.
+        /// </summary>
         LIGHTUSERDATA,
+
+        /// <summary>
+        /// An id for Lua type NUMBER.
+        /// </summary>
         NUMBER,
+
+        /// <summary>
+        /// An id for Lua type STRING.
+        /// </summary>
         STRING,
+
+        /// <summary>
+        /// An id for Lua type TABLE.
+        /// </summary>
         TABLE,
+
+        /// <summary>
+        /// An id for Lua type FUNCTION.
+        /// </summary>
         FUNCTION,
+
+        /// <summary>
+        /// An id for Lua type USERDATA.
+        /// </summary>
         USERDATA,
+
+        /// <summary>
+        /// An id for Lua type THREAD.
+        /// </summary>
         THREAD,
 
         // GMod Types
+
+        /// <summary>
+        /// An id for Garry's Mod type ENTITY.
+        /// See https://wiki.facepunch.com/gmod/Entity.
+        /// </summary>
         ENTITY,
-        Vector, // GMOD: GO TODO - This was renamed... I'll probably forget to fix it before this ends up public
+
+        /// <summary>
+        /// An id for Garry's Mod type Vector.
+        /// See https://wiki.facepunch.com/gmod/Vector.
+        /// </summary>
+        Vector,
+
+        /// <summary>
+        /// An id for Garry's Mod type Angle.
+        /// See https://wiki.facepunch.com/gmod/Angle.
+        /// </summary>
         ANGLE,
+
+        /// <summary>
+        /// An id for Garry's Mod type PHYSOBJ.
+        /// See https://wiki.facepunch.com/gmod/PhysObj.
+        /// </summary>
         PHYSOBJ,
+
+        /// <summary>
+        /// An id for Garry's Mod type SAVE.
+        /// See https://wiki.facepunch.com/gmod/ISave.
+        /// </summary>
         SAVE,
+
+        /// <summary>
+        /// An id for Garry's Mod type RESTORE.
+        /// See https://wiki.facepunch.com/gmod/IRestore.
+        /// </summary>
         RESTORE,
+
+        /// <summary>
+        /// An id for Garry's Mod type DAMAGEINFO.
+        /// See https://wiki.facepunch.com/gmod/CTakeDamageInfo.
+        /// </summary>
         DAMAGEINFO,
+
+        /// <summary>
+        /// An id for Garry's Mod type EFFECTDATA.
+        /// See https://wiki.facepunch.com/gmod/CEffectData.
+        /// </summary>
         EFFECTDATA,
+
+        /// <summary>
+        /// An id for Garry's Mod type MOVEDATA.
+        /// See https://wiki.facepunch.com/gmod/CMoveData.
+        /// </summary>
         MOVEDATA,
+
+        /// <summary>
+        /// An id for Garry's Mod type RECIPIENTFILTER.
+        /// See https://wiki.facepunch.com/gmod/CRecipientFilter.
+        /// </summary>
         RECIPIENTFILTER,
+
+        /// <summary>
+        /// An id for Garry's Mod type USERCMD.
+        /// See https://wiki.facepunch.com/gmod/CUserCmd.
+        /// </summary>
         USERCMD,
+
+        /// <summary>
+        /// An id for Garry's Mod type SCRIPTEDVEHICLE.
+        /// See https://wiki.facepunch.com/gmod/Vehicle.
+        /// </summary>
         SCRIPTEDVEHICLE,
+
+        /// <summary>
+        /// An id for Garry's Mod type MATERIAL.
+        /// See https://wiki.facepunch.com/gmod/IMaterial.
+        /// </summary>
         MATERIAL,
+
+        /// <summary>
+        /// An id for Garry's Mod type PANEL.
+        /// See https://wiki.facepunch.com/gmod/Panel.
+        /// </summary>
         PANEL,
+
+        /// <summary>
+        /// An id for Garry's Mod type PARTICLE.
+        /// See https://wiki.facepunch.com/gmod/CLuaParticle.
+        /// </summary>
         PARTICLE,
+
+        /// <summary>
+        /// An id for Garry's Mod type PARTICLEEMITTER.
+        /// See https://wiki.facepunch.com/gmod/CLuaEmitter.
+        /// </summary>
         PARTICLEEMITTER,
+
+        /// <summary>
+        /// An id for Garry's Mod type TEXTURE.
+        /// See https://wiki.facepunch.com/gmod/ITexture.
+        /// </summary>
         TEXTURE,
+
+        /// <summary>
+        /// An id for Garry's Mod type USERMSG.
+        /// </summary>
         USERMSG,
+
+        /// <summary>
+        /// An id for Garry's Mod type CONVAR.
+        /// See https://wiki.facepunch.com/gmod/ConVar.
+        /// </summary>
         CONVAR,
+
+        /// <summary>
+        /// An id for Garry's Mod type IMESH.
+        /// See https://wiki.facepunch.com/gmod/IMesh.
+        /// </summary>
         IMESH,
+
+        /// <summary>
+        /// An id for Garry's Mod type MATRIX.
+        /// See https://wiki.facepunch.com/gmod/VMatrix.
+        /// </summary>
         MATRIX,
+
+        /// <summary>
+        /// An id for Garry's Mod type SOUND.
+        /// See https://wiki.facepunch.com/gmod/CSoundPatch.
+        /// </summary>
         SOUND,
+
+        /// <summary>
+        /// An id for Garry's Mod type PIXELVISHANDLE.
+        /// See https://wiki.facepunch.com/gmod/pixelvis_handle_t.
+        /// </summary>
         PIXELVISHANDLE,
+
+        /// <summary>
+        /// An id for Garry's Mod type DLIGHT.
+        /// See https://wiki.facepunch.com/gmod/Structures/DynamicLight.
+        /// </summary>
         DLIGHT,
+
+        /// <summary>
+        /// An id for Garry's Mod type VIDEO.
+        /// See https://wiki.facepunch.com/gmod/IVideoWriter.
+        /// </summary>
         VIDEO,
+
+        /// <summary>
+        /// An id for Garry's Mod type FILE.
+        /// See https://wiki.facepunch.com/gmod/file_class.
+        /// </summary>
         FILE,
+
+        /// <summary>
+        /// An id for Garry's Mod type LOCOMOTION.
+        /// See https://wiki.facepunch.com/gmod/CLuaLocomotion.
+        /// </summary>
         LOCOMOTION,
+
+        /// <summary>
+        /// An id for Garry's Mod type PATH.
+        /// See https://wiki.facepunch.com/gmod/PathFollower.
+        /// </summary>
         PATH,
+
+        /// <summary>
+        /// An id for Garry's Mod type NAVAREA.
+        /// See https://wiki.facepunch.com/gmod/CNavArea.
+        /// </summary>
         NAVAREA,
+
+        /// <summary>
+        /// An id for Garry's Mod type SOUNDHANDLE.
+        /// </summary>
         SOUNDHANDLE,
+
+        /// <summary>
+        /// An id for Garry's Mod type NAVLADDER.
+        /// See https://wiki.facepunch.com/gmod/CNavLadder.
+        /// </summary>
         NAVLADDER,
+
+        /// <summary>
+        /// An id for Garry's Mod type PARTICLESYSTEM.
+        /// See https://wiki.facepunch.com/gmod/CNewParticleEffect.
+        /// </summary>
         PARTICLESYSTEM,
+
+        /// <summary>
+        /// An id for Garry's Mod type PROJECTEDTEXTURE.
+        /// See https://wiki.facepunch.com/gmod/ProjectedTexture.
+        /// </summary>
         PROJECTEDTEXTURE,
+
+        /// <summary>
+        /// An id for Garry's Mod type PHYSCOLLIDE.
+        /// See https://wiki.facepunch.com/gmod/PhysCollide.
+        /// </summary>
         PHYSCOLLIDE,
+
+        /// <summary>
+        /// An id for Garry's Mod type SURFACEINFO.
+        /// See https://wiki.facepunch.com/gmod/SurfaceInfo.
+        /// </summary>
         SURFACEINFO,
 
+        /// <summary>
+        /// Presented for compatibility.
+        /// </summary>
         COUNT
     }
 }
