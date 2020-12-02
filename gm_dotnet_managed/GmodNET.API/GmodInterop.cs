@@ -38,7 +38,25 @@ namespace GmodNET.API
         /// </summary>
         /// <param name="upvalue">A relative index of the upvalue.</param>
         /// <param name="managed_offset">Use upvalue offset for managed closures</param>
-        /// <returns>A pseudo-index to access upvalue.</returns>
+        /// <returns>A pseudo-index to access an upvalue.</returns>
+        /// <remarks>
+        /// Upvalues of Lua function closures can be accessed from C-like APIs using local state’s pseudo-indices calculated as follows: 
+        /// the pseudo-index of the `n-th` upvalue is `-10002-n`. 
+        /// For example, the pseudo-index of the first upvalue is `-10003`, the pseudo-index of the second upvalue is `-10004`, etc.
+        /// 
+        /// 
+        /// If closure is created using <see cref="ILua.PushManagedClosure(Func{ILua, int}, byte)"/> 
+        /// then first upvalue is an integer representation of the <see cref="GCHandle"/> for the underlying managed delegate. 
+        /// Thus, to access actual upvalues we have to apply additional offset for managed closures, 
+        /// i.e.the pseudo-index of the n-th upvalue is equal to `-10003–n` (index of `n+1-th` upvalue in the native case). 
+        /// <paramref name="managed_offset"/> parameter is responsible for applying such managed offset.
+        /// 
+        /// 
+        /// See [official Lua documentation about upvalues](https://www.lua.org/pil/27.3.3.html) for more info.
+        /// </remarks>
+        /// <example>
+        /// See [an example](https://gist.github.com/GlebChili/1be0fd80bf6d6ea8cca50f6d9699f462) for usage help.
+        /// </example>
         public static int GetUpvalueIndex(byte upvalue, bool managed_offset = true)
         {
             if(managed_offset)
