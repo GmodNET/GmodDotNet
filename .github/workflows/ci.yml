@@ -49,7 +49,7 @@ jobs:
            cp lua/Tests/run_tests.lua gmod/garrysmod/lua/autorun
 
     - name: Run Garry's Mod
-      run: ./srcds_run_x64 -game garrysmod -systemtest +sv_hibernate_think 0 || true
+      run: ./srcds_run_x64 -game garrysmod -systemtest +sv_hibernate_think 1 || true
       working-directory: ./gmod/
       timeout-minutes: 5
 
@@ -151,7 +151,7 @@ jobs:
      - name: Run Garry's Mod
        shell: bash
        run: |
-            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 0'
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
             sleep 15
 
      - name: Print test log
