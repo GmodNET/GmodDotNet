@@ -20,6 +20,7 @@
 
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>Portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
