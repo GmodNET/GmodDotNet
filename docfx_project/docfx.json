@@ -51,6 +51,9 @@
     ],
     "dest": "_site",
     "globalMetadataFiles": [],
+    "globalMetadata": {
+      "_appLogoPath": "images/gmodnetlogo.png"
+    },
     "fileMetadataFiles": [],
     "template": [
       "default",
