@@ -175,8 +175,8 @@ namespace GmodNET
                     " | | |_ |     | . ` | |  __|      | |   \n"+
                     " | |__| |  _  | |\\  | | |____     | |   \n"+
                     "  \\_____| (_) |_| \\_| |______|    |_|   \n");
-                lua.MCall(1,0);
-                lua.Pop();
+                lua.MCall(1, 0);
+                lua.Pop(1);
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "print");
