@@ -169,6 +169,18 @@ namespace GmodNET
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "print");
+                lua.PushString(
+                    "   _____       _   _   ______   _______ \n"+
+                    "  / ____|     | \\ | | |  ____| |__   __|\n"+
+                    " | |  __      |  \\| | | |__       | |   \n"+
+                    " | | |_ |     | . ` | |  __|      | |   \n"+
+                    " | |__| |  _  | |\\  | | |____     | |   \n"+
+                    "  \\_____| (_) |_| \\_| |______|    |_|   \n");
+                lua.MCall(1, 0);
+                lua.Pop(1);
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "print");
                 lua.PushString("GmodNET by Gleb Krasilich and GmodNET team. Version " + friendly_version + " codename " + version_codename);
                 lua.MCall(1, 0);
                 lua.Pop(1);
