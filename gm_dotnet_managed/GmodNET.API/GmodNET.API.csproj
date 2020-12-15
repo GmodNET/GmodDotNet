@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	<VersionFilePath>../../version.json</VersionFilePath>
+	  <VersionFilePath>../../version.json</VersionFilePath>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Product>GmodNET API</Product>
     <Description>GmodNET API library contains all necessary interfaces to write a GmodNET module.</Description>
@@ -24,6 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>
     <DocumentationFile>bin\Release\netcoreapp3.1\GmodNET.API.xml</DocumentationFile>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
 	<ItemGroup>
