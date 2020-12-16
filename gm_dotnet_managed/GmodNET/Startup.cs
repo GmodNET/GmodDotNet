@@ -36,7 +36,8 @@ namespace GmodNET
 
                 if (native_version != full_assembly_version)
                 {
-                    throw new Exception("GmodNET version does not match with the version of dotnet_loader.");
+                    throw new Exception($"GmodNET version does not match with the version of dotnet_loader. Managed version: {full_assembly_version}; " +
+                        $"Native version: {native_version}");
                 }
 
                 if (FirstRun)
