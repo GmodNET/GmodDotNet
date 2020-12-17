@@ -65,11 +65,42 @@ namespace GmodNET.API
         public void GetField(int iStackPos, in string key);
 
         /// <summary>
-        /// Sets table[key] to the value on the top of the stack. Pops value from the stack.
+        /// Sets table[key] to the element on the top of the stack. Pops the original element from the stack.
         /// </summary>
-        /// <param name="iStackPos">Position of the table on the stack</param>
-        /// <param name="key">Key in the table</param>
+        /// <param name="iStackPos">Position of the table on the stack.</param>
+        /// <param name="key">Key in the table to set value for.</param>
+        /// <remarks>
+        /// This method can be used to fill Lua tables with values or update them. 
+        /// In the example below we will add a Lua funtion `SayHello` to the Lua global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>.
+        /// This function then can be called from any Lua as `SayHello()`.
+        /// 
+        /// See `lua_setfield` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// public int LuaFunc(ILua lua)
+        /// {
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.PushManagedFunction(lua =>
+        ///     {
+        ///         lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///         lua.GetField(-1, "print");
+        ///         lua.PushString("Hello!");
+        ///         lua.MCall(1, 0);
+        ///         lua.Pop(1);
+        /// 
+        ///         return 0;
+        ///     });
+        ///     lua.SetField(-2, "SayHello");
+        ///     lua.Pop(1); // As you can see we pop only one value from the stack (remaining global table) since the function itself was poped by SetField already
+        /// 
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
+        /// <seealso cref="ILua.GetField(int, in string)"/>
         public void SetField(int iStackPos, in string key);
+
         /// <summary>
         /// Creates a new table and pushes it to the top of the stack.
         /// </summary>
