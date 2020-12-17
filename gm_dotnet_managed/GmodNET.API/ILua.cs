@@ -121,11 +121,17 @@ namespace GmodNET.API
         public void SetMetaTable(int iStackPos);
 
         /// <summary>
-        /// Pushes the metatable of the value at iStackPos on to the top of the stack. Upon failure, returns false and does not push anything.
+        /// Pushes the metatable of the element at <paramref name="iStackPos"/> to the top of the stack. Upon failure, returns false and does not push anything.
         /// </summary>
-        /// <param name="iStackPos">Position of the object to get metatable from</param>
-        /// <returns>Success indicator</returns>
+        /// <param name="iStackPos">Stack position of the element to get metatable for.</param>
+        /// <returns><c>True</c> if metatable was pushed to the stack, <c>False</c> otherwise.</returns>
+        /// <remarks>
+        /// See `lua_getmetatable` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// To learn more about Lua metatables see https://www.lua.org/pil/13.html
+        /// </remarks>
+        /// <seealso cref="ILua.SetMetaTable(int)"/>
         public bool GetMetaTable(int iStackPos);
+
         /// <summary>
         /// Calls a function. To use it: Push the function on to the stack followed by each argument. 
         /// Pops the function and arguments from the stack, leaves iResults values on the stack.
