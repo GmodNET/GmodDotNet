@@ -36,11 +36,32 @@ namespace GmodNET.API
         public void Pop(int IAmt = 1);
 
         /// <summary>
-        /// Pushes table[key] on to the stack.
+        /// Pushes table[key] onto the stack.
         /// </summary>
-        /// <param name="iStackPos">Position of the table on the stack</param>
-        /// <param name="key">Key in the table</param>
+        /// <param name="iStackPos">Position of the table on the stack.</param>
+        /// <param name="key">Key for the value in the table.</param>
+        /// <remarks>
+        /// You can use this function to get values from Lua tables. 
+        /// In the example below we get a global Garry's Mod Lua function `print` (https://wiki.facepunch.com/gmod/Global.print) 
+        /// from the global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/> to print a message to the game console.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// public int LuaFunc(ILua lua)
+        /// {
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.GetField(-1, "print");
+        ///     lua.PushString("Hello");
+        ///     lua.MCall(1, 0);
+        ///     lua.Pop(1);
+        ///     
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
+        /// <seealso cref="ILua.SetField(int, in string)"/>
         public void GetField(int iStackPos, in string key);
+
         /// <summary>
         /// Sets table[key] to the value at the top of the stack. Pops value from the stack.
         /// </summary>
