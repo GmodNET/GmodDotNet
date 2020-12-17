@@ -104,7 +104,11 @@ namespace GmodNET.API
         /// <summary>
         /// Creates a new table and pushes it to the top of the stack.
         /// </summary>
+        /// <remarks>
+        /// See `lua_createtable` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
         public void CreateTable();
+
         /// <summary>
         /// Sets the metatable for the value at iStackPos to the value at the top of the stack. Pops the value off of the top of the stack.
         /// </summary>
