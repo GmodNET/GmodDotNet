@@ -44,6 +44,8 @@ namespace GmodNET.API
         /// You can use this function to get values from Lua tables. 
         /// In the example below we get a global Garry's Mod Lua function `print` (https://wiki.facepunch.com/gmod/Global.print) 
         /// from the global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/> to print a message to the game console.
+        /// 
+        /// See `lua_getfield` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         /// <example>
         /// <code>
@@ -63,7 +65,7 @@ namespace GmodNET.API
         public void GetField(int iStackPos, in string key);
 
         /// <summary>
-        /// Sets table[key] to the value at the top of the stack. Pops value from the stack.
+        /// Sets table[key] to the value on the top of the stack. Pops value from the stack.
         /// </summary>
         /// <param name="iStackPos">Position of the table on the stack</param>
         /// <param name="key">Key in the table</param>
