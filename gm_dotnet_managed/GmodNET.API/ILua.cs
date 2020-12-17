@@ -110,10 +110,16 @@ namespace GmodNET.API
         public void CreateTable();
 
         /// <summary>
-        /// Sets the metatable for the value at iStackPos to the value at the top of the stack. Pops the value off of the top of the stack.
+        /// Sets the metatable for the element at <paramref name="iStackPos"/> to the table on the top of the stack. Pops the table from the top of the stack.
         /// </summary>
-        /// <param name="iStackPos">Position of object ot set metatable to</param>
+        /// <param name="iStackPos">Stack position of the element to set metatable for.</param>
+        /// <remarks>
+        /// See `lua_setmetatable` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// To learn more about Lua metatables see https://www.lua.org/pil/13.html
+        /// </remarks>
+        /// <seealso cref="ILua.GetMetaTable(int)"/>
         public void SetMetaTable(int iStackPos);
+
         /// <summary>
         /// Pushes the metatable of the value at iStackPos on to the top of the stack. Upon failure, returns false and does not push anything.
         /// </summary>
