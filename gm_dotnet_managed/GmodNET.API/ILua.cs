@@ -7,25 +7,34 @@ using System.Runtime.InteropServices;
 namespace GmodNET.API
 {
     /// <summary>
-    /// Managed wrapper around Garry's Mod native ILuaBase.
+    /// A .NET interface to represent Garry's Mod Lua engine.
     /// </summary>
     public interface ILua
     {
         /// <summary>
-        /// Returns the amount of values on the stack.
+        /// Returns the number of elements in the current lua stack.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of elements in the current lua stack.</returns>
+        /// <remarks>
+        /// See `lua_gettop` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
         public int Top();
+
         /// <summary>
-        /// Pushes a copy of the value at iStackPos to the top of the stack.
+        /// Pushes a copy of the element at iStackPos to the top of the stack.
         /// </summary>
-        /// <param name="iStackPos">Position of the value on the stack</param>
+        /// <param name="iStackPos">Position of the element on the stack.</param>
         public void Push(int iStackPos);
+
         /// <summary>
-        /// Pops iAmt values from the top of the stack.
+        /// Pops iAmt elements from the top of the stack.
         /// </summary>
-        /// <param name="IAmt">Amount of values to pop</param>
+        /// <param name="IAmt">Number of elements to pop from the stack.</param>
+        /// <remarks>
+        /// See `lua_pop` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
         public void Pop(int IAmt = 1);
+
         /// <summary>
         /// Pushes table[key] on to the stack.
         /// </summary>
