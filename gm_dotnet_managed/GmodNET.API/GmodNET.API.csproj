@@ -2,30 +2,36 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	<VersionFilePath>../../version.json</VersionFilePath>
+	  <VersionFilePath>../../version.json</VersionFilePath>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Product>GmodNET API</Product>
     <Description>GmodNET API library contains all necessary interfaces to write a GmodNET module.</Description>
-    <RepositoryUrl>https://github.com/GlebChili/GmodDotNet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/GmodNET/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>garrysmod; GmodNET</PackageTags>
     <PackageProjectUrl>https://github.com/GlebChili/GmodDotNet</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
-	<Company>GmodNET</Company>
-	<Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
-	<Product>$(Description)</Product>
+	  <Company>GmodNET</Company>
+	  <Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
+	  <Product>$(Description)</Product>
+    
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType></DebugType>
+    <DebugType>Portable</DebugType>
     <DocumentationFile>bin\Release\netcoreapp3.1\GmodNET.API.xml</DocumentationFile>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="GmodNET.VersionTool.Target" Version="0.2.0-alpha.1.22426226.dev">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
     <InternalsVisibleTo Include="GmodNET" />
 	</ItemGroup>
 

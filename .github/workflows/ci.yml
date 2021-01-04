@@ -154,8 +154,13 @@ jobs:
      - name: Run Garry's Mod
        shell: bash
        run: |
+<<<<<<< HEAD
             powershell -Command './gmod/srcds_win64.exe -console -systemtest -condebug -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
             sleep 15
+=======
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
+            powershell -Command 'Wait-Process -Name srcds_win64'
+>>>>>>> sup43_ci_windows_powershell_wait
 
      - name: Print test log
        shell: bash

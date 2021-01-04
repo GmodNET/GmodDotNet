@@ -36,7 +36,8 @@ namespace GmodNET
 
                 if (native_version != full_assembly_version)
                 {
-                    throw new Exception("GmodNET version does not match with the version of dotnet_loader.");
+                    throw new Exception($"GmodNET version does not match with the version of dotnet_loader. Managed version: {full_assembly_version}; " +
+                        $"Native version: {native_version}");
                 }
 
                 if (FirstRun)
@@ -165,6 +166,18 @@ namespace GmodNET
                 *managed_delegate_executor_ptr = (IntPtr)(delegate* unmanaged<IntPtr, int>)&ManagedFunctionMetaMethods.ManagedDelegateExecutor;
 
                 ILua lua = new Lua(lua_base);
+
+                lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+                lua.GetField(-1, "print");
+                lua.PushString(
+                    "   _____       _   _   ______   _______ \n"+
+                    "  / ____|     | \\ | | |  ____| |__   __|\n"+
+                    " | |  __      |  \\| | | |__       | |   \n"+
+                    " | | |_ |     | . ` | |  __|      | |   \n"+
+                    " | |__| |  _  | |\\  | | |____     | |   \n"+
+                    "  \\_____| (_) |_| \\_| |______|    |_|   \n");
+                lua.MCall(1, 0);
+                lua.Pop(1);
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "print");
