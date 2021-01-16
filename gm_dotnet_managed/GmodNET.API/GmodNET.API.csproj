@@ -28,7 +28,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GmodNET.VersionTool.Target" Version="0.2.0-alpha.1.22426226.dev">
+		<PackageReference Include="GmodNET.VersionTool.Target" Version="1.0.1">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
