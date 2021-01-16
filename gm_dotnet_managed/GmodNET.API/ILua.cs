@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace GmodNET.API
 {
     /// <summary>
-    /// A .NET interface to represent Garry's Mod Lua engine.
+    /// A .NET interface to interact with Garry's Mod Lua engine.
     /// </summary>
     public interface ILua
     {
