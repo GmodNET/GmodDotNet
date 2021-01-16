@@ -133,14 +133,41 @@ namespace GmodNET.API
         public bool GetMetaTable(int iStackPos);
 
         /// <summary>
-        /// Calls a function. To use it: Push the function on to the stack followed by each argument. 
-        /// Pops the function and arguments from the stack, leaves iResults values on the stack.
-        /// This method is obsolete and unsafe. Use ILua.MCall or ILua.PCall instead.
+        /// Calls a function (or any other callable object) followed by its arguments from the stack. 
+        /// Pops the function and arguments and push function’s return values onto the stack. 
+        /// WARNING: this method is unsafe and should not be used in the most cases. 
+        /// Use <see cref="ILua.MCall(int, int)"/> and <see cref="ILua.PCall(int, int, int)"/> instead.
         /// </summary>
-        /// <param name="iArgs">Number of arguments of the function</param>
-        /// <param name="iResults">Number of return values of the function</param>
-        [Obsolete("This method is obsolete, unsafe and may be removed in a future. Use ILua.MCall or ILua.PCall instead.", false)]
+        /// <param name="iArgs">Number of arguments to pass to the function.</param>
+        /// <param name="iResults">Number of the function’s return values to push back onto the stack.</param>
+        /// <remarks>
+        /// <see cref="ILua.Call(int, int)"/> is the most basic and unsafe way to call a Lua function. 
+        /// Unlike <see cref="ILua.MCall(int, int)"/> and <see cref="ILua.PCall(int, int, int)"/>, 
+        /// <see cref="ILua.Call(int, int)"/> does not catch any errors or exceptions thrown by a callee. 
+        /// Thus, any thrown error can cause a complete termination of the game or server process, especially on Linux and macOS platforms.
+        /// 
+        /// See <c>lua_call</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <seealso cref="ILua.MCall(int, int)"/>
+        /// <seealso cref="ILua.PCall(int, int, int)"/>
+        /// <example>
+        /// The following example function prints a message to the game console by calling Garry’s Mod native function <c>print</c> with <see cref="ILua.Call(int, int)"/>.
+        /// <code>
+        /// static int HelloWorld(ILua lua)
+        /// {
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.GetField(-1, "print"); // Push Lua function to the stack
+        ///     lua.PushString("Hello World!"); // Push an argument for print function
+        ///     lua.Call(1, 0); // Call print function with one argument and zero return values
+        ///     lua.Pop(1); // ILua.Call has poped function and string from the stack, so there is only global table left
+        /// 
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
+        [Obsolete("This method is unsafe. Use ILua.MCall or ILua.PCall instead.", false)]
         public void Call(int iArgs, int iResults);
+
         /// <summary>
         /// Similar to Call. Calls a function in protected mode. Both nargs and nresults have the same meaning as in lua_call.
         /// If there are no errors during the call, lua_pcall behaves exactly like lua_call.
