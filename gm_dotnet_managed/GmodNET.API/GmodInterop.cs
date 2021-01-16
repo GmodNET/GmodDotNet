@@ -23,7 +23,7 @@ namespace GmodNET.API
         /// <returns>An implementation of <see cref="ILua"/> interface to work with given lua state.</returns>
         /// <remarks>
         /// This method is designed to be used with static functions annotated with <see cref="System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute"/> attribute.
-        /// See [example](https://gist.github.com/GlebChili/444d8cb1d641d62f94495e546f681b89) for more info.
+        /// See example (https://gist.github.com/GlebChili/444d8cb1d641d62f94495e546f681b89) for more info.
         /// </remarks>
         public static ILua GetLuaFromState(IntPtr lua_state)
         {
@@ -41,21 +41,21 @@ namespace GmodNET.API
         /// <returns>A pseudo-index to access an upvalue.</returns>
         /// <remarks>
         /// Upvalues of Lua function closures can be accessed from C-like APIs using local state’s pseudo-indices calculated as follows: 
-        /// the pseudo-index of the `n-th` upvalue is `-10002-n`. 
-        /// For example, the pseudo-index of the first upvalue is `-10003`, the pseudo-index of the second upvalue is `-10004`, etc.
+        /// the pseudo-index of the <c>n-th</c> upvalue is <c>-10002-n</c>. 
+        /// For example, the pseudo-index of the first upvalue is <c>-10003</c>, the pseudo-index of the second upvalue is <c>-10004</c>, etc.
         /// 
         /// 
         /// If closure is created using <see cref="ILua.PushManagedClosure(Func{ILua, int}, byte)"/> 
         /// then first upvalue is an integer representation of the <see cref="GCHandle"/> for the underlying managed delegate. 
         /// Thus, to access actual upvalues we have to apply additional offset for managed closures, 
-        /// i.e.the pseudo-index of the n-th upvalue is equal to `-10003–n` (index of `n+1-th` upvalue in the native case). 
+        /// i.e.the pseudo-index of the n-th upvalue is equal to <c>-10003–n</c> (index of <c>n+1-th</c> upvalue in the native case). 
         /// <paramref name="managed_offset"/> parameter is responsible for applying such managed offset.
         /// 
         /// 
-        /// See [official Lua documentation about upvalues](https://www.lua.org/pil/27.3.3.html) for more info.
+        /// See an official Lua documentation about upvalues (https://www.lua.org/pil/27.3.3.html) for more info.
         /// </remarks>
         /// <example>
-        /// See [an example](https://gist.github.com/GlebChili/1be0fd80bf6d6ea8cca50f6d9699f462) for usage help.
+        /// See an example (https://gist.github.com/GlebChili/1be0fd80bf6d6ea8cca50f6d9699f462) for usage help.
         /// </example>
         public static int GetUpvalueIndex(byte upvalue, bool managed_offset = true)
         {
