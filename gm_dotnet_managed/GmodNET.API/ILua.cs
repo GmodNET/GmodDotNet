@@ -16,7 +16,7 @@ namespace GmodNET.API
         /// </summary>
         /// <returns>The number of elements in the current lua stack.</returns>
         /// <remarks>
-        /// See `lua_gettop` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_gettop</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         public int Top();
 
