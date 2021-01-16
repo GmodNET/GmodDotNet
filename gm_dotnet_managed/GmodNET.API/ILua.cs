@@ -31,7 +31,7 @@ namespace GmodNET.API
         /// </summary>
         /// <param name="IAmt">Number of elements to pop from the stack.</param>
         /// <remarks>
-        /// See `lua_pop` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_pop</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         public void Pop(int IAmt = 1);
 
@@ -42,10 +42,10 @@ namespace GmodNET.API
         /// <param name="key">Key for the value in the table.</param>
         /// <remarks>
         /// You can use this function to get values from Lua tables. 
-        /// In the example below we get a global Garry's Mod Lua function `print` (https://wiki.facepunch.com/gmod/Global.print) 
+        /// In the example below we get a global Garry's Mod Lua function <c>print</c> (https://wiki.facepunch.com/gmod/Global.print) 
         /// from the global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/> to print a message to the game console.
         /// 
-        /// See `lua_getfield` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_getfield</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         /// <example>
         /// <code>
@@ -71,10 +71,10 @@ namespace GmodNET.API
         /// <param name="key">Key in the table to set value for.</param>
         /// <remarks>
         /// This method can be used to fill Lua tables with values or update them. 
-        /// In the example below we will add a Lua funtion `SayHello` to the Lua global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>.
-        /// This function then can be called from any Lua as `SayHello()`.
+        /// In the example below we will add a Lua funtion <c>SayHello</c> to the Lua global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>.
+        /// This function then can be called from any Lua as <c>SayHello()</c>.
         /// 
-        /// See `lua_setfield` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_setfield</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         /// <example>
         /// <code>
@@ -105,7 +105,7 @@ namespace GmodNET.API
         /// Creates a new table and pushes it to the top of the stack.
         /// </summary>
         /// <remarks>
-        /// See `lua_createtable` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_createtable</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         public void CreateTable();
 
@@ -114,7 +114,7 @@ namespace GmodNET.API
         /// </summary>
         /// <param name="iStackPos">Stack position of the element to set metatable for.</param>
         /// <remarks>
-        /// See `lua_setmetatable` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_setmetatable</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// To learn more about Lua metatables see https://www.lua.org/pil/13.html
         /// </remarks>
         /// <seealso cref="ILua.GetMetaTable(int)"/>
@@ -126,7 +126,7 @@ namespace GmodNET.API
         /// <param name="iStackPos">Stack position of the element to get metatable for.</param>
         /// <returns><c>True</c> if metatable was pushed to the stack, <c>False</c> otherwise.</returns>
         /// <remarks>
-        /// See `lua_getmetatable` function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// See <c>lua_getmetatable</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// To learn more about Lua metatables see https://www.lua.org/pil/13.html
         /// </remarks>
         /// <seealso cref="ILua.SetMetaTable(int)"/>
