@@ -488,22 +488,21 @@ namespace GmodNET.API
 
     /// <summary>
     /// Enumeration of the indices for the Lua special tables. Designed to be used with <see cref="ILua.PushSpecial(SPECIAL_TABLES)"/>.
-    /// 
     /// </summary>
     public enum SPECIAL_TABLES
     {
         /// <summary>
         /// Lua Global table. Can be used to access Garry's Mod Lua API. 
-        /// For more information see [an official Lua documentation on usage of the Global Table](https://www.lua.org/pil/15.4.html).
+        /// For more information see an official Lua documentation on usage of the Global Table (https://www.lua.org/pil/15.4.html).
         /// </summary>
         SPECIAL_GLOB,
         /// <summary>
         /// Lua Environment table.
-        /// For more information see [an official Lua documentation on The Environment](https://www.lua.org/pil/14.html).
+        /// For more information see an official Lua documentation on The Environment (https://www.lua.org/pil/14.html).
         /// </summary>
         SPECIAL_ENV,
         /// <summary>
-        /// Lua Registry table. For more information see [an official Lua documentation on The Registry](https://www.lua.org/pil/27.3.1.html).
+        /// Lua Registry table. For more information see an official Lua documentation on The Registry (https://www.lua.org/pil/27.3.1.html).
         /// </summary>
         SPECIAL_REG
     }
