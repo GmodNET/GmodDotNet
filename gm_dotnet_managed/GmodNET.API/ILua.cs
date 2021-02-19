@@ -226,10 +226,17 @@ namespace GmodNET.API
         public bool RawEqual(int iA, int iB);
 
         /// <summary>
-        /// Moves the value at the top of the stack in to iStackPos. Any elements above iStackPos are shifted upwards.
+        /// Moves an element at the top of the stack to the index passed as <paramref name="iStackPos"/> parameter.
+        /// Any elements above (with greater positive index) <paramref name="iStackPos"/> are shifted upwards.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
+        /// <remarks>
+        /// Cannot be called with a pseudo-index, because a pseudo-index is not an actual stack position.
+        /// 
+        /// See <c>lua_insert</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">An index to insert an element from the top of the stack into.</param>
         public void Insert(int iStackPos);
+
         /// <summary>
         /// Removes the value at iStackPos from the stack. Any elements above iStackPos are shifted downwards.
         /// </summary>
