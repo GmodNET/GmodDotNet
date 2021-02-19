@@ -210,12 +210,21 @@ namespace GmodNET.API
         public bool Equal(int iA, int iB);
 
         /// <summary>
-        /// Returns true if the value at iA and iB are equal. Does not invoke metamethods.
+        /// Checks if two objects on the stack are equal. Does not invoke metamethods.
         /// </summary>
-        /// <param name="iA">Position of the first value to compare</param>
-        /// <param name="iB">Position of the second value</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Unlike <see cref="ILua.Equal(int, int)"/>, performs a “raw” comparison of two objects and does not relies on objects’ metamethods. 
+        /// In particular, the method will return <c>True</c> for two tables if and only if they contain same key-value pairs, 
+        /// any custom <c>__eq</c> metamethod will be ignored.
+        /// 
+        /// See <c>lua_rawequal</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iA">Stack index of the first object to compare.</param>
+        /// <param name="iB">Stack index of the second object to compare.</param>
+        /// <returns><c>True</c> if objects being compared are equal, <c>False</c> otherwise.</returns>
+        /// <seealso cref="ILua.Equal(int, int)"/>
         public bool RawEqual(int iA, int iB);
+
         /// <summary>
         /// Moves the value at the top of the stack in to iStackPos. Any elements above iStackPos are shifted upwards.
         /// </summary>
