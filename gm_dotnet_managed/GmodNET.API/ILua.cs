@@ -238,10 +238,17 @@ namespace GmodNET.API
         public void Insert(int iStackPos);
 
         /// <summary>
-        /// Removes the value at iStackPos from the stack. Any elements above iStackPos are shifted downwards.
+        /// Removes an object at <paramref name="iStackPos"/> index from the stack.
+        /// Any elements above (with greater positive index) <paramref name="iStackPos"/> are shifted downwards.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
+        /// <remarks>
+        /// Cannot be called with a pseudo-index, because a pseudo-index is not an actual stack position.
+        /// 
+        /// See <c>lua_remove</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">Stack position of the object to remove.</param>
         public void Remove(int iStackPos);
+
         /// <summary>
         /// Allows you to iterate tables similar to pairs(...). 
         /// Pops a key from the stack, and pushes a key-value pair from the table at the given index (the "next" pair after the given key).
