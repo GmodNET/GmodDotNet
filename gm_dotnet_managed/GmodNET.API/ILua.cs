@@ -192,12 +192,23 @@ namespace GmodNET.API
         public int PCall(int IArgs, int IResults, int ErrorFunc);
 
         /// <summary>
-        /// Returns true if the values at iA and iB are equal.
+        /// Checks if two objects on the stack are equal. Invokes types’ metamethods if applicable.
         /// </summary>
-        /// <param name="iA">Position of the first value to compare</param>
-        /// <param name="iB">Position of the second value</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// <see cref="ILua.Equal(int, int)"/> follows semantics of Lua <c>==</c> operator.
+        /// In particular, if two objects being compered have the same type with <c>__eq</c> metamethod defined, 
+        /// then such metamethod will be implicitly invoked to determine equality.
+        /// 
+        /// See <c>lua_equal</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// 
+        /// See "Relational Metamethods" for more information about equality and <c>__eq</c> metamethod: https://www.lua.org/pil/13.2.html
+        /// </remarks>
+        /// <param name="iA">Stack index of the first object to compare.</param>
+        /// <param name="iB">Stack index of the second object to compare.</param>
+        /// <returns><c>True</c> if objects being compared are equal, <c>False</c> otherwise.</returns>
+        /// <seealso cref="ILua.RawEqual(int, int)"/>
         public bool Equal(int iA, int iB);
+
         /// <summary>
         /// Returns true if the value at iA and iB are equal. Does not invoke metamethods.
         /// </summary>
