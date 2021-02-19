@@ -169,20 +169,28 @@ namespace GmodNET.API
         public void Call(int iArgs, int iResults);
 
         /// <summary>
-        /// Similar to Call. Calls a function in protected mode. Both nargs and nresults have the same meaning as in lua_call.
-        /// If there are no errors during the call, lua_pcall behaves exactly like lua_call.
-        /// However, if there is any error, lua_pcall catches it, pushes a single value on the stack (the error message), and returns an error code.
-        /// Like lua_call, lua_pcall always removes the function and its arguments from the stack.
-        /// If errfunc is 0, then the error message returned on the stack is exactly the original error message.
-        /// Otherwise, errfunc is the stack index of an error handler function.
-        /// (In the current implementation, this index cannot be a pseudo-index.)
-        /// In case of runtime errors, this function will be called with the error message and its return value will be the message returned on the stack by lua_pcall.
+        /// Calls a function (or any other callable object) followed by its arguments from the stack in the protected mode (will catch any exception).
+        /// Pops the function and arguments from the stack.
         /// </summary>
-        /// <param name="IArgs">Number of arguments of the function</param>
-        /// <param name="IResults">Number of return values of the function</param>
-        /// <param name="ErrorFunc">The stack index of an error handler function</param>
-        /// <returns>0 in case of success or one of the error codes (defined by lua engine)</returns>
+        /// <remarks>
+        /// If execution is successful, pushes function’s return values back to the stack.
+        /// Otherwise, if exception was thrown while function call, pushes error message to the stack and returns exception’s code.
+        /// If <paramref name="ErrorFunc"/> is 0, then the error message returned on the stack is exactly the original error message.
+        /// Otherwise, <paramref name="ErrorFunc"/> is the stack index of an error handler function (must be a real index, pseudo-indexes are not supported).
+        /// In case of runtime errors, 
+        /// this handler function will be called with the error message and its return 
+        /// value will be the message returned on the stack by <see cref="ILua.PCall(int, int, int)"/>.
+        /// 
+        /// See <c>lua_pcall</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="IArgs">Number of arguments to pass to the function.</param>
+        /// <param name="IResults">Number of the function’s return values to push back onto the stack.</param>
+        /// <param name="ErrorFunc">The stack index of an error handler function.</param>
+        /// <returns><c>0</c> in case of success or one of the error codes (defined by Lua specification).</returns>
+        /// <seealso cref="ILua.MCall(int, int)"/>
+        /// <seealso cref="ILua.Call(int, int)"/>
         public int PCall(int IArgs, int IResults, int ErrorFunc);
+
         /// <summary>
         /// Returns true if the values at iA and iB are equal.
         /// </summary>
