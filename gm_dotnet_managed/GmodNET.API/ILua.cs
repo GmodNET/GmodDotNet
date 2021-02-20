@@ -341,11 +341,19 @@ namespace GmodNET.API
         public bool GetBool(int iStackPos);
 
         /// <summary>
-        /// Returns the C-Function at iStackPos (native pointer). Returns NULL upon failure.
+        /// Returns a C Function pointer (as <see cref="IntPtr"/>) from the <paramref name="iStackPos"/>.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// If the operation fails or the object at <paramref name="iStackPos"/> is not a C Function, then <see cref="IntPtr.Zero"/> will be returned.
+        /// 
+        /// See <c>lua_tocfunction</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// 
+        /// See “C Functions” for more info on C functions in Lua: https://www.lua.org/pil/26.1.html
+        /// </remarks>
+        /// <param name="iStackPos">The stack position of the C Function.</param>
+        /// <returns>C Function pointer from the stack.</returns>
         public IntPtr GetCFunction(int iStackPos);
+
         /// <summary>
         /// Pushes a nil value on to the stack
         /// </summary>
