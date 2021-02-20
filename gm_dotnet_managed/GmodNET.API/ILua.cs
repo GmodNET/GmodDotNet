@@ -313,11 +313,18 @@ namespace GmodNET.API
         public string GetString(int iStackPos);
 
         /// <summary>
-        /// Returns the number at iStackPos. Returns 0 upon failure.
+        /// Returns the number at <paramref name="iStackPos"/>.
+        /// If the value at <paramref name="iStackPos"/> is not a number, then the Lua engine will try to convert the object to number.
         /// </summary>
-        /// <param name="iStackPos">Position of number of the stack</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Returns <c>0.0</c> upon failure.
+        /// 
+        /// See <c>lua_tonumber</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">The stack position of the object to get as number.</param>
+        /// <returns>The number from the stack. <c>0.0</c> upon failure.</returns>
         public double GetNumber(int iStackPos);
+
         /// <summary>
         /// Returns the boolean at iStackPos (as int). Returns false upon failure.
         /// </summary>
