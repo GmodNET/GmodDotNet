@@ -418,11 +418,21 @@ namespace GmodNET.API
         public unsafe void PushCFunction(delegate* unmanaged[Cdecl]<IntPtr, int> function_pointer);
 
         /// <summary>
-        /// Pushes the given C-Function on to the stack with upvalues.
+        /// Pushes a given C Function pointer (as <see cref="IntPtr"/>) onto the stack, 
+        /// associates it with <paramref name="iVars"/> objects on top of the stack (such objects are called upvalues), 
+        /// and creates a Lua function closure.
         /// </summary>
-        /// <param name="native_func_ptr"></param>
-        /// <param name="iVars"></param>
+        /// <remarks>
+        /// Pops upvalues from the stack.
+        /// 
+        /// See “Upvalues” for more information about Lua closures: https://www.lua.org/pil/27.3.3.html
+        /// 
+        /// See <c>lua_pushcclosure</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="native_func_ptr">A C function pointer to push onto the stack and create closure from.</param>
+        /// <param name="iVars">A number of objects on top of the stack to associate with the closure as upvalues.</param>
         public void PushCClosure(IntPtr native_func_ptr, int iVars);
+
         /// <summary>
         /// Allows for values to be stored by reference for later use. Make sure you call ReferenceFree when you are done with a reference. 
         /// Pops the value to reference from the stack.
