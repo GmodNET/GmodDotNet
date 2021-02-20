@@ -355,9 +355,13 @@ namespace GmodNET.API
         public IntPtr GetCFunction(int iStackPos);
 
         /// <summary>
-        /// Pushes a nil value on to the stack
+        /// Pushes a <c>nil</c> value onto the stack.
         /// </summary>
+        /// <remarks>
+        /// See <c>lua_pushnil</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
         public void PushNil();
+
         /// <summary>
         /// Pushes the given string on to the stack.
         /// </summary>
