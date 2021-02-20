@@ -300,13 +300,18 @@ namespace GmodNET.API
         public int Next(int iStackPos);
 
         /// <summary>
-        /// Returns the string at iStackPos. iOutLen is set to the length of the string if it is not NULL. 
-        /// If the value at iStackPos is a number, it will be converted in to a string.
-        /// Returns empty string upon failure.
+        /// Returns a string at <paramref name="iStackPos"/>.
+        /// If the value at <paramref name="iStackPos"/> is not a string, then the Lua engine will try to convert the object to string.
         /// </summary>
-        /// <param name="iStackPos"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Returns <see cref="String.Empty"/> upon failure.
+        /// 
+        /// See <c>lua_tolstring</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">The stack index of the object to get as string.</param>
+        /// <returns>The string from the stack. <see cref="String.Empty"/> upon failure.</returns>
         public string GetString(int iStackPos);
+
         /// <summary>
         /// Returns the number at iStackPos. Returns 0 upon failure.
         /// </summary>
