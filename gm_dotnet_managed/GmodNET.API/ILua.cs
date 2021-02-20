@@ -392,10 +392,18 @@ namespace GmodNET.API
         public void PushBool(bool val);
 
         /// <summary>
-        /// Pushes the given C-Function on to the stack. Native C function must be of signature "int Func(void*)".
+        /// Pushes a given C Function pointer (as <see cref="IntPtr"/>) onto the stack.
         /// </summary>
-        /// <param name="native_func_ptr">Native C function pointer to push</param>
+        /// <remarks>
+        /// A native C function, which pointer is being pushed, must be of signature <c>int Func(void* lua_state)</c>.
+        /// 
+        /// See “C Functions” for more info on C functions in Lua: https://www.lua.org/pil/26.1.html
+        /// 
+        /// See <c>lua_pushcfunction</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="native_func_ptr">A native C function pointer to push.</param>
         public unsafe void PushCFunction(IntPtr native_func_ptr);
+
         /// <summary>
         /// Pushes a given C# function pointer with native Cdecl calling convention onto the Lua stack.
         /// </summary>
