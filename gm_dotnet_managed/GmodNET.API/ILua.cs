@@ -250,13 +250,55 @@ namespace GmodNET.API
         public void Remove(int iStackPos);
 
         /// <summary>
-        /// Allows you to iterate tables similar to pairs(...). 
-        /// Pops a key from the stack, and pushes a key-value pair from the table at the given index (the "next" pair after the given key).
-        /// If there are no more elements in the table, then lua_next returns 0 (and pushes nothing).
+        /// Pops a key from the top of the stack, and pushes a key-value pair from the table at the given index (the "next" pair after the given key). 
+        /// If there are no more elements in the table, then lua_next returns <c>0</c> (and pushes nothing).
         /// </summary>
-        /// <param name="iStackPos">Position of the table</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Allows you to iterate tables similar to Lua <c>pairs(...)</c>.
+        /// If the value on the top of the stack is <c>nil</c>, then the first key-value pair will be pushed onto the stack.
+        /// After successful execution, the key will have stack index <c>-2</c> and the value will have index <c>-1</c>.
+        /// 
+        /// See <c>lua_next</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">The stack index of the table to get a key-value from.</param>
+        /// <returns><c>0</c> if there are no more key-value pairs to push, and non-zero integer otherwise.</returns>
+        /// <example>
+        /// The following example demonstrates usage of <see cref="ILua.Next(int)"/> to print server players’ nicknames to the game console.
+        /// <code>
+        /// public static int TableIter(ILua lua)
+        /// {
+        ///     List<![CDATA[<string>]]> players = new List<![CDATA[<string>]]>();
+        ///         
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.GetField(-1, "player");
+        ///     lua.GetField(-1, "GetAll");
+        ///     lua.MCall(0, 1); // Will push a table of all players on server
+        ///     lua.PushNil(); // Calls ILua.Next on nil value to start iterating over table
+        ///     while(lua.Next(-2) != 0) // Iterating over players table
+        ///     {
+        ///         lua.GetField(-1, "Nick"); // Extracts a method which returns a player's nick
+        ///         lua.Push(-2); // Pushes a copy of player object to pass as a param to Nick()
+        ///         lua.MCall(1, 1);
+        ///         players.Add(lua.GetString(-1));
+        ///         lua.Pop(2); // Pops player object and nickname string from the stack, leaves corresponding key to continue iteration
+        ///     }
+        ///     lua.Pop(3);
+        /// 
+        ///     if(players.Count != 0)
+        ///     {
+        ///         Console.WriteLine("Players on server:");
+        ///         foreach(string n in players)
+        ///         {
+        ///             Console.WriteLine(n);
+        ///         }
+        ///     }
+        /// 
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
         public int Next(int iStackPos);
+
         /// <summary>
         /// Returns the string at iStackPos. iOutLen is set to the length of the string if it is not NULL. 
         /// If the value at iStackPos is a number, it will be converted in to a string.
