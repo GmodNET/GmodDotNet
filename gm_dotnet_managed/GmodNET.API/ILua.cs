@@ -363,10 +363,16 @@ namespace GmodNET.API
         public void PushNil();
 
         /// <summary>
-        /// Pushes the given string on to the stack.
+        /// Pushes a given string to the Lua stack.
         /// </summary>
-        /// <param name="str">String to push</param>
+        /// <remarks>
+        /// The string will be converted to UTF-8 encoded byte array. 
+        /// 
+        /// See <c>lua_pushstring</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="str">A string to push.</param>
         public void PushString(in string str);
+
         /// <summary>
         /// Pushes the given double on to the stack.
         /// </summary>
