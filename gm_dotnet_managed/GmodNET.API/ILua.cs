@@ -405,13 +405,18 @@ namespace GmodNET.API
         public unsafe void PushCFunction(IntPtr native_func_ptr);
 
         /// <summary>
-        /// Pushes a given C# function pointer with native Cdecl calling convention onto the Lua stack.
+        /// Pushes a given C Function pointer (as C# 9.0 function pointer) onto the stack.
         /// </summary>
         /// <remarks>
-        /// Function which pointer is pushed onto the Lua stack must conform lua_CFunction specification as described here: https://www.lua.org/pil/26.1.html
+        /// A natively callable function, which pointer is being pushed, must be ABI-compatible with a C function of signature <c>int Func(void* lua_state)</c>.
+        /// 
+        /// See “C Functions” for more info on C functions in Lua: https://www.lua.org/pil/26.1.html
+        /// 
+        /// See <c>lua_pushcfunction</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
-        /// <param name="function_pointer">C# function pointer with native calling convention Cdecl.</param>
+        /// <param name="function_pointer">A C# 9.0 function pointer to push.</param>
         public unsafe void PushCFunction(delegate* unmanaged[Cdecl]<IntPtr, int> function_pointer);
+
         /// <summary>
         /// Pushes the given C-Function on to the stack with upvalues.
         /// </summary>
