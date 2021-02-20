@@ -383,10 +383,14 @@ namespace GmodNET.API
         public void PushNumber(double val);
 
         /// <summary>
-        /// Pushes the given boolean on to the stack.
+        /// Pushes a given boolean value onto the stack.
         /// </summary>
-        /// <param name="val">Bool value to push</param>
+        /// <remarks>
+        /// See <c>lua_pushboolean</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="val">A bool value to push.</param>
         public void PushBool(bool val);
+
         /// <summary>
         /// Pushes the given C-Function on to the stack. Native C function must be of signature "int Func(void*)".
         /// </summary>
