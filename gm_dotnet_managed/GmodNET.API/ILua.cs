@@ -326,11 +326,20 @@ namespace GmodNET.API
         public double GetNumber(int iStackPos);
 
         /// <summary>
-        /// Returns the boolean at iStackPos (as int). Returns false upon failure.
+        /// Returns a boolean value from the <paramref name="iStackPos"/>.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Returns <c>True</c> for any value different from <c>False</c> and <c>nil</c>.
+        /// If you want to accept only actual boolean values, 
+        /// use <see cref="ILua.IsType(int, TYPES)"/> to test the value's type before calling <see cref="ILua.GetBool(int)"/>.
+        /// Returns <c>False</c> upon failure.
+        /// 
+        /// See <c>lua_toboolean</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">The stack position of the object to get as bool.</param>
+        /// <returns>A boolean value from the stack. <c>False</c> upon failure.</returns>
         public bool GetBool(int iStackPos);
+
         /// <summary>
         /// Returns the C-Function at iStackPos (native pointer). Returns NULL upon failure.
         /// </summary>
