@@ -374,10 +374,14 @@ namespace GmodNET.API
         public void PushString(in string str);
 
         /// <summary>
-        /// Pushes the given double on to the stack.
+        /// Pushes a given double-precision number to the Lua stack.
         /// </summary>
-        /// <param name="val">Number to push</param>
+        /// <remarks>
+        /// See <c>lua_pushnumber</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="val">A number to push.</param>
         public void PushNumber(double val);
+
         /// <summary>
         /// Pushes the given boolean on to the stack.
         /// </summary>
