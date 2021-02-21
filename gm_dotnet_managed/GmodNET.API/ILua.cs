@@ -434,11 +434,21 @@ namespace GmodNET.API
         public void PushCClosure(IntPtr native_func_ptr, int iVars);
 
         /// <summary>
-        /// Allows for values to be stored by reference for later use. Make sure you call ReferenceFree when you are done with a reference. 
-        /// Pops the value to reference from the stack.
+        /// Creates a unique integer identifier (reference) for the object on top of the stack and saves it.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// Pops object from the stack.
+        /// 
+        /// Returned reference can be used to push saved object onto any Lua execution stack with <see cref="ILua.ReferencePush(int)"/>.
+        /// If the saved object is no longer needed, the reference must be freed with <see cref="ILua.ReferenceFree(int)"/> to prevent memory leaks.
+        /// 
+        /// See <c>luaL_ref</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <returns>A unique integer identifier for saved Lua object.</returns>
+        /// <seealso cref="ILua.ReferencePush(int)"/>
+        /// <seealso cref="ILua.ReferenceFree(int)"/>
         public int ReferenceCreate();
+
         /// <summary>
         /// Free reference
         /// </summary>
