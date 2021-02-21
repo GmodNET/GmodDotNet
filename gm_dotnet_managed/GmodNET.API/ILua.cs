@@ -472,10 +472,14 @@ namespace GmodNET.API
         public void ReferencePush(int reference);
 
         /// <summary>
-        /// Push a special value onto the top of the stack.
+        /// Pushes a special Lua table (like <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>) onto the stack.
         /// </summary>
-        /// <param name="table">Table to push</param>
+        /// <remarks>
+        /// See <see cref="SPECIAL_TABLES"/> docs for more information about special tables.
+        /// </remarks>
+        /// <param name="table">A special table to push (enumerated by <see cref="SPECIAL_TABLES"/>).</param>
         public void PushSpecial(SPECIAL_TABLES table);
+
         /// <summary>
         /// Returns true if the value at iStackPos is of type iType.
         /// </summary>
