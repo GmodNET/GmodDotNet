@@ -456,6 +456,8 @@ namespace GmodNET.API
         /// See <c>luaL_ref</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         /// <param name="reference">A reference to free.</param>
+        /// <seealso cref="ILua.ReferenceCreate"/>
+        /// <seealso cref="ILua.ReferencePush(int)"/>
         public void ReferenceFree(int reference);
 
         /// <summary>
