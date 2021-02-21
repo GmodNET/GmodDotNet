@@ -395,7 +395,7 @@ namespace GmodNET.API
         /// Pushes a given C Function pointer (as <see cref="IntPtr"/>) onto the stack.
         /// </summary>
         /// <remarks>
-        /// A native C function, which pointer is being pushed, must be of signature <c>int Func(void* lua_state)</c>.
+        /// A native C function, whose pointer is being pushed, must be of signature <c>int Func(void* lua_state)</c>.
         /// 
         /// See “C Functions” for more info on C functions in Lua: https://www.lua.org/pil/26.1.html
         /// 
@@ -408,7 +408,7 @@ namespace GmodNET.API
         /// Pushes a given C Function pointer (as C# 9.0 function pointer) onto the stack.
         /// </summary>
         /// <remarks>
-        /// A natively callable function, which pointer is being pushed, must be ABI-compatible with a C function of signature <c>int Func(void* lua_state)</c>.
+        /// A natively callable function, whose pointer is being pushed, must be ABI-compatible with a C function of signature <c>int Func(void* lua_state)</c>.
         /// 
         /// See “C Functions” for more info on C functions in Lua: https://www.lua.org/pil/26.1.html
         /// 
@@ -560,7 +560,7 @@ namespace GmodNET.API
         /// <summary>
         /// Pushes the metatable associated with the given type.
         /// </summary>
-        /// <param name="iType">Index of the type which metatable to push</param>
+        /// <param name="iType">Index of the type whose metatable to push</param>
         /// <returns>Success indicator</returns>
         public bool PushMetaTable(int iType);
         /// <summary>
