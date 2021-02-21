@@ -518,11 +518,15 @@ namespace GmodNET.API
         public int GetType(int iStackPos);
 
         /// <summary>
-        /// Returns the name associated with the given type ID. Doesn't work with user-defined types.
+        /// Returns a type name by its type id.
         /// </summary>
-        /// <param name="iType">Type index</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Works only for built-in types. See <see cref="TYPES"/>.
+        /// </remarks>
+        /// <param name="iType">An id of the type whose name to return.</param>
+        /// <returns>A name of the type.</returns>
         public string GetTypeName(int iType);
+
         /// <summary>
         /// Returns the name associated with the given type.
         /// </summary>
