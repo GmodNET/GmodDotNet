@@ -459,10 +459,16 @@ namespace GmodNET.API
         public void ReferenceFree(int reference);
 
         /// <summary>
-        /// Push reference on to the stack
+        /// Pushes a previously saved (with <see cref="ILua.ReferenceCreate"/>) object by its reference onto the stack.
         /// </summary>
-        /// <param name="reference">Reference to push</param>
+        /// <remarks>
+        /// See <c>luaL_ref</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="reference">A reference to object to push onto the stack.</param>
+        /// <seealso cref="ILua.ReferenceCreate"/>
+        /// <seealso cref="ILua.ReferenceFree(int)"/>
         public void ReferencePush(int reference);
+
         /// <summary>
         /// Push a special value onto the top of the stack.
         /// </summary>
