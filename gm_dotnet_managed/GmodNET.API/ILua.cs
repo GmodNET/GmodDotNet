@@ -481,12 +481,17 @@ namespace GmodNET.API
         public void PushSpecial(SPECIAL_TABLES table);
 
         /// <summary>
-        /// Returns true if the value at iStackPos is of type iType.
+        /// Checks if the type id of the object at <paramref name="iStackPos"/> is equal to <paramref name="iType"/>.
         /// </summary>
-        /// <param name="iStackPos">Position of value to check type of</param>
-        /// <param name="iType">Type index</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// See <c>lua_type</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the object whose type must be checked.</param>
+        /// <param name="iType">A type id to compare with object’s one.</param>
+        /// <returns><c>True</c> if object’s type id is equal to <paramref name="iType"/>, <c>False</c> otherwise.</returns>
+        /// <seealso cref="ILua.GetType(int)"/>
         public bool IsType(int iStackPos, int iType);
+
         /// <summary>
         /// Returns true if the value at iStackPos is of the given type.
         /// </summary>
