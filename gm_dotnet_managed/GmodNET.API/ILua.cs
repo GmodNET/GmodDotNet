@@ -450,10 +450,14 @@ namespace GmodNET.API
         public int ReferenceCreate();
 
         /// <summary>
-        /// Free reference
+        /// Frees a Lua reference, previously created by <see cref="ILua.ReferenceCreate"/>.
         /// </summary>
-        /// <param name="reference">Reference to free</param>
+        /// <remarks>
+        /// See <c>luaL_ref</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="reference">A reference to free.</param>
         public void ReferenceFree(int reference);
+
         /// <summary>
         /// Push reference on to the stack
         /// </summary>
