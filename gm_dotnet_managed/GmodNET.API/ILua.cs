@@ -493,12 +493,18 @@ namespace GmodNET.API
         public bool IsType(int iStackPos, int iType);
 
         /// <summary>
-        /// Returns true if the value at iStackPos is of the given type.
+        /// Checks if the type of the object at <paramref name="iStackPos"/> is equal to Lua or Garry’s Mod built-in one 
+        /// (built-in types are enumerated by <see cref="TYPES"/>).
         /// </summary>
-        /// <param name="iStackPos">Position of value to check type of</param>
-        /// <param name="type">Type</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// See <c>lua_type</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the object whose type must be checked.</param>
+        /// <param name="type">One of Lua and Garry’s Mod built-in types to compare with.</param>
+        /// <returns><c>True</c> if the object’s type is equal to <paramref name="type"/>, <c>False</c> otherwise.</returns>
+        /// <seealso cref="ILua.GetType(int)"/>
         public bool IsType(int iStackPos, TYPES type);
+
         /// <summary>
         /// Returns the type of the value at iStackPos.
         /// </summary>
