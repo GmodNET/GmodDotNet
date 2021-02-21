@@ -528,11 +528,12 @@ namespace GmodNET.API
         public string GetTypeName(int iType);
 
         /// <summary>
-        /// Returns the name associated with the given type.
+        /// Returns a name of Lua or Garry’s Mod built-in type.
         /// </summary>
-        /// <param name="type">Type</param>
-        /// <returns></returns>
+        /// <param name="type">One of Lua and Garry’s Mod built-in types.</param>
+        /// <returns>A type’s name.</returns>
         public string GetTypeName(TYPES type);
+
         /// <summary>
         /// Returns the length of the object at iStackPos.
         /// </summary>
