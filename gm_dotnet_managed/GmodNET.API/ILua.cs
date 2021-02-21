@@ -506,11 +506,17 @@ namespace GmodNET.API
         public bool IsType(int iStackPos, TYPES type);
 
         /// <summary>
-        /// Returns the type of the value at iStackPos.
+        /// Returns a type id of the object at <paramref name="iStackPos"/>.
         /// </summary>
-        /// <param name="iStackPos"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// See <c>lua_type</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the object whose type id must be returned.</param>
+        /// <returns>A type id of the object at <paramref name="iStackPos"/>.</returns>
+        /// <seealso cref="ILua.IsType(int, int)"/>
+        /// <seealso cref="ILua.IsType(int, TYPES)"/>
         public int GetType(int iStackPos);
+
         /// <summary>
         /// Returns the name associated with the given type ID. Doesn't work with user-defined types.
         /// </summary>
