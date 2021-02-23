@@ -558,11 +558,12 @@ namespace GmodNET.API
         public Vector3 GetAngle(int iStackPos);
 
         /// <summary>
-        /// Returns the vector at iStackPos.
+        /// Returns a Garry’s Mod vector at <paramref name="iStackPos"/> as <see cref="Vector3"/>.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
-        /// <returns></returns>
+        /// <param name="iStackPos">A stack position of Garry’s Mod vector.</param>
+        /// <returns>A Garry’s Mod vector at <paramref name="iStackPos"/>.</returns>
         public Vector3 GetVector(int iStackPos);
+
         /// <summary>
         /// Pushes the given angle to the top of the stack.
         /// </summary>
