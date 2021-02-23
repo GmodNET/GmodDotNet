@@ -571,10 +571,11 @@ namespace GmodNET.API
         public void PushAngle(Vector3 ang);
 
         /// <summary>
-        /// Pushes the given vector to the top of the stack.
+        /// Pushes a given <see cref="Vector3"/> as Garry’s Mod vector onto the stack.
         /// </summary>
-        /// <param name="vec">Vector to push</param>
+        /// <param name="vec">A vector to push.</param>
         public void PushVector(Vector3 vec);
+
         /// <summary>
         /// Sets the lua_State to be used by the ILuaBase implementation.
         /// </summary>
