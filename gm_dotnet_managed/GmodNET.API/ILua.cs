@@ -535,11 +535,21 @@ namespace GmodNET.API
         public string GetTypeName(TYPES type);
 
         /// <summary>
-        /// Returns the length of the object at iStackPos.
+        /// Returns a “length” of the object at the given index <paramref name="iStackPos"/>.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
-        /// <returns></returns>
+        /// <remarks>
+        /// A “length” has different meanings for different types: 
+        /// for strings, this is a string length; 
+        /// for tables, this is the result of the Lua length operator <c>#</c>; 
+        /// for userdata, this is the size of the memory block allocated for the userdata; 
+        /// for all other objects, it is 0.
+        /// 
+        /// See <c>lua_objlen</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the object whose “length” to return.</param>
+        /// <returns>A “length” of the object at <paramref name="iStackPos"/>.</returns>
         public int ObjLen(int iStackPos);
+
         /// <summary>
         /// Returns the angle at iStackPos as C# Vector3.
         /// </summary>
