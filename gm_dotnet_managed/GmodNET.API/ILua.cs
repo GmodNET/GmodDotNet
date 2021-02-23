@@ -565,10 +565,11 @@ namespace GmodNET.API
         public Vector3 GetVector(int iStackPos);
 
         /// <summary>
-        /// Pushes the given angle to the top of the stack.
+        /// Pushes a given angle, represented as <see cref="Vector3"/>, as Garry’s Mod angle onto the stack.
         /// </summary>
-        /// <param name="ang">Angle (Vector3 represented) to push</param>
+        /// <param name="ang">An angle to push onto the stack.</param>
         public void PushAngle(Vector3 ang);
+
         /// <summary>
         /// Pushes the given vector to the top of the stack.
         /// </summary>
