@@ -610,11 +610,15 @@ namespace GmodNET.API
         public bool PushMetaTable(int iType);
 
         /// <summary>
-        /// Pushes the metatable associated with the given type.
+        /// Pushes a metatable of one of the Lua or Garry’s Mod built-in types.
         /// </summary>
-        /// <param name="type">Type which metatable to push</param>
-        /// <returns>Success indicator</returns>
+        /// <remarks>
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="type">A type whose metatable must be pushed.</param>
+        /// <returns><c>True</c> if metatable was successfully pushed, <c>False</c> otherwise.</returns>
         public bool PushMetaTable(TYPES type);
+
         /// <summary>
         /// Creates a new UserData of type iType that references the given data.
         /// </summary>
