@@ -586,12 +586,19 @@ namespace GmodNET.API
         public void SetState(IntPtr lua_state);
 
         /// <summary>
-        /// Pushes the metatable associated with the given type name.
-        /// Returns the type ID to use for this type.
+        /// Creates a new Lua type, pushes its metatable onto the stack, and returns new type’s id.
         /// </summary>
-        /// <param name="name">Name of the metatable</param>
-        /// <returns>ID (type index) of the metatable</returns>
+        /// <remarks>
+        /// <see cref="ILua.CreateMetaTable(in string)"/> allows you to extend Lua and Garry’s Mod type system with custom types.
+        /// Returned type id can be used with <see cref="ILua.PushUserType(IntPtr, int)"/>.
+        /// 
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="name">A name for the new type.</param>
+        /// <returns>A type id for newly created type.</returns>
+        /// <seealso cref="ILua.PushUserType(IntPtr, int)"/>
         public int CreateMetaTable(in string name);
+
         /// <summary>
         /// Pushes the metatable associated with the given type.
         /// </summary>
