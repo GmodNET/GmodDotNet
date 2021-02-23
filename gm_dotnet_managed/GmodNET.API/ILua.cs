@@ -577,10 +577,14 @@ namespace GmodNET.API
         public void PushVector(Vector3 vec);
 
         /// <summary>
-        /// Sets the lua_State to be used by the ILuaBase implementation.
+        /// Sets a new internal pointer to Garry’s Mod native <c>lua_state</c> structure of the <see cref="ILua"/> implementation.
         /// </summary>
-        /// <param name="lua_state">Pointer to the lua_state</param>
+        /// <remarks>
+        /// For advanced use cases only.
+        /// </remarks>
+        /// <param name="lua_state">A pointer to <c>lua_state</c> structure.</param>
         public void SetState(IntPtr lua_state);
+
         /// <summary>
         /// Pushes the metatable associated with the given type name.
         /// Returns the type ID to use for this type.
