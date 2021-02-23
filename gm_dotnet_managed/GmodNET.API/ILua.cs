@@ -600,11 +600,15 @@ namespace GmodNET.API
         public int CreateMetaTable(in string name);
 
         /// <summary>
-        /// Pushes the metatable associated with the given type.
+        /// Pushes a metatable of the given type onto the stack.
         /// </summary>
-        /// <param name="iType">Index of the type whose metatable to push</param>
-        /// <returns>Success indicator</returns>
+        /// <remarks>
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iType">An id of the type whose metatable must be pushed.</param>
+        /// <returns><c>True</c> if metatable was successfully pushed, <c>False</c> otherwise.</returns>
         public bool PushMetaTable(int iType);
+
         /// <summary>
         /// Pushes the metatable associated with the given type.
         /// </summary>
