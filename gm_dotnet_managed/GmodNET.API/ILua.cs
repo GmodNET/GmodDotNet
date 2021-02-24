@@ -691,11 +691,37 @@ namespace GmodNET.API
         public void GetTable(int iStackPos);
 
         /// <summary>
-        /// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
-        /// Pops the key and the value from the stack.
+        /// Does a table value assignment equivalent to <c>t[k]=v</c>, 
+        /// where <c>t</c> is a table-like object at <paramref name="iStackPos"/>,
+        /// <c>v</c> is a value on top of the stack,
+        /// and <c>k</c> is a key at stack index <c>-2</c>.
         /// </summary>
-        /// <param name="iStackPos">Position of the table on the stack</param>
+        /// <remarks>
+        /// Unlike <see cref="ILua.SetField(int, in string)"/>, allows to add a key-value pair to a table with the key not being a string.
+        /// 
+        /// Pops both the key and the value from the stack.
+        /// 
+        /// See <c>lua_settable</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the table to add a key-value pair to.</param>
+        /// <example>
+        /// The following example shows how <see cref="ILua.SetTable(int)"/> can be used instead of <see cref="ILua.SetField(int, in string)"/>.
+        /// <code>
+        /// public static int SetTableExample(ILua lua)
+        /// {
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.PushString("SetTableWorks");
+        ///     lua.PushString("Yes, SetTable works!");
+        ///     lua.SetTable(-3); // Adds a key-value pair "SetTableWorks":"Yes, SetTable works!" to the Global table
+        ///     lua.Pop(1);
+        /// 
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
+        /// <seealso cref="ILua.SetField(int, in string)"/>
         public void SetTable(int iStackPos);
+
         /// <summary>
         /// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack. Does not invoke metamethods.
         /// </summary>
