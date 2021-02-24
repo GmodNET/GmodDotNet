@@ -632,11 +632,17 @@ namespace GmodNET.API
         public void PushUserType(IntPtr data_pointer, int iType);
 
         /// <summary>
-        /// Sets the data pointer of the UserType at iStackPos. You can use this to invalidate a UserType by passing NULL.
+        /// Sets a new pointer for userdata at iStackPos without changing its type.
         /// </summary>
-        /// <param name="iStackPos">Position of object on the stack</param>
-        /// <param name="data_pointer">User data pointer</param>
+        /// <remarks>
+        /// Can be used for invalidation of userdata by passing <see cref="IntPtr.Zero"/>.
+        /// 
+        /// See “Userdata” for more information on userdata: https://www.lua.org/pil/28.1.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of userdata.</param>
+        /// <param name="data_pointer">New userdata pointer.</param>
         public void SetUserType(int iStackPos, IntPtr data_pointer);
+
         /// <summary>
         /// Returns the data of the UserType at iStackPos if it is of the given type.
         /// </summary>
