@@ -620,11 +620,17 @@ namespace GmodNET.API
         public bool PushMetaTable(TYPES type);
 
         /// <summary>
-        /// Creates a new UserData of type iType that references the given data.
+        /// Pushes a userdata onto the stack and assigns a given type to it.
         /// </summary>
-        /// <param name="data_pointer">Pointer to data to reference as user data</param>
-        /// <param name="iType">Type index</param>
+        /// <remarks>
+        /// See “Userdata” for more information on userdata: https://www.lua.org/pil/28.1.html
+        /// 
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="data_pointer">A userdata pointer to push.</param>
+        /// <param name="iType">An id of the type which must be assigned to pushed userdata.</param>
         public void PushUserType(IntPtr data_pointer, int iType);
+
         /// <summary>
         /// Sets the data pointer of the UserType at iStackPos. You can use this to invalidate a UserType by passing NULL.
         /// </summary>
