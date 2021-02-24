@@ -726,10 +726,25 @@ namespace GmodNET.API
         public void SetTable(int iStackPos);
 
         /// <summary>
-        /// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack. Does not invoke metamethods.
+        /// Pushes the value <c>t[k]</c> onto of the stack, 
+        /// where <c>t</c> is a table at <paramref name="iStackPos"/>,
+        /// and <c>k</c> is an object on top of the stack.
+        /// Ignores redefined metamethods.
         /// </summary>
-        /// <param name="iStackPos">Position of the table on the stack</param>
+        /// <remarks>
+        /// Works as <see cref="ILua.GetTable(int)"/>, but if the table has a custom redefined metamethod <c>__index</c>,
+        /// it will be ignored.
+        /// 
+        /// Pops a key object from the stack.
+        /// 
+        /// See <c>lua_rawget</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// 
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the table to get value from.</param>
+        /// <seealso cref="ILua.GetTable(int)"/>
         public void RawGet(int iStackPos);
+
         /// <summary>
         /// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
         /// Pops the key and the value from the stack. Does not invoke metamethods.
