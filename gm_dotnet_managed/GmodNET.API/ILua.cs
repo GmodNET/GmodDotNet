@@ -65,14 +65,17 @@ namespace GmodNET.API
         public void GetField(int iStackPos, in string key);
 
         /// <summary>
-        /// Sets table[key] to the element on the top of the stack. Pops the original element from the stack.
+        /// Does a table key-value assignment <c>t[k] = v</c>,
+        /// where <c>t</c> is the table at <paramref name="iStackPos"/>,
+        /// <c>k</c> is a string <paramref name="key"/>,
+        /// and <c>v</c> is a value on top of the stack.
         /// </summary>
         /// <param name="iStackPos">Position of the table on the stack.</param>
         /// <param name="key">Key in the table to set value for.</param>
         /// <remarks>
         /// This method can be used to fill Lua tables with values or update them. 
         /// In the example below we will add a Lua funtion <c>SayHello</c> to the Lua global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>.
-        /// This function then can be called from any Lua as <c>SayHello()</c>.
+        /// This function then can be called from any Lua script as <c>SayHello()</c>.
         /// 
         /// See <c>lua_setfield</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
