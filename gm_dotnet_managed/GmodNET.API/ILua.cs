@@ -36,7 +36,7 @@ namespace GmodNET.API
         public void Pop(int IAmt = 1);
 
         /// <summary>
-        /// Pushes table[key] onto the stack.
+        /// Pushes a value from the table at <paramref name="iStackPos"/> by a given string <paramref name="key"/>.
         /// </summary>
         /// <param name="iStackPos">Position of the table on the stack.</param>
         /// <param name="key">Key for the value in the table.</param>
