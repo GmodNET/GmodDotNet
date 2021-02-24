@@ -671,6 +671,23 @@ namespace GmodNET.API
         /// See <c>lua_gettable</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         /// <param name="iStackPos">A stack position of the table to get a value from.</param>
+        /// <example>
+        /// The following example shows how <see cref="ILua.GetTable(int)"/> can be used to get a value from the table instead of <see cref="ILua.GetField(int, in string)"/>.
+        /// <code>
+        /// public static int GetTableExample(ILua lua)
+        /// {
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.PushString("print");
+        ///     lua.GetTable(-2); // Getting print function from the Lua Global table
+        ///     lua.PushString("GetTable works!");
+        ///     lua.MCall(1, 0);
+        ///     lua.Pop(1);
+        /// 
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
+        /// <seealso cref="ILua.GetField(int, in string)"/>
         public void GetTable(int iStackPos);
 
         /// <summary>
