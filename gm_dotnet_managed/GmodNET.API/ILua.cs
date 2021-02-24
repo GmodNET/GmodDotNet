@@ -659,11 +659,20 @@ namespace GmodNET.API
         public IntPtr GetUserType(int iStackPos, int iType);
 
         /// <summary>
-        /// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack.
-        /// Pops the key from the stack
+        /// Pushes the value <c>t[k]</c> onto of the stack, 
+        /// where <c>t</c> is a table-like object at <paramref name="iStackPos"/>,
+        /// and <c>k</c> is an object on top of the stack.
         /// </summary>
-        /// <param name="iStackPos">Position of the table on the stack</param>
+        /// <remarks>
+        /// Unlike <see cref="ILua.GetField(int, in string)"/>, allows to get a value from the table when the key in the key-value pair is not a string.
+        /// 
+        /// Pops a key object from the stack.
+        /// 
+        /// See <c>lua_gettable</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the table to get a value from.</param>
         public void GetTable(int iStackPos);
+
         /// <summary>
         /// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
         /// Pops the key and the value from the stack.
