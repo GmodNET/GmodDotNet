@@ -644,12 +644,20 @@ namespace GmodNET.API
         public void SetUserType(int iStackPos, IntPtr data_pointer);
 
         /// <summary>
-        /// Returns the data of the UserType at iStackPos if it is of the given type.
+        /// Returns a pointer from userdata at <paramref name="iStackPos"/> if it has given type.
         /// </summary>
-        /// <param name="iStackPos">Position on the stack</param>
-        /// <param name="iType">Type index</param>
-        /// <returns>pointer to the user type</returns>
+        /// <remarks>
+        /// If type id of userdata is not equal to <paramref name="iType"/>, then <see cref="IntPtr.Zero"/> will be returned.
+        /// 
+        /// See “Userdata” for more information on userdata: https://www.lua.org/pil/28.1.html
+        /// 
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the userdata to get a pointer from.</param>
+        /// <param name="iType">An id of the type which userdata must have.</param>
+        /// <returns>A userdata pointer, if userdata’s type id is equal to <paramref name="iType"/>, <see cref="IntPtr.Zero"/> otherwise.</returns>
         public IntPtr GetUserType(int iStackPos, int iType);
+
         /// <summary>
         /// Pushes table[key] on to the stack. Table = value at iStackPos. Key = value at top of the stack.
         /// Pops the key from the stack
