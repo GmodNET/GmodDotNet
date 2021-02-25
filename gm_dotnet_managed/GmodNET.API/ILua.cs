@@ -746,11 +746,25 @@ namespace GmodNET.API
         public void RawGet(int iStackPos);
 
         /// <summary>
-        /// Sets table[key] to the value at the top of the stack. Table = value at iStackPos. Key = value 2nd to the top of the stack.
-        /// Pops the key and the value from the stack. Does not invoke metamethods.
+        /// Does a table value assignment equivalent to <c>t[k]=v</c>, 
+        /// where <c>t</c> is a table at <paramref name="iStackPos"/>,
+        /// <c>v</c> is a value on top of the stack,
+        /// and <c>k</c> is a key at stack index <c>-2</c>.
+        /// Ignores redefined metamethods.
         /// </summary>
-        /// <param name="iStackPos">Position of the table on the stack</param>
+        /// <remarks>
+        /// Works as <see cref="ILua.SetTable(int)"/>, but if the table has a custom redefined metamethod <c> __newindex</c>,
+        /// it will be ignored.
+        /// 
+        /// Pops both the key and the value from the stack.
+        /// 
+        /// See <c>lua_rawset</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
+        /// 
+        /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
+        /// </remarks>
+        /// <param name="iStackPos">A stack position of the table to add a key-value pair to.</param>
         public void RawSet(int iStackPos);
+
         /// <summary>
         /// Pushes the given pointer on to the stack as light-userdata.
         /// </summary>
