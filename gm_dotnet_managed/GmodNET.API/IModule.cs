@@ -6,7 +6,7 @@ using System.Runtime.Loader;
 namespace GmodNET.API
 {
     /// <summary>
-    /// Interface which every GmodDotNet module must implement. Module will be initialized with parameterless constructor and then Load method will be called.
+    /// An interface for GmodDotNet modules to implement.
     /// </summary>
     public interface IModule
     {
@@ -35,15 +35,15 @@ namespace GmodNET.API
         /// <summary>
         /// This method is called by GmodDotNet runtime on module load and should be treated as module's entry point.
         /// </summary>
-        /// <param name="lua">An instance of the implementation of <see cref="ILua"/> interface to communicate with Garry's Mod.</param>
+        /// <param name="lua">An <see cref="ILua"/> interface instance to communicate with Garry's Mod.</param>
         /// <param name="is_serverside"><c>True</c> if module is being loaded into the serverside environment, <c>False</c> otherwise.</param>
-        /// <param name="assembly_context">An instance of <see cref="ModuleAssemblyLoadContext"/> in which module will be loaded into.</param>
+        /// <param name="assembly_context">An instance of <see cref="ModuleAssemblyLoadContext"/> for module to be loaded into.</param>
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context);
 
         /// <summary>
         /// Called by GmodDotNet runtime on game/server quit or manual module unload.
         /// </summary>
-        /// <param name="lua">An instance of the implementation of <see cref="ILua"/> interface to communicate with Garry's Mod.</param>
+        /// <param name="lua">An <see cref="ILua"/> interface instance to communicate with Garry's Mod.</param>
         public void Unload(ILua lua);
     }
 }
