@@ -766,11 +766,15 @@ namespace GmodNET.API
         public void RawSet(int iStackPos);
 
         /// <summary>
-        /// Pushes the given pointer on to the stack as light-userdata.
+        /// Pushes a given pointer as light-userdata onto the stack.
+        /// OBSOLETE! This method is deprecated.
+        /// Use <see cref="ILua.PushUserType(IntPtr, int)"/> instead.
         /// </summary>
-        /// <param name="data">Pointer to the user data</param>
-        [Obsolete("This method is unsafe and obsolete. Use ILua.PushUserType instead")]
+        /// <param name="data">A pointer to push.</param>
+        /// <seealso cref="ILua.PushUserType(IntPtr, int)"/>
+        [Obsolete("This method is deprecated. Use ILua.PushUserType instead")]
         public void PushUserData(IntPtr data);
+
         /// <summary>
         /// Get ILuaBase native pointer from Garry's Mod.
         /// </summary>
