@@ -896,11 +896,13 @@ namespace GmodNET.API
         /// For more information see an official Lua documentation on usage of the Global Table (https://www.lua.org/pil/15.4.html).
         /// </summary>
         SPECIAL_GLOB,
+
         /// <summary>
         /// Lua Environment table.
         /// For more information see an official Lua documentation on The Environment (https://www.lua.org/pil/14.html).
         /// </summary>
         SPECIAL_ENV,
+
         /// <summary>
         /// Lua Registry table. For more information see an official Lua documentation on The Registry (https://www.lua.org/pil/27.3.1.html).
         /// </summary>
