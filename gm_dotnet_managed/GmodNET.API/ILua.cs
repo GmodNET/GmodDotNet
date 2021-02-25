@@ -776,10 +776,11 @@ namespace GmodNET.API
         public void PushUserData(IntPtr data);
 
         /// <summary>
-        /// Get ILuaBase native pointer from Garry's Mod.
+        /// Returns an internal pointer to Garry’s Mod native <c>ILuaBase</c> structure used by interface implementation.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An internal pointer to Garry’s Mod native <c>ILuaBase</c> structure used by interface implementation.</returns>
         public IntPtr GetInternalPointer();
+
         /// <summary>
         /// High level wrapper around PCall. If call is successfull, MCall will behave just like Call. 
         /// But if Lua exception is thrown while call, GmodLuaException managed exception will be thrown.
