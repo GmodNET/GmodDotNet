@@ -778,6 +778,9 @@ namespace GmodNET.API
         /// <summary>
         /// Returns an internal pointer to Garry’s Mod native <c>ILuaBase</c> structure used by interface implementation.
         /// </summary>
+        /// <remarks>
+        /// For advanced use cases only.
+        /// </remarks>
         /// <returns>An internal pointer to Garry’s Mod native <c>ILuaBase</c> structure used by interface implementation.</returns>
         public IntPtr GetInternalPointer();
 
