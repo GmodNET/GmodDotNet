@@ -859,28 +859,29 @@ namespace GmodNET.API
     }
 
     /// <summary>
-    /// Managed exception which incapsulates information about Lua exception
+    /// A .NET representation of Lua engine exception.
     /// </summary>
     public class GmodLuaException : Exception
     {
         int error_code;
 
         /// <summary>
-        /// Create new GmodLuaException
+        /// Initializes a new instance of the <see cref="GmodLuaException"/> class.
         /// </summary>
-        /// <param name="lua_error_code">Lua exception code</param>
-        /// <param name="lua_error_message">Lua exception message</param>
+        /// <param name="lua_error_code">A Lua exception code. Must be one of the values defined by Lua specification.</param>
+        /// <param name="lua_error_message">A Lua exception message.</param>
         public GmodLuaException(int lua_error_code, string lua_error_message) : base(lua_error_message)
         {
             this.error_code = lua_error_code;
         }
 
         /// <summary>
-        /// Error code of the lua exception
+        /// A Lua exception error code (the value defined by Lua specification).
         /// </summary>
         public int ErrorCode => error_code;
+
         /// <summary>
-        /// Lua exception message
+        /// A Lua exception message.
         /// </summary>
         public override string Message => base.Message;
     }
