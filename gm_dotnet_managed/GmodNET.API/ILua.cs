@@ -782,12 +782,49 @@ namespace GmodNET.API
         public IntPtr GetInternalPointer();
 
         /// <summary>
-        /// High level wrapper around PCall. If call is successfull, MCall will behave just like Call. 
-        /// But if Lua exception is thrown while call, GmodLuaException managed exception will be thrown.
+        /// Calls a function (or any other callable object) followed by its arguments from the stack in the protected mode (will catch any exception).
+        /// All caught exceptions are rethrown as <see cref="GmodLuaException"/>.
+        /// Pops the function and arguments from the stack.
         /// </summary>
-        /// <param name="iArgs">Number of arguments of the function to call</param>
-        /// <param name="iResults">Number of returns of the function to call</param>
+        /// <remarks>
+        /// If execution is successful, pushes function’s return values back to the stack.
+        /// Otherwise, nothing will be pushed, and <see cref="GmodLuaException"/> will be thrown.
+        /// 
+        /// This makes <see cref="ILua.MCall(int, int)"/> a better alternative to <see cref="ILua.PCall(int, int, int)"/>, 
+        /// since any thrown exception then can be caught with usual C# <c>try/catch</c> block.
+        /// </remarks>
+        /// <param name="iArgs">Number of arguments to pass to the function.</param>
+        /// <param name="iResults">Number of the function’s return values to push back onto the stack.</param>
+        /// <exception cref="GmodLuaException">Lua engine exception was thrown while function execution.</exception>
+        /// <example>
+        /// The following example shows, how to call a Lua function with <see cref="ILua.MCall(int, int)"/> and catch any possible exceptions.
+        /// <code>
+        /// public static int CallAndCatch(ILua lua)
+        /// {
+        ///     lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        ///     lua.GetField(-1, "print");
+        ///     lua.PushString("Lua function was called");
+        ///     try
+        ///     {
+        ///         lua.MCall(1, 0); // Calling Lua print function
+        ///     }
+        ///     catch(GmodLuaException e) // Catchs a Lua exception, if thrown
+        ///     {
+        ///         Console.WriteLine("Print function threw an exception: " + e.Message);
+        ///     }
+        ///     finally
+        ///     {
+        ///         lua.Pop(1);
+        ///     }
+        /// 
+        ///     return 0;
+        /// }
+        /// </code>
+        /// </example>
+        /// <seealso cref="ILua.PCall(int, int, int)"/>
+        /// <seealso cref="ILua.Call(int, int)"/>
         public void MCall(int iArgs, int iResults);
+
         /// <summary>
         /// Push a managed function or delegate to the lua stack.
         /// </summary>
