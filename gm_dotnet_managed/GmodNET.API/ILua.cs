@@ -829,11 +829,16 @@ namespace GmodNET.API
         public void MCall(int iArgs, int iResults);
 
         /// <summary>
-        /// Push a managed function or delegate to the lua stack.
+        /// Pushes a given .NET delegate as a Lua function onto the stack.
         /// </summary>
-        /// <param name="function">A managed function or delegate to push.</param>
-        /// <returns>A GCHandle instance, allocated for managed delegate. For advanced scenarios.</returns>
+        /// <remarks>
+        /// Pushed functions can throw .NET exceptions. 
+        /// If pushed function throws a .NET exception, it will be converted to a native Lua exception and rethrown.
+        /// </remarks>
+        /// <param name="function">A delegate to push.</param>
+        /// <returns>An internal <see cref="GCHandle"/> instance allocated for the pushed delegate. For advanced use cases only. Can be ignored most of the time.</returns>
         public GCHandle PushManagedFunction(Func<ILua, int> function);
+
         /// <summary>
         /// Push managed function or delegate together with upvalues as Lua closure. Upvalues must be pushed first. Pops upvalues from the stack.
         /// </summary>
