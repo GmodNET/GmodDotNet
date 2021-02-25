@@ -840,11 +840,21 @@ namespace GmodNET.API
         public GCHandle PushManagedFunction(Func<ILua, int> function);
 
         /// <summary>
-        /// Push managed function or delegate together with upvalues as Lua closure. Upvalues must be pushed first. Pops upvalues from the stack.
+        /// Pushes a given .NET delegate onto the stack, 
+        /// associates it with <paramref name="number_of_upvalues"/> objects on top of the stack (such objects are called upvalues), 
+        /// and creates a Lua function closure.
         /// </summary>
-        /// <param name="function">Managed function or delegate to form closure from.</param>
-        /// <param name="number_of_upvalues">Number of upvalues.</param>
-        /// <returns>A GCHandle instance, allocated for managed delegate. For advanced scenarios.</returns>
+        /// <remarks>
+        /// Pops upvalues from the stack.
+        /// 
+        /// Pushed closures can throw .NET exceptions.
+        /// If pushed closure throws a .NET exception, it will be converted to a native Lua exception and rethrown.
+        /// 
+        /// See “Upvalues” for more information about Lua closures: https://www.lua.org/pil/27.3.3.html
+        /// </remarks>
+        /// <param name="function">A .NET delegate to create a Lua closure from.</param>
+        /// <param name="number_of_upvalues">A number of objects on top of the stack to associate with the closure as upvalues.</param>
+        /// <returns>An internal <see cref="GCHandle"/> instance allocated for the pushed delegate. For advanced use cases only. Can be ignored most of the time.</returns>
         public GCHandle PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues);
     }
 
