@@ -12,7 +12,7 @@ namespace GmodNET.API
     public interface ILua
     {
         /// <summary>
-        /// Returns the number of elements in the current lua stack.
+        /// Returns the number of elements on the current lua stack.
         /// </summary>
         /// <returns>The number of elements in the current lua stack.</returns>
         /// <remarks>

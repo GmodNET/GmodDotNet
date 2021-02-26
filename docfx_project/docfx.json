@@ -29,6 +29,18 @@
           "toc.yml",
           "*.md"
         ]
+      },
+      {
+        "files": [
+          "api-fusion/**.md",
+          "api-fusion/**.yml"
+        ]
+      },
+      {
+        "files": [
+          "lua-api/**.md",
+          "lua-api/**.yml"
+        ]
       }
     ],
     "resource": [
