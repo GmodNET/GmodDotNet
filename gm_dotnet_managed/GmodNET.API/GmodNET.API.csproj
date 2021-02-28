@@ -23,7 +23,7 @@
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>
-    <DocumentationFile>bin\Release\netcoreapp3.1\GmodNET.API.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\GmodNET.API.xml</DocumentationFile>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
