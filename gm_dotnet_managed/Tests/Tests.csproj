@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <VersionFilePath>../../version.json</VersionFilePath>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -28,9 +27,13 @@
 
   <ItemGroup>
     <PackageReference Include="GmodNET.Tests.Native" Version="1.0.0" />
-	  <PackageReference Include="GmodNET.VersionTool.Target" Version="1.0.1">
+	  <PackageReference Include="GmodNET.VersionTool.MSBuild" Version="2.0.0-alpha.1.41543664.main">
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <VersionFile Include="../../version.json" />
   </ItemGroup>
 
 </Project>

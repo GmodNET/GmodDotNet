@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "gmodnet.versiontool": {
-      "version": "1.0.1",
+      "version": "2.0.0-alpha.1.41543664.main",
       "commands": [
         "gmodnet-vt"
       ]

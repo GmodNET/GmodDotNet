@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.0.4">
 
   <!-- Public properties to configure runtime build. -->
   <PropertyGroup>
@@ -34,7 +34,7 @@
     
   </ItemGroup>
 
-  <Target Name="BuildRuntime">
+  <Target Name="BuildRuntime" BeforeTargets="AfterBuild">
     <Message Text="Starting GmodNET Runtime build process" Importance="high" />
     <Exec Command="$(BaseGmodNETPublishInst)" ConsoleToMsBuild="true" />
     <Delete Files="build/gmodnet/GmodNET.exe;build/gmodnet/GmodNET;build/gmodnet/web.config" />

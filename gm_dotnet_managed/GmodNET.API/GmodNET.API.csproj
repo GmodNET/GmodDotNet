@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	  <VersionFilePath>../../version.json</VersionFilePath>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Product>GmodNET API</Product>
     <Description>GmodNET API library contains all necessary interfaces to write a GmodNET module.</Description>
@@ -28,11 +27,15 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GmodNET.VersionTool.Target" Version="1.0.1">
+		<PackageReference Include="GmodNET.VersionTool.MSBuild" Version="2.0.0-alpha.1.41543664.main">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
     <InternalsVisibleTo Include="GmodNET" />
 	</ItemGroup>
+
+  <ItemGroup>
+    <VersionFile Include="../../version.json" />
+  </ItemGroup>
 
 </Project>
