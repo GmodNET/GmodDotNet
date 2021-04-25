@@ -220,7 +220,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
+          dotnet-version: 5.0.103
 
       - name: Build Gmod.NET
         run: dotnet build runtime.csproj -c Release
@@ -272,7 +272,7 @@ jobs:
 
  deploy-and-notify:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     needs: [linux-build, windows-build, mac-build]
 
