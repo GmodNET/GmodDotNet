@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-	  <VersionFilePath>../../version.json</VersionFilePath>
     <StartupObject>GmodNET.BuidReq</StartupObject>
     <Description>GmodNET managed module loader.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -25,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="GmodNET.VersionTool.Target" Version="1.0.1">
+    <PackageReference Include="GmodNET.VersionTool.MSBuild" Version="2.0.0-alpha.1.41543664.main">
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
@@ -33,6 +32,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GmodNET.API\GmodNET.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <VersionFile Include="../../version.json" />
   </ItemGroup>
 
 </Project>
