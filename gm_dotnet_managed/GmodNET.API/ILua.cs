@@ -856,6 +856,17 @@ namespace GmodNET.API
         /// <param name="number_of_upvalues">A number of objects on top of the stack to associate with the closure as upvalues.</param>
         /// <returns>An internal <see cref="GCHandle"/> instance allocated for the pushed delegate. For advanced use cases only. Can be ignored most of the time.</returns>
         public GCHandle PushManagedClosure(Func<ILua, int> function, byte number_of_upvalues);
+
+        /// <summary>
+        /// Pushes Lua Global Table (<see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>) onto the stack.
+        /// </summary>
+        /// <remarks>
+        /// This method is a shortcut for <see cref="ILua.PushSpecial(SPECIAL_TABLES)"/> and <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/> parameter.
+        /// 
+        /// See “Using the Global Table” for more information on Lua Global Table: https://www.lua.org/pil/15.4.html
+        /// </remarks>
+        /// <seealso cref="ILua.PushSpecial(SPECIAL_TABLES)"/>
+        public void PushGlobalTable();
     }
 
     /// <summary>

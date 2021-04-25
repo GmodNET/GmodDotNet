@@ -647,5 +647,10 @@ namespace GmodNET
 
             return delegate_handle;
         }
+
+        public void PushGlobalTable()
+        {
+            this.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
+        }
     }
 }
