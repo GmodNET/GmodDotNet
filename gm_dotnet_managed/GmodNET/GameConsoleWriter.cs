@@ -50,7 +50,7 @@ namespace GmodNET
         [DllImport("tier0", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Msg_Tier0([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
-        [DllImport("tier0", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("tier0_client", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Msg_Tier0_Client([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
         [DllImport("GarrysMod_Signed/Contents/MacOS/libtier0.dylib", CallingConvention = CallingConvention.Cdecl)]
