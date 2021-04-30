@@ -40,6 +40,8 @@ namespace GmodNET
                         $"Native version: {native_version}");
                 }
 
+                ILua lua = new Lua(lua_base);
+
                 if (FirstRun)
                 {
                     Span<IntPtr> params_from_native_code = new Span<IntPtr>((void*)param, 55);
@@ -158,14 +160,12 @@ namespace GmodNET
 
                     ManagedFunctionMetaMethods.NativeDelegateExecutor = native_delegate_executor_ptr;
 
-                    Console.SetOut(new GameConsoleWriter());
+                    Console.SetOut(new GameConsoleWriter(lua));
 
                     FirstRun = false;
                 }
 
                 *managed_delegate_executor_ptr = (IntPtr)(delegate* unmanaged<IntPtr, int>)&ManagedFunctionMetaMethods.ManagedDelegateExecutor;
-
-                ILua lua = new Lua(lua_base);
 
                 lua.PushSpecial(SPECIAL_TABLES.SPECIAL_GLOB);
                 lua.GetField(-1, "print");
