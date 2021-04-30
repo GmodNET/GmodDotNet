@@ -29,6 +29,18 @@
           "toc.yml",
           "*.md"
         ]
+      },
+      {
+        "files": [
+          "api-fusion/**.md",
+          "api-fusion/**.yml"
+        ]
+      },
+      {
+        "files": [
+          "lua-api/**.md",
+          "lua-api/**.yml"
+        ]
       }
     ],
     "resource": [
@@ -51,6 +63,10 @@
     ],
     "dest": "_site",
     "globalMetadataFiles": [],
+    "globalMetadata": {
+      "_appLogoPath": "images/gmodnetlogo-50px.png",
+      "_appFaviconPath": "images/favicon.ico"
+    },
     "fileMetadataFiles": [],
     "template": [
       "default",
@@ -61,6 +77,9 @@
     "noLangKeyword": false,
     "keepFileLink": false,
     "cleanupCacheHistory": false,
-    "disableGitFeatures": false
+    "disableGitFeatures": false,
+    "xrefService": [
+      "https://xref.docs.microsoft.com/query?uid={uid}"
+    ]
   }
 }

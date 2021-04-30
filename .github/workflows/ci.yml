@@ -4,12 +4,12 @@ on: [push, pull_request]
 
 env:
   GMODNET_VERSION: '0.6.0'
-  DOTNET_SDK_VERSION: '5.0.100'
+  DOTNET_SDK_VERSION: '5.0.202'
 
 jobs:
  linux-build:
 
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-18.04
 
    steps:
     - name: Checkout
@@ -272,7 +272,7 @@ jobs:
 
  deploy-and-notify:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     needs: [linux-build, windows-build, mac-build]
 

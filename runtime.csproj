@@ -1,21 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="BuildRuntime">
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.0.4">
 
   <!-- Public properties to configure runtime build. -->
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 
-    <BundledNETCoreVersion>5.0.0</BundledNETCoreVersion>
+    <BundledNETCoreVersion>5.0.5</BundledNETCoreVersion>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/6ddc3153-7600-4e14-9acb-b672c26c15bb/7ffc45bc16916fbde8a0f4abebe72df0/aspnetcore-runtime-5.0.0-win-x64.zip
+      https://download.visualstudio.microsoft.com/download/pr/5fa338e7-89ec-48b6-afa0-32676b7c81e1/8daa9c8fb70b08fca05c4b088a0489ea/aspnetcore-runtime-5.0.5-win-x64.zip
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/ff9a5b2e-704b-4ff2-bf2f-4bac619915af/e771f72b10ad5160ab5f3d70c287e948/aspnetcore-runtime-5.0.0-linux-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/827b12a8-8dea-43da-92a2-2d24c4936236/d2d61b3ed4b5ba3f682de3e04fc4d243/aspnetcore-runtime-5.0.5-linux-x64.tar.gz
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/173b9b16-4d0d-4387-acf0-f113a359ee77/cbc2f6c00ac56c44bda0e3c960e38bd1/aspnetcore-runtime-5.0.0-osx-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/b6ae7abe-1184-4234-8e06-a5e6028a00d1/63eb26e254eb10ca29bed40aa0801d18/aspnetcore-runtime-5.0.5-osx-x64.tar.gz
     </NETCoreDownloadUrl>
   </PropertyGroup>
 
@@ -34,7 +34,7 @@
     
   </ItemGroup>
 
-  <Target Name="BuildRuntime">
+  <Target Name="BuildRuntime" BeforeTargets="AfterBuild">
     <Message Text="Starting GmodNET Runtime build process" Importance="high" />
     <Exec Command="$(BaseGmodNETPublishInst)" ConsoleToMsBuild="true" />
     <Delete Files="build/gmodnet/GmodNET.exe;build/gmodnet/GmodNET;build/gmodnet/web.config" />
