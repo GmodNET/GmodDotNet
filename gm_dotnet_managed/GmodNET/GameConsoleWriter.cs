@@ -40,9 +40,22 @@ namespace GmodNET
             }
             else if (OperatingSystem.IsMacOS())
             {
-                Msg = Msg_Tier0_MacOS;
+                unsafe
+                {
+                    IntPtr lib_handle = NativeLibrary.Load(Directory.GetCurrentDirectory() + "/GarrysMod_Signed.app/Contents/MacOS/libtier0.dylib");
+                    delegate* unmanaged[Cdecl]<byte*, void> msg_func = (delegate* unmanaged[Cdecl]<byte*, void>)NativeLibrary.GetExport(lib_handle, "Msg");
+
+                    Msg = (message) =>
+                    {
+                        byte[] string_array = Encoding.UTF8.GetBytes(message);
+                        fixed (byte* ptr = &string_array[0])
+                        {
+                            msg_func(ptr);
+                        }
+                    };
+                }
             }
-            else Msg = (string msg) => { throw new PlatformNotSupportedException(); };
+            else Msg = (string msg) => throw new PlatformNotSupportedException();
         }
 
 #pragma warning disable CA2101 // workaround for https://github.com/dotnet/roslyn-analyzers/issues/5009
@@ -52,9 +65,6 @@ namespace GmodNET
 
         [DllImport("tier0_client", EntryPoint = "Msg", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Msg_Tier0_Client([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
-
-        [DllImport("GarrysMod_Signed/Contents/MacOS/libtier0.dylib", EntryPoint = "Msg", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Msg_Tier0_MacOS([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
 #pragma warning restore CA2101
 
