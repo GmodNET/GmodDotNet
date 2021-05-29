@@ -27,9 +27,9 @@ namespace GmodNET
                 lua.GetField(-1, "IsDedicated");
                 lua.MCall(0, 1);
                 bool is_dedicated = lua.GetBool(-1);
-                lua.Pop(1);
+                lua.Pop(3);
 
-                if (is_dedicated is true)
+                if (is_dedicated)
                 {
                     Msg = Msg_Tier0;
                 }
