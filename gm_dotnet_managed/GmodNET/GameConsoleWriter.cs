@@ -47,13 +47,13 @@ namespace GmodNET
 
 #pragma warning disable CA2101 // workaround for https://github.com/dotnet/roslyn-analyzers/issues/5009
 
-        [DllImport("tier0", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("tier0", EntryPoint = "Msg", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Msg_Tier0([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
-        [DllImport("tier0_client", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("tier0_client", EntryPoint = "Msg", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Msg_Tier0_Client([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
-        [DllImport("GarrysMod_Signed/Contents/MacOS/libtier0.dylib", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("GarrysMod_Signed/Contents/MacOS/libtier0.dylib", EntryPoint = "Msg", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Msg_Tier0_MacOS([MarshalAs(UnmanagedType.LPUTF8Str)] string msg);
 
 #pragma warning restore CA2101
