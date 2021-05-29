@@ -47,10 +47,50 @@ namespace GmodNET
 
                     Msg = (message) =>
                     {
-                        byte[] string_array = Encoding.UTF8.GetBytes(message);
-                        fixed (byte* ptr = &string_array[0])
+                        byte* __message_gen_native = default;
+                        //
+                        // Setup
+                        //
+                        bool message__allocated = false;
+                        try
                         {
-                            msg_func(ptr);
+                            //
+                            // Marshal
+                            //
+                            if (message != null)
+                            {
+                                int message__bytelen = (message.Length + 1) * 3 + 1;
+                                if (message__bytelen > 260)
+                                {
+                                    __message_gen_native = (byte*)System.Runtime.InteropServices.Marshal.StringToCoTaskMemUTF8(message);
+                                    message__allocated = true;
+                                }
+                                else
+                                {
+                                    byte* path__stackptr = stackalloc byte[message__bytelen];
+                                    {
+                                        message__bytelen = System.Text.Encoding.UTF8.GetBytes(message, new System.Span<byte>(path__stackptr, message__bytelen));
+                                        path__stackptr[message__bytelen] = 0;
+                                    }
+
+                                    __message_gen_native = (byte*)path__stackptr;
+                                }
+                            }
+
+                            //
+                            // Invoke
+                            //
+                            msg_func(__message_gen_native);
+                        }
+                        finally
+                        {
+                            //
+                            // Cleanup
+                            //
+                            if (message__allocated)
+                            {
+                                System.Runtime.InteropServices.Marshal.FreeCoTaskMem((System.IntPtr)__message_gen_native);
+                            }
                         }
                     };
                 }
