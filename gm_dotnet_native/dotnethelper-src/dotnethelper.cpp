@@ -186,6 +186,8 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
         dotnet_runtime_params.host_path = game_exe_path;
 #ifdef WIN32
         dotnet_runtime_params.dotnet_root = L"garrysmod/lua/bin/dotnet";
+#elif __APPLE__
+        dotnet_runtime_params.dotnet_root = (std::string(getcwd(nullptr, 0)) + std::string("/garrysmod/lua/bin/dotnet")).c_str(); // getcwd here allocates memory, but we don't care since it happens only once per process lifetime
 #else
         dotnet_runtime_params.dotnet_root = (std::string(getcwd(nullptr, 0)) + std::string("/garrysmod/lua/bin/dotnet")).c_str(); // getcwd here allocates memory, but we don't care since it happens only once per process lifetime
 #endif
