@@ -187,7 +187,7 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
 #ifdef WIN32
         dotnet_runtime_params.dotnet_root = L"garrysmod/lua/bin/dotnet";
 #else
-        dotnet_runtime_params.dotnet_root = "garrysmod/lua/bin/dotnet";
+        dotnet_runtime_params.dotnet_root = (std::string(getcwd(nullptr, 0)) + std::string("/garrysmod/lua/bin/dotnet")).c_str(); // getcwd here allocates memory, but we don't care since it happens only once per process lifetime
 #endif
         int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, &runtime_environment_handle);
         if(init_success_code != 0)
