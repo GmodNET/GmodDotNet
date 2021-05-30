@@ -9,6 +9,7 @@
 #include "LuaAPIExposure.h"
 #include <string>
 #include <fstream>
+#include <filesystem>
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -182,12 +183,14 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
         char game_exe_path[301];
         int game_exe_path_len = readlink("/proc/self/exe", game_exe_path, 300);
         game_exe_path[game_exe_path_len] = '\0';
+
+        std::filesystem::path dotnet_relative_root_path = "garrysmod/lua/bin/dotnet";
 #endif
         dotnet_runtime_params.host_path = game_exe_path;
 #ifdef WIN32
         dotnet_runtime_params.dotnet_root = L"garrysmod/lua/bin/dotnet";
 #else
-        dotnet_runtime_params.dotnet_root = "garrysmod/lua/bin/dotnet";
+        dotnet_runtime_params.dotnet_root = std::filesystem::absolute(dotnet_relative_root_path).c_str();
 #endif
         int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, &runtime_environment_handle);
         if(init_success_code != 0)
