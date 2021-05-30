@@ -9,6 +9,7 @@
 #include "LuaAPIExposure.h"
 #include <string>
 #include <fstream>
+#include <filesystem>
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -45,7 +46,7 @@ std::string hosfxr_path = "garrysmod/lua/bin/dotnet/host/fxr/" + std::string(NET
 #ifdef WIN32
 void* hostfxr_library_handle = LoadLibraryA((hosfxr_path + "/hostfxr.dll").c_str());
 #elif __APPLE__
-void* hostfxr_library_handle = dlopen((hosfxr_path + "/libhostfxr.dylib").c_str(), RTLD_LAZY);
+void* hostfxr_library_handle = dlopen((hosfxr_path + "/libhostfxr.dylib").c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_LOCAL);
 #elif __gnu_linux__
 void* hostfxr_library_handle = dlopen((hosfxr_path + "/libhostfxr.so").c_str(), RTLD_LAZY);
 #endif
@@ -184,12 +185,12 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
         game_exe_path[game_exe_path_len] = '\0';
 #endif
         dotnet_runtime_params.host_path = game_exe_path;
+
+        std::filesystem::path dotnet_root_path = std::filesystem::current_path() / "garrysmod/lua/bin/dotnet";
 #ifdef WIN32
         dotnet_runtime_params.dotnet_root = L"garrysmod/lua/bin/dotnet";
-#elif __APPLE__
-        dotnet_runtime_params.dotnet_root = (std::string(getcwd(nullptr, 0)) + std::string("/garrysmod/lua/bin/dotnet")).c_str(); // getcwd here allocates memory, but we don't care since it happens only once per process lifetime
 #else
-        dotnet_runtime_params.dotnet_root = (std::string(getcwd(nullptr, 0)) + std::string("/garrysmod/lua/bin/dotnet")).c_str(); // getcwd here allocates memory, but we don't care since it happens only once per process lifetime
+        dotnet_runtime_params.dotnet_root = dotnet_root_path.c_str();
 #endif
         int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, &runtime_environment_handle);
         if(init_success_code != 0)
