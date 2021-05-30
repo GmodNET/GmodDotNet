@@ -159,12 +159,11 @@ jobs:
             cp lua/Tests/run_tests.lua gmod/garrysmod/lua/autorun
 
      - name: Run Garry's Mod
-       shell: pwsh
-       working-directory: ./gmod/
+       shell: bash
        continue-on-error: true
        run: |
-            ./gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1
-            Start-Sleep -s 15
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
+            sleep 15
        env:
         COREHOST_TRACE: 1
         COREHOST_TRACE_VERBOSITY: 4
@@ -172,7 +171,6 @@ jobs:
 
      - name: Print Corehost trace
        shell: bash
-       working-directory: ./gmod/
        run: cat corehost_trace.txt
        continue-on-error: true
 
