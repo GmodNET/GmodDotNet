@@ -187,11 +187,8 @@ extern "C" DYNANAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::I
         dotnet_runtime_params.host_path = game_exe_path;
 
         std::filesystem::path dotnet_root_path = std::filesystem::current_path() / "garrysmod" / "lua" / "bin" / "dotnet";
-#ifdef WIN32
         dotnet_runtime_params.dotnet_root = dotnet_root_path.native().c_str();
-#else
-        dotnet_runtime_params.dotnet_root = dotnet_root_path.c_str();
-#endif
+
         int init_success_code = hostfxr_initialize_for_dotnet_command_line(2, dotnet_args, &dotnet_runtime_params, &runtime_environment_handle);
         if(init_success_code != 0)
         {
