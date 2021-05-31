@@ -46,7 +46,7 @@ std::string hosfxr_path = "garrysmod/lua/bin/dotnet/host/fxr/" + std::string(NET
 #ifdef WIN32
 void* hostfxr_library_handle = LoadLibraryA((hosfxr_path + "/hostfxr.dll").c_str());
 #elif __APPLE__
-void* hostfxr_library_handle = dlopen((hosfxr_path + "/libhostfxr.dylib").c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_LOCAL);
+void* hostfxr_library_handle = dlopen((hosfxr_path + "/libhostfxr.dylib").c_str(), RTLD_LAZY | RTLD_LOCAL);
 #elif __gnu_linux__
 void* hostfxr_library_handle = dlopen((hosfxr_path + "/libhostfxr.so").c_str(), RTLD_LAZY);
 #endif
