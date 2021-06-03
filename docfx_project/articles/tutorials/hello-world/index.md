@@ -166,36 +166,60 @@ The code we just added to the Load method will be executed when Gmod.NET loads o
 
 ## 4. Building, installing and testing our module
 
-TODO: Building info
+### Building
+
+1. **In the toolstrip go to Build and click 'Rebuild Solution'**. This will package our module ready for redistribution.
 
 ![build-solution](images/build-solution.png)
 
-TODO: Finding solution location in File Explorer
+2. **Go to your solution location in Windows File Explorer**.
 
-![find-solution-path](images/find-solution-path.png)
+3. **Inside your solution navigate to where the module was built:** `<your solution location>\GmodHelloWorld\bin\Debug\netcoreapp3.1\`
 
-TODO: Solution structure explained
-
-![entire-solution](images/entire-solution.png)
-
-TODO: GmodHelloWorld\GmodHelloWorld\bin\Debug\netcoreapp3.1
+4. **If your module built successfully you'll have the following files. We'll call these "*the built module files*".**
 
 ![final-module-files](images/final-module-files.png)
 
-TODO: Installing (same folder name)
+### Installing
+
+1. **Open another File Explorer window and go to your Garry's Mod folder and then `garrysmod\lua\bin\Modules`**.
+   * **Note:** If you don't see a *bin* folder in the lua folder, create it. If you don't see a *Modules* folder inside the bin folder, create it.
+
+2. **Create a folder inside `garrysmod\lua\bin\Modules` with the exact name of your module. In our case we name the folder GmodHelloWorld**.
+
+3. **Copy all *the built module files* to the folder we just created at `garrysmod\lua\bin\Modules\GmodHelloWorld\`:**
 
 ![final-module-files-at-location](images/final-module-files-at-location.png)
 
-TODO: Open Garry's Mod start a singleplayer game and check console. Yellow because Singleplayer
+**The module is now installed and Gmod.NET should be able to find it.**
+
+### Testing
+
+1. **Start Garry's Mod**
+
+2. **Start a singleplayer game**
+
+3. **Check the console.** Because we're loading the module in Singleplayer it's loaded clientside, our "Hello World!" message will appear in a yellow color:
 
  ![console-output](images/console-output.png)
 
+**🎉 Yay! Success!**
 
+### Testing
 
-TODO: If you try to remove or replace the module (because you've made changes for example):
+You'll have to rebuild and reinstall the module when you make changes in C#.
+
+1. When you reinstall the module (by copying it to: `lua/bin/Modules/GmodHelloWorld/`) you may get this error. That's because the module is in use while playing:
 
 ![file-in-use](images/file-in-use.png)
 
-TODO: Then reload with `gmod_net_unload_all`  for server but in our case`gmod_net_unload_all_cl` for clientside because singleplayer
+2. Unload the module:
+   * To unload the module use `gmod_net_unload_all` for the server
+   * In our case we yse `gmod_net_unload_all_cl` to unload the module clientside (because we're in singleplayer)
 
 ![unload-all](images/unload-all.png)
+
+3. Now that the module is unloaded you can overwrite it with the new files.
+
+4. Reload it with `gmod_net_load_all` or `gmod_net_load_all_cl` for server and client respectively.
+

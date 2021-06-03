@@ -390,7 +390,7 @@ We call the code inside a method it's body. The code we added will print "Hello 
   * It will become clear why we do this in a moment.
   * Our stack (contains 1 thing) looks like this now:
     * `_G`
-* ``lua.GetField(-1, "print");`
+* `lua.GetField(-1, "print");`
   * This is a method on the Lua State that gets the value of a field from a table. It then pushes that onto the stack
   * We give it -1 to indicate to look down one spot on the stack for the table. -1 from the top of the stack is the Global Table (_G) that we just pushed onto the stack.
   * In Lua the print function lives in the global table (that's why you can use it everywhere in your Lua code)
@@ -472,9 +472,9 @@ We've written the code to explain what our module wants to happen: *when loading
 
 ### Testing
 
-While testing you may make changes in C#. You'll have to rebuild and reinstall the module if you do that.
+You'll have to rebuild and reinstall the module when you make changes in C#.
 
-1. When you reinstall the module in `lua/bin/Modules/<module folder>/` you may get this error because the module is in use while playing:
+1. When you reinstall the module (by copying it to: `lua/bin/Modules/GmodHelloWorld/`) you may get this error. That's because the module is in use while playing:
 
 ![file-in-use](../hello-world/images/file-in-use.png)
 
