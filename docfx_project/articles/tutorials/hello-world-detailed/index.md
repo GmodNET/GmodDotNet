@@ -34,15 +34,15 @@ Furthermore there is tons of code already written for the .NET Core Framework. T
 
 ### Make sure you are on the Garry's Mod `x86-64` Beta branch
 
-1. **In your Steam Library find Garry's Mod**
+1. In your Steam Library find Garry's Mod
 
-2. **Right click Garry's Mod and go to 'Properties...'**
+2. Right click Garry's Mod and go to **Properties...**
 
    ![gmod-properties](../hello-world/images/gmod-properties.png)
 
-3. **Click the Beta menu**
+3. Click the **Beta** menu
 
-4. **From the dropdown select x86-64**
+4. From the dropdown select **x86-64**
 
    ![gmod beta branch](../hello-world/images/gmod-beta-property.png)
 
@@ -96,26 +96,26 @@ Now that you know what we're going to do and how we're going to get there: Let's
 
 *In short:* Visual Studio 2019 (aka VS2019) is an Integrated Development Environment (IDE). You can use it to write instructions for the computer in the form of code. Furthermore it contains all the tools you may need to debug the code, build the code to machine language, collaborate and much much more.
 
-1. **Get Visual Studio 2019 Community from the official website:** https://visualstudio.microsoft.com/. The community edition is free for individual developers, open-source and academic purposes.
+1. Get Visual Studio 2019 Community from the official website: https://visualstudio.microsoft.com/. The community edition is free for individual developers, open-source and academic purposes.
 
 The installation should be self explanatory. Only make sure that you select the correct Workload: *.NET desktop development Workload*. We will need that to create a Garry's Mod .NET Module. 
 
-2. **On the Workload selection screen in the installer choose at least the '.NET desktop development' Workload:**
+2. On the Workload selection screen in the installer choose at least the **.NET desktop development** Workload:
 
 ![Visual Studio Installer .NET Workload](../hello-world/images/visual-studio-workload.png)
 
 Let's make sure we really have ALL required components.
 
-3. **Go to Individual Components and ensure at least these components are checked:**
+3. Go to **Individual Components** and ensure at least these components are checked:
 
-* .NET SDK
-* NuGet Package manager
-* C# and Visual Basic
-* .NET Core 3.1 Runtime (LTS)
+   * **.NET SDK**
+   * **NuGet Package manager**
+   * **C# and Visual Basic**
+   * **.NET Core 3.1 Runtime (LTS)**
 
 ![Install individual components](../hello-world/images/visual-studio-indiv-components.png)
 
-4. **Now click 'Install' at the bottom of the installer.**
+4. Now click **Install** at the bottom of the installer.
 
 You can always install other workloads later, so don't bother with anything else for now. You can find the Visual Studio Installer after the installation in your `(Windows Start Menu) > (All Programs) > Visual Studio 2019 > Visual Studio Installer`.
 
@@ -129,8 +129,8 @@ You can always install other workloads later, so don't bother with anything else
 
 We've installed VS2019 and are ready to create our project. 
 
-1. **Start VS2019**
-2. ***(Only when starting VS for the first time)* You may be asked for some configuration options. You can choose all default settings or take your time to setup your environment:**
+1. Start VS2019
+2. **(Only when starting VS for the first time)** You may be asked for some configuration options. You can choose all default settings or take your time to setup your environment:
    * *Do you want to sign in?* Not required, but recommended to synchronize settings across your devices.
    * *Which Development Settings?* 'Visual C#' will fit best for the purpose of this tutorial
    * *Which color theme?* Pick any you like
@@ -138,31 +138,33 @@ We've installed VS2019 and are ready to create our project.
 
 You should see the start screen. You can recognize it by the big heading 'Visual Studio 2019' at the top. To the right should be 'Get started' with several options underneath it.
 
-3. **Click the 'Create new project' option**
+3. Click the **Create new project** option
 
 We now get to choose which type of project we want to create
 
-4. **Click the project type *Class Library (.NET Core)*** (Use the search box to find it faster)
+4. Click the project type **Class Library (.NET Core)** *(Use the search box to find it faster)*
 
 * **Note:** Is this project type missing? Double-check that you installed the .NET desktop development workload and required components mentioned in the previous chapter.
 * **Beware:** There are similarly named project types that are incorrect! Do **NOT** choose Class Library (.NET Framework) or Class Library (.NET Standard). These are incompatible with Gmod.NET.
 
 ![visual-studio-project-type](../hello-world/images/visual-studio-project-type.png)
 
-5. **Click Next** or double-click the project type
+5. Click Next or double-click the project type
 
-We now get to choose a name for our project. The rule we have for this is: no spaces, no special characters, EveryWordStartsWithACapitalLetter (known to programmers as PascalCase or UpperCamelCase).
+We now get to choose a name for our project. *The rule we have for this is: no spaces, no special characters, EveryWordStartsWithACapitalLetter (known to programmers as PascalCase or UpperCamelCase)*.
 
-6. **Choose the project name** `GmodHelloWorld`
-7. **Take note of the location where the project is created.**
+6. Choose the project name `GmodHelloWorld`
+7. Take note of the location where the project is created.
 
 The solution name is the same as the project name by default. This is fine. We'll learn about the difference between projects and solutions later.
 
-8. **Click Next** 
+8. Click Next
 
-Visual Studio now asks which framework you wish to target. Gmod.NET requires at least .NET Core 3.1
+Visual Studio now asks which framework you wish to target. Gmod.NET requires **at least .NET Core 3.1**
 
-9. **As the Target Framework choose '.NET Core 3.1 (Long-term support)'**
+9. As the Target Framework choose:
+   * If you're using a release like `0.6.0` use at least: **.NET Core 3.1 (Long-term support)** 
+   * If you're using a nightly build use at least: **.NET 5.0**
 
 Visual Studio will generate a Class Library (.NET Core) project for us. When it's done you will see this screen:
 
@@ -170,29 +172,29 @@ Visual Studio will generate a Class Library (.NET Core) project for us. When it'
 
 Visual Studio helps us identify problems with our code. I have already enabled the Error List so I can see the errors and warnings Visual Studio gives. Errors always need to be fixed. Warnings can sometimes be ignored.
 
-10. **Go to View and click 'Error List'**. This will help us later. You only have to do this once.
+10. Go to View and click **Error List**. This will help us later. You only have to do this once.
 
 To keep the Error List in view you can click the little 'pin' icon in the top right.
 
 
 
-In order to write Garry's Mod .NET modules we need to include the Gmod.NET API NuGet package. This adds code to our project so we don't have to write literally all code ourselves.
+In order to write Garry's Mod .NET modules we need to include the Gmod.NET API **NuGet package**. This adds code to our project so we don't have to write literally all code ourselves.
 
 **Let's add the GmodNET.API NuGet package to our project.**
 
-In Visual Studio we call the top menu (containing File, Edit, View, etc....) *the toolstrip*.
+In Visual Studio we call the top menu *(containing File, Edit, View, etc....)* **the toolstrip**.
 
-11. In the toolstrip **Go to Tools > NuGet Package Manager > Manage NuGet Packages for Solution...**
+11. In the toolstrip Go to **Tools > NuGet Package Manager > Manage NuGet Packages for Solution...**
 
 ![nuget-package-manager](../hello-world/images/nuget-package-manager.png)
 
-Through the NuGet package manager we can download and install all kinds of useful additions. Other programmers have graciously shared their projects with us, saving us from having to write all our own code.
+Through the **NuGet package manager** we can download and install all kinds of useful additions. Other programmers have graciously shared their projects with us, saving us from having to write all our own code.
 
-12. **Go to the Browse tab**
-13. In the search bar **search for GmodNET.API**
-14. **Click GmodNET.API**
-15. On the right-hand side **check the box in front of your project name (GmodHelloWorld)**
-16. **Click Install**
+12. Go to the **Browse** tab
+13. In the search bar search for "GmodNET.API"
+14. Click **GmodNET.API**
+15. On the right-hand side check the box in front of your project name (GmodHelloWorld)
+16. Click Install
 
 By default the NuGet Package Manager will install the latest version into our project. It may take a second to download and install. You can see if Visual Studio is downloading something by looking at the bottom left of the program. It will say "Ready" when it's done doing whatever it's doing.
 
@@ -204,19 +206,19 @@ By default the NuGet Package Manager will install the latest version into our pr
 
 Great! We've got the project setup. We want to get to writing some code. I'll have to bore you with some more *"things you always have to do"* though. Stick with me while we setup the code that will instruct Gmod.NET how to load our module.
 
-**On the right hand side you see the 'Solution Explorer'** This contains our Solution, Project(s) and code files. We can also see what it "depends on" in Dependencies (NuGet Packages for example).
+On the right hand side you see the **Solution Explorer**. This contains our Solution, Project(s) and code files. We can also see what it "depends on" in Dependencies (NuGet Packages for example).
 
 **Right now we have only a single code-file named Class1.cs (.cs stands for C-Sharp/C#). Let's clean up our code a bit and make it clear what it does.** 
 
-1. **Right click Class1.cs in the Solution Explorer**
+1. Right click **Class1.cs** in the Solution Explorer
 
-2. **Click Rename** and let's give this file a better name (read on below the image)
+2. Click Rename and let's give this file a better name *(read on below the image)*
 
    ![solution-explorer-rename](../hello-world/images/solution-explorer-rename.png)
 
-3. **We will name the file Setup.cs** since it will explain to Gmod.NET how our module starts, stops and what it does. I challenge you to think of a better name, though make sure that (like the project name) it is **always UpperCamelCase with no spaces, nor any special characters**. It always needs to end in **.cs** if you're writing C# code in it.
+3. We will name the file "Setup.cs" since it will explain to Gmod.NET how our module starts, stops and what it does. *I challenge you to think of a better name, though make sure that (like the project name) it is always UpperCamelCase with no spaces, nor any special characters. It always needs to end in **.cs** if you're writing C# code in it.*
 
-4. **Always click yes** when you get the dialog asking your something like "Would you like to rename all references from Class1 to Setup?". 
+4. **Always click yes** when you get the dialog asking your something like *"Would you like to rename all references from Class1 to Setup?"*. 
 
 You should see the code on the left hand side change. Amongst other code it will now say `public class Setup` instead of `public class Class1`. It is always a good idea that the filename is the same as the class name. What a "class" is and what "public" stands for is outside the scope of this tutorial. At the end of this tutorial we'll refer you to some more tutorials on the C# programming language.
 
@@ -226,7 +228,7 @@ We've seen where we can navigate through our code in the Solution Explorer. We c
 
 **Note:** Follow along carefully! Like in Garry's Mod Lua a single incorrect character can cause problems. Furthermore in C# you need to write code in exactly the right place. Everything in C# is inside a class and a class is usually inside a namespace. Always within the correct **curly brackets**: { and }.
 
-5. **Put your cursor behind `public class Setup` and type: ` : IModule`**
+5. Put your cursor behind `public class Setup` and type: ` : IModule`
 
 Check that you've written the code exactly (with a capital I and capital M) like in this screenshot:
 
@@ -238,7 +240,7 @@ Errors aren't something to be afraid of. In fact they will happen all the time w
 
 **Incredibly Visual Studio thinks it can even help us with this error. It's saying 'Show potential fixes' and in this case one of the suggestions actually makes sense.**
 
-6. **Click 'Show potential fixes'**
+6. Click **Show potential fixes**
 
 7. Now click the top option **using GmodNET.API;**
 
@@ -248,7 +250,7 @@ Errors aren't something to be afraid of. In fact they will happen all the time w
 
 **Note:** You can't always just go and click an option that Visual Studio recommends. Sometimes it gives terrible suggestions and the bottom three suggestions (Generate interface [...], Generate new type, etc.) almost always appear.
 
-**The suggestion to add `using GmodNET.API;` added that same line of code to the top of our file. The name IModule turned a different color as well.** With that line of code we explained to Visual Studio that we understand that IModule is not part of default C#. We tell it to go look for additional code in the GmodNET.API "namespace". There's code in GmodNET.API that explains what IModule is and how it works. Therefor the error we had disappears. C# now knows what to do with IModule.
+The suggestion to add `using GmodNET.API;` added that same line of code to the top of our file. The name IModule turned a different color as well. With that line of code we explained to Visual Studio that we understand that IModule is not part of default C#. We tell it to go look for additional code in the GmodNET.API "namespace". There's code in GmodNET.API that explains what IModule is and how it works. Therefor the error we had disappears. C# now knows what to do with IModule.
 
 **Additionally we've now got 4 new errors. Yay! Information:**
 
@@ -258,11 +260,11 @@ Errors aren't something to be afraid of. In fact they will happen all the time w
 
 Since we don't have those functionalities Visual Studio righteously complains by giving us errors. Let's add the missing functionalities.
 
-**Let Visual Studio help us *implement the interface*** (= to add the functionalities that the interface wants us to add):
+Let Visual Studio help us *implement the interface* *(= to add the functionalities that the interface wants us to add):*
 
-8. **Hover your cursor over the error at IModule**
-9. **Select 'Show potential fixes'**
-10. **Choose the suggestion 'Implement interface'**
+8. Hover your cursor over the error at IModule
+9. Select **Show potential fixes**
+10. Choose the suggestion **Implement interface**
 
 ![implement interface](../hello-world/images/implement-interface.png)
 
@@ -276,11 +278,11 @@ The generated code shows us how we can implement our interface. The clear names 
 
 **Let's go over the generated code, step-by-step and fill in the "empty spots".**
 
-11. First we have the *Property* `ModuleName` which is of the type *string*. **Adjust the code like so:**
+11. First we have the *Property* `ModuleName` which is of the type *string*. Adjust the code like so:
 
     ![property module name](../hello-world/images/property-module-name.png)
 
-**A *Property* describes a class (plural**. In this case the `ModuleName` describes what the name of our module will be. This property is of the type *string*. **Properties with the type string can only contain text. We can write literal text by using "double quotation marks".**
+**A *Property* describes a class** (plural. In this case the `ModuleName` describes what the name of our module will be. This property is of the type *string*. **Properties with the type string can only contain text**. We can write literal text by using "double quotation marks".
 
 **You can compare Properties to variables in Lua.** Only a property is a variable that is tied to the class it is in. 
 
@@ -288,7 +290,7 @@ In this case our property can be *accessed from the outside* by other classes an
 
 The next property is called `ModuleVersion` and is also of the type string. In the exact same way you wrote the code for ModuleName you should now write the code for the version of your module. 
 
-12. **Set ModuleVersion to the version number: 0.1.0** (Make sure you use the symbols we just discussed to indicate it's a literal string)
+12. Set ModuleVersion to the version number: 0.1.0 (Make sure you use the symbols we just discussed to indicate it's a literal string)
 
 Those were the only properties. Next up we get the place where we will write code that instructs the computer (or Garry's Mod in this case) to do something.
 
@@ -302,9 +304,9 @@ We can see from the () behind the Unload method that it does not expect any argu
 
 **Load is called when our module is loaded.** We will fill it with code in the next chapter.
 
-**Unload is called when our module needs to cleanup after itself.** Unload is irrelevant for our Hello World example.
+**Unload is called when our module needs to clean up after itself.** Unload is irrelevant for our Hello World example.
 
-13. **Remove `throw new NotImplementedException();`** from both the Load and Unload methods:
+13. Remove `throw new NotImplementedException();` from both the Load and Unload methods:
 
 ![empty methods](../hello-world/images/methods-empty.png)
 
@@ -328,7 +330,7 @@ We can see from the () behind the Unload method that it does not expect any argu
 
 After all those instructions we finally get to the most important part of this module: actually printing 'Hello World!' to the Garry's Mod console. Hilariously this will be the shortest chapter of all.
 
-1. We'll explain a bit of the code below in a moment. First **copy the following code inside the Load method between the curly brackets:**
+1. We'll explain a bit of the code below in a moment. First copy the following code inside the Load method **between the curly brackets**:
 
    ```lua
    lua.PushSpecial(GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB);
@@ -338,7 +340,7 @@ After all those instructions we finally get to the most important part of this m
    lua.Pop(1);
    ```
 
-Confirm the entire code file `Setup.cs` looks like this:
+Confirm the entire code file **Setup.cs** looks like this:
 
 ![final code](../hello-world/images/final-code.png)
 
@@ -426,49 +428,55 @@ We've written the code to explain what our module wants to happen: *when loading
 
 ### Building
 
-1. **In the toolstrip go to Build and click 'Rebuild Solution'**. This will package our module ready for redistribution.
+1. In the toolstrip go to **Build** and click **Rebuild Solution**. This will package our module ready for redistribution.
 
 ![build-solution](../hello-world/images/build-solution.png)
 
-2. **Go to your solution location in Windows File Explorer**. This is the location you saw when you first created the project. **If you forgot where the project is located:** you can find it by right-clicking the solution (at the top of the Solution Explorer) > 'Open Folder in File Explorer'.
+2. Go to your solution location in Windows File Explorer. This is the location you saw when you first created the project. 
+
+   **If you forgot where the project is located:** you can find it by right-clicking the solution (at the top of the Solution Explorer) > 'Open Folder in File Explorer'.
 
 ![find-solution-path](../hello-world/images/find-solution-path.png)
 
-3. **Verify your solution looks like in in the screenshot below.** If you want to share your code with others you should always share this entire folder  (including the `.sln`) file.
+3. Verify your solution looks like in in the screenshot below. If you want to share your code with others you should always share this entire folder  (including the `.sln`) file.
 
 ![entire-solution](../hello-world/images/entire-solution.png)
 
-4. **Inside your solution navigate to where the module was built:** `<your solution location>\GmodHelloWorld\bin\Debug\netcoreapp3.1\`
+4. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\netcoreapp3.1\`
 
-5. **If your module built successfully you'll have the following files. We'll call these "*the built module files*".**
+5. If your module built successfully you'll have the following files. We'll call these "*the built module files*".
 
 ![final-module-files](../hello-world/images/final-module-files.png)
 
 ### Installing
 
-1. **Open another File Explorer window and go to your Garry's Mod folder and then `garrysmod\lua\bin\Modules`**.
+1. Open another File Explorer window and go to your Garry's Mod folder and then `garrysmod\lua\bin\Modules`.
    * **Note:** If you don't see a *bin* folder in the lua folder, create it. If you don't see a *Modules* folder inside the bin folder, create it.
 
-2. **Create a folder inside `garrysmod\lua\bin\Modules` with the exact name of your module. In our case we name the folder GmodHelloWorld**.
+2. Create a folder inside `garrysmod\lua\bin\Modules` with the exact name of your module. In our case we name the folder GmodHelloWorld.
    * **Note:** The folder name needs to be exactly the same as the .dll name, but without the .dll suffix.
 
-3. **Copy all *the built module files* to the folder we just created at `garrysmod\lua\bin\Modules\GmodHelloWorld\`:**
+3. Copy all *the built module files* to the folder we just created at `garrysmod\lua\bin\Modules\GmodHelloWorld\`:
 
 ![final-module-files-at-location](../hello-world/images/final-module-files-at-location.png)
 
 **The module is now installed and Gmod.NET should be able to find it.**
 
+
+
 ### Testing
 
-1. **Start Garry's Mod**
+1. Start Garry's Mod
 
-2. **Start a singleplayer game**
+2. Start a singleplayer game
 
-3. **Check the console.** Because we're loading the module in Singleplayer it's loaded clientside, our "Hello World!" message will appear in a yellow color:
+3. Check the console. Because we're loading the module in Singleplayer it's loaded clientside, our "Hello World!" message will appear in a yellow color:
 
  ![console-output](../hello-world/images/console-output.png)
 
-**🎉 Yay! Success!**
+**🎉 Yay! Success!** We've created a .NET module for Garry's Mod.
+
+
 
 ### Testing
 
@@ -485,8 +493,9 @@ You'll have to rebuild and reinstall the module when you make changes in C#.
 ![unload-all](../hello-world/images/unload-all.png)
 
 3. Now that the module is unloaded you can overwrite it with the new files.
-
 4. Reload it with `gmod_net_load_all` or `gmod_net_load_all_cl` for server and client respectively.
+
+
 
 
 ## 6. Recap and further reading
