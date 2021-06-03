@@ -18,7 +18,7 @@ At the end of this tutorial you will have created and installed your own module 
 * Windows 10 (8.1 and 7 SP1 may also work, see [Visual Studio requirements](https://docs.microsoft.com/en-us/visualstudio/releases/2019/system-requirements#visual-studio-2019-system-requirements))
 * An internet connection
 * A copy of [Garry's Mod installed through Steam](https://store.steampowered.com/app/4000/garrys_mod)
-* Approximately 1 hour of your time and patience *(including downloading and installing Visual Studio)*
+* Approximately half an hour of your time and patience *(including downloading and installing Visual Studio)*
 
 ## Preparations
 
