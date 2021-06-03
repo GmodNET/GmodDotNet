@@ -1,2 +1,4 @@
-- name: "Hello World!"
-  href: hello-world/hello-world.md
+- name: "A quick start with 'Hello World'"
+  topicUid: tutorial_hello_world
+- name: "A comprehensive introduction to Visual Studio, C# and the 'Hello World' code"
+  topicUid: tutorial_hello_world_detailed
