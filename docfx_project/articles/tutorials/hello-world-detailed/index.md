@@ -6,8 +6,7 @@ title: "A comprehensive introduction to Visual Studio, C# and the 'Hello World' 
 # A comprehensive introduction to Visual Studio, C# and the Hello World code
 At the end of this tutorial you will have created and installed your own module that simply states: 'Hello World!' in the console. We will write a bit of C# (pronounce C-Sharp) code and learn about the basics of C# with regards to Gmod.NET module making.
 
-**This tutorial is written for users who may not yet be familiar with coding outside of Garry's Mod Lua**. You could skip sections of the tutorial at your own discretion.
-
+**This tutorial is written for users who may not yet be familiar with coding outside of Garry's Mod Lua**. You could skip sections of the tutorial at your own discretion or check out the shorter tutorial: <xref:tutorial_hello_world>
 
 
 ## Why?
@@ -421,45 +420,78 @@ We call the code inside a method it's body. The code we added will print "Hello 
 
 
 
-##5. Building, installing and testing our module
+## 5. Building, installing and testing our module
 
-TODO: Building info
+We've written the code to explain what our module wants to happen: *when loading our module print "Hello World!"*. To let Garry's Mod know we want this to happen, we'll have to install our module to it. Before we can install it, we'll have to build it.
+
+### Building
+
+1. **In the toolstrip go to Build and click 'Rebuild Solution'**. This will package our module ready for redistribution.
 
 ![build-solution](../hello-world/images/build-solution.png)
 
-TODO: Finding solution location in File Explorer
+2. **Go to your solution location in Windows File Explorer**. This is the location you saw when you first created the project. **If you forgot where the project is located:** you can find it by right-clicking the solution (at the top of the Solution Explorer) > 'Open Folder in File Explorer'.
 
 ![find-solution-path](../hello-world/images/find-solution-path.png)
 
-TODO: Solution structure explained
+3. **Verify your solution looks like in in the screenshot below.** If you want to share your code with others you should always share this entire folder  (including the `.sln`) file.
 
 ![entire-solution](../hello-world/images/entire-solution.png)
 
-TODO: GmodHelloWorld\GmodHelloWorld\bin\Debug\netcoreapp3.1
+4. **Inside your solution navigate to where the module was built:** `<your solution location>\GmodHelloWorld\bin\Debug\netcoreapp3.1\`
+
+5. **If your module built successfully you'll have the following files. We'll call these "*the built module files*".**
 
 ![final-module-files](../hello-world/images/final-module-files.png)
 
-TODO: Installing (same folder name)
+### Installing
+
+1. **Open another File Explorer window and go to your Garry's Mod folder and then `garrysmod\lua\bin\Modules`**.
+   * **Note:** If you don't see a *bin* folder in the lua folder, create it. If you don't see a *Modules* folder inside the bin folder, create it.
+
+2. **Create a folder inside `garrysmod\lua\bin\Modules` with the exact name of your module. In our case we name the folder GmodHelloWorld**.
+   * **Note:** The folder name needs to be exactly the same as the .dll name, but without the .dll suffix.
+
+3. **Copy all *the built module files* to the folder we just created at `garrysmod\lua\bin\Modules\GmodHelloWorld\`:**
 
 ![final-module-files-at-location](../hello-world/images/final-module-files-at-location.png)
 
-TODO: Open Garry's Mod start a singleplayer game and check console. Yellow because Singleplayer
+**The module is now installed and Gmod.NET should be able to find it.**
+
+### Testing
+
+1. **Start Garry's Mod**
+
+2. **Start a singleplayer game**
+
+3. **Check the console.** Because we're loading the module in Singleplayer it's loaded clientside, our "Hello World!" message will appear in a yellow color:
 
  ![console-output](../hello-world/images/console-output.png)
 
+**🎉 Yay! Success!**
 
+### Testing
 
-TODO: If you try to remove or replace the module (because you've made changes for example):
+While testing you may make changes in C#. You'll have to rebuild and reinstall the module if you do that.
+
+1. When you reinstall the module in `lua/bin/Modules/<module folder>/` you may get this error because the module is in use while playing:
 
 ![file-in-use](../hello-world/images/file-in-use.png)
 
-TODO: Then reload with `gmod_net_unload_all`  for server but in our case`gmod_net_unload_all_cl` for clientside because singleplayer
+2. Unload the module:
+   * To unload the module use `gmod_net_unload_all` for the server
+   * In our case we yse `gmod_net_unload_all_cl` to unload the module clientside (because we're in singleplayer)
 
 ![unload-all](../hello-world/images/unload-all.png)
 
+3. Now that the module is unloaded you can overwrite it with the new files.
+
+4. Reload it with `gmod_net_load_all` or `gmod_net_load_all_cl` for server and client respectively.
 
 
-## 6. Recap and further reading (TODO)
+## 6. Recap and further reading
+
+TODO: We still have to write this
 
 * What is a *Visual Studio Solution* and how does it relate to a *Project*?
 * Where can we learn more on writing C# code?
