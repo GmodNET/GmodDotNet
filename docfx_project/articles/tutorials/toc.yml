@@ -2,3 +2,5 @@
   topicUid: tutorial_hello_world
 - name: "A comprehensive introduction to Visual Studio, C# and the 'Hello World' code"
   topicUid: tutorial_hello_world_detailed
+- name: "Connect to nightly builds"
+  topicUid: tutorial_connect_nightly
