@@ -1,3 +1,8 @@
+---
+uid: tutorials
+title: Tutorials
+---
+
 # Tutorials
 
 Check out the menu on the left for a list of all tutorials.

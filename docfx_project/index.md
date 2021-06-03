@@ -1,3 +1,10 @@
-# GmodDotNet documentation
+# Gmod.NET documentation
 
-This is an early preview of the GmodDotNet documentation. Work is still in progress.
+Cross-platform .NET Module/Plugin platform for Garry's Mod powered by [.NET Core](https://dotnet.microsoft.com/).
+
+
+
+## Get started
+
+- Check out the **<xref:tutorials>**
+- [**Report issues on GitHub**](https://github.com/GmodNET/GmodDotNet/issues)

@@ -3,6 +3,10 @@ uid: tutorial_connect_nightly
 title: "Connect to nightly builds"
 ---
 
+> [!WARNING]
+> The nightly builds can be unstable. Please help us find bugs by [reporting issues on GitHub](https://github.com/GmodNET/GmodDotNet/issues).
+
+
 # Connect to the nightly builds and use it in your project
 Connect to the latest version of Gmod.NET to use the newest features and work with the `.NET 5.0`.
 

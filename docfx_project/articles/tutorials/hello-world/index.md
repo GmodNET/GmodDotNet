@@ -160,7 +160,7 @@ After all those instructions we finally get to the most important part of this m
 
 1. First copy the following code inside the Load method **between the curly brackets**:
 
-   ```lua
+   ```csharp
    lua.PushSpecial(GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB);
    lua.GetField(-1, "print");
    lua.PushString("Hello World!");
