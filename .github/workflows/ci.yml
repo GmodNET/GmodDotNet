@@ -4,12 +4,12 @@ on: [push, pull_request]
 
 env:
   GMODNET_VERSION: '0.6.0'
-  DOTNET_SDK_VERSION: '5.0.100'
+  DOTNET_SDK_VERSION: '5.0.300'
 
 jobs:
  linux-build:
 
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-20.04
 
    steps:
     - name: Checkout
@@ -51,8 +51,16 @@ jobs:
     - name: Run Garry's Mod
       run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
       working-directory: ./gmod/
-      timeout-minutes: 5
+      timeout-minutes: 1
       continue-on-error: true
+      env:
+        COREHOST_TRACE: 1
+        COREHOST_TRACE_VERBOSITY: 4
+        COREHOST_TRACEFILE: corehost_trace.txt
+
+    - name: Print Corehost trace
+      working-directory: ./gmod/
+      run: cat corehost_trace.txt
 
     - name: Print test log
       run: cat gmod/tests-log.txt
@@ -281,7 +289,7 @@ jobs:
 
  deploy-and-notify:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     needs: [linux-build, windows-build, mac-build]
 
