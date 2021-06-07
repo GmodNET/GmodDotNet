@@ -62,11 +62,11 @@ jobs:
       working-directory: ./gmod/
       run: cat corehost_trace.txt
 
-    - name: Print test log
-      run: cat gmod/tests-log.txt
-
     - name: Print console log
       run: cat gmod/garrysmod/console.log
+
+    - name: Print test log
+      run: cat gmod/tests-log.txt
 
     - name: Check if tests were successful
       run: mv gmod/tests-success.txt gmod/tests.txt
@@ -168,12 +168,12 @@ jobs:
        timeout-minutes: 5
        continue-on-error: true
 
+     - name: Print console log
+       run: cat gmod/garrysmod/console.log
+
      - name: Print test log
        shell: bash
        run: cat gmod/tests-log.txt
-
-     - name: Print console log
-       run: cat gmod/garrysmod/console.log
 
      - name: Check if tests were successful
        shell: bash
