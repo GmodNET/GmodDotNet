@@ -73,6 +73,7 @@ namespace GmodNET.API
         /// <param name="iStackPos">Position of the table on the stack.</param>
         /// <param name="key">Key in the table to set value for.</param>
         /// <remarks>
+        /// Pops the value from the top of the stack.
         /// This method can be used to fill Lua tables with values or update them. 
         /// In the example below we will add a Lua funtion <c>SayHello</c> to the Lua global table <see cref="SPECIAL_TABLES.SPECIAL_GLOB"/>.
         /// This function then can be called from any Lua script as <c>SayHello()</c>.
