@@ -8,7 +8,7 @@
     <RepositoryUrl>https://github.com/GmodNET/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>garrysmod; GmodNET</PackageTags>
-    <PackageProjectUrl>https://github.com/GlebChili/GmodDotNet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/GmodNET/GmodDotNet</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
 	  <Company>GmodNET</Company>
 	  <Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
