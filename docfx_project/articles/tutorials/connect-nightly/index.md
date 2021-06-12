@@ -72,3 +72,12 @@ To test if we've got a working nightly version we'll create a test project.
 2. Check the code generates to this result:
 ![IModule interface](images/test-nightly-imodule.png)
 3. Build the project. If you get no errors you followed the instructions correctly and can now use the nightly builds.
+
+## Install the module in Garry's Mod
+
+1. Go to [https://nightly.gmodnet.xyz/](https://nightly.gmodnet.xyz/)
+2. Download the same version you selected in NuGet earlier
+3. Install it in Garry's Mod
+    **Note:** Unlike the 0.6.0 release, the latest nightly builds need no Lua files. You should only require("dotnet") somewhere you want to use it.
+
+**You can now install your module and load it in Garry's Mod**
