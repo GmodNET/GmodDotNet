@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   GMODNET_VERSION: '0.6.0'
-  DOTNET_SDK_VERSION: '5.0.300'
+  DOTNET_SDK_VERSION: '5.0.301'
 
 jobs:
  linux-build:
@@ -49,7 +49,7 @@ jobs:
            cp lua/Tests/run_tests.lua gmod/garrysmod/lua/autorun
 
     - name: Run Garry's Mod
-      run: ./srcds_run_x64 -game garrysmod -systemtest +sv_hibernate_think 1 || true
+      run: ./srcds_run_x64 -game garrysmod -systemtest -condebug +sv_hibernate_think 1 || true
       working-directory: ./gmod/
       timeout-minutes: 1
       continue-on-error: true
@@ -61,7 +61,9 @@ jobs:
     - name: Print Corehost trace
       working-directory: ./gmod/
       run: cat corehost_trace.txt
-      continue-on-error: true
+
+    - name: Print console log
+      run: cat gmod/garrysmod/console.log
 
     - name: Print test log
       run: cat gmod/tests-log.txt
@@ -161,8 +163,13 @@ jobs:
      - name: Run Garry's Mod
        shell: bash
        run: |
-            powershell -Command './gmod/srcds_win64.exe -console -systemtest -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
-            sleep 15
+            powershell -Command './gmod/srcds_win64.exe -console -systemtest -condebug -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
+            powershell -Command 'Wait-Process -Name srcds_win64'
+       timeout-minutes: 5
+       continue-on-error: true
+
+     - name: Print console log
+       run: cat gmod/garrysmod/console.log
 
      - name: Print test log
        shell: bash
