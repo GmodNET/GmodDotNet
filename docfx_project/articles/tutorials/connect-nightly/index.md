@@ -8,7 +8,7 @@ title: "Connect to nightly builds"
 
 
 # Connect to the nightly builds and use it in your project
-Connect to the latest version of Gmod.NET to use the newest features and work with the `.NET 5.0`.
+Connect to the latest version of Gmod.NET to use the newest features (`main` for `.NET 5.0`) or to test the `.NET 6.0 Preview` version on the `net6` branch.
 
 We'll create a project to test if we've got the latest version.
 
@@ -18,30 +18,21 @@ We'll create a project to test if we've got the latest version.
    * Ensure at least these individual components are installed:
       * .NET SDK
       * NuGet Package manager
+      * `.NET 5.0` if you want to use the nightly `main` branch
+* The `.NET 6.0 Preview` [(link)](https://dotnet.microsoft.com/download/dotnet/6.0) if you want to use the nightly `net6` branch.
 * Windows 10 (For more see the [Visual Studio requirements](https://docs.microsoft.com/en-us/visualstudio/releases/2019/system-requirements#visual-studio-2019-system-requirements))
 * An internet connection
 
-## Preparations
-
-The current nightly builds require at least .NET 5.0.
-
-**Install the `.NET 5.0 Runtime` component for Visual Studio 2019:**
-* Start the Visual Studio Installer through `[Start Menu] > [All Programs] > Visual Studio 2019 > Visual Studio Installer`
-* Modify your installation:
-![Modify installation](images/vs-installer-modify.png)
-* Go to Individual Components
-* Search for `.NET 5.0 Runtime`
-![.NET 5.0 component](images/vs-installer-net-5.png)
-* Click Modify in the bottom right
-
-## Start a .NET 5.0 project
+## Start a .NET project
 
 To test if we've got a working nightly version we'll create a test project.
 
 1. Start Visual Studio 2019
 2. Create a new project and solution
-3. When asked to pick a framework choose `.NET 5.0`
-![.NET 5.0 project](images/project-net-5.png)
+3. When asked to pick a framework choose:
+    * For the `net6` branches choose `.NET 6.0`
+    * In our case we'll go for the `main` branch which is built for `.NET 5.0`
+![.NET 5.0 project](../hello-world/images/project-net-5.png)
 
 ## Adding the nightly builds to NuGet
 
@@ -63,8 +54,6 @@ To test if we've got a working nightly version we'll create a test project.
 10. Ensure *Include prerelease* is selected
 11. Click GmodNET.API and install the version you'd like to use.
 
-**Currently the .main branch uses .NET 5.0.**
-
 ## Test installation
 
 1. Implement the IModule interface. (Add `: IModule` behind the class name)
@@ -75,9 +64,10 @@ To test if we've got a working nightly version we'll create a test project.
 
 ## Install the module in Garry's Mod
 
-1. Go to [https://nightly.gmodnet.xyz/](https://nightly.gmodnet.xyz/)
-2. Download the same version you selected in NuGet earlier
-3. Install it in Garry's Mod
-    **Note:** Unlike the 0.6.0 release, the latest nightly builds need no Lua files. You should only require("dotnet") somewhere you want to use it.
+To use our module we need to install the same built version of Gmod.NET to Garry's Mod.
 
-**You can now install your module and load it in Garry's Mod**
+1. Go to [https://nightly.gmodnet.xyz/](https://nightly.gmodnet.xyz/)
+2. Download the pre-built version of Gmod.NET that you selected in NuGet earlier
+3. Install it in Garry's Mod `lua/bin`
+
+**You can now install your own .NET modules to `lua/bin/Modules` and load them in Garry's Mod**

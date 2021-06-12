@@ -57,15 +57,10 @@ Follow [the instructions in the README](https://github.com/GmodNET/GmodDotNet#in
 3. Confirm your `garrysmod/lua/bin/` directory contains at least these files and folders:
 ![binary folder structure](../hello-world/images/bin-folder-structure.png)
 
-4. You have copied `gmod-dot-net-lua-server.X.Y.Z.lua` to `garrysmod/lua/autorun/server/`
-
-5. You have copied `gmod-dot-net-lua-client.X.Y.Z.lua`  to `garrysmod/lua/autorun/client/`
-
-
 
 ## Tutorial Overview
 
-In this tutorial we'll take you through the process of creating a simple 'Hello World!' module. It will simply print 'Hello World!' to the console. The great thing about that is that you will have learnt the basics of creating a Gmod.NET module. We'll use **Visual Studio 2019**, **C#** (pronounce: C-Sharp) and the **.NET Core** (pronounce: dot net core) framework.
+In this tutorial we'll take you through the process of creating a simple 'Hello World!' module. It will simply print 'Hello World!' to the console. The great thing about that is that you will have learnt the basics of creating a Gmod.NET module. We'll use **Visual Studio 2019**, **C#** (pronounce: C-Sharp) and the **.NET 5.0** (pronounce: dot net 5) framework.
 
 These are the subjects we will be discussing:
 
@@ -111,9 +106,7 @@ Let's make sure we really have ALL required components.
    * **.NET SDK**
    * **NuGet Package manager**
    * **C# and Visual Basic**
-   * **.NET Core 3.1 Runtime (LTS)**
-
-![Install individual components](../hello-world/images/visual-studio-indiv-components.png)
+   * **.NET 5.0 Runtime**
 
 4. Now click **Install** at the bottom of the installer.
 
@@ -160,11 +153,10 @@ The solution name is the same as the project name by default. This is fine. We'l
 
 8. Click Next
 
-Visual Studio now asks which framework you wish to target. Gmod.NET requires **at least .NET Core 3.1**
+Visual Studio now asks which framework you wish to target. Gmod.NET requires **at least .NET 5.0**
 
-9. As the Target Framework choose:
-   * If you're using a release like `0.6.0` use at least: **.NET Core 3.1 (Long-term support)** 
-   * If you're using a nightly build use at least: **.NET 5.0**
+9. As the Target Framework choose **.NET 5.0**
+![.NET 5.0 project](../hello-world/images/project-net-5.png)
 
 Visual Studio will generate a Class Library (.NET Core) project for us. When it's done you will see this screen:
 
@@ -254,7 +246,7 @@ The suggestion to add `using GmodNET.API;` added that same line of code to the t
 
 **Additionally we've now got 4 new errors. Yay! Information:**
 
-![next errors](../hello-world/images/next-errors.png)
+![next errors](../hello-world/images/interface-errors.png)
 
 **IModule is an "interface". An interface forces us to add certain functionalities to our class.** IModule forces us to add functionalities explaining how the module must start and stop.
 
@@ -300,15 +292,17 @@ If we skim the rest of the code we see (amongst a lot of other code) the words L
 
 Methods sometimes get input and they sometimes return output. We can see that the Load and Unload methods don't return any output from the keyword `void` in front of the Method name. 
 
-We can see from the () behind the Unload method that it does not expect any arguments and therefor has no input. 
+We can see from the `(ILua lua)` behind the Unload method that it only expects a single argument/input.
 
-**Load is called when our module is loaded.** We will fill it with code in the next chapter.
+**Load is called by Gmod.NET when our module is loaded.** We will fill it with code in the next chapter.
 
-**Unload is called when our module needs to clean up after itself.** Unload is irrelevant for our Hello World example.
+**Unload is called by Gmod.NET when our module needs to clean up after itself.** Unload is irrelevant for our Hello World example.
 
 13. Remove `throw new NotImplementedException();` from both the Load and Unload methods:
 
 ![empty methods](../hello-world/images/methods-empty.png)
+
+`NotImplementedException` is a runtime error that helps us programmers remember to write some code. In C# we call runtime errors `Exceptions`. The `throw` keyword helps us raise such errors.
 
 **To summarize what we've learnt:**
 
@@ -319,11 +313,9 @@ We can see from the () behind the Unload method that it does not expect any argu
 * Visual Studio can help us generate the functionalities IModule requires: implementing the IModule interface
 * Properties describe a class
 * Methods explain in what sequence code needs to be executed
-
-
+* Runtime errors in C# are called Exceptions
 
 **That's it! We've setup our code and are ready to get to the main subject of today: making our module print 'Hello World!'.**
-
 
 
 ## 4. Writing module code
@@ -374,7 +366,6 @@ We can see that the Load method receives a few arguments of input:
   * A bool is short for boolean. It can contain only `true` or `false`.
   * We often use booleans for yes/no or on/off questions.
   * This argument is true if the module was loaded serverside.
-* `GetILuaFromLuaStatePointer lua_extructor` - Irrelevant for beginners, ignore it for now.
 * `ModuleAssemblyLoadContext assembly_context` - Irrelevant for beginners, ignore it for now.
 
 
@@ -442,7 +433,7 @@ We've written the code to explain what our module wants to happen: *when loading
 
 ![entire-solution](../hello-world/images/entire-solution.png)
 
-4. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\netcoreapp3.1\`
+4. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\net5.0\`
 
 5. If your module built successfully you'll have the following files. We'll call these "*the built module files*".
 
@@ -464,13 +455,17 @@ We've written the code to explain what our module wants to happen: *when loading
 
 
 
-### Testing
+### Running & Testing
 
 1. Start Garry's Mod
 
 2. Start a singleplayer game
 
-3. Check the console. Because we're loading the module in Singleplayer it's loaded clientside, our "Hello World!" message will appear in a yellow color:
+3. Open the Developer Console
+
+4. In order to load our module execute this Lua function: `dotnet.load` for example: `lua_run dotnet.load("GmodHelloWorld")`
+
+5. Check the console. Because we're loading the module on the server (using `lua_run`), our "Hello World!" message will appear in a blue color:
 
  ![console-output](../hello-world/images/console-output.png)
 
@@ -478,7 +473,7 @@ We've written the code to explain what our module wants to happen: *when loading
 
 
 
-### Testing
+### Making changes
 
 You'll have to rebuild and reinstall the module when you make changes in C#.
 
@@ -487,23 +482,12 @@ You'll have to rebuild and reinstall the module when you make changes in C#.
 ![file-in-use](../hello-world/images/file-in-use.png)
 
 2. Unload the module:
-   * To unload the module use `gmod_net_unload_all` for the server
-   * In our case we yse `gmod_net_unload_all_cl` to unload the module clientside (because we're in singleplayer)
+   * To unload the module execute this lua function: `dotnet.unload("GmodHelloWorld")`
+   * In our case we use `lua_run dotnet.unload("GmodHelloWorld")` to unload the module serverside (because we loaded it with `lua_run` on the server before)
 
 ![unload-all](../hello-world/images/unload-all.png)
 
 3. Now that the module is unloaded you can overwrite it with the new files.
-4. Reload it with `gmod_net_load_all` or `gmod_net_load_all_cl` for server and client respectively.
 
-
-
-
-## 6. Recap and further reading
-
-TODO: We still have to write this
-
-* What is a *Visual Studio Solution* and how does it relate to a *Project*?
-* Where can we learn more on writing C# code?
-* What exactly is a *NuGet Package* and how can it help us?
-* Other tutorials on Gmod.NET
+4. Reload the module the same way we loaded it before (with `dotnet.load("GmodHelloWorld")`)
 

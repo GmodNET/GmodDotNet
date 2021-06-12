@@ -16,7 +16,7 @@ At the end of this tutorial you will have created and installed your own module 
       * .NET SDK
       * NuGet Package manager
       * C# and Visual Basic
-      * .NET Core 3.1 Runtime (LTS)
+      * .NET 5.0 Runtime
 * Windows 10 (8.1 and 7 SP1 may also work, see [Visual Studio requirements](https://docs.microsoft.com/en-us/visualstudio/releases/2019/system-requirements#visual-studio-2019-system-requirements))
 * An internet connection
 * A copy of [Garry's Mod installed through Steam](https://store.steampowered.com/app/4000/garrys_mod)
@@ -62,9 +62,8 @@ These are the subjects we will be discussing in order to create our **.NET Core*
 4. Click Next or double-click the project type
 5. Choose the project name "GmodHelloWorld" *(the naming convention is PascalCase/UpperCamelCase)*
 6. Click Next 
-7. As the Target Framework choose:
-   * If you're using a release like `0.6.0` use at least: **.NET Core 3.1 (Long-term support)** 
-   * If you're using a nightly build use at least: **.NET 5.0**
+7. As the Target Framework choose **.NET 5.0**
+![.NET 5.0 project](images/project-net-5.png)
 
 Visual Studio will generate a Class Library (.NET Core) project for us. When it's done you will see this screen:
 
@@ -188,7 +187,7 @@ The code we just added to the Load method will be executed when Gmod.NET loads o
 
 2. Go to your solution location in Windows File Explorer.
 
-3. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\netcoreapp3.1\`
+3. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\net5.0\`
 
 4. If your module built successfully you'll have the following files. We'll call these "*the built module files*".
 
@@ -207,13 +206,17 @@ The code we just added to the Load method will be executed when Gmod.NET loads o
 
 **The module is now installed and Gmod.NET should be able to find it.**
 
-### Testing
+### Running & Testing
 
 1. Start Garry's Mod
 
 2. Start a singleplayer game
 
-3. Check the console. Because we're loading the module in Singleplayer it's loaded clientside, our "Hello World!" message will appear in a yellow color:
+3. Open the Developer Console
+
+4. In order to load our module execute this Lua function: `dotnet.load` for example: `lua_run dotnet.load("GmodHelloWorld")`
+
+5. Check the console. Because we're loading the module on the server (using `lua_run`), our "Hello World!" message will appear in a blue color:
 
  ![console-output](images/console-output.png)
 
@@ -221,21 +224,17 @@ The code we just added to the Load method will be executed when Gmod.NET loads o
 
 
 
-### Testing
+### Making changes
 
 You'll have to rebuild and reinstall the module when you make changes in C#.
 
-1. When you reinstall the module (by copying it to: `lua/bin/Modules/GmodHelloWorld/`) you may get this error. That's because the module is in use while playing:
-
-![file-in-use](images/file-in-use.png)
-
-2. Unload the module:
-   * To unload the module use `gmod_net_unload_all` for the server
-   * In our case we yse `gmod_net_unload_all_cl` to unload the module clientside (because we're in singleplayer)
+1. Unload the module:
+   * To unload the module execute this lua function: `dotnet.unload("GmodHelloWorld")`
+   * In our case we use `lua_run dotnet.unload("GmodHelloWorld")` to unload the module serverside (because we loaded it with `lua_run` on the server before)
 
 ![unload-all](images/unload-all.png)
 
-3. Now that the module is unloaded you can overwrite it with the new files.
+2. Now that the module is unloaded you can overwrite it with the new files.
 
-4. Reload it with `gmod_net_load_all` or `gmod_net_load_all_cl` for server and client respectively.
+3. Reload the module the same way we loaded it before (with `dotnet.load("GmodHelloWorld")`)
 
