@@ -232,8 +232,6 @@ You'll have to rebuild and reinstall the module when you make changes in C#.
    * To unload the module execute this lua function: `dotnet.unload("GmodHelloWorld")`
    * In our case we use `lua_run dotnet.unload("GmodHelloWorld")` to unload the module serverside (because we loaded it with `lua_run` on the server before)
 
-![unload-all](images/unload-all.png)
-
 2. Now that the module is unloaded you can overwrite it with the new files.
 
 3. Reload the module the same way we loaded it before (with `dotnet.load("GmodHelloWorld")`)
