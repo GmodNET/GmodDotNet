@@ -46,6 +46,7 @@
     "resource": [
       {
         "files": [
+          "articles/tutorials/**/images/**",
           "images/**"
         ]
       }
@@ -62,7 +63,9 @@
       }
     ],
     "dest": "_site",
-    "globalMetadataFiles": [],
+    "globalMetadataFiles": [
+      "global-metadata.json"
+    ],
     "globalMetadata": {
       "_appLogoPath": "images/gmodnetlogo-50px.png",
       "_appFaviconPath": "images/favicon.ico"
