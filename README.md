@@ -8,24 +8,33 @@ Cross-platform .NET Module/Plugin platform for Garry's Mod powered by [__.NET Co
 
 ## About
 
-Gmod.NET is Garry's Mod Module/Plugin loader for C#
-and other .NET languages which runs across all platforms (Windows,
-Linux, Mac Os). Gmod.NET allows you to develop cross-platform Garry's Mod extensions without
-need to close or reload your game or server.
-
-## Similar projects
-
-Check out [gmod_csModuleLoader](https://github.com/dedady157/gmod_csModuleLoader) by [Bailey Drahoss](https://github.com/dedady157).
+Gmod.NET is Garry's Mod Module/Plugin loader for C# and other .NET languages which runs across all platforms (Windows, Linux, Mac Os). Gmod.NET allows you to develop cross-platform Garry's Mod extensions without need to close or reload your game or server.
 
 ## Current features
 
-GmodNET provides functionality to write Garry's Mod modules in C# or any other CIL-compiled language as [__.NET Core 3.1__](https://dotnet.microsoft.com/) class libraries. For more information on modules and API check out [project's wiki](https://github.com/GlebChili/GmodDotNet/wiki). Only `x86_64` version of Garry's Mod is currently supported.
+GmodNET provides functionality to write Garry's Mod modules in C# or any other CIL-compiled language as [__.NET 5.0__](https://dotnet.microsoft.com/) class libraries. For more information on modules and the API check out [documentation](https://docs.gmodnet.xyz). Only `x86_64` version of Garry's Mod is currently supported.
+
+## Installation and usage
+
+1. Download latest build from the project's [releases page](https://github.com/GlebChili/GmodDotNet/releases).
+
+2. Unpack archive for your OS to the `%GARRYS_MOD_ROOT_FOLDER%garrysmod/lua/bin/` folder.
+
+3. Create a `Modules` folder inside `garrysmod/lua/bin/`.
+
+4. Create and build your .NET Module. For this example we'll call it `ExampleModuleName`. Check out [one of the tutorials on our documentation](https://docs.gmodnet.xyz/articles/tutorials/hello-world/) for examples.
+
+5. Place your .NET module, ...deps.json file, and all dependencies in a newly created `Modules/ExampleModuleName/` folder. *Note that the foldername must be the same as the name of your module's .dll file, without the .dll extension.*
+
+6. If you signed your module with [GmodNetModuleSigner](https://github.com/GlebChili/GmodNetModuleSigner), copy `ExampleModuleName.modulekey` and `ExampleModuleName.modulesign` to the same folder as above (`Modules/ExampleModuleName/`). *Replace `ExampleModuleName` with your module name (without .dll).*
+
+For more detailed installation and usage instructions check out the articles in the [documentation](https://docs.gmodnet.xyz).
 
 ## Need help?
 
-Check out our [wiki](https://github.com/GlebChili/GmodDotNet/wiki) or join our [discord server](https://discord.gg/9bP8nMT).
+Check out our [documentation](https://docs.gmodnet.xyz) or join our [discord server](https://discord.gg/9bP8nMT).
 
-## Building and contributing
+## Contributing and building Gmod.NET
 
 ### Build instructions
 
@@ -63,38 +72,21 @@ You may also want to copy the content of `lua` folder to the corresponding desti
 
 ### Folder structure
 
-Gmod.NET is subdivided into three subprojects.
+Gmod.NET is subdivided into three subprojects:
 
-Garry's Mod binary native module and helper libraries are
-contained in `gm_dotnet_native` folder and organized as CMake project.
-
-Managed part is contained in `gm_dotnet_managed` folder and organized with .NET soultion file `gm_dotnet_managed.sln`.
-
-Bootstrap Lua scripts are contained in `lua` folder.
+* `gm_dotnet_native`: Garry's Mod binary native module and helper libraries organized as a CMake project. *Loads the main Gmod.NET module.*
+* `gm_dotnet_managed`: Managed projects organized using the .NET soultion file `gm_dotnet_managed.sln`. *Loads and unloads modules, exposes (Lua) functions and capabilities to those modules.*
+* `lua`: Lua scripts, currently only for loading the test runner module.
 
 ### Nightly builds
 
 You can find latest nightly builds GmodDotNet runtime at http://nightly.gmodnet.xyz/. To use nightly NuGet packages connect to [our nightly NuGet feed](https://dev.azure.com/GmodNET/gmodnet-artifacts/_packaging?_a=feed&feed=gmodnet-packages).
 
-## Installation and usage
+[This article in the documentation](https://docs.gmodnet.xyz/articles/tutorials/connect-nightly/) describes how to use these nightly builds.
 
-1. Download latest build from the project's [releases page](https://github.com/GlebChili/GmodDotNet/releases).
+## Similar projects
 
-2. Unpack archive for your OS to the `%GARRYS_MOD_ROOT_FOLDER%garrysmod/lua/bin/` folder.
-
-3. Create a `Modules` folder inside `garrysmod/lua/bin/`.
-
-4. Download and copy `gm_dotnet_server.lua` to `garrysmod/lua/autorun/server` folder.
-
-5. Download and copy `gm_dotnet_client.lua` to `garrysmod/lua/autorun/client` folder.
-
-6. Place your .NET module, ...deps.json file, and all dependencies in `Modules/%exact_name_of_the_module_without_dll/` folder.
-
-7. If you signed your module with [GmodNetModuleSigner](https://github.com/GlebChili/GmodNetModuleSigner), copy `[name_of_your_module].modulekey` and `[name_of_your_module].modulesign` to the same folder as above (`Modules/%exact_name_of_the_module_without_dll/`).
-
-8. If you want your module to be serverside (clientside) only then add file `TYPE` to `Modules/%exact_name_of_the_module_without_dll/` with content `server` (`client`).
-
-9. Use `gmod_net_load_all` (`gmod_net_load_all_cl` for client-side) console command to load all managed modules and `gmod_net_unload_all` (`gmod_net_unload_all_cl`) to unload them. Modules can be hot-reloaded, so one doesn't need to quit game to see changes.
+Check out [gmod_csModuleLoader](https://github.com/dedady157/gmod_csModuleLoader) by [Bailey Drahoss](https://github.com/dedady157).
 
 ## License
 
