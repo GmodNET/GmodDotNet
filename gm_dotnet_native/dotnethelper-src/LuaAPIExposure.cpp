@@ -50,16 +50,7 @@ void export_set_metatable(ILuaBase * lua, int iStackPos)
 
 int export_get_metatable(ILuaBase * lua, int iStackPos)
 {
-    bool tmp_ret = lua->GetMetaTable(iStackPos);
-
-    if(tmp_ret)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return static_cast<int>(lua->GetMetaTable(iStackPos));
 }
 
 void export_call(ILuaBase * lua, int IArgs, int iResults)
@@ -124,16 +115,7 @@ double export_get_number(ILuaBase * lua, int iStackPos)
 
 int export_get_bool (ILuaBase * lua, int iStackPos)
 {
-    bool tmp_ret = lua->GetBool(iStackPos);
-
-    if(tmp_ret)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return static_cast<int>(lua->GetBool(iStackPos));
 }
 
 CFunc export_get_c_function(ILuaBase * lua, int iStackPos)
@@ -158,17 +140,7 @@ void export_push_number(ILuaBase * lua, double val)
 
 void export_push_bool(ILuaBase * lua, int val)
 {
-    bool tmp;
-    if(val == 0)
-    {
-        tmp = false;
-    }
-    else
-    {
-        tmp = true;
-    }
-
-    lua->PushBool(tmp);
+    lua->PushBool(static_cast<bool>(val));
 }
 
 void export_push_c_function(ILuaBase * lua, CFunc val)
@@ -203,16 +175,7 @@ void export_push_special(ILuaBase * lua, int table_type_number)
 
 int export_is_type(ILuaBase * lua, int iStackPos, int iType)
 {
-    bool tmp = lua->IsType(iStackPos, iType);
-
-    if(tmp)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return static_cast<int>(lua->IsType(iStackPos, iType));
 }
 
 int export_get_type(ILuaBase * lua, int iStackPos)
@@ -222,10 +185,9 @@ int export_get_type(ILuaBase * lua, int iStackPos)
 
 const char * export_get_type_name(ILuaBase * lua, int iType, int * out_name_len)
 {
-    const char * ptr =  lua->GetTypeName(iType);
-    int tmp_len = strlen(ptr);
-    *out_name_len = tmp_len;
-    return ptr;
+    const char * name =  lua->GetTypeName(iType);
+    *out_name_len = static_cast<int>(strlen(name));
+    return name;
 }
 
 int export_obj_len(ILuaBase * lua, int iStackPos)
@@ -235,42 +197,42 @@ int export_obj_len(ILuaBase * lua, int iStackPos)
 
 void export_get_angle(ILuaBase * lua, float * out_angle_components, int iStackPos)
 {
-    const QAngle& tmp = lua->GetAngle(iStackPos);
+    const QAngle& angle = lua->GetAngle(iStackPos);
 
-    out_angle_components[0] = tmp.x;
-    out_angle_components[1] = tmp.y;
-    out_angle_components[2] = tmp.z;
+    out_angle_components[0] = angle.x;
+    out_angle_components[1] = angle.y;
+    out_angle_components[2] = angle.z;
 }
 
 void export_get_vector(ILuaBase * lua, float * out_vector_components, int iStackPos)
 {
-    const Vector& tmp = lua->GetVector(iStackPos);
+    const Vector& vector = lua->GetVector(iStackPos);
 
-    out_vector_components[0] = tmp.x;
-    out_vector_components[1] = tmp.y;
-    out_vector_components[2] = tmp.z;
+    out_vector_components[0] = vector.x;
+    out_vector_components[1] = vector.y;
+    out_vector_components[2] = vector.z;
 }
 
 void export_push_angle(ILuaBase * lua, float x, float y, float z)
 {
-    QAngle tmp;
+    QAngle angle;
 
-    tmp.x = x;
-    tmp.y = y;
-    tmp.z = z;
+    angle.x = x;
+    angle.y = y;
+    angle.z = z;
 
-    lua->PushAngle(tmp);
+    lua->PushAngle(angle);
 }
 
 void export_push_vector(ILuaBase * lua, float x, float y, float z)
 {
-    Vector tmp;
+    Vector vector;
 
-    tmp.x = x;
-    tmp.y = y;
-    tmp.z = z;
+    vector.x = x;
+    vector.y = y;
+    vector.z = z;
 
-    lua->PushVector(tmp);
+    lua->PushVector(vector);
 }
 
 void export_set_state(ILuaBase * lua, lua_State * state)
@@ -285,16 +247,7 @@ int export_create_metatable(ILuaBase * lua, const char * name)
 
 int export_push_metatable(ILuaBase * lua, int iType)
 {
-    bool tmp = lua->PushMetaTable(iType);
-
-    if(tmp)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    return static_cast<int>(lua->PushMetaTable(iType));
 }
 
 void export_push_user_type(ILuaBase * lua, void * data, int iType)
@@ -344,16 +297,14 @@ void export_push_user_data(ILuaBase * lua, void * data)
 
 const char * export_check_string(ILuaBase * lua, int iStackPos, int * output_string_length)
 {
-    const char * tmp = lua->CheckString(iStackPos);
+    const char * str = lua->CheckString(iStackPos);
 
-    if(tmp == nullptr)
+    if(str != nullptr)
     {
-        return nullptr;
+        *output_string_length = static_cast<int>(strlen(str));
     }
 
-    *output_string_length = strlen(tmp);
-
-    return tmp;
+    return str;
 }
 
 double export_check_number(ILuaBase * lua, int iStackPos)
