@@ -49,8 +49,8 @@ managed_delegate_executor_fn managed_delegate_executor = nullptr;
 
 managed_main_fn managed_main = nullptr;
 
-const std::filesystem::path bin_folder = _T("garrysmod/lua/bin");
-const std::filesystem::path hostfxr_path = (bin_folder / _T("dotnet/host/fxr") / NET_CORE_VERSION).make_preferred();
+const std::filesystem::path lua_bin_folder = _T("garrysmod/lua/bin");
+const std::filesystem::path hostfxr_path = (lua_bin_folder / _T("dotnet/host/fxr") / NET_CORE_VERSION).make_preferred();
 #ifdef WIN32
 HMODULE hostfxr_library_handle = LoadLibraryW((hostfxr_path / _T("hostfxr.dll")).c_str());
 #elif __APPLE__
@@ -173,8 +173,8 @@ extern "C" DYNAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILu
 
         hostfxr_set_error_writer(dotnet_error_writer);
 
-        const auto gmodnet_dll_relative_path = bin_folder / _T("gmodnet/GmodNET.dll");
-        const auto dotnet_root_path = (std::filesystem::current_path() / bin_folder / "dotnet").make_preferred();
+        const auto gmodnet_dll_relative_path = lua_bin_folder / _T("gmodnet/GmodNET.dll");
+        const auto dotnet_root_path = (std::filesystem::current_path() / lua_bin_folder / "dotnet").make_preferred();
 
         const char_t* dotnet_args[] = {_T("exec"), gmodnet_dll_relative_path.c_str()};
         

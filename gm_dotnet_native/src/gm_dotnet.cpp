@@ -19,11 +19,11 @@ cleanup_function_fn cleanup_function = nullptr;
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()
 {
-    const std::filesystem::path bin_folder("garrysmod/lua/bin");
+    const std::filesystem::path lua_bin_folder("garrysmod/lua/bin");
 
     // On Linux, modify SIGSEGV handling
 #ifdef __gnu_linux__
-    void *linux_helper_handle = dlopen((bin_folder / "liblinuxhelper.so").c_str(), RTLD_LAZY);
+    void *linux_helper_handle = dlopen((lua_bin_folder / "liblinuxhelper.so").c_str(), RTLD_LAZY);
     void (*pointer_to_install_sigsegv)(void);
     pointer_to_install_sigsegv = (void(*)())dlsym(linux_helper_handle, "install_sigsegv_handler");
     pointer_to_install_sigsegv();
@@ -40,13 +40,13 @@ GMOD_MODULE_OPEN()
     const char InitNetRuntime_fn_name[] = "InitNetRuntime";
 
 #ifdef WIN32
-    HMODULE dotnethelper_handle = LoadLibraryW((bin_folder / "dotnethelper.dll").make_preferred().c_str());
+    HMODULE dotnethelper_handle = LoadLibraryW((lua_bin_folder / "dotnethelper.dll").make_preferred().c_str());
     if (dotnethelper_handle != nullptr)
         InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(GetProcAddress(dotnethelper_handle, InitNetRuntime_fn_name));
 #elif __APPLE__
-    void* dotnethelper_handle = dlopen((bin_folder / "libdotnethelper.dylib").c_str(), RTLD_LAZY);
+    void* dotnethelper_handle = dlopen((lua_bin_folder / "libdotnethelper.dylib").c_str(), RTLD_LAZY);
 #elif __gnu_linux__
-    void* dotnethelper_handle = dlopen((bin_folder / "libdotnethelper.so").c_str(), RTLD_LAZY);
+    void* dotnethelper_handle = dlopen((lua_bin_folder / "libdotnethelper.so").c_str(), RTLD_LAZY);
 #endif
 
 #ifndef WIN32
