@@ -3,6 +3,7 @@
 //
 #include <GarrysMod/Lua/Interface.h>
 #include <codecvt>
+#include <filesystem>
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -18,9 +19,11 @@ cleanup_function_fn cleanup_function = nullptr;
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()
 {
+    const std::filesystem::path bin_folder("garrysmod/lua/bin");
+
     // On Linux, modify SIGSEGV handling
 #ifdef __gnu_linux__
-    void *linux_helper_handle = dlopen("garrysmod/lua/bin/liblinuxhelper.so", RTLD_LAZY);
+    void *linux_helper_handle = dlopen((bin_folder / "liblinuxhelper.so").c_str(), RTLD_LAZY);
     void (*pointer_to_install_sigsegv)(void);
     pointer_to_install_sigsegv = (void(*)())dlsym(linux_helper_handle, "install_sigsegv_handler");
     pointer_to_install_sigsegv();
@@ -29,21 +32,25 @@ GMOD_MODULE_OPEN()
     // Native welcome message
     LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
     LUA->GetField(-1, "print");
-    LUA->PushString((std::string("Gmod dotnet loader ") + std::string(SEM_VERSION)).c_str());
+    LUA->PushString("Gmod dotnet loader " SEM_VERSION);
     LUA->Call(1, 0);
     LUA->Pop(1);
 
+    InitNetRuntime_fn InitNetRuntime = nullptr;
+    const char InitNetRuntime_fn_name[] = "InitNetRuntime";
+
 #ifdef WIN32
-    HMODULE dotnethelper_handle = LoadLibraryA("garrysmod/lua/bin/dotnethelper.dll");
-    InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(GetProcAddress(dotnethelper_handle, "InitNetRuntime"));
+    HMODULE dotnethelper_handle = LoadLibraryW((bin_folder / "dotnethelper.dll").make_preferred().c_str());
+    if (dotnethelper_handle != nullptr)
+        InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(GetProcAddress(dotnethelper_handle, InitNetRuntime_fn_name));
 #elif __APPLE__
-    void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.dylib", RTLD_LAZY);
+    void* dotnethelper_handle = dlopen((bin_folder / "libdotnethelper.dylib").c_str(), RTLD_LAZY);
 #elif __gnu_linux__
-    void* dotnethelper_handle = dlopen("garrysmod/lua/bin/libdotnethelper.so", RTLD_LAZY);
+    void* dotnethelper_handle = dlopen((bin_folder / "libdotnethelper.so").c_str(), RTLD_LAZY);
 #endif
 
 #ifndef WIN32
-    InitNetRuntime_fn InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, "InitNetRuntime"));
+    InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, InitNetRuntime_fn_name));
 #endif
 
     if(InitNetRuntime == nullptr)
