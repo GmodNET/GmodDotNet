@@ -194,6 +194,7 @@ extern "C" DYNAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILu
         if(runtime_environment_handle == nullptr)
         {
             error_log_file << "runtime_environment_handle is null" << std::endl;
+            return nullptr;
         }
         get_function_pointer_fn get_function_pointer = nullptr;
         int get_runtime_delegate_success_code =
