@@ -7,7 +7,7 @@
 #include <execinfo.h>
 #include <unistd.h>
 #include <regex>
-#include "utils/get_exe_path.h"
+#include "utils/path.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ extern "C" __attribute__((__visibility__("default"))) void install_sigsegv_handl
 {
     if(!WasHandlerSet)
     {
-        std::filesystem::path exe_path = utils::get_exe_path();
+        std::filesystem::path exe_path = utils::path::get_exe();
 
         regex file_matcher = regex(".*\\/gmod$");
         if(!regex_match(exe_path.native(), file_matcher))

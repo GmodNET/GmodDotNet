@@ -12,16 +12,15 @@
 #include <string>
 #include <dynalo/dynalo.hpp>
 #include "dotnethelper-src/cleanup_function_type.h"
+#include "utils/path.h"
 
 cleanup_function_fn cleanup_function = nullptr;
 
-const std::filesystem::path lua_bin_folder("garrysmod/lua/bin");
-
 #ifdef __gnu_linux__
-const dynalo::library liblinuxhelper(lua_bin_folder / "liblinuxhelper.so");
+const dynalo::library liblinuxhelper(utils::path::lua_bin_folder() / "liblinuxhelper.so");
 #endif
 
-const dynalo::library dotnethelper(lua_bin_folder / dynalo::to_native_name("dotnethelper"));
+const dynalo::library dotnethelper(utils::path::lua_bin_folder() / dynalo::to_native_name("dotnethelper"));
 
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()

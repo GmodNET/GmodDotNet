@@ -21,9 +21,19 @@ set(NET_CORE_VERSION "1.0.0" CACHE STRING "Version of bundled .NET Core Runtime"
 
 #Project name
 project(gm_dotnet_native)
-add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp dotnethelper-src/cleanup_function_type.h utils/get_exe_path.cpp)
-add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-src/cleanup_function_type.h
-		dotnethelper-src/LuaAPIExposure.h dotnethelper-src/LuaAPIExposure.cpp utils/get_exe_path.cpp)
+add_library(gm_dotnet_native SHARED
+	src/gm_dotnet.cpp
+	dotnethelper-src/cleanup_function_type.h
+	utils/path.cpp
+)
+add_library(dotnethelper SHARED
+	dotnethelper-src/dotnethelper.cpp
+	dotnethelper-src/cleanup_function_type.h
+	dotnethelper-src/LuaAPIExposure.h
+	dotnethelper-src/LuaAPIExposure.cpp
+	dotnethelper-src/hostfxr_interop.cpp
+	utils/path.cpp
+)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}")
 add_subdirectory ("${EXTERNAL_INCLUDES_PATH}/dynalo")
@@ -40,7 +50,11 @@ set_target_properties(dotnethelper PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_C
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
 #Add linux helper lib
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-	add_library(linuxhelper SHARED linux-helper-src/segv_signal_handler.h linux-helper-src/segv_signal_handler.cpp)
+	add_library(linuxhelper SHARED
+		linux-helper-src/segv_signal_handler.h
+		linux-helper-src/segv_signal_handler.cpp
+		utils/path.cpp
+	)
 	set_target_properties(linuxhelper PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build
 			RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../build)
 endif()
