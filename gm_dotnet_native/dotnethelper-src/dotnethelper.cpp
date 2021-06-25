@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <dynalo/dynalo.hpp>
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -51,23 +52,13 @@ managed_main_fn managed_main = nullptr;
 
 const std::filesystem::path lua_bin_folder = _T("garrysmod/lua/bin");
 const std::filesystem::path hostfxr_path = (lua_bin_folder / _T("dotnet/host/fxr") / NET_CORE_VERSION).make_preferred();
-#ifdef WIN32
-HMODULE hostfxr_library_handle = LoadLibraryW((hostfxr_path / _T("hostfxr.dll")).c_str());
-#elif __APPLE__
-void* hostfxr_library_handle = dlopen((hostfxr_path / "libhostfxr.dylib").c_str(), RTLD_LAZY | RTLD_LOCAL);
-#elif __gnu_linux__
-void* hostfxr_library_handle = dlopen((hostfxr_path / "libhostfxr.so").c_str(), RTLD_LAZY);
-#endif
+
+const dynalo::library hostfxr_library(hostfxr_path / dynalo::to_native_name("hostfxr"));
 
 template<typename T>
-bool LoadFunction(const char* function_name, T& out_func)
+void load_hostfxr_function(const char* function_name, T& out_func)
 {
-#ifdef WIN32
-    out_func = reinterpret_cast<T>(GetProcAddress(hostfxr_library_handle, function_name));
-#else
-    out_func = reinterpret_cast<T>(dlsym(hostfxr_library_handle, function_name));
-#endif
-    return (out_func != nullptr);
+    out_func = hostfxr_library.get_function<std::remove_pointer_t<T>>(function_name);
 }
 hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_command_line = nullptr;
 hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate = nullptr;
@@ -161,11 +152,15 @@ extern "C" DYNAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILu
 
     if(managed_main == nullptr)
     {
-        if(!(LoadFunction("hostfxr_initialize_for_dotnet_command_line", hostfxr_initialize_for_dotnet_command_line)
-            && LoadFunction("hostfxr_get_runtime_delegate", hostfxr_get_runtime_delegate)
-            && LoadFunction("hostfxr_set_error_writer", hostfxr_set_error_writer)))
+        try
         {
-            error_log_file << "Unable to load hostfxr library" << std::endl;
+            load_hostfxr_function("hostfxr_initialize_for_dotnet_command_line", hostfxr_initialize_for_dotnet_command_line);
+            load_hostfxr_function("hostfxr_get_runtime_delegate", hostfxr_get_runtime_delegate);
+            load_hostfxr_function("hostfxr_set_error_writer", hostfxr_set_error_writer);
+        }
+        catch (std::runtime_error ex)
+        {
+            error_log_file << "Unable to load hostfxr library: " << ex.what() << std::endl;
             return nullptr;
         }
 

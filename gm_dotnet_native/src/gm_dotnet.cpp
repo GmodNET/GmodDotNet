@@ -10,22 +10,25 @@
 #include <dlfcn.h>
 #endif // WIN32
 #include <string>
-#include "../dotnethelper-src/cleanup_function_type.h"
-
-typedef cleanup_function_fn (*InitNetRuntime_fn)(GarrysMod::Lua::ILuaBase* lua);
+#include "dotnethelper-src/cleanup_function_type.h"
+#include <dynalo/dynalo.hpp>
 
 cleanup_function_fn cleanup_function = nullptr;
+
+const std::filesystem::path lua_bin_folder("garrysmod/lua/bin");
+
+#ifdef __gnu_linux__
+const dynalo::library liblinuxhelper(lua_bin_folder / "liblinuxhelper.so");
+#endif
+
+const dynalo::library dotnethelper(lua_bin_folder / dynalo::to_native_name("dotnethelper"));
 
 //Invoked by Garry's Mod on module load
 GMOD_MODULE_OPEN()
 {
-    const std::filesystem::path lua_bin_folder("garrysmod/lua/bin");
-
     // On Linux, modify SIGSEGV handling
 #ifdef __gnu_linux__
-    void *linux_helper_handle = dlopen((lua_bin_folder / "liblinuxhelper.so").c_str(), RTLD_LAZY);
-    void (*pointer_to_install_sigsegv)(void);
-    pointer_to_install_sigsegv = (void(*)())dlsym(linux_helper_handle, "install_sigsegv_handler");
+    auto pointer_to_install_sigsegv = liblinuxhelper.get_function<void()>("install_sigsegv_handler");
     pointer_to_install_sigsegv();
 #endif
 
@@ -36,35 +39,21 @@ GMOD_MODULE_OPEN()
     LUA->Call(1, 0);
     LUA->Pop(1);
 
-    InitNetRuntime_fn InitNetRuntime = nullptr;
-    const char InitNetRuntime_fn_name[] = "InitNetRuntime";
-
-#ifdef WIN32
-    HMODULE dotnethelper_handle = LoadLibraryW((lua_bin_folder / "dotnethelper.dll").make_preferred().c_str());
-    if (dotnethelper_handle != nullptr)
-        InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(GetProcAddress(dotnethelper_handle, InitNetRuntime_fn_name));
-#elif __APPLE__
-    void* dotnethelper_handle = dlopen((lua_bin_folder / "libdotnethelper.dylib").c_str(), RTLD_LAZY);
-#elif __gnu_linux__
-    void* dotnethelper_handle = dlopen((lua_bin_folder / "libdotnethelper.so").c_str(), RTLD_LAZY);
-#endif
-
-#ifndef WIN32
-    InitNetRuntime = reinterpret_cast<InitNetRuntime_fn>(dlsym(dotnethelper_handle, InitNetRuntime_fn_name));
-#endif
-
-    if(InitNetRuntime == nullptr)
+    try
     {
+        auto InitNetRuntime = dotnethelper.get_function<cleanup_function_fn(GarrysMod::Lua::ILuaBase*)>("InitNetRuntime");
+        cleanup_function = InitNetRuntime(LUA);
+    }
+    catch(std::runtime_error e)
+    {
+        auto error_msg = std::string("::error::Unable to load dotnet helper library. ") + e.what();
         LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
         LUA->GetField(-1, "print");
-        LUA->PushString("::error::Unable to load dotnet helper library.");
+        LUA->PushString(error_msg.c_str());
         LUA->Call(1, 0);
         LUA->Pop(1);
-
         return 0;
     }
-
-    cleanup_function = InitNetRuntime(LUA);
 
     if(cleanup_function == nullptr)
     {
