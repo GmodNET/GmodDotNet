@@ -21,9 +21,9 @@ set(NET_CORE_VERSION "1.0.0" CACHE STRING "Version of bundled .NET Core Runtime"
 
 #Project name
 project(gm_dotnet_native)
-add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp dotnethelper-src/cleanup_function_type.h)
+add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp dotnethelper-src/cleanup_function_type.h utils/get_exe_path.cpp)
 add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-src/cleanup_function_type.h
-		dotnethelper-src/LuaAPIExposure.h dotnethelper-src/LuaAPIExposure.cpp)
+		dotnethelper-src/LuaAPIExposure.h dotnethelper-src/LuaAPIExposure.cpp utils/get_exe_path.cpp)
 #Set up external include libraries
 include_directories ("${EXTERNAL_INCLUDES_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}")
 add_subdirectory ("${EXTERNAL_INCLUDES_PATH}/dynalo")

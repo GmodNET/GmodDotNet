@@ -1,17 +1,17 @@
 //
 // Created by Gleb Krasilich on 02.10.2019.
 //
-#include <GarrysMod/Lua/Interface.h>
 #include <codecvt>
 #include <filesystem>
+#include <GarrysMod/Lua/Interface.h>
 #ifdef WIN32
 #include <Windows.h>
 #else
 #include <dlfcn.h>
 #endif // WIN32
 #include <string>
-#include "dotnethelper-src/cleanup_function_type.h"
 #include <dynalo/dynalo.hpp>
+#include "dotnethelper-src/cleanup_function_type.h"
 
 cleanup_function_fn cleanup_function = nullptr;
 
@@ -44,9 +44,9 @@ GMOD_MODULE_OPEN()
         auto InitNetRuntime = dotnethelper.get_function<cleanup_function_fn(GarrysMod::Lua::ILuaBase*)>("InitNetRuntime");
         cleanup_function = InitNetRuntime(LUA);
     }
-    catch(std::runtime_error e)
+    catch(const std::runtime_error& ex)
     {
-        auto error_msg = std::string("::error::Unable to load dotnet helper library. ") + e.what();
+        auto error_msg = std::string("::error::Unable to load dotnet helper library. ") + ex.what();
         LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
         LUA->GetField(-1, "print");
         LUA->PushString(error_msg.c_str());

@@ -1,16 +1,17 @@
 //
 // Created by Gleb Krasilich on 11.10.2020.
 //
-#include <iostream>
-#include <netcore/hostfxr.h>
-#include <netcore/coreclr_delegates.h>
-#include <GarrysMod/Lua/LuaBase.h>
-#include "cleanup_function_type.h"
-#include "LuaAPIExposure.h"
-#include <string>
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <GarrysMod/Lua/LuaBase.h>
 #include <dynalo/dynalo.hpp>
+#include <netcore/coreclr_delegates.h>
+#include "LuaAPIExposure.h"
+#include "cleanup_function_type.h"
+#include "hostfxr_loader.h"
+#include "utils/get_exe_path.h"
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -21,7 +22,7 @@
 
 #ifdef WIN32
 #define DYNAMIC_EXPORT _declspec(dllexport)
-#define __T(x) L ## x
+#define __T(x) L##x
 #else
 #define DYNAMIC_EXPORT __attribute__((visibility("default")))
 #define __T(x) x
@@ -29,47 +30,31 @@
 
 #define _T(x) __T(x)
 
-typedef int (*managed_delegate_executor_fn)(
-        lua_State * luaState
-);
+typedef int (*managed_delegate_executor_fn)(lua_State* luaState);
 
-typedef cleanup_function_fn(*managed_main_fn)(
-        GarrysMod::Lua::ILuaBase* lua,
-        const char* versionString,
-        int versionStringLength,
-        void** internalFunctionsParam,
-        GarrysMod::Lua::CFunc native_delegate_executor_ptr,
-        /* Out Param */ managed_delegate_executor_fn* managed_delegate_executor_ptr
-        );
+typedef cleanup_function_fn (*managed_main_fn)(GarrysMod::Lua::ILuaBase* lua,
+                                               const char* versionString,
+                                               int versionStringLength,
+                                               void** internalFunctionsParam,
+                                               GarrysMod::Lua::CFunc native_delegate_executor_ptr,
+                                               /* Out Param */ managed_delegate_executor_fn* managed_delegate_executor_ptr);
 
 using tstring = std::basic_string<char_t>;
 
 std::ofstream error_log_file;
 
 managed_delegate_executor_fn managed_delegate_executor = nullptr;
-
 managed_main_fn managed_main = nullptr;
 
 const std::filesystem::path lua_bin_folder = _T("garrysmod/lua/bin");
-const std::filesystem::path hostfxr_path = (lua_bin_folder / _T("dotnet/host/fxr") / NET_CORE_VERSION).make_preferred();
+const dynalo::library hostfxr_library(lua_bin_folder / _T("dotnet/host/fxr") / NET_CORE_VERSION / dynalo::to_native_name("hostfxr"));
 
-const dynalo::library hostfxr_library(hostfxr_path / dynalo::to_native_name("hostfxr"));
-
-template<typename T>
-void load_hostfxr_function(const char* function_name, T& out_func)
-{
-    out_func = hostfxr_library.get_function<std::remove_pointer_t<T>>(function_name);
-}
-hostfxr_initialize_for_dotnet_command_line_fn hostfxr_initialize_for_dotnet_command_line = nullptr;
-hostfxr_get_runtime_delegate_fn hostfxr_get_runtime_delegate = nullptr;
-hostfxr_set_error_writer_fn hostfxr_set_error_writer = nullptr;
-
-void HOSTFXR_CALLTYPE dotnet_error_writer(const char_t *message)
+void HOSTFXR_CALLTYPE dotnet_error_writer(const char_t* message)
 {
     error_log_file << message << std::endl;
 }
 
-int native_delegate_executor(lua_State * luaState)
+int native_delegate_executor(lua_State* luaState)
 {
     int return_val = managed_delegate_executor(luaState);
 
@@ -85,7 +70,8 @@ int native_delegate_executor(lua_State * luaState)
     }
 }
 
-void * params_to_managed_code[] = {
+// clang-format off
+void* params_to_managed_code[] = {
         reinterpret_cast<void*>(export_top),
         reinterpret_cast<void*>(export_push),
         reinterpret_cast<void*>(export_pop),
@@ -142,6 +128,73 @@ void * params_to_managed_code[] = {
         reinterpret_cast<void*>(export_check_number),
         reinterpret_cast<void*>(export_push_c_function_safe)
 };
+// clang-format on
+
+hostfxr_handle get_runtime_environment_handle(const hostfxr_functions& hostfxr)
+{
+    const auto dotnet_root_path = (std::filesystem::current_path() / lua_bin_folder / _T("dotnet")).make_preferred();
+    std::filesystem::path game_exe_path = utils::get_exe_path();
+
+    hostfxr_initialize_parameters dotnet_runtime_params;
+    dotnet_runtime_params.size = sizeof(hostfxr_initialize_parameters);
+    dotnet_runtime_params.host_path = game_exe_path.c_str();
+    dotnet_runtime_params.dotnet_root = dotnet_root_path.c_str();
+
+    const auto gmodnet_dll_relative_path = lua_bin_folder / _T("gmodnet/GmodNET.dll");
+    const char_t* dotnet_args[] = {_T("exec"), gmodnet_dll_relative_path.c_str()};
+
+    hostfxr_handle result = nullptr;
+    int error_code = hostfxr.initialize_for_dotnet_command_line(static_cast<int>(std::size(dotnet_args)),
+                                                                dotnet_args,
+                                                                &dotnet_runtime_params,
+                                                                &result);
+    if(error_code != 0)
+    {
+        throw std::runtime_error(std::string("Unable to initialize dotnet runtime. Error code: ") + std::to_string(error_code));
+    }
+    if(result == nullptr)
+    {
+        throw std::runtime_error("runtime_environment_handle is null");
+    }
+
+    return result;
+}
+
+get_function_pointer_fn get_dotnet_runtime_delegate(const hostfxr_functions& hostfxr, hostfxr_handle runtime_environment_handle)
+{
+    get_function_pointer_fn result = nullptr;
+    int error_code = hostfxr.get_runtime_delegate(runtime_environment_handle, hdt_get_function_pointer, reinterpret_cast<void**>(&result));
+    if(error_code != 0)
+    {
+        throw std::runtime_error(std::string("Unable to get delegate of dotnet runtime. Error code: ") + std::to_string(error_code));
+    }
+    if(result == nullptr)
+    {
+        throw std::runtime_error("get_function_pointer is null");
+    }
+
+    return result;
+}
+
+managed_main_fn load_gmodnet_main(get_function_pointer_fn get_function_pointer)
+{
+    managed_main_fn result = nullptr;
+    int error_code = get_function_pointer(_T("GmodNET.Startup, GmodNET"),
+                                          _T("Main"),
+                                          UNMANAGEDCALLERSONLY_METHOD,
+                                          nullptr,
+                                          nullptr,
+                                          reinterpret_cast<void**>(&result));
+    if(error_code != 0)
+    {
+        throw std::runtime_error(std::string("Unable to load managed entry point: Error code: ") + std::to_string(error_code));
+    }
+    if(result == nullptr)
+    {
+        throw std::runtime_error("Unable to load managed entry point: managed_main is null");
+    }
+    return result;
+}
 
 extern "C" DYNAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILuaBase* lua)
 {
@@ -154,77 +207,23 @@ extern "C" DYNAMIC_EXPORT cleanup_function_fn InitNetRuntime(GarrysMod::Lua::ILu
     {
         try
         {
-            load_hostfxr_function("hostfxr_initialize_for_dotnet_command_line", hostfxr_initialize_for_dotnet_command_line);
-            load_hostfxr_function("hostfxr_get_runtime_delegate", hostfxr_get_runtime_delegate);
-            load_hostfxr_function("hostfxr_set_error_writer", hostfxr_set_error_writer);
+            hostfxr_functions hostfxr(hostfxr_library);
+            hostfxr.set_error_writer(dotnet_error_writer);
+            hostfxr_handle runtime_environment_handle = get_runtime_environment_handle(hostfxr);
+            get_function_pointer_fn get_function_pointer = get_dotnet_runtime_delegate(hostfxr, runtime_environment_handle);
+            managed_main = load_gmodnet_main(get_function_pointer);
         }
-        catch (std::runtime_error ex)
+        catch(const std::runtime_error& ex)
         {
-            error_log_file << "Unable to load hostfxr library: " << ex.what() << std::endl;
-            return nullptr;
-        }
-
-        hostfxr_handle runtime_environment_handle;
-
-        hostfxr_set_error_writer(dotnet_error_writer);
-
-        const auto gmodnet_dll_relative_path = lua_bin_folder / _T("gmodnet/GmodNET.dll");
-        const auto dotnet_root_path = (std::filesystem::current_path() / lua_bin_folder / "dotnet").make_preferred();
-
-        const char_t* dotnet_args[] = {_T("exec"), gmodnet_dll_relative_path.c_str()};
-        
-        tstring game_exe_path(301, _T('\0'));
-#ifdef WIN32
-        GetModuleFileNameW(nullptr, game_exe_path.data(), static_cast<DWORD>(game_exe_path.size()) - 1);
-#else
-        readlink("/proc/self/exe", game_exe_path.data(), game_exe_path.size() - 1);
-#endif
-        hostfxr_initialize_parameters dotnet_runtime_params;
-        dotnet_runtime_params.size = sizeof(hostfxr_initialize_parameters);
-        dotnet_runtime_params.host_path = game_exe_path.c_str();
-        dotnet_runtime_params.dotnet_root = dotnet_root_path.c_str();
-
-        int init_success_code = hostfxr_initialize_for_dotnet_command_line(static_cast<int>(std::size(dotnet_args)), dotnet_args, 
-                                                                           &dotnet_runtime_params, &runtime_environment_handle);
-        if(init_success_code != 0)
-        {
-            error_log_file << "Unable to initialize dotnet runtime. Error code: " << init_success_code << std::endl;
-            return nullptr;
-        }
-        if(runtime_environment_handle == nullptr)
-        {
-            error_log_file << "runtime_environment_handle is null" << std::endl;
-            return nullptr;
-        }
-        get_function_pointer_fn get_function_pointer = nullptr;
-        int get_runtime_delegate_success_code =
-                hostfxr_get_runtime_delegate(runtime_environment_handle, hdt_get_function_pointer, reinterpret_cast<void**>(&get_function_pointer));
-        if(get_runtime_delegate_success_code != 0)
-        {
-            error_log_file << "Unable to get delegate of dotnet runtime. Error code: " << get_runtime_delegate_success_code << std::endl;
-            return nullptr;
-        }
-        if(get_function_pointer == nullptr)
-        {
-            error_log_file << "get_function_pointer is null" << std::endl;
-            return nullptr;
-        }
-
-        int get_managed_main_success_code = get_function_pointer(_T("GmodNET.Startup, GmodNET"), _T("Main"), UNMANAGEDCALLERSONLY_METHOD,
-                                                                 nullptr, nullptr, reinterpret_cast<void**>(&managed_main));
-        if(get_managed_main_success_code != 0)
-        {
-            error_log_file << "Unable to load managed entry point: Error code: " << get_managed_main_success_code << std::endl;
-            return nullptr;
-        }
-        if(managed_main == nullptr)
-        {
-            error_log_file << "Unable to load managed entry point: managed_main is null" << std::endl;
+            error_log_file << ex.what() << std::endl;
             return nullptr;
         }
     }
 
-    return managed_main(lua, SEM_VERSION, static_cast<int>(std::strlen(SEM_VERSION)), params_to_managed_code,
-                        native_delegate_executor, &managed_delegate_executor);
+    return managed_main(lua,
+                        SEM_VERSION,
+                        static_cast<int>(std::strlen(SEM_VERSION)),
+                        params_to_managed_code,
+                        native_delegate_executor,
+                        &managed_delegate_executor);
 }
-
