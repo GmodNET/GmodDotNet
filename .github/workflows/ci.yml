@@ -13,7 +13,9 @@ jobs:
 
    steps:
     - name: Checkout
-      uses: actions/checkout@v2.0.0
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
 
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.7.2
@@ -130,7 +132,9 @@ jobs:
 
    steps:
      - name: Checkout
-       uses: actions/checkout@v2.0.0
+       uses: actions/checkout@v2
+       with:
+         submodules: 'true'
 
      - name: Setup .NET Core SDK
        uses: actions/setup-dotnet@v1.7.2
@@ -232,7 +236,9 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v2.0.0
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.7.2
@@ -298,7 +304,9 @@ jobs:
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@v2.0.0
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.7.2
