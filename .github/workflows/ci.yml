@@ -363,10 +363,14 @@ jobs:
           SOURCE_DIR: 'versioned-publish'
           DEST_DIR: 'GmodNETStorage/storage'
 
-      - name: Upload API nuget package
+      - name: Upload API nuget package to Azure DevOps
         run: |
              dotnet nuget update source gmodnet-packages --username CI --password ${{ secrets.AZURE_DEVOPS_ARTIFACTS_PAT }} --store-password-in-clear-text
              dotnet nuget push nuget-publish/**.nupkg --source gmodnet-packages --api-key az --skip-duplicate
+
+      - name: Upload NuGet package to NuGet.org
+        if: ${{ github.event_name == 'release' }}
+        run: dotnet nuget push nuget-publish/**.nupkg --source nuget --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
 
       - name: Restore local dotnet tools
         run: |
