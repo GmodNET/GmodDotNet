@@ -9,7 +9,7 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>garrysmod; GmodNET</PackageTags>
     <PackageProjectUrl>https://github.com/GmodNET/GmodDotNet</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
+    <PackageIcon>gmodnetlogo.png</PackageIcon>
     <Company>GmodNET</Company>
     <Copyright>Copyright (c) 2018 - 2021 Gleb Krasilich, GmodNET</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <VersionFile Include="../../version.json" />
+    <Content Include="../../MetaInfo/Logo/gmodnetlogo.png" PackagePath="/" />
   </ItemGroup>
 
 </Project>
