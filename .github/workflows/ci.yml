@@ -161,12 +161,20 @@ jobs:
             cp lua/Tests/run_tests.lua gmod/garrysmod/lua/autorun
 
      - name: Run Garry's Mod
-       shell: bash
+       shell: pwsh
        run: |
-            powershell -Command './gmod/srcds_win64.exe -console -systemtest -condebug -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1'
-            powershell -Command 'Wait-Process -Name srcds_win64'
+            ./gmod/srcds_win64.exe -console -systemtest -condebug -game "garrysmod" +exec "server.cfg" +gamemode sandbox +map gm_construct +maxplayers 16 +sv_hibernate_think 1
+            Wait-Process -Name srcds_win64
        timeout-minutes: 5
        continue-on-error: true
+       env:
+         COREHOST_TRACE: 1
+         COREHOST_TRACE_VERBOSITY: 4
+         COREHOST_TRACEFILE: corehost_trace.txt
+
+     - name: Print Corehost trace
+       working-directory: ./gmod/
+       run: cat corehost_trace.txt
 
      - name: Print console log
        run: cat gmod/garrysmod/console.log
