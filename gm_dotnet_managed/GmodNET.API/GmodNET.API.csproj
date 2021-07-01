@@ -10,20 +10,15 @@
     <PackageTags>garrysmod; GmodNET</PackageTags>
     <PackageProjectUrl>https://github.com/GmodNET/GmodDotNet</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/GlebChili/GmodDotNet/devel_netcore_2/MetaInfo/Logo/gmodnetlogo.png</PackageIconUrl>
-	  <Company>GmodNET</Company>
-	  <Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
-	  <Product>$(Description)</Product>
-    
+    <Company>GmodNET</Company>
+    <Copyright>Copyright (c) 2018 - 2021 Gleb Krasilich, GmodNET</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\GmodNET.API.xml</DocumentationFile>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
 	<ItemGroup>
