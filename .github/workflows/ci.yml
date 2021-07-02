@@ -371,6 +371,16 @@ jobs:
       - name: Upload NuGet package to NuGet.org
         if: ${{ github.event_name == 'release' }}
         run: dotnet nuget push nuget-publish/**.nupkg --source nuget --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+        
+      - name: Upload build to GitHub release
+        if: ${{ github.event_name == 'release' }}
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: versioned-publish/*
+          overwrite: true
+          tag: ${{ github.ref }}
+          file_glob: true
 
       - name: Restore local dotnet tools
         run: |
