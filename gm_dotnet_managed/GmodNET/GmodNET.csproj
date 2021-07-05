@@ -10,17 +10,16 @@
     <RepositoryType>Git</RepositoryType>
 	  <Company>GmodNET</Company>
 	  <Product>$(Description)</Product>
-	  <Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
-
+	  <Copyright>Copyright (c) 2018 - 2021 Gleb Krasilich, GmodNET</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
