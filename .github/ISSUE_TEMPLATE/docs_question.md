@@ -6,17 +6,16 @@ labels: documentation
 assignees: ''
 ---
 
-**What is currently unclear to you? Describe the problem you are experiencing.**
-E.g: I can't figure out how to [...]
+**Describe the problem**
+<!-- What is currently unclear to you? E.g: I can't figure out how to... -->
 
-**Which page(s) on the documentation did you refer to?**
-* https://docs.gmodnet.xyz/[...]
-* 
+**Documentation already consulted**
+<!-- A list of links to the [documentation](https://docs.gmodnet.xyz/) where you already tried, or expected, to find answers. -->
 
-**Does the documentation contain no information or is information unclear?**
-- [ ] The documentation has some information on my problem.
-- [x] The documentation describes nothing on my problem.
-- [ ] The documentation has information, but it is incorrect.
+**Current state of the documentation**
+- [ ] The documentation has some information related to my problem.
+- [x] The documentation describes nothing related to my problem.
+- [ ] The documentation has information that could help with my problem, but it is incorrect/incomplete.
 
-**Additional context**
-Add any other context or information that can help us decide if/how we need to update the documentation.
+# Additional context
+<!-- Add any other context or information that can help us decide if/how we need to update the documentation. -->
