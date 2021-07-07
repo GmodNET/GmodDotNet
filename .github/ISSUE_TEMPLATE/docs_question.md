@@ -6,13 +6,13 @@ labels: documentation
 assignees: ''
 ---
 
-**Describe the problem**
+# Describe the problem
 <!-- What is currently unclear to you? E.g: I can't figure out how to... -->
 
-**Documentation already consulted**
+# Documentation already consulted
 <!-- A list of links to the [documentation](https://docs.gmodnet.xyz/) where you already tried, or expected, to find answers. -->
 
-**Current state of the documentation**
+# Current state of the documentation
 - [ ] The documentation has some information related to my problem.
 - [x] The documentation describes nothing related to my problem.
 - [ ] The documentation has information that could help with my problem, but it is incorrect/incomplete.
