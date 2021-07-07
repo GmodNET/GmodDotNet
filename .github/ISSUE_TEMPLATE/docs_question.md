@@ -6,7 +6,7 @@ labels: documentation
 assignees: ''
 ---
 
-# Describe the problem
+# Problem
 <!-- What is currently unclear to you? E.g: I can't figure out how to... -->
 
 # Documentation already consulted
@@ -14,7 +14,9 @@ assignees: ''
 
 # Current state of the documentation
 - [ ] The documentation has some information related to my problem.
-- [x] The documentation describes nothing related to my problem.
+
+- [ ] The documentation describes nothing related to my problem.
+
 - [ ] The documentation has information that could help with my problem, but it is incorrect/incomplete.
 
 # Additional context

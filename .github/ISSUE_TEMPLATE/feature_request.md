@@ -6,13 +6,13 @@ labels: enhancement
 assignees: ''
 ---
 
-# Describe the problem this feature aims to solve
-<!-- A clear and concise description of what the problem is your idea tries to solve. E.g: I'm always frustrated when... -->
+# Your suggestion
+<!-- A clear and concise description of what you want to happen. -->
 
-# Describe the solution to the above problem
-<!-- A clear and concise description of what you want to happen -->
+# The problem this suggestion solves
+<!-- A clear and concise description of what the problem is your suggestion tries to solve. E.g: I'm always frustrated when... -->
 
-# Describe alternatives you've considered
+# Alternatives
 <!-- A clear and concise description of any alternative solutions or features you've considered. -->
 
 # Additional context
