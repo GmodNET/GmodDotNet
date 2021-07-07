@@ -4,19 +4,18 @@ about: Create a report to help us improve
 title: "[BUG]"
 labels: bug
 assignees: ''
-
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+# Bug description
+<!-- A clear and concise description of what the bug is. -->
 
-**To Reproduce**
-Steps to reproduce the behavior:
+# Steps to reproduce
+<!-- Instructions on how to reproduce the behavior. -->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+# Expected behavior
+<!-- A clear and concise description of what you expected to happen. -->
 
-**Platforms where you've faced the bug**
+# Platforms where you've faced the bug
 - [ ] SRCDS Linux
 
 - [ ] SRCDS Windows
@@ -27,5 +26,5 @@ A clear and concise description of what you expected to happen.
 
 - [ ] Garry's Mod macOS
 
-**Additional context**
-Add any other context about the problem here.
+# Additional context
+<!-- Add any other context about the problem here. -->
