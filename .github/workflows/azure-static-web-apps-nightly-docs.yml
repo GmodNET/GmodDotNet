@@ -12,7 +12,7 @@ on:
 jobs:
   build_and_deploy_docs:
     if: (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.action != 'unlabeled' && contains(github.event.pull_request.labels.*.name, 'pr-generate-docs-preview'))) && github.repository_owner == 'GmodNET'
-    runs-on: windows-latest
+    runs-on: ubuntu-20.04
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v2
@@ -20,10 +20,15 @@ jobs:
           submodules: true
 
       - name: Install DocFX
-        run: choco install docfx --version=2.58 -y
+        shell: pwsh
+        working-directory: /docfx
+        run: |
+             Invoke-WebRequest "https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip" -OutFile "docfx.zip"
+             Expand-Archive ./docfx.zip ./
+             Remove-Item docfx.zip
 
       - name: Build docs
-        run: docfx .\docfx_project\docfx.json
+        run: mono /docfx/docfx.exe ./docfx_project/docfx.json
 
       - name: Deploy docs
         uses: Azure/static-web-apps-deploy@v1
