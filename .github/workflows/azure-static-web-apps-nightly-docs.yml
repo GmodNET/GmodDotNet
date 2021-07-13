@@ -27,9 +27,10 @@ jobs:
              gh pr checkout ${{ github.event.number }}
 
       - name: Build docs with DocFX
-        run: docfx .\docfx_project\docfx.json
-        env:
-          GITHUB_ACTIONS: 'false'
+        shell: pwsh
+        run: |
+             $env:GITHUB_ACTIONS='false'
+             docfx .\docfx_project\docfx.json
 
       - name: Upload docs as artifact
         uses: actions/upload-artifact@v2.2.4
