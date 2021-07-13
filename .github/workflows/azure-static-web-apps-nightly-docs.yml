@@ -24,7 +24,7 @@ jobs:
 
       - name: Install DocFX
         shell: pwsh
-        working-directory: ~/docfx
+        working-directory: ${{ env.GITHUB_WORKSPACE }}/docfx
         run: |
              Invoke-WebRequest "https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip" -OutFile "docfx.zip"
              Expand-Archive ./docfx.zip ./
