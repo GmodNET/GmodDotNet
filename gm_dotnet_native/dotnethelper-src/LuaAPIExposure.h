@@ -1,9 +1,8 @@
 //
 // Created by Gleb Krasilich on 06.10.2019.
 //
+#pragma once
 
-#ifndef GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H
-#define GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H
 #include <GarrysMod/Lua/Interface.h>
 #include <GarrysMod/Lua/LuaBase.h>
 
@@ -333,5 +332,3 @@ double export_check_number(GarrysMod::Lua::ILuaBase * lua, int iStackPos);
 /// \param lua ILuaBase pointer
 /// \param val function to push on stack
 void export_push_c_function_safe(GarrysMod::Lua::ILuaBase * lua, GarrysMod::Lua::CFunc safe_wrapper, GarrysMod::Lua::CFunc val);
-
-#endif //GM_DOTNET_NATIVE_LUAAPIEXPOSURE_H

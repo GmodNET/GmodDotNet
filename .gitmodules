@@ -1,0 +1,3 @@
+[submodule "dynalo"]
+	path = gm_dotnet_native/external_includes/dynalo
+	url = https://github.com/Stat1cV01D/dynalo.git
