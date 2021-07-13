@@ -19,6 +19,9 @@ jobs:
         with:
           submodules: true
 
+      - name: Make DocFX folder
+        run: mkdir /docfx
+        
       - name: Install DocFX
         shell: pwsh
         working-directory: /docfx
