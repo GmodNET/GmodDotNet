@@ -1,37 +1,52 @@
-name: Azure Static Web Apps Nightly Docs
+name: Nightly Docs
 
 on:
   push:
     branches:
       - main
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, closed, labeled, unlabeled]
-    branches:
-      - main
 
 jobs:
-  build_and_deploy_docs:
-    if: (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.action != 'unlabeled' && contains(github.event.pull_request.labels.*.name, 'pr-generate-docs-preview'))) && github.repository_owner == 'GmodNET'
-    runs-on: ubuntu-20.04
-    name: Build and Deploy Job
+  build_docs:
+    if: (github.event_name == 'push' || (github.event_name == 'pull_request_target' && github.event.action != 'closed' && github.event.action != 'unlabeled' && contains(github.event.pull_request.labels.*.name, 'pr-generate-docs-preview'))) && github.repository_owner == 'GmodNET'
+    runs-on: windows-latest
+    name: Build Docs
     steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Make DocFX folder
-        run: mkdir ${{ runner.temp }}/docfx
-
       - name: Install DocFX
-        shell: pwsh
-        working-directory: ${{ runner.temp }}/docfx
-        run: |
-             Invoke-WebRequest "https://github.com/dotnet/docfx/releases/download/v2.58/docfx.zip" -OutFile "docfx.zip"
-             Expand-Archive ./docfx.zip ./
-             Remove-Item docfx.zip
+        run: choco install docfx --version=2.58 -y
 
-      - name: Build docs
-        run: mono ${{ runner.temp }}/docfx/docfx.exe ./docfx_project/docfx.json
+      - name: Checkout branch
+        if: github.event_name == 'push'
+        uses: actions/checkout@v2.3.4
+
+      - name: Checkout PR
+        if: github.event_name != 'push'
+        run: |
+             gh repo clone GmodNET/GmodDotNet ./
+             gh pr checkout ${{ github.event.number }}
+
+      - name: Build docs with DocFX
+        run: docfx .\docfx_project\docfx.json
+        env:
+          GITHUB_ACTIONS: 'false'
+
+      - name: Upload docs as artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: site
+          path: docfx_project/_site/
+
+  deploy_docs:
+    needs: build_docs
+    runs-on: ubuntu-latest
+    name: Deploy Docs
+    steps:
+      - name: Dowload docs build
+        uses: actions/download-artifact@v2.0.10
+        with:
+          name: site
+          path: site
 
       - name: Deploy docs
         uses: Azure/static-web-apps-deploy@v1
@@ -41,16 +56,16 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "./docfx_project/_site" # App source code path
+          app_location: "./site" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
           skip_app_build: true
           ###### End of Repository/Build Configurations ######
 
   remove_docs_pr_preview:
-    if: github.event_name == 'pull_request' && (github.event.action == 'closed' || (github.event.action == 'unlabeled' && github.event.label.name == 'pr-generate-docs-preview')) && github.repository_owner == 'GmodNET'
+    if: github.event_name == 'pull_request_target' && (github.event.action == 'closed' || (github.event.action == 'unlabeled' && github.event.label.name == 'pr-generate-docs-preview')) && github.repository_owner == 'GmodNET'
     runs-on: ubuntu-latest
-    name: Close Pull Request Job
+    name: Close Pull Request Docs
     steps:
       - name: Close Pull Request
         uses: Azure/static-web-apps-deploy@v1
