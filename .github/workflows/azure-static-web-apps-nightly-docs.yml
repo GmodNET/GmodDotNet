@@ -20,7 +20,7 @@ jobs:
           submodules: true
 
       - name: Make DocFX folder
-        run: mkdir ~/docfx
+        run: mkdir ${{ env.HOME }}/docfx
 
       - name: Install DocFX
         shell: pwsh
@@ -31,7 +31,7 @@ jobs:
              Remove-Item docfx.zip
 
       - name: Build docs
-        run: mono ~/docfx/docfx.exe ./docfx_project/docfx.json
+        run: mono ${{ env.HOME }}/docfx/docfx.exe ./docfx_project/docfx.json
 
       - name: Deploy docs
         uses: Azure/static-web-apps-deploy@v1
