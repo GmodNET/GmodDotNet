@@ -25,6 +25,8 @@ jobs:
         run: |
              gh repo clone GmodNET/GmodDotNet ./
              gh pr checkout ${{ github.event.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build docs with DocFX
         shell: pwsh
