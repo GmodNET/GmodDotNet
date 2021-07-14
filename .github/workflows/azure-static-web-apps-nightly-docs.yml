@@ -27,6 +27,9 @@ jobs:
              gh pr checkout ${{ github.event.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v1.8.1
 
       - name: Build docs with DocFX
         shell: pwsh
