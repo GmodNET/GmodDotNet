@@ -1,0 +1,50 @@
+name: Rebase Pull Request Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      prNumber:
+        description: 'A number of the Pull Request to rebase'
+        required: true
+
+jobs:
+  rebase_and_push:
+    name: Try rebase and push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: tibdex/github-app-token@v1.3.0
+        with:
+          app_id: ${{ secrets.GMODNET_GITHUB_BOT_ID }}
+          private_key: ${{ secrets.GMODNET_GITHUB_BOT_KEY }}
+          
+      - name: Configere Git User information
+        run: |
+             git config --global user.name "GmodNET GitHub Bot"
+             git config --global user.email support@gmodnet.xyz
+             
+      - name: Checkout
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+             gh repo clone ${{ github.repository }} ./
+             gh pr checkout ${{ github.event.inputs.prNumber }}
+             
+      - name: Extract branch name
+        uses: nelonoel/branch-name@v1.0.1
+             
+      - name: Rebase and push
+        id: rebase_and_push
+        continue-on-error: true
+        run: |
+             git rebase ${BRANCH_NAME}
+             git remote set-url origin https://x-access-token:${{ steps.generate_token.outputs.token }}@github.com/${{ github.repository }}.git
+             git push --force
+             
+      - name: Notify if rebase was unsuccessful
+        if: steps.rebase_and_push.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: gh pr comment ${{ github.event.inputs.prNumber }} --body "Automatic rebase to branch '${{ env.BRANCH_NAME }}' has failed. Manual rebase is required."
