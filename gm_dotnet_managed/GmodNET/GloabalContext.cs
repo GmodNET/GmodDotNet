@@ -76,6 +76,11 @@ namespace GmodNET
                         "Either use a short name of the module in game's lua/bin/Modules folder or enable Development environment.");
                 }
 
+                if (!Path.IsPathRooted(module_name) && (module_name.Contains("/") || module_name.Contains("\\")))
+                {
+                    throw new ArgumentException("Module name can't be a relative path.");
+                }
+
                 GmodNetModuleAssemblyLoadContext module_context = new GmodNetModuleAssemblyLoadContext(module_name);
 
                 string module_dll_path;
