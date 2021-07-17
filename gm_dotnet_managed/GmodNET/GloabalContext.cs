@@ -62,17 +62,33 @@ namespace GmodNET
 
                 if (String.IsNullOrEmpty(module_name))
                 {
-                    throw new Exception("Module name is null or empty");
+                    throw new ArgumentException("Module name is null or empty");
                 }
 
                 if (module_contexts.ContainsKey(module_name))
                 {
-                    throw new Exception($"Module with name {module_name} is already loaded");
+                    throw new ArgumentException($"Module with name {module_name} is already loaded");
+                }
+
+                if (Path.IsPathRooted(module_name) && !EnvironmentChecks.IsDevelopmentEnvironemt())
+                {
+                    throw new ArgumentException("An absolute path to module was given and Development environment is not enabled. " +
+                        "Either use a short name of the module in game's lua/bin/Modules folder or enable Development environment.");
                 }
 
                 GmodNetModuleAssemblyLoadContext module_context = new GmodNetModuleAssemblyLoadContext(module_name);
 
-                Assembly module_assembly = module_context.LoadFromAssemblyPath(Path.GetFullPath("garrysmod/lua/bin/Modules/" + module_name + "/" + module_name + ".dll"));
+                string module_dll_path;
+                if(Path.IsPathRooted(module_name))
+                {
+                    module_dll_path = module_name;
+                }
+                else
+                {
+                    module_dll_path = Path.GetFullPath("garrysmod/lua/bin/Modules/" + module_name + "/" + module_name + ".dll");
+                }
+
+                Assembly module_assembly = module_context.LoadFromAssemblyPath(module_dll_path);
 
                 Type[] module_types = module_assembly.GetTypes().Where(t => typeof(IModule).IsAssignableFrom(t)).ToArray();
 
