@@ -41,7 +41,17 @@ namespace GmodNET
         internal GmodNetModuleAssemblyLoadContext(string module_name) : base(module_name: module_name, isCollectible: true)
         {
             this.module_name = module_name;
-            resolver = new AssemblyDependencyResolver("garrysmod/lua/bin/Modules/"+module_name+"/"+module_name+".dll");
+
+            string path_for_resolver;
+            if (Path.IsPathRooted(module_name))
+            {
+                path_for_resolver = module_name;
+            }
+            else
+            {
+                path_for_resolver = "garrysmod/lua/bin/Modules/" + module_name + "/" + module_name + ".dll";
+            }
+            resolver = new AssemblyDependencyResolver(path_for_resolver);
             customNativeLibraryResolver = null;
             native_libray_handles = new List<IntPtr>();
 
@@ -63,7 +73,7 @@ namespace GmodNET
             }
 
             string path = resolver.ResolveAssemblyToPath(assemblyName);
-            if (path == null || path == string.Empty)
+            if (string.IsNullOrEmpty(path))
             { 
                 return null;
             }
