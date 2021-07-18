@@ -12,7 +12,7 @@ namespace GmodNET.API
     public abstract class ModuleAssemblyLoadContext : AssemblyLoadContext
     {
         /// <summary>
-        /// Get associated module name.
+        /// Get associated module name or module's absolute path.
         /// </summary>
         public virtual string ModuleName => moduleName;
 
@@ -27,7 +27,7 @@ namespace GmodNET.API
         /// Initializes a new instance of the <see cref="ModuleAssemblyLoadContext" /> class with a value that indicates whether unloading is enabled.
         /// </summary>
         /// <param name="isCollectible"><c>true</c> to enable <see cref="AssemblyLoadContext.Unload()"/>; otherwise, <c>false</c>. </param>
-        /// <param name="module_name">The name of the corresponding module.</param>
+        /// <param name="module_name">The name or an absolute path of the corresponding module.</param>
         public ModuleAssemblyLoadContext(string module_name, bool isCollectible) : base(isCollectible: isCollectible)
         { 
             moduleName = module_name;
