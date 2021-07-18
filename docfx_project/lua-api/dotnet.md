@@ -32,6 +32,13 @@ In practice it means that folder `[garrys mod root folder]/garrysmod/lua/bin/Mod
 
 If GmodDotNet runtime is not able to load the module, the function will return `False`, and the error message will be printed to a game console.
 
+##### Examples
+```lua
+require("dotnet") -- Load GmodDotNet runtime
+dotnet.load("TestModule1") -- Load module TestModule from garrysmod/lua/bin/Modules folder by name
+dotnet.load([[C:\Users\glebc\source\repos\TestModule2\bin\Debug\net5.0\TestModule2.dll]]) -- Load module by its absolute path outside of game folder. Works only in Development environment
+```
+
 ### unload(string)
 Unloads a GmodDotNet module by its name.
 
