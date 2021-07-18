@@ -1,3 +1,6 @@
+---
+uid: lua_api_dotnet
+---
 # dotnet
 The Lua library to interact with the GmodDotNet runtime.
 This library is added to the Lua global scope after GmodDotNet runtime is loaded to the game with
@@ -6,7 +9,7 @@ This library is added to the Lua global scope after GmodDotNet runtime is loaded
 ## Functions
 
 ### load(string)
-Loads a GmodDotNet module by its name.
+Loads a GmodDotNet module by its name or absolute path.
 
 ##### Declaration
 ```lua

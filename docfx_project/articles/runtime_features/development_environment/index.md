@@ -26,6 +26,11 @@ export DOTNET_ENVIRONMENT="Development"
 ./srcds_run_x64
 ```
 
+After Development environment is on, one can load module by its absolute path using [dotnet.load](xref:lua_api_dotnet#loadstring) Lua function like this:
+```lua
+dotnet.load([[C:\Users\glebc\source\repos\TestModule2\bin\Debug\net5.0\TestModule2.dll]])
+```
+
 > [!WARNING]
 > Running under Development environment is less secure since Lua scripts can try to load .NET components from anywhere on your PC. 
 > Use only trusted Lua scripts and DO NOT join untrusted servers as a client while Development environment is on.
