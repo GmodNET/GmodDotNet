@@ -1,5 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <PublishDirName>publish/$(AssemblyName)</PublishDirName>
-  </PropertyGroup>
-</Project>
