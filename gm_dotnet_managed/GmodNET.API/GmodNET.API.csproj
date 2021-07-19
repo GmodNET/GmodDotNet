@@ -36,6 +36,9 @@
   <ItemGroup>
     <VersionFile Include="../../version.json" />
     <Content Include="../../MetaInfo/Logo/gmodnetlogo.png" PackagePath="/" />
+    <Content Include="GmodNET.API.props" PackagePath="/build" />
+    <Content Include="GmodNET.API.props" PackagePath="/buildMultiTargeting" />
   </ItemGroup>
 
+</Project>
 </Project>
