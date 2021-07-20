@@ -387,7 +387,7 @@ jobs:
         if: ${{ github.event_name == 'release' }}
         run: dotnet nuget push nuget-publish/**.nupkg --source nuget --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
 
-      - name: Upload build to GitHub release
+      - name: Upload stable build to GitHub release
         if: ${{ github.event_name == 'release' }}
         uses: svenstaro/upload-release-action@2.2.1
         with:
@@ -396,6 +396,30 @@ jobs:
           overwrite: true
           tag: ${{ github.ref }}
           file_glob: true
+
+      - name: Restore dotnet version tool
+        run: dotnet tool restore
+
+      - name: Generate token for GmodNET/runtime-nightly repo
+        id: generate_token_for_github_nightly
+        uses: tibdex/github-app-token@v1.3.0
+        with:
+          app_id: ${{ secrets.GMODNET_GITHUB_BOT_ID }}
+          private_key: ${{ secrets.GMODNET_GITHUB_BOT_KEY }}
+          repository: GmodNET/runtime-nightly
+
+      - name: Set new git repo origin
+        run: git remote set-url origin https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
+
+      - name: Get current version
+        id: get_version
+        run: echo "::set-output name=version::$(dotnet gmodnet-vt getVersion version.json --skip-build-data)"
+
+      - name: Apply git tag
+        run: git tag ${{ steps.get_version.outputs.version }}
+
+      - name: Push tag to nightly builds repo
+        run: git push origin ${{ steps.get_version.outputs.version }} --force
 
       - name: Restore local dotnet tools
         run: |
