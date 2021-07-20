@@ -410,6 +410,7 @@ jobs:
 
       - name: Add new git remote for nightly builds
         run: |
+             git fetch --unshallow origin
              git config --local --unset-all http.https://github.com/.extraheader
              git remote add nightly https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
 
