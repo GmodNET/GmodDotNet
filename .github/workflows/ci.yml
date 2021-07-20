@@ -406,7 +406,7 @@ jobs:
         with:
           app_id: ${{ secrets.GMODNET_GITHUB_BOT_ID }}
           private_key: ${{ secrets.GMODNET_GITHUB_BOT_KEY }}
-          repository: GmodNET/runtime-nightly
+          # repository: GmodNET/runtime-nightly
 
       - name: Set new git repo origin
         run: git remote set-url origin https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
