@@ -1,5 +1,5 @@
 #! "net5.0"
-#r "nuget: GmodNET.VersionTool.Core, 0.2.0-alpha.1.21507807.dev"
+#r "nuget: GmodNET.VersionTool.Core, 2.0.0"
 
 using System.Net.Http;
 using System.Text.Json;
