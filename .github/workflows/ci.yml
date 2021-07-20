@@ -406,10 +406,10 @@ jobs:
         with:
           app_id: ${{ secrets.GMODNET_GITHUB_BOT_ID }}
           private_key: ${{ secrets.GMODNET_GITHUB_BOT_KEY }}
-          # repository: GmodNET/runtime-nightly
+          repository: GmodNET/runtime-nightly
 
       - name: Set new git repo origin
-        run: git remote set-url origin https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
+        run: git remote add nightly https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
 
       - name: Get current version
         id: get_version
@@ -419,7 +419,7 @@ jobs:
         run: git tag ${{ steps.get_version.outputs.version }}
 
       - name: Push tag to nightly builds repo
-        run: git push origin ${{ steps.get_version.outputs.version }} --force
+        run: git push nightly ${{ steps.get_version.outputs.version }} --force
 
       - name: Restore local dotnet tools
         run: |
