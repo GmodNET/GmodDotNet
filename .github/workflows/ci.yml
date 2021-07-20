@@ -408,15 +408,19 @@ jobs:
           private_key: ${{ secrets.GMODNET_GITHUB_BOT_KEY }}
           repository: GmodNET/runtime-nightly
 
+      - name: Get current version
+        id: get_version
+        run: echo "::set-output name=version::$(dotnet gmodnet-vt getVersion version.json --skip-build-data)"
+
+      - name: Get current head
+        id: get_git_head
+        run: echo "::set-output name=head_name::'$(dotnet gmodnet-vt getBranchName version.json)'"
+
       - name: Add new git remote for nightly builds
         run: |
              git fetch --unshallow origin
              git config --local --unset-all http.https://github.com/.extraheader
              git remote add nightly https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
-
-      - name: Get current version
-        id: get_version
-        run: echo "::set-output name=version::$(dotnet gmodnet-vt getVersion version.json --skip-build-data)"
 
       - name: Apply git tag
         run: git tag ${{ steps.get_version.outputs.version }}
@@ -428,4 +432,4 @@ jobs:
         working-directory: csx
         run: |
              dotnet tool restore
-             dotnet script discord-webhook.csx ${{ secrets.DISCORD_WEBHOOK }} ${{ github.sha }} $(dotnet gmodnet-vt getBranchName ../version.json) $(dotnet gmodnet-vt getVersion ../version.json --skip-build-data)
+             dotnet script discord-webhook.csx ${{ secrets.DISCORD_WEBHOOK }} ${{ github.sha }} ${{ steps.get_git_head.outputs.head_name }} ${{ steps.get_version.outputs.version }}
