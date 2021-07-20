@@ -408,8 +408,10 @@ jobs:
           private_key: ${{ secrets.GMODNET_GITHUB_BOT_KEY }}
           repository: GmodNET/runtime-nightly
 
-      - name: Set new git repo origin
-        run: git remote add nightly https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
+      - name: Add new git remote for nightly builds
+        run: |
+             git config --local --unset-all http.https://github.com/.extraheader
+             git remote add nightly https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
 
       - name: Get current version
         id: get_version
