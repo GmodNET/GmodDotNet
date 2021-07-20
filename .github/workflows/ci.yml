@@ -424,12 +424,8 @@ jobs:
       - name: Push tag to nightly builds repo
         run: git push nightly ${{ steps.get_version.outputs.version }} --force
 
-      - name: Restore local dotnet tools
-        run: |
-             cd csx
-             dotnet tool restore
-
       - name: Send Discord message
+        working-directory: csx
         run: |
-             cd csx
-             dotnet script discord-webhook.csx ${{ secrets.DISCORD_WEBHOOK }} ${{ github.sha }}
+             dotnet tool restore
+             dotnet script discord-webhook.csx ${{ secrets.DISCORD_WEBHOOK }} ${{ github.sha }} $(dotnet gmodnet-vt getBranchName ../version.json) $(dotnet gmodnet-vt getVersion ../version.json --skip-build-data)

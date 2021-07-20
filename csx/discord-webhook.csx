@@ -1,5 +1,4 @@
 #! "net5.0"
-#r "nuget: GmodNET.VersionTool.Core, 2.0.0"
 
 using System.Net.Http;
 using System.Text.Json;
@@ -7,6 +6,8 @@ using System.Text.Json;
 // Params order: Webhook URL, branch, commit, version
 string webhook = Args[0];
 string commit = Args[1];
+string branch = Args[2];
+string version = Args[3];
 
 struct DiscordEmbedded
 {
@@ -23,19 +24,15 @@ struct DiscordMessage
     public DiscordEmbedded[] embeds {get; set;}
 }
 
-GmodNET.VersionTool.Core.VersionGenerator ver_gen = new GmodNET.VersionTool.Core.VersionGenerator("../version.json");
-
-string discord_text = "Version: `" + ver_gen.VersionWithoutBuildData + "`\n\n"
+string discord_text = "Version: `" + version + "`\n\n"
                         + @"Get last nightly builds at http://nightly.gmodnet.xyz";
-
-string branch = ver_gen.BranchName;
 
 DiscordMessage msg = new DiscordMessage
 {
     embeds = new DiscordEmbedded[] { new DiscordEmbedded
         {
             type = "rich",
-            title = "Nightly build of `GmodDotNet` for branch `" + branch + "` commit `" + commit.Substring(0, 7) + "`",
+            title = "Nightly build of `GmodDotNet` for `" + branch + "` commit `" + commit.Substring(0, 7) + "`",
             description = discord_text,
             url = "https://github.com/GlebChili/GmodDotNet/commit/" + commit,
             color = 65530
