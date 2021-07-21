@@ -428,6 +428,16 @@ jobs:
       - name: Push tag to nightly builds repo
         run: git push nightly ${{ steps.get_version.outputs.version }} --force
 
+      - name: Upload build artifacts to nightly repo releases
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ steps.generate_token_for_github_nightly.outputs.token }}
+          repo_name: GmodNET/runtime-nightly
+          file: versioned-publish/*
+          overwrite: true
+          tag: ${{ steps.get_version.outputs.version }}
+          file_glob: true
+
       - name: Send Discord message
         working-directory: csx
         run: |
