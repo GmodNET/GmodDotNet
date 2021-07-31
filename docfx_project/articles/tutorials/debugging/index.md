@@ -30,3 +30,82 @@ Here is how you can enable and use Development environment on Windows:
 [![A screenshot of Garry's Mod game console with unloaded Gmod.NET module](images/gmod3.png)](images/gmod3.png)
 
 ## Debugging Gmod.NET modules
+
+Gmod.NET ships with full-featured .NET runtime by Microsoft. In particular, it means that one can use all kinds of .NET debuggers, including debuggers shipped with Visual Studio, Visual Studio for Mac, Visual Studio Code, and JetBrains Rider, or diagnostics tools while development. Here is an instruction on how you can use Visual Studio 2019 on Windows to debug your Gmod.NET module.
+
+1. Start Garry's Mod in [Development environment](#development-environment).
+
+2. Open your module's project in Visual Studio. For the sake of this tutorial we will be working with module named `ExampleModule` with the single source file `ExampleModule.cs`:
+```csharp
+using System;
+using GmodNET.API;
+
+namespace ExampleModule
+{
+    public class ExampleModule : IModule
+    {
+        public string ModuleName => nameof(ExampleModule);
+
+        public string ModuleVersion => "1.0.0";
+
+        int luaFuncInvokationCount;
+
+        public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context)
+        {
+            luaFuncInvokationCount = 0;
+
+            lua.PushGlobalTable();
+            lua.PushManagedFunction(LuaFunc);
+            lua.SetField(-2, "LuaFunc");
+            lua.Pop(1);
+        }
+
+        int LuaFunc(ILua lua)
+        {
+            luaFuncInvokationCount++;
+
+            lua.PushGlobalTable();
+            lua.GetField(-1, "print");
+            lua.PushString($"Hello, this is LuaFunc. Number of invokations of the function: {luaFuncInvokationCount}");
+            lua.MCall(1, 0);
+            lua.Pop(1);
+
+            return 0;
+        }
+
+        public void Unload(ILua lua)
+        {
+            lua.PushGlobalTable();
+            lua.PushNil();
+            lua.SetField(-2, "LuaFunc");
+            lua.Pop(1);
+        }
+    }
+}
+```
+This module adds global Lua function `LuaFunc` which greets user and says how many times it was called.
+
+3. Add a breaking point somewhere in your code. We will add one at line 26, where `luaFuncInvokationCount`field is incremented.
+[![A screenshot of Visual Studio](images/vs1.png)](images/vs1.png)
+
+4. Build your module in `Debug` configuration. In such configuration, additional information for debugger will be generated and no optimizations applied.
+
+5. Load Gmod.NET Runtime in game, do not load your module yet.
+
+6. In Visual Studio in the top context menu navigate to `Debug > Attach to Process...`
+[![A screenshot of Visual Studio](images/vs2.png)](images/vs2.png)
+
+7. In the opened window, set debug type to `Managed (.NET Core, .NET 5+) code`.
+[![A screenshot of Visual Studio](images/vs3.png)](images/vs3.png)
+
+8. Select `gmod.exe` process which has type `Managed (.NET Core, .NET 5+) code` in the list and press `Attach`.
+[![A screenshot of Visual Studio](images/vs4.png)](images/vs4.png)
+
+9. Immediately after attaching debugger the breaking point may be marked as inactive due to Visual Studio's inability to locate debug symbols. It is OK, since our module (and thus its symbols) is not loaded yet.
+
+10. Load module and invoke `LuaFunc`. The breakpoint will be hit and game process paused. From this point you can debug your module as any other .NET application. For example, you can explore and edit current values of variables.
+[![A screenshot of Visual Studio](images/vs5.png)](images/vs5.png)
+
+11. If you want to update your code, unload your module, stop debugging in Visual Studio, make changes, build your updated module, load it with Gmod.NET Runtime, and reattach Visual Studio debugger by using `Debug > Reattach to Process` option in the Visual Studio top context menu.
+[![A screenshot of Visual Studio](images/vs6.png)](images/vs6.png)
+Debugger have to be reattached in order to make changes visible, otherwise Visual Studio will keep outdated symbols and breakpoints in the updated code won't be hit.
