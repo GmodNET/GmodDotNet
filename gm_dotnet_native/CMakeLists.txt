@@ -25,7 +25,10 @@ add_library(gm_dotnet_native SHARED src/gm_dotnet.cpp dotnethelper-src/cleanup_f
 add_library(dotnethelper SHARED dotnethelper-src/dotnethelper.cpp dotnethelper-src/cleanup_function_type.h
 		dotnethelper-src/LuaAPIExposure.h dotnethelper-src/LuaAPIExposure.cpp)
 #Set up external include libraries
-include_directories ("${EXTERNAL_INCLUDES_PATH}")
+include_directories ("${EXTERNAL_INCLUDES_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}")
+add_subdirectory ("${EXTERNAL_INCLUDES_PATH}/dynalo")
+target_link_libraries(gm_dotnet_native PUBLIC dynalo)
+target_link_libraries(dotnethelper PUBLIC dynalo)
 #Set up compile definitions
 target_compile_definitions(gm_dotnet_native PUBLIC SEM_VERSION="${SEM_VERSION}")
 target_compile_definitions(dotnethelper PUBLIC SEM_VERSION="${SEM_VERSION}")

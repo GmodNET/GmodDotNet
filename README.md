@@ -112,4 +112,6 @@ Gmod.NET is making use of or borrows code from the following projects:
 
 4. [Libsodium](http://libsodium.org) by [Frank Denis](https://github.com/jedisct1) (ISC License)
 
+5. [dynalo](https://github.com/Stat1cV01D/dynalo) originally by [maddouri](https://github.com/maddouri/dynalo) (MIT License)
+
 See other copyright notices in the NOTICE file.
