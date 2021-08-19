@@ -4,18 +4,18 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 
-    <BundledNETCoreVersion>5.0.8</BundledNETCoreVersion>
+    <BundledNETCoreVersion>5.0.9</BundledNETCoreVersion>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/b67f2dbb-13e5-49c8-816e-ff588aaa4016/6698e25488c9c56572b593474e32b4bd/aspnetcore-runtime-5.0.8-win-x64.zip
+      https://download.visualstudio.microsoft.com/download/pr/21a5ee42-c681-427d-987f-d7350b5f72c9/ebd923b5d6e0923f42668aab85fa15db/aspnetcore-runtime-5.0.9-win-x64.zip
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/1b54c42a-4904-419b-8c24-bb2f39d4c8ae/279cd30211d8e5a9abf3129d04b4eb0e/aspnetcore-runtime-5.0.8-linux-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/19046594-e911-4784-a148-6de3d74d4a7f/d5c1ba792c4266a2d2a8eea41e81a060/aspnetcore-runtime-5.0.9-linux-x64.tar.gz
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/f3c2f283-48c4-44d9-be16-2aba37ec63fc/b431ca2b5e6c07fa1a686dade10b00b6/aspnetcore-runtime-5.0.8-osx-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/61dcf562-ed13-4592-9e94-b0849e6ae22e/ea664c2bf8f4249131fd595549e45d5f/aspnetcore-runtime-5.0.9-osx-x64.tar.gz
     </NETCoreDownloadUrl>
   </PropertyGroup>
 
