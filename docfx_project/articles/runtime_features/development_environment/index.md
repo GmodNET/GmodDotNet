@@ -19,7 +19,7 @@ $env:DOTNET_ENVIRONMENT='Development'
 .\bin\win64\gmod.exe
 ```
 
-There is also an examle of starting Garry's Mod dedicated server with Gmod.NET in Development environment on Linux using bash:
+There is also an example of starting Garry's Mod dedicated server with Gmod.NET in Development environment on Linux using bash:
 ```bash
 cd ~/steam/steamapps/common/GarrysModDS
 export DOTNET_ENVIRONMENT="Development"
