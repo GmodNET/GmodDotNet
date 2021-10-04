@@ -10,21 +10,20 @@
     <RepositoryType>Git</RepositoryType>
 	  <Company>GmodNET</Company>
 	  <Product>$(Description)</Product>
-	  <Copyright>Copyright (c) 2018 - 2020 Gleb Krasilich, GmodNET</Copyright>
-
+	  <Copyright>Copyright (c) 2018 - 2021 Gleb Krasilich, GmodNET</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GmodNET.VersionTool.MSBuild" Version="2.0.0-alpha.1.41543664.main">
+    <PackageReference Include="GmodNET.VersionTool.MSBuild" Version="2.0.0">
 		  <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>

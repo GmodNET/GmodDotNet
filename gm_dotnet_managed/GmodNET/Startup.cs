@@ -197,6 +197,16 @@ namespace GmodNET
                 lua.MCall(1, 0);
                 lua.Pop(1);
 
+                if (EnvironmentChecks.IsDevelopmentEnvironemt())
+                {
+                    lua.PushGlobalTable();
+                    lua.GetField(-1, "print");
+                    lua.PushString("WARNING: GmodDotNet is running in Development environment. .NET modules can be loaded from any location. " +
+                        "DO NOT use untrusted Lua scripts or join untrusted servers while Development mode is on!");
+                    lua.MCall(1, 0);
+                    lua.Pop(1);
+                }
+
                 GlobalContext n_context = new GlobalContext(lua);
 
                 global_contexts.Add(n_context);

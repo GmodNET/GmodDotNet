@@ -3,9 +3,15 @@
   "isRoot": true,
   "tools": {
     "gmodnet.versiontool": {
-      "version": "2.0.0-alpha.1.41543664.main",
+      "version": "2.0.0",
       "commands": [
         "gmodnet-vt"
+      ]
+    },
+    "dotnet-script": {
+      "version": "1.1.0",
+      "commands": [
+        "dotnet-script"
       ]
     }
   }

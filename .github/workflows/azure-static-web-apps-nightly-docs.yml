@@ -1,0 +1,80 @@
+name: Nightly Docs
+
+on:
+  push:
+    branches:
+      - main
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed, labeled, unlabeled]
+
+jobs:
+  build_docs:
+    if: (github.event_name == 'push' || (github.event_name == 'pull_request_target' && github.event.action != 'closed' && github.event.action != 'unlabeled' && contains(github.event.pull_request.labels.*.name, 'pr-generate-docs-preview'))) && github.repository_owner == 'GmodNET'
+    runs-on: windows-latest
+    name: Build Docs
+    steps:
+      - name: Install DocFX
+        run: choco install docfx --version=2.58 -y
+
+      - name: Checkout branch
+        if: github.event_name == 'push'
+        uses: actions/checkout@v2.3.4
+
+      - name: Checkout PR
+        if: github.event_name != 'push'
+        run: |
+             gh repo clone GmodNET/GmodDotNet ./
+             gh pr checkout ${{ github.event.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v1.8.1
+
+      - name: Build docs with DocFX
+        shell: pwsh
+        run: |
+             $env:GITHUB_ACTIONS='false'
+             docfx .\docfx_project\docfx.json
+
+      - name: Upload docs as artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: site
+          path: docfx_project/_site/
+
+  deploy_docs:
+    needs: build_docs
+    runs-on: ubuntu-latest
+    name: Deploy Docs
+    steps:
+      - name: Dowload docs build
+        uses: actions/download-artifact@v2.0.10
+        with:
+          name: site
+          path: site
+
+      - name: Deploy docs
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_HILL_0F19B7C03 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "./site" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "" # Built app content directory - optional
+          skip_app_build: true
+          ###### End of Repository/Build Configurations ######
+
+  remove_docs_pr_preview:
+    if: github.event_name == 'pull_request_target' && (github.event.action == 'closed' || (github.event.action == 'unlabeled' && github.event.label.name == 'pr-generate-docs-preview')) && github.repository_owner == 'GmodNET'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Docs
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_HILL_0F19B7C03 }}
+          action: "close"
