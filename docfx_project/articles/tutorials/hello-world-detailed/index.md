@@ -3,6 +3,9 @@ uid: tutorial_hello_world_detailed
 title: "A comprehensive introduction to Visual Studio, C# and the 'Hello World' code"
 ---
 
+> [!WARNING]
+> This article was written for an earlier version of Gmod.NET. In order to use the latest version of Gmod.NET you need to have **.NET 6** instead of **.NET 5** and **Visual Studio 2022** instead of **Visual Studio 2019**.
+
 # A comprehensive introduction to Visual Studio, C# and the Hello World code
 At the end of this tutorial you will have created and installed your own module that simply states: 'Hello World!' in the console. We will write a bit of C# (pronounce C-Sharp) code and learn about the basics of C# with regards to Gmod.NET module making.
 
@@ -15,7 +18,7 @@ At the end of this tutorial you will have created and installed your own module 
 
 You can use Lua to automate a lot of cool stuff in Garry's Mod. Still there are restrictions to what we can do. For example we can't just connect to a MySQL database from Lua. To be able to do that we need to install a module.
 
-Typically programmers can write modules with C++. Learning C++ and handling it the right way can be a challenge. C# is often described as being more accessible and the .NET Core Framework already comes with a lot of features. 
+Typically programmers can write modules with C++. Learning C++ and handling it the right way can be a challenge. C# is often described as being more accessible and the .NET Core Framework already comes with a lot of features.
 
 Furthermore there is tons of code already written for the .NET Core Framework. This means we can utilize that in our module to extend what Garry's Mod Lua can do.
 
@@ -46,7 +49,7 @@ Furthermore there is tons of code already written for the .NET Core Framework. T
 
    ![gmod beta branch](../hello-world/images/gmod-beta-property.png)
 
-   
+
 
 ### Install Gmod.NET in Garry's Mod
 
@@ -93,7 +96,7 @@ Now that you know what we're going to do and how we're going to get there: Let's
 
 1. Get Visual Studio 2019 Community from the official website: https://visualstudio.microsoft.com/. The community edition is free for individual developers, open-source and academic purposes.
 
-The installation should be self explanatory. Only make sure that you select the correct Workload: *.NET desktop development Workload*. We will need that to create a Garry's Mod .NET Module. 
+The installation should be self explanatory. Only make sure that you select the correct Workload: *.NET desktop development Workload*. We will need that to create a Garry's Mod .NET Module.
 
 2. On the Workload selection screen in the installer choose at least the **.NET desktop development** Workload:
 
@@ -120,14 +123,14 @@ You can always install other workloads later, so don't bother with anything else
 
 ## 2.Creating a Gmod.NET module project
 
-We've installed VS2019 and are ready to create our project. 
+We've installed VS2019 and are ready to create our project.
 
 1. Start VS2019
 2. **(Only when starting VS for the first time)** You may be asked for some configuration options. You can choose all default settings or take your time to setup your environment:
    * *Do you want to sign in?* Not required, but recommended to synchronize settings across your devices.
    * *Which Development Settings?* 'Visual C#' will fit best for the purpose of this tutorial
    * *Which color theme?* Pick any you like
-   * After configuring our personal settings we should arrive at the start screen. 
+   * After configuring our personal settings we should arrive at the start screen.
 
 You should see the start screen. You can recognize it by the big heading 'Visual Studio 2019' at the top. To the right should be 'Get started' with several options underneath it.
 
@@ -135,7 +138,7 @@ You should see the start screen. You can recognize it by the big heading 'Visual
 
 We now get to choose which type of project we want to create
 
-4. Click the project type **Class Library (.NET Core)** *(Use the search box to find it faster)*
+4. Click the project type **Class Library** *(Use the search box to find it faster)*
 
 * **Note:** Is this project type missing? Double-check that you installed the .NET desktop development workload and required components mentioned in the previous chapter.
 * **Beware:** There are similarly named project types that are incorrect! Do **NOT** choose Class Library (.NET Framework) or Class Library (.NET Standard). These are incompatible with Gmod.NET.
@@ -160,7 +163,7 @@ Visual Studio now asks which framework you wish to target. Gmod.NET requires **a
 
 Visual Studio will generate a Class Library (.NET Core) project for us. When it's done you will see this screen:
 
-![New Class Library project](../hello-world/images/new-project.png) 
+![New Class Library project](../hello-world/images/new-project.png)
 
 Visual Studio helps us identify problems with our code. I have already enabled the Error List so I can see the errors and warnings Visual Studio gives. Errors always need to be fixed. Warnings can sometimes be ignored.
 
@@ -200,7 +203,7 @@ Great! We've got the project setup. We want to get to writing some code. I'll ha
 
 On the right hand side you see the **Solution Explorer**. This contains our Solution, Project(s) and code files. We can also see what it "depends on" in Dependencies (NuGet Packages for example).
 
-**Right now we have only a single code-file named Class1.cs (.cs stands for C-Sharp/C#). Let's clean up our code a bit and make it clear what it does.** 
+**Right now we have only a single code-file named Class1.cs (.cs stands for C-Sharp/C#). Let's clean up our code a bit and make it clear what it does.**
 
 1. Right click **Class1.cs** in the Solution Explorer
 
@@ -210,7 +213,7 @@ On the right hand side you see the **Solution Explorer**. This contains our Solu
 
 3. We will name the file "Setup.cs" since it will explain to Gmod.NET how our module starts, stops and what it does. *I challenge you to think of a better name, though make sure that (like the project name) it is always UpperCamelCase with no spaces, nor any special characters. It always needs to end in **.cs** if you're writing C# code in it.*
 
-4. **Always click yes** when you get the dialog asking your something like *"Would you like to rename all references from Class1 to Setup?"*. 
+4. **Always click yes** when you get the dialog asking your something like *"Would you like to rename all references from Class1 to Setup?"*.
 
 You should see the code on the left hand side change. Amongst other code it will now say `public class Setup` instead of `public class Class1`. It is always a good idea that the filename is the same as the class name. What a "class" is and what "public" stands for is outside the scope of this tutorial. At the end of this tutorial we'll refer you to some more tutorials on the C# programming language.
 
@@ -276,11 +279,11 @@ The generated code shows us how we can implement our interface. The clear names 
 
 **A *Property* describes a class** (plural. In this case the `ModuleName` describes what the name of our module will be. This property is of the type *string*. **Properties with the type string can only contain text**. We can write literal text by using "double quotation marks".
 
-**You can compare Properties to variables in Lua.** Only a property is a variable that is tied to the class it is in. 
+**You can compare Properties to variables in Lua.** Only a property is a variable that is tied to the class it is in.
 
 In this case our property can be *accessed from the outside* by other classes and even other applications. This is because we made it *public*. We need these properties to be public because Gmod.NET can look at these values later when it loads our module.
 
-The next property is called `ModuleVersion` and is also of the type string. In the exact same way you wrote the code for ModuleName you should now write the code for the version of your module. 
+The next property is called `ModuleVersion` and is also of the type string. In the exact same way you wrote the code for ModuleName you should now write the code for the version of your module.
 
 12. Set ModuleVersion to the version number: 0.1.0 (Make sure you use the symbols we just discussed to indicate it's a literal string)
 
@@ -290,7 +293,7 @@ If we skim the rest of the code we see (amongst a lot of other code) the words L
 
 **Methods explain to the computer in what sequence actions need to be performed. You can somewhat compare Methods to Lua functions.**
 
-Methods sometimes get input and they sometimes return output. We can see that the Load and Unload methods don't return any output from the keyword `void` in front of the Method name. 
+Methods sometimes get input and they sometimes return output. We can see that the Load and Unload methods don't return any output from the keyword `void` in front of the Method name.
 
 We can see from the `(ILua lua)` behind the Unload method that it only expects a single argument/input.
 
@@ -377,7 +380,7 @@ We call the code inside a method it's body. The code we added will print "Hello 
 **This is what each line of code does:**
 
 * `lua.PushSpecial(GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB);`
-  * This is a method on the Lua State that puts something "special" on top of the Stack. 
+  * This is a method on the Lua State that puts something "special" on top of the Stack.
   * We give it `GmodNET.API.SPECIAL_TABLES.SPECIAL_GLOB` to let the PushSpecial method know we want to put the "Global Table" on top of the stack.
   * In Lua the Global Table lives in the `_G` variable (we'll use that name for the Global Table from hereon)
   * It will become clear why we do this in a moment.
@@ -400,7 +403,7 @@ We call the code inside a method it's body. The code we added will print "Hello 
   * With the `MCall` method we tell Lua to call the stack as if it's a function.
   * We give it 1 as the first argument to indicate that only the last thing thing on the stack ("Hello World!") is the argument.
   * We give it 0 as the second argument to let Lua know that we don't care about the output of the function (the print function doesn't return anything anyway)
-  * At this point the computer basically knows: *from the global table get the field print and call it with the string "Hello World!"*. 
+  * At this point the computer basically knows: *from the global table get the field print and call it with the string "Hello World!"*.
   * In Lua this would be: `_G.print("Hello World!")`
   * When you call a function using `lua.MCall` it will remove the arguments and function from the stack for you.
   * Our stack (contains 1 thing) looks like this now:
@@ -423,7 +426,7 @@ We've written the code to explain what our module wants to happen: *when loading
 
 ![build-solution](../hello-world/images/build-solution.png)
 
-2. Go to your solution location in Windows File Explorer. This is the location you saw when you first created the project. 
+2. Go to your solution location in Windows File Explorer. This is the location you saw when you first created the project.
 
    **If you forgot where the project is located:** you can find it by right-clicking the solution (at the top of the Solution Explorer) > 'Open Folder in File Explorer'.
 
@@ -488,4 +491,3 @@ You'll have to rebuild and reinstall the module when you make changes in C#.
 3. Now that the module is unloaded you can overwrite it with the new files.
 
 4. Reload the module the same way we loaded it before (with `dotnet.load("GmodHelloWorld")`)
-
