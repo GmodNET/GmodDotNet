@@ -6,6 +6,8 @@ title: "Connect to nightly builds"
 > [!WARNING]
 > The nightly builds can be unstable. Please help us find bugs by [reporting issues on GitHub](https://github.com/GmodNET/GmodDotNet/issues).
 
+> [!WARNING]
+> This article was written for an earlier version of Gmod.NET. In order to use the latest version of Gmod.NET you need to have **.NET 6** instead of **.NET 5** and **Visual Studio 2022** instead of **Visual Studio 2019**.
 
 # Connect to the nightly builds and use it in your project
 Connect to the latest version of Gmod.NET to use the newest features (`main` for `.NET 5.0`) or to test the `.NET 6.0 Preview` version on the `net6` branch.
