@@ -10,14 +10,14 @@ At the end of this tutorial you will have created and installed your own module 
 
 ## Requirements
 
-* [Visual Studio 2019](https://visualstudio.microsoft.com/)
+* [Visual Studio 2022](https://visualstudio.microsoft.com/)
    * Ensure the *.NET desktop development Workload* is installed in Visual Studio
    * Ensure at least these individual components are installed:
       * .NET SDK
       * NuGet Package manager
       * C# and Visual Basic
-      * .NET 5.0 Runtime
-* Windows 10 (8.1 and 7 SP1 may also work, see [Visual Studio requirements](https://docs.microsoft.com/en-us/visualstudio/releases/2019/system-requirements#visual-studio-2019-system-requirements))
+      * .NET 6.0 Runtime
+* Windows 10 or newer.
 * An internet connection
 * A copy of [Garry's Mod installed through Steam](https://store.steampowered.com/app/4000/garrys_mod)
 * Approximately half an hour of your time and patience *(including downloading and installing Visual Studio)*
@@ -34,10 +34,10 @@ At the end of this tutorial you will have created and installed your own module 
 
 ## Tutorial Overview
 
-These are the subjects we will be discussing in order to create our **.NET Core** module, written in **C#**, that will simply print 'Hello World!' to the console:
+These are the subjects we will be discussing in order to create our **.NET** module, written in **C#**, that will simply print 'Hello World!' to the console:
 
 1. Creating a Gmod.NET module project
-   * Choosing the project type *Class Library (.NET Core)*
+   * Choosing the project type *Class Library*
    * Including the GmodNET.API *NuGet Package* into our project
 2. Setting up the basic code structure
    * Implementing the GmodNET.API *IModule Interface*
@@ -52,26 +52,26 @@ These are the subjects we will be discussing in order to create our **.NET Core*
 
 ## 1. Creating a Gmod.NET module project
 
-1. Start Visual Studio 2019
+1. Start Visual Studio 2022
 2. Click the **Create new project** option
-3. Click the project type **Class Library (.NET Core)** *(Use the search box to find it faster)*
+3. Click the project type **Class Library** *(Use the search box to find it faster)*
    * **Note:** Is this project type missing? Double-check that you installed the .NET desktop development workload and the other required components.
 
 ![visual-studio-project-type](images/visual-studio-project-type.png)
 
 4. Click Next or double-click the project type
 5. Choose the project name "GmodHelloWorld" *(the naming convention is PascalCase/UpperCamelCase)*
-6. Click Next 
-7. As the Target Framework choose **.NET 5.0**
-![.NET 5.0 project](images/project-net-5.png)
+6. Click Next
+7. As the Target Framework choose **.NET 6.0**
+![.NET 6.0 project](images/project-net-6.png)
 
 Visual Studio will generate a Class Library (.NET Core) project for us. When it's done you will see this screen:
 
-![New Class Library project](images/new-project.png) 
+![New Class Library project](images/new-project.png)
 
 8. Go to View and click **Error List**. This will help us find problems with our code later. You only have to do this once.
 
-**Let's add the GmodNET.API NuGet package to our project.** 
+**Let's add the GmodNET.API NuGet package to our project.**
 
 9. In the toolstrip Go to **Tools > NuGet Package Manager > Manage NuGet Packages for Solution...**
 
@@ -81,7 +81,7 @@ Visual Studio will generate a Class Library (.NET Core) project for us. When it'
 11. In the search bar search for "GmodNET.API"
 12. Click **GmodNET.API**
 13. On the right-hand side check the box in front of your project name (GmodHelloWorld)
-14. Click Install. It may take a second to download and install. VS2019 will say **Ready** in the bottom left when it's done doing whatever it's doing.
+14. Click Install. It may take a second to download and install. VS2022 will say **Ready** in the bottom left when it's done doing whatever it's doing.
 
 **We have now created an empty project with which we can start making Gmod.NET modules.** You will repeat this chapter every time you wish to create a new Garry's Mod module.
 
@@ -98,7 +98,7 @@ Visual Studio will generate a Class Library (.NET Core) project for us. When it'
 
 3. We will name the file "Setup.cs". *(the file name convention is UpperCamelCase with no spaces, nor any special characters)*
 
-4. **Always click yes** when you get the dialog asking you *"Would you like to rename all references from Class1 to Setup?"*. 
+4. **Always click yes** when you get the dialog asking you *"Would you like to rename all references from Class1 to Setup?"*.
 
 
 
@@ -140,7 +140,7 @@ Let's go over the generated code, step-by-step and fill in the "empty spots".
 
     ![property module name](images/property-module-name.png)
 
-12. Next fill the *Property* `ModuleVersion` with a version like "0.1.0". 
+12. Next fill the *Property* `ModuleVersion` with a version like "0.1.0".
 
 The **load**-***method*** is called when our module is loaded. We will fill it with code in the next chapter.
 
@@ -187,7 +187,7 @@ The code we just added to the Load method will be executed when Gmod.NET loads o
 
 2. Go to your solution location in Windows File Explorer.
 
-3. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\net5.0\`
+3. Inside your solution navigate to where the module was built: `<your solution location>\GmodHelloWorld\bin\Debug\net6.0\`
 
 4. If your module built successfully you'll have the following files. We'll call these "*the built module files*".
 
@@ -235,4 +235,3 @@ You'll have to rebuild and reinstall the module when you make changes in C#.
 2. Now that the module is unloaded you can overwrite it with the new files.
 
 3. Reload the module the same way we loaded it before (with `dotnet.load("GmodHelloWorld")`)
-
