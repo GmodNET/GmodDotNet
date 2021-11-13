@@ -6,4 +6,5 @@
   topicUid: tutorial_connect_nightly
 - name: "Debugging and inner dev loop"
   topicUid: tutorial_debugging
-  
+- name: "Using .NET SDK CLI and Templates"
+  topicUid: net-sdk-cli
