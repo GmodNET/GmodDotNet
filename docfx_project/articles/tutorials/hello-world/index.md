@@ -49,8 +49,17 @@ These are the subjects we will be discussing in order to create our **.NET** mod
 
 
 
+## 1. Install Gmod.NET runtime.
 
-## 1. Creating a Gmod.NET module project
+1. Download the latest build of Gmod.NET runtime for your operation system from [our Releases page](https://github.com/GmodNET/GmodDotNet/releases).
+2. Unpack downloaded archive to `%GARRYS_MOD_ROOT_FOLDER%garrysmod/lua/bin/` folder
+(for example `C:\Program Files (x86)\Steam\steamapps\common\GarrysMod\garrysmod\lua\bin`).
+3. If you done everything right, content of your `%GARRYS_MOD_ROOT_FOLDER%garrysmod/lua/bin/` should look something like this:
+![screenshot-of-the-folder-contents](images/lua-bin-folder.png)
+
+
+
+## 2. Creating a Gmod.NET module project
 
 1. Start Visual Studio 2022
 2. Click the **Create new project** option
@@ -88,7 +97,7 @@ Visual Studio will generate a Class Library (.NET Core) project for us. When it'
 
 
 
-## 2. Setting up the basic code structure
+## 3. Setting up the basic code structure
 
 1. **Right-click Class1.cs** in the Solution Explorer
 
@@ -153,7 +162,7 @@ The **Unload-*method*** is called when our module needs to clean up after itself
 That's it! We've setup our code and are ready to get to the main subject of today: making our module print 'Hello World!'.
 
 
-## 3. Writing module code
+## 4. Writing module code
 
 After all those instructions we finally get to the most important part of this module: actually printing 'Hello World!' to the Garry's Mod console.
 
@@ -177,7 +186,7 @@ The code we just added to the Load method will be executed when Gmod.NET loads o
 
 
 
-## 4. Building, installing and testing our module
+## 5. Building, installing and testing our module
 
 ### Building
 
