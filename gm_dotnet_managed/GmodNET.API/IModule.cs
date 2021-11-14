@@ -6,7 +6,7 @@ using System.Runtime.Loader;
 namespace GmodNET.API
 {
     /// <summary>
-    /// An interface for GmodDotNet modules to implement.
+    /// An interface for Gmod.NET modules to implement.
     /// </summary>
     public interface IModule
     {
@@ -33,7 +33,7 @@ namespace GmodNET.API
         }
 
         /// <summary>
-        /// This method is called by GmodDotNet runtime on module load and should be treated as module's entry point.
+        /// This method is called by Gmod.NET runtime on module load and should be treated as module's entry point.
         /// </summary>
         /// <param name="lua">An <see cref="ILua"/> interface instance to communicate with Garry's Mod.</param>
         /// <param name="is_serverside"><c>True</c> if module is being loaded into the serverside environment, <c>False</c> otherwise.</param>
@@ -41,7 +41,7 @@ namespace GmodNET.API
         public void Load(ILua lua, bool is_serverside, ModuleAssemblyLoadContext assembly_context);
 
         /// <summary>
-        /// Called by GmodDotNet runtime on game/server quit or manual module unload.
+        /// Called by Gmod.NET runtime on game/server quit or manual module unload.
         /// </summary>
         /// <param name="lua">An <see cref="ILua"/> interface instance to communicate with Garry's Mod.</param>
         public void Unload(ILua lua);

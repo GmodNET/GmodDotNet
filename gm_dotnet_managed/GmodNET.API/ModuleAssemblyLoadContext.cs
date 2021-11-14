@@ -7,7 +7,7 @@ using System.Reflection;
 namespace GmodNET.API
 {
     /// <summary>
-    /// An extension of <see cref="AssemblyLoadContext" /> class with GmodNET specific features.
+    /// An extension of <see cref="AssemblyLoadContext" /> class with Gmod.NET specific features.
     /// </summary>
     public abstract class ModuleAssemblyLoadContext : AssemblyLoadContext
     {
