@@ -127,7 +127,7 @@ jobs:
 
  windows-build:
 
-   runs-on: windows-latest
+   runs-on: windows-2019
 
    steps:
      - name: Checkout
@@ -234,7 +234,7 @@ jobs:
 
  mac-build:
 
-    runs-on: macos-latest
+    runs-on: macos-10.15
 
     steps:
 
@@ -294,7 +294,7 @@ jobs:
 
  trigger_autorebase:
 
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-20.04
 
    needs: [linux-build, windows-build, mac-build]
 
