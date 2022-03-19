@@ -2,19 +2,20 @@
 
   <!-- Public properties to configure runtime build. -->
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <BundledNETCoreVersion>7.0.0-preview.1.22076.8</BundledNETCoreVersion>
+    <TargetFramework>net7.0</TargetFramework>
+
+    <BundledNETCoreVersion>7.0.0-preview.2.22152.2</BundledNETCoreVersion>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/0a98b821-d06c-4ef2-ae94-39577e8c85ed/7ff1720d148ed9f2dadd2b1d9d152cbd/aspnetcore-runtime-7.0.0-preview.1.22109.13-win-x64.zip
+      https://download.visualstudio.microsoft.com/download/pr/48930452-e7b8-453b-a53d-c562d1e28e23/8760008e53bff5b067ad10ef3e0d0003/aspnetcore-runtime-7.0.0-preview.2.22153.2-win-x64.zip
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/c49ea5ad-41ee-41fa-9eab-47dfcc7e23ad/39907ed7d3caddc44fbf52f88baf6401/aspnetcore-runtime-7.0.0-preview.1.22109.13-linux-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/8d24d018-755a-4326-930f-b6f88e7c8851/330dfff882e637583cfde0c8cd90debf/aspnetcore-runtime-7.0.0-preview.2.22153.2-linux-x64.tar.gz
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/44202dd0-d880-4730-9af0-d80da65738b6/61398785478b24f9275e3233c94b4838/aspnetcore-runtime-7.0.0-preview.1.22109.13-osx-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/92bec271-6ed5-4c5a-89d3-002873d147c6/735323c91eb4a14d8737c52b5ea58455/aspnetcore-runtime-7.0.0-preview.2.22153.2-osx-x64.tar.gz
     </NETCoreDownloadUrl>
   </PropertyGroup>
 
