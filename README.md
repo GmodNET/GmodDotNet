@@ -9,7 +9,7 @@ Cross-platform .NET Module/Plugin platform for Garry's Mod powered by [__.NET__]
 
 Gmod.NET is Garry's Mod Module/Plugin loader for C#
 and other .NET languages which runs across all platforms (Windows,
-Linux, Mac Os). Gmod.NET allows you to develop cross-platform Garry's Mod extensions without
+Linux, macOS). Gmod.NET allows you to develop cross-platform Garry's Mod extensions without
 need to close or reload your game or server.
 
 Gmod.NET allows you to write Garry's Mod modules in C# or any other CIL-compiled language as [__.NET 6.0__](https://dotnet.microsoft.com/) class libraries. 
