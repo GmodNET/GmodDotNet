@@ -15,7 +15,7 @@
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/c0c10b6a-7f97-4853-afb5-44617d7cbbc4/5275bb79c31cc80cee795bb168d1f1a9/aspnetcore-runtime-6.0.5-win-x64.zip
+      https://download.visualstudio.microsoft.com/download/pr/ec3ae29d-ea2a-44ec-8ef4-a114a0efc818/401eca540c50187f8da95c430099ea2e/aspnetcore-runtime-6.0.5-osx-x64.tar.gz
     </NETCoreDownloadUrl>
   </PropertyGroup>
 
