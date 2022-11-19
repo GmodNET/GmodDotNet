@@ -9,7 +9,7 @@ jobs:
     name: Build Docs
     steps:
       - name: Install DocFX
-        run: choco install docfx --version=2.58.9 -y
+        run: choco install docfx --version=2.59.4 -y
 
       - name: Checkout
         uses: actions/checkout@v2.3.4
