@@ -4,7 +4,7 @@ title: "A comprehensive introduction to Visual Studio, C# and the 'Hello World' 
 ---
 
 > [!WARNING]
-> This article was written for an earlier version of Gmod.NET. In order to use the latest version of Gmod.NET you need to have **.NET 6** instead of **.NET 5** and **Visual Studio 2022** instead of **Visual Studio 2019**.
+> This article was written for an earlier version of Gmod.NET. In order to use the latest version of Gmod.NET you need to have **.NET 7** instead of **.NET 5** and **Visual Studio 2022** instead of **Visual Studio 2019**.
 
 # A comprehensive introduction to Visual Studio, C# and the Hello World code
 At the end of this tutorial you will have created and installed your own module that simply states: 'Hello World!' in the console. We will write a bit of C# (pronounce C-Sharp) code and learn about the basics of C# with regards to Gmod.NET module making.

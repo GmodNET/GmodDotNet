@@ -5,7 +5,7 @@ title: "Core Concepts"
 
 # Core Concepts
 
-Gmod.NET modules are essentially .NET (currently version 6.0) class libraries which reference [GmodNET.API nuget package](https://www.nuget.org/packages/GmodNET.API/) as their dependency.
+Gmod.NET modules are essentially .NET (currently version 7.0) class libraries which reference [GmodNET.API nuget package](https://www.nuget.org/packages/GmodNET.API/) as their dependency.
 Each module should contain one or more implementation of [GmodNET.API.IModule](xref:GmodNET.API.IModule) interface.
 Gmod.NET runtime will instantiate each class derived from `IModule` by calling its parameterless constructor.
 

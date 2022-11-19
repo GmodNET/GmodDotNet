@@ -3,6 +3,9 @@ uid: tutorial_hello_world
 title: "A quick start with 'Hello World'"
 ---
 
+> [!WARNING]
+> This article was written for an earlier version of Gmod.NET. In order to use the latest version of Gmod.NET you need to have **.NET 7** instead of **.NET 6**.
+
 # A quick start with 'Hello World'
 At the end of this tutorial you will have created and installed your own module that simply states: 'Hello World!' in the console. We will write our module using a bit of C# (pronounce C-Sharp) code.
 
@@ -16,7 +19,7 @@ At the end of this tutorial you will have created and installed your own module 
       * .NET SDK
       * NuGet Package manager
       * C# and Visual Basic
-      * .NET 6.0 Runtime
+      * .NET 7.0 Runtime
 * Windows 10 or newer.
 * An internet connection
 * A copy of [Garry's Mod installed through Steam](https://store.steampowered.com/app/4000/garrys_mod)
