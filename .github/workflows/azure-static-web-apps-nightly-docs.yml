@@ -34,9 +34,6 @@ jobs:
       - name: Install DocFX
         run: dotnet tool update -g docfx
 
-      - name: Build Gmod.NET solution
-        run: dotnet build runtime.csproj -c Release
-
       - name: Build docs with DocFX
         shell: pwsh
         run: |
