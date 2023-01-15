@@ -4,18 +4,18 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
 
-    <BundledNETCoreVersion>7.0.0</BundledNETCoreVersion>
+    <BundledNETCoreVersion>7.0.2</BundledNETCoreVersion>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'win-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/e3c77b40-cb02-4f1a-845f-c8040de58a83/be6bba4cac270a11c2b9dbdeec0a3040/aspnetcore-runtime-7.0.0-win-x64.zip
+      https://download.visualstudio.microsoft.com/download/pr/79dbfb6e-78b4-4e2c-a3a9-040666d6b407/ad24076fc19fdfa6c7acdd6bad8a1fc5/aspnetcore-runtime-7.0.2-win-x64.zip
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'linux-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/4bbb4d31-70ba-4def-b747-4358be873982/3dbca5b64c2ffb88641c0e42bdeb297a/aspnetcore-runtime-7.0.0-linux-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/1d8c4b4c-aec9-451b-9bd3-bf7cdbd28477/def6c1a7a9cfd4590698d4f338da2803/aspnetcore-runtime-7.0.2-linux-x64.tar.gz
     </NETCoreDownloadUrl>
 
     <NETCoreDownloadUrl Condition="$(NETCoreSdkRuntimeIdentifier) == 'osx-x64'">
-      https://download.visualstudio.microsoft.com/download/pr/5ea36935-090e-4ca4-841f-49371b408d9d/6e0c2c4721dabbb9a237d6b6ed17df75/aspnetcore-runtime-7.0.0-osx-x64.tar.gz
+      https://download.visualstudio.microsoft.com/download/pr/035d61f7-0418-4834-8364-eec4d3c3d112/b1fd356e10f14ee2c930e023654186f3/aspnetcore-runtime-7.0.2-osx-x64.tar.gz
     </NETCoreDownloadUrl>
   </PropertyGroup>
 
