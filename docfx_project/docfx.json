@@ -83,7 +83,6 @@
     "disableGitFeatures": false,
     "xrefService": [
       "https://xref.docs.microsoft.com/query?uid={uid}"
-    ],
-    "repositoryRoot": "../"
+    ]
   }
 }
