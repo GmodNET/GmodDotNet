@@ -25,20 +25,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup .NET Core SDK
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3.0.3
         with:
-          dotnet-version: 6.0.x
           global-json-file: "./global.json"
 
-      - name: Install DocFX
-        run: dotnet tool update -g docfx
+      - name: Restore dotnet tools
+        run: dotnet tool restore
 
       - name: Build docs with DocFX
         shell: pwsh
         run: |
              $env:GITHUB_ACTIONS='false'
-             docfx ./docfx_project/docfx.json
+             dotnet docfx ./docfx_project/docfx.json
 
       - name: Upload docs as artifact
         uses: actions/upload-artifact@v2.2.4
