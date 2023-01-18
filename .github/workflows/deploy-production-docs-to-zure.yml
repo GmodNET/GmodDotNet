@@ -4,41 +4,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_docs:
-    runs-on: windows-latest
-    name: Build Docs
+  build_and_deploy_docs:
+    runs-on: ubuntu-latest
+    name: Build and deploy docs
     steps:
-      - name: Install DocFX
-        run: choco install docfx --version=2.59.4 -y
-
       - name: Checkout
         uses: actions/checkout@v2.3.4
 
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v1.8.1
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3.0.3
+        with:
+          global-json-file: "./global.json"
 
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+      # We force DocFX to use latest runtime (and latest SDK) by setting DOTNET_ROLL_FORWARD='LatestMajor' env var
       - name: Build docs with DocFX
         shell: pwsh
         run: |
              $env:GITHUB_ACTIONS='false'
-             docfx .\docfx_project\docfx.json
+             $env:DOTNET_ROLL_FORWARD='LatestMajor' 
+             dotnet docfx ./docfx_project/docfx.json
 
       - name: Upload docs as artifact
         uses: actions/upload-artifact@v2.2.4
         with:
           name: site
           path: docfx_project/_site/
-
-  deploy_docs:
-    needs: build_docs
-    runs-on: ubuntu-latest
-    name: Deploy Docs
-    steps:
-      - name: Dowload docs build
-        uses: actions/download-artifact@v2.0.10
-        with:
-          name: site
-          path: site
 
       - name: Deploy docs
         uses: Azure/static-web-apps-deploy@v1
@@ -48,7 +41,7 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "./site" # App source code path
+          app_location: "./docfx_project/_site/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
           skip_app_build: true
