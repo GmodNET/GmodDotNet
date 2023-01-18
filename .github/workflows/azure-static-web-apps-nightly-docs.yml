@@ -8,10 +8,10 @@ on:
     types: [opened, synchronize, reopened, closed, labeled, unlabeled]
 
 jobs:
-  build_docs:
+  build_and_deploy_docs:
     if: (github.event_name == 'push' || (github.event_name == 'pull_request_target' && github.event.action != 'closed' && github.event.action != 'unlabeled' && contains(github.event.pull_request.labels.*.name, 'pr-generate-docs-preview'))) && github.repository_owner == 'GmodNET'
     runs-on: ubuntu-latest
-    name: Build Docs
+    name: Build and Deploy Nightly Docs
     steps:
       - name: Checkout branch
         if: github.event_name == 'push'
