@@ -33,10 +33,12 @@ jobs:
       - name: Restore dotnet tools
         run: dotnet tool restore
 
+      # We force DocFX to use latest runtime (and latest SDK) by setting DOTNET_ROLL_FORWARD='LatestMajor' env var
       - name: Build docs with DocFX
         shell: pwsh
         run: |
              $env:GITHUB_ACTIONS='false'
+             $env:DOTNET_ROLL_FORWARD='LatestMajor' 
              dotnet docfx ./docfx_project/docfx.json
 
       - name: Upload docs as artifact
