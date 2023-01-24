@@ -882,7 +882,7 @@ namespace GmodNET.API
         /// </summary>
         /// <param name="lua_error_code">A Lua exception code. Must be one of the values defined by Lua specification.</param>
         /// <param name="lua_error_message">A Lua exception message.</param>
-        public GmodLuaException(int lua_error_code, string lua_error_message) : base(lua_error_message)
+        public GmodLuaException(int lua_error_code, string? lua_error_message) : base(lua_error_message)
         {
             this.error_code = lua_error_code;
         }
