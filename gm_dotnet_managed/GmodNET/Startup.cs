@@ -34,8 +34,8 @@ namespace GmodNET
 
                 try
                 {
-                    friendly_version = full_assembly_version!.Split("+")[0];
-                    version_codename = full_assembly_version!.Split("+")[1].Split(".")[1];
+                    friendly_version = full_assembly_version.Split("+")[0];
+                    version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
                 }
                 catch
                 {
