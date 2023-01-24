@@ -46,7 +46,7 @@ namespace GmodNET
             pop(ptr, IAmt);
         }
 
-        public void GetField(int iStackPos, in string key)
+        public void GetField(int iStackPos, string key)
         {
             if (iStackPos == 0)
             { 
@@ -62,7 +62,7 @@ namespace GmodNET
             }
         }
 
-        public void SetField(int iStackPos, in string key)
+        public void SetField(int iStackPos, string key)
         {
             if (iStackPos == 0)
             { 
@@ -280,7 +280,7 @@ namespace GmodNET
             push_nil(ptr);
         }
 
-        public void PushString(in string str)
+        public void PushString(string str)
         {
             byte[] buff = Encoding.UTF8.GetBytes(str);
 
@@ -472,7 +472,7 @@ namespace GmodNET
             set_state(ptr, lua_state);
         }
 
-        public int CreateMetaTable(in string name)
+        public int CreateMetaTable(string name)
         {
             byte[] buff = Encoding.UTF8.GetBytes(name);
 
