@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
     <StartupObject>GmodNET.BuidReq</StartupObject>
     <Description>GmodNET managed module loader.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

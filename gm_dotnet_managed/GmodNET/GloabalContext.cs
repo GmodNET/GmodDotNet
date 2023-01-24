@@ -103,9 +103,12 @@ namespace GmodNET
 
                 foreach (Type t in module_types)
                 {
-                    IModule current_module = (IModule)Activator.CreateInstance(t);
-                    modules.Add(current_module);
-                    gc_handles.Add(GCHandle.Alloc(current_module));
+                    IModule? current_module = Activator.CreateInstance(t) as IModule;
+                    if (current_module is not null)
+                    {
+                        modules.Add(current_module);
+                        gc_handles.Add(GCHandle.Alloc(current_module));
+                    }
                 }
 
                 if (modules.Count == 0)
@@ -150,7 +153,7 @@ namespace GmodNET
             {
                 foreach (GCHandle h in module_contexts[module_name].Item2)
                 {
-                    ((IModule)h.Target).Unload(lua);
+                    (h.Target as IModule)?.Unload(lua);
                     h.Free();
                 }
 

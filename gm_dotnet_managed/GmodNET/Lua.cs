@@ -20,11 +20,21 @@ namespace GmodNET
 
         public int Top()
         {
+            if (top is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(top));
+            }
+
             return top(ptr);
         }
 
         public void Push(int iStackPos)
         {
+            if (push is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -34,6 +44,11 @@ namespace GmodNET
 
         public void Pop(int IAmt = 1)
         {
+            if (pop is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(pop));
+            }
+
             if (IAmt < 0)
             { 
                 throw new ArgumentOutOfRangeException("iAmt", "Can't pop negative number of items from the stack");
@@ -48,6 +63,11 @@ namespace GmodNET
 
         public void GetField(int iStackPos, string key)
         {
+            if (get_field is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_field));
+            }
+
             if (iStackPos == 0)
             { 
                throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -64,6 +84,11 @@ namespace GmodNET
 
         public void SetField(int iStackPos, string key)
         {
+            if (set_field is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(set_field));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -80,11 +105,21 @@ namespace GmodNET
 
         public void CreateTable()
         {
+            if (create_table is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(create_table));
+            }
+
             create_table(ptr);
         }
 
         public void SetMetaTable(int iStackPos)
         {
+            if (set_metatable is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(set_metatable));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -94,6 +129,11 @@ namespace GmodNET
 
         public bool GetMetaTable(int iStackPos)
         {
+            if (get_metatable is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_metatable));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -113,16 +153,31 @@ namespace GmodNET
         [Obsolete("Unsafe. Use Lua.PCall instead.", false)]
         public void Call(int iArgs, int iResults)
         {
+            if (call is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(call));
+            }
+
             call(ptr, iArgs, iResults);
         }
 
         public int PCall(int IArgs, int IResults, int ErrorFunc)
         {
+            if (pcall is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(pcall));
+            }
+
             return pcall(ptr, IArgs, IResults, ErrorFunc);
         }
 
         public bool Equal(int iA, int iB)
         {
+            if (equal is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(equal));
+            }
+
             if(iA == 0 || iB == 0)
             {
                 throw new ArgumentException("Neither iA or iB can't be 0");
@@ -141,6 +196,11 @@ namespace GmodNET
 
         public bool RawEqual(int iA, int iB)
         {
+            if (raw_equal is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(raw_equal));
+            }
+
             if(iA == 0 || iB == 0)
             {
                 throw new ArgumentException("Neither iA or iB can't be 0");
@@ -159,6 +219,11 @@ namespace GmodNET
 
         public void Insert(int iStackPos)
         {
+            if (insert is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(insert));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -168,6 +233,11 @@ namespace GmodNET
 
         public void Remove(int iStackPos)
         {
+            if (remove is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(remove));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -177,6 +247,11 @@ namespace GmodNET
 
         public int Next(int iStackPos)
         {
+            if (next is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(next));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -187,6 +262,11 @@ namespace GmodNET
         [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public void ThrowError(in string error_message)
         {
+            if (throw_error is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(throw_error));
+            }
+
             byte[] buff = Encoding.UTF8.GetBytes(error_message + "\0");
             unsafe
             {
@@ -200,6 +280,11 @@ namespace GmodNET
         [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public void CheckType(int iStackPos, int IType)
         {
+            if (check_type is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(check_type));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -210,6 +295,11 @@ namespace GmodNET
         [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public void ArgError(int iArgNum, in string error_message)
         {
+            if (arg_error is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(arg_error));
+            }
+
             byte[] buff = Encoding.UTF8.GetBytes(error_message);
             unsafe
             {
@@ -222,6 +312,11 @@ namespace GmodNET
 
         public string GetString(int iStackPos)
         {
+            if (get_string is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_string));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -241,6 +336,11 @@ namespace GmodNET
 
         public double GetNumber(int iStackPos)
         {
+            if (get_number is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_number));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -250,6 +350,11 @@ namespace GmodNET
 
         public bool GetBool(int iStackPos)
         {
+            if (get_bool is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_bool));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -268,6 +373,11 @@ namespace GmodNET
 
         public IntPtr GetCFunction(int iStackPos)
         {
+            if (get_c_function is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_c_function));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -277,11 +387,21 @@ namespace GmodNET
 
         public void PushNil()
         {
+            if (push_nil is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_nil));
+            }
+
             push_nil(ptr);
         }
 
         public void PushString(string str)
         {
+            if (push_string is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_string));
+            }
+
             byte[] buff = Encoding.UTF8.GetBytes(str);
 
             unsafe
@@ -295,11 +415,21 @@ namespace GmodNET
 
         public void PushNumber(double val)
         {
+            if (push_number is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_number));
+            }
+
             push_number(ptr, val);
         }
 
         public void PushBool(bool val)
         {
+            if (push_bool is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_bool));
+            }
+
             int tmp;
 
             if(val)
@@ -316,6 +446,11 @@ namespace GmodNET
 
         public unsafe void PushCFunction(IntPtr native_func_ptr)
         {
+            if (push_c_function is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_c_function));
+            }
+
             if(native_func_ptr == IntPtr.Zero)
             {
                 throw new ArgumentNullException("native_func_ptr", "Parameter can't be nullptr.");
@@ -326,6 +461,11 @@ namespace GmodNET
 
         public unsafe void PushCFunction(delegate* unmanaged[Cdecl]<IntPtr, int> function_pointer)
         {
+            if (push_c_function is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_c_function));
+            }
+
             IntPtr int_ptr = (IntPtr)function_pointer;
 
             if (int_ptr == IntPtr.Zero)
@@ -338,31 +478,61 @@ namespace GmodNET
 
         public void PushCClosure(IntPtr native_func_ptr, int iVars)
         {
+            if (push_c_closure is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_c_closure));
+            }
+
             push_c_closure(ptr, native_func_ptr, iVars);
         }
 
         public int ReferenceCreate()
         {
+            if (reference_create is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(reference_create));
+            }
+
             return reference_create(ptr);
         }
 
         public void ReferenceFree(int reference)
         {
+            if (reference_free is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(reference_free));
+            }
+
             reference_free(ptr, reference);
         }
 
         public void ReferencePush(int reference)
         {
+            if (reference_push is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(reference_push));
+            }
+
             reference_push(ptr, reference);
         }
 
         public void PushSpecial(SPECIAL_TABLES table)
         {
+            if (push_special is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_special));
+            }
+
             push_special(ptr, (int)table);
         }
 
         public bool IsType(int iStackPos, int iType)
         {
+            if (is_type is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(is_type));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -386,6 +556,11 @@ namespace GmodNET
 
         public int GetType(int iStackPos)
         {
+            if (get_type is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_type));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -395,6 +570,11 @@ namespace GmodNET
 
         public string GetTypeName(int iType)
         {
+            if (get_type_name is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_type_name));
+            }
+
             int len = 0;
             
             unsafe
@@ -414,6 +594,11 @@ namespace GmodNET
 
         public int ObjLen(int iStackPos)
         {
+            if (obj_len is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(obj_len));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -423,6 +608,11 @@ namespace GmodNET
 
         public Vector3 GetAngle(int iStackPos)
         {
+            if (get_angle is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_angle));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -441,6 +631,11 @@ namespace GmodNET
 
         public Vector3 GetVector(int iStackPos)
         {
+            if (get_vector is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_vector));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -459,21 +654,41 @@ namespace GmodNET
 
         public void PushAngle(Vector3 ang)
         {
+            if (push_angle is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_angle));
+            }
+
             push_angle(ptr, ang.X, ang.Y, ang.Z);
         }
 
         public void PushVector(Vector3 vec)
         {
+            if (push_vector is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_vector));
+            }
+
             push_vector(ptr, vec.X, vec.Y, vec.Z);
         }
 
         public void SetState(IntPtr lua_state)
         {
+            if (set_state is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(set_state));
+            }
+
             set_state(ptr, lua_state);
         }
 
         public int CreateMetaTable(string name)
         {
+            if (create_metatable is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(create_metatable));
+            }
+
             byte[] buff = Encoding.UTF8.GetBytes(name);
 
             unsafe
@@ -487,6 +702,11 @@ namespace GmodNET
 
         public bool PushMetaTable(int iType)
         {
+            if (push_metatable is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_metatable));
+            }
+
             int tmp = push_metatable(ptr, iType);
 
             if(tmp == 0)
@@ -506,11 +726,21 @@ namespace GmodNET
 
         public void PushUserType(IntPtr data_pointer, int iType)
         {
+            if (push_user_type is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_user_type));
+            }
+
             push_user_type(ptr, data_pointer, iType);
         }
 
         public void SetUserType(int iStackPos, IntPtr data_pointer)
         {
+            if (set_user_type is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(set_user_type));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -519,7 +749,12 @@ namespace GmodNET
         }
 
         public IntPtr GetUserType(int iStackPos, int iType)
-        { 
+        {
+            if (get_user_type is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_user_type));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -529,6 +764,11 @@ namespace GmodNET
 
         public void GetTable(int iStackPos)
         {
+            if (get_table is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(get_table));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -538,6 +778,11 @@ namespace GmodNET
 
         public void SetTable(int iStackPos)
         {
+            if (set_table is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(set_table));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -547,6 +792,11 @@ namespace GmodNET
 
         public void RawGet(int iStackPos)
         {
+            if (raw_get is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(raw_get));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -556,6 +806,11 @@ namespace GmodNET
 
         public void RawSet(int iStackPos)
         {
+            if (raw_set is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(raw_set));
+            }
+
             if (iStackPos == 0)
             { 
                 throw new ArgumentOutOfRangeException("iStackPos", "iStackPos can't be zero!");
@@ -565,12 +820,22 @@ namespace GmodNET
 
         public void PushUserData(IntPtr data)
         {
+            if (push_user_data is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(push_user_data));
+            }
+
             push_user_data(ptr, data);
         }
 
         [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public string CheckString(int iStackPos)
         {
+            if (check_string is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(check_string));
+            }
+
             int str_len = 0;
             unsafe
             {
@@ -591,6 +856,11 @@ namespace GmodNET
         [Obsolete("BUG: LuaJIT exception mechanism is incompatible with CoreCLR.", true)]
         public double CheckNumber(int iStackPos)
         {
+            if (check_number is null)
+            {
+                throw new LuaInteropDelegateIsNullException(nameof(check_number));
+            }
+
             return check_number(ptr, iStackPos);
         }
 

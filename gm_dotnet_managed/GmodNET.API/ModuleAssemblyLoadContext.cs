@@ -21,7 +21,7 @@ namespace GmodNET.API
         /// <summary>
         /// Get current custom native library resolver delegate.
         /// </summary>
-        public abstract Func<ModuleAssemblyLoadContext, string, IntPtr> CustomNativeLibraryResolver { get; }
+        public abstract Func<ModuleAssemblyLoadContext, string, IntPtr>? CustomNativeLibraryResolver { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleAssemblyLoadContext" /> class with a value that indicates whether unloading is enabled.
