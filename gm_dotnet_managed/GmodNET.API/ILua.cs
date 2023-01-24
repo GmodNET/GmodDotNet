@@ -61,8 +61,8 @@ namespace GmodNET.API
         /// }
         /// </code>
         /// </example>
-        /// <seealso cref="ILua.SetField(int, in string)"/>
-        public void GetField(int iStackPos, in string key);
+        /// <seealso cref="ILua.SetField(int, string)"/>
+        public void GetField(int iStackPos, string key);
 
         /// <summary>
         /// Does a table key-value assignment <c>t[k] = v</c>,
@@ -102,8 +102,8 @@ namespace GmodNET.API
         /// }
         /// </code>
         /// </example>
-        /// <seealso cref="ILua.GetField(int, in string)"/>
-        public void SetField(int iStackPos, in string key);
+        /// <seealso cref="ILua.GetField(int, string)"/>
+        public void SetField(int iStackPos, string key);
 
         /// <summary>
         /// Creates a new table and pushes it to the top of the stack.
@@ -375,7 +375,7 @@ namespace GmodNET.API
         /// See <c>lua_pushstring</c> function in the Lua manual: https://www.lua.org/manual/5.1/manual.html
         /// </remarks>
         /// <param name="str">A string to push.</param>
-        public void PushString(in string str);
+        public void PushString(string str);
 
         /// <summary>
         /// Pushes a given double-precision number to the Lua stack.
@@ -593,7 +593,7 @@ namespace GmodNET.API
         /// Creates a new Lua type, pushes its metatable onto the stack, and returns new type’s id.
         /// </summary>
         /// <remarks>
-        /// <see cref="ILua.CreateMetaTable(in string)"/> allows you to extend Lua and Garry’s Mod type system with custom types.
+        /// <see cref="ILua.CreateMetaTable(string)"/> allows you to extend Lua and Garry’s Mod type system with custom types.
         /// Returned type id can be used with <see cref="ILua.PushUserType(IntPtr, int)"/>.
         /// 
         /// See section "Metatables" in the Lua manual for more information about types and metatables: https://www.lua.org/manual/5.1/manual.html
@@ -601,7 +601,7 @@ namespace GmodNET.API
         /// <param name="name">A name for the new type.</param>
         /// <returns>A type id for newly created type.</returns>
         /// <seealso cref="ILua.PushUserType(IntPtr, int)"/>
-        public int CreateMetaTable(in string name);
+        public int CreateMetaTable(string name);
 
         /// <summary>
         /// Pushes a metatable of the given type onto the stack.
@@ -668,7 +668,7 @@ namespace GmodNET.API
         /// and <c>k</c> is an object on top of the stack.
         /// </summary>
         /// <remarks>
-        /// Unlike <see cref="ILua.GetField(int, in string)"/>, allows to get a value from the table when the key in the key-value pair is not a string.
+        /// Unlike <see cref="ILua.GetField(int, string)"/>, allows to get a value from the table when the key in the key-value pair is not a string.
         /// 
         /// Pops a key object from the stack.
         /// 
@@ -676,7 +676,7 @@ namespace GmodNET.API
         /// </remarks>
         /// <param name="iStackPos">A stack position of the table to get a value from.</param>
         /// <example>
-        /// The following example shows how <see cref="ILua.GetTable(int)"/> can be used to get a value from the table instead of <see cref="ILua.GetField(int, in string)"/>.
+        /// The following example shows how <see cref="ILua.GetTable(int)"/> can be used to get a value from the table instead of <see cref="ILua.GetField(int, string)"/>.
         /// <code>
         /// public static int GetTableExample(ILua lua)
         /// {
@@ -691,7 +691,7 @@ namespace GmodNET.API
         /// }
         /// </code>
         /// </example>
-        /// <seealso cref="ILua.GetField(int, in string)"/>
+        /// <seealso cref="ILua.GetField(int, string)"/>
         public void GetTable(int iStackPos);
 
         /// <summary>
@@ -701,7 +701,7 @@ namespace GmodNET.API
         /// and <c>k</c> is a key at stack index <c>-2</c>.
         /// </summary>
         /// <remarks>
-        /// Unlike <see cref="ILua.SetField(int, in string)"/>, allows to add a key-value pair to a table with the key not being a string.
+        /// Unlike <see cref="ILua.SetField(int, string)"/>, allows to add a key-value pair to a table with the key not being a string.
         /// 
         /// Pops both the key and the value from the stack.
         /// 
@@ -709,7 +709,7 @@ namespace GmodNET.API
         /// </remarks>
         /// <param name="iStackPos">A stack position of the table to add a key-value pair to.</param>
         /// <example>
-        /// The following example shows how <see cref="ILua.SetTable(int)"/> can be used instead of <see cref="ILua.SetField(int, in string)"/>.
+        /// The following example shows how <see cref="ILua.SetTable(int)"/> can be used instead of <see cref="ILua.SetField(int, string)"/>.
         /// <code>
         /// public static int SetTableExample(ILua lua)
         /// {
@@ -723,7 +723,7 @@ namespace GmodNET.API
         /// }
         /// </code>
         /// </example>
-        /// <seealso cref="ILua.SetField(int, in string)"/>
+        /// <seealso cref="ILua.SetField(int, string)"/>
         public void SetTable(int iStackPos);
 
         /// <summary>
