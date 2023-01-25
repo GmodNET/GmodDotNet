@@ -5,15 +5,15 @@
     <Nullable>enable</Nullable>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Product>GmodNET API</Product>
-    <Description>GmodNET API library contains all necessary interfaces to write a GmodNET module.</Description>
+    <Product>GmodNET.API</Product>
+    <Description>GmodNET.API library contains all necessary interfaces to write a Gmod.NET module.</Description>
     <RepositoryUrl>https://github.com/GmodNET/GmodDotNet</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>garrysmod; GmodNET</PackageTags>
     <PackageProjectUrl>https://github.com/GmodNET/GmodDotNet</PackageProjectUrl>
     <PackageIcon>gmodnetlogo.png</PackageIcon>
     <Company>GmodNET</Company>
-    <Copyright>Copyright (c) 2018 - 2021 Gleb Krasilich, GmodNET</Copyright>
+    <Copyright>Copyright (c) 2018 - 2023 Gleb Krasilich, GmodNET</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>

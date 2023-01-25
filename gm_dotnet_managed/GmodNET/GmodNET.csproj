@@ -12,7 +12,7 @@
     <RepositoryType>Git</RepositoryType>
 	  <Company>GmodNET</Company>
 	  <Product>$(Description)</Product>
-	  <Copyright>Copyright (c) 2018 - 2021 Gleb Krasilich, GmodNET</Copyright>
+	  <Copyright>Copyright (c) 2018 - 2023 Gleb Krasilich, GmodNET</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>Portable</DebugType>
