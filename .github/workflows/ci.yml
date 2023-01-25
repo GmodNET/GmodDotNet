@@ -2,7 +2,8 @@ name: CI
 
 on:
   pull_request:
-  push: {}
+  push:
+    branches:
   release:
     types: [published]
 
@@ -385,9 +386,11 @@ jobs:
           file_glob: true
 
       - name: Restore dotnet version tool
+        if: ${{ github.event_name == 'push' }}
         run: dotnet tool restore
 
       - name: Generate token for GmodNET/runtime-nightly repo
+        if: ${{ github.event_name == 'push' }}
         id: generate_token_for_github_nightly
         uses: tibdex/github-app-token@v1.3.0
         with:
@@ -396,26 +399,32 @@ jobs:
           repository: GmodNET/runtime-nightly
 
       - name: Get current version
+        if: ${{ github.event_name == 'push' }}
         id: get_version
         run: echo "::set-output name=version::$(dotnet gmodnet-vt getVersion version.json --skip-build-data)"
 
       - name: Get current head
+        if: ${{ github.event_name == 'push' }}
         id: get_git_head
         run: echo "::set-output name=head_name::'$(dotnet gmodnet-vt getBranchName version.json)'"
 
       - name: Add new git remote for nightly builds
+        if: ${{ github.event_name == 'push' }}
         run: |
              git fetch --unshallow origin
              git config --local --unset-all http.https://github.com/.extraheader
              git remote add nightly https://x-access-token:${{ steps.generate_token_for_github_nightly.outputs.token }}@github.com/GmodNET/runtime-nightly.git
 
       - name: Apply git tag
+        if: ${{ github.event_name == 'push' }}
         run: git tag ${{ steps.get_version.outputs.version }}
 
       - name: Push tag to nightly builds repo
+        if: ${{ github.event_name == 'push' }}
         run: git push nightly ${{ steps.get_version.outputs.version }} --force
 
       - name: Upload build artifacts to nightly repo releases
+        if: ${{ github.event_name == 'push' }}
         uses: svenstaro/upload-release-action@2.2.1
         with:
           repo_token: ${{ steps.generate_token_for_github_nightly.outputs.token }}
@@ -426,6 +435,7 @@ jobs:
           file_glob: true
 
       - name: Send Discord message
+        if: ${{ github.event_name == 'push' }}
         working-directory: csx
         env:
           DOTNET_ROLL_FORWARD: Major
