@@ -12,7 +12,7 @@ namespace GmodNET
     {
         internal static T CreateNativeCaller<T>(IntPtr native_pointer) where T : Delegate
         {
-            MethodInfo invoke_info = typeof(T).GetMethod("Invoke");
+            MethodInfo invoke_info = typeof(T).GetMethod("Invoke")!; // T is constrained to Delegates only, so Invoke method is always present.
             var return_type = invoke_info.ReturnType;
             var parameters_types = invoke_info.GetParameters().Select(param => param.ParameterType).Prepend<Type>(typeof(object)).ToArray();
 

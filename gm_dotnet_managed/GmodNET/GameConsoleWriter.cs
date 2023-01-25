@@ -110,11 +110,11 @@ namespace GmodNET
 
         private delegate void MsgFunc(string str);
 
-        private static MsgFunc Msg;
+        private static MsgFunc? Msg;
 
-        public override void Write(string value)
+        public override void Write(string? value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!String.IsNullOrEmpty(value) && Msg is not null)
             {
                 Msg(value);
             }
@@ -123,7 +123,7 @@ namespace GmodNET
         {
             Write(value.ToString());
         }
-        public override void Write(char[] value)
+        public override void Write(char[]? value)
         {
             Write(new string(value));
         }
@@ -135,7 +135,7 @@ namespace GmodNET
         {
             Write(new string(buffer));
         }
-        public override void Write(StringBuilder value)
+        public override void Write(StringBuilder? value)
         {
             if (value != null)
             {
@@ -143,7 +143,7 @@ namespace GmodNET
             }
         }
         // \n begins here
-        public override void WriteLine(string value)
+        public override void WriteLine(string? value)
         {
             if (!String.IsNullOrEmpty(value))
             {
@@ -158,7 +158,7 @@ namespace GmodNET
         {
             Write(value.ToString() + NewLine);
         }
-        public override void WriteLine(char[] buffer)
+        public override void WriteLine(char[]? buffer)
         {
             Write(new string(buffer) + NewLine);
         }
@@ -170,7 +170,7 @@ namespace GmodNET
         {
             Write(new string(buffer) + NewLine);
         }
-        public override void WriteLine(StringBuilder value)
+        public override void WriteLine(StringBuilder? value)
         {
             if (value != null)
             {
@@ -213,7 +213,7 @@ namespace GmodNET
         {
             Write(value.ToString() + NewLine);
         }
-        public override void WriteLine(object value)
+        public override void WriteLine(object? value)
         {
             if (value == null)
             {

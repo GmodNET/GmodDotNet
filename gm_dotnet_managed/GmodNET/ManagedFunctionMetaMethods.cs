@@ -28,7 +28,12 @@ namespace GmodNET
 
                 IntPtr managed_delegate_handle = lua.GetUserType(GmodInterop.GetUpvalueIndex(1, false), managed_delegate_type_id);
 
-                Func<ILua, int> managed_delegate = (Func<ILua, int>)GCHandle.FromIntPtr(managed_delegate_handle).Target;
+                Func<ILua, int>? managed_delegate = GCHandle.FromIntPtr(managed_delegate_handle).Target as Func<ILua, int>;
+
+                if (managed_delegate is null)
+                {
+                    throw new Exception("Unable to get managed delegate from GCHandle");
+                }
 
                 return Math.Max(0, managed_delegate(lua));
             }

@@ -27,9 +27,20 @@ namespace GmodNET
         {
             try
             {
-                string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion;
-                string friendly_version = full_assembly_version.Split("+")[0];
-                string version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
+                string full_assembly_version = FileVersionInfo.GetVersionInfo(typeof(Startup).Assembly.Location).ProductVersion ?? string.Empty;
+
+                string friendly_version;
+                string version_codename;
+
+                try
+                {
+                    friendly_version = full_assembly_version.Split("+")[0];
+                    version_codename = full_assembly_version.Split("+")[1].Split(".")[1];
+                }
+                catch
+                {
+                    throw new Exception("Unable to parse version number according to specification");
+                }
 
                
                 string native_version = Encoding.UTF8.GetString((byte*)native_version_string.ToPointer(), version_string_length);

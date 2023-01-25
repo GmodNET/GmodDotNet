@@ -14,7 +14,7 @@ namespace GmodNET
     {
         private AssemblyDependencyResolver resolver;
         private string module_name;
-        private Func<ModuleAssemblyLoadContext, string, IntPtr> customNativeLibraryResolver;
+        private Func<ModuleAssemblyLoadContext, string, IntPtr>? customNativeLibraryResolver;
         private List<IntPtr> native_libray_handles;
 
         public override string ModuleName
@@ -25,13 +25,7 @@ namespace GmodNET
             }
         }
 
-        public override Func<ModuleAssemblyLoadContext, string, IntPtr> CustomNativeLibraryResolver
-        {
-            get
-            {
-                return customNativeLibraryResolver;
-            }
-        }
+        public override Func<ModuleAssemblyLoadContext, string, IntPtr>? CustomNativeLibraryResolver => customNativeLibraryResolver;
 
         public override void SetCustomNativeLibraryResolver(Func<ModuleAssemblyLoadContext, string, IntPtr> resolver)
         {
@@ -65,14 +59,14 @@ namespace GmodNET
             };
         }
 
-        protected override System.Reflection.Assembly Load(System.Reflection.AssemblyName assemblyName)
+        protected override System.Reflection.Assembly? Load(System.Reflection.AssemblyName assemblyName)
         {
             if(assemblyName.Name == "GmodNET.API")
             {
                 return null;
             }
 
-            string path = resolver.ResolveAssemblyToPath(assemblyName);
+            string? path = resolver.ResolveAssemblyToPath(assemblyName);
             if (string.IsNullOrEmpty(path))
             { 
                 return null;
@@ -98,7 +92,7 @@ namespace GmodNET
             }
             else
             {
-                string unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+                string? unmanaged_dep_path = resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
 
                 if(String.IsNullOrEmpty(unmanaged_dep_path))
                 {
