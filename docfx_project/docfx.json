@@ -71,10 +71,7 @@
       "_appFaviconPath": "images/favicon.ico"
     },
     "fileMetadataFiles": [],
-    "template": [
-      "default",
-      "templates/material"
-    ],
+    "template": ["default", "modern"],
     "postProcessors": [],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
