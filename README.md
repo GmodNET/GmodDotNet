@@ -1,5 +1,5 @@
 [![Nuget](https://img.shields.io/nuget/v/GmodNET.API?color=blue)](https://www.nuget.org/packages/GmodNET.API/) [![Downloads](https://img.shields.io/nuget/dt/GmodNET.API?color=2db94e)](https://www.nuget.org/packages/GmodNET.API/) [![Discord Server](https://img.shields.io/discord/632622505848471554?label=Our%20Discord&color=2db94e)](https://discord.gg/9bP8nMT)
-[![CI](https://github.com/GlebChili/GmodDotNet/workflows/CI/badge.svg?branch=master)](https://github.com/GlebChili/GmodDotNet/actions?query=workflow%3ACI)
+[![CI](https://github.com/GmodNET/GmodDotNet/workflows/CI/badge.svg?branch=main)](https://github.com/GmodNET/GmodDotNet/actions?query=workflow%3ACI)
 
 # Gmod.NET
 
@@ -60,7 +60,7 @@ You can find latest nightly builds of Gmod.NET runtime at http://nightly.gmodnet
 
 ## Installation and usage
 
-1. Download latest build from the project's [releases page](https://github.com/GlebChili/GmodDotNet/releases).
+1. Download latest build from the project's [releases page](https://github.com/GmodNET/GmodDotNet/releases).
 
 2. Unpack archive for your OS to the `%GARRYS_MOD_ROOT_FOLDER%garrysmod/lua/bin/` folder.
 

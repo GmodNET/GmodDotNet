@@ -13,4 +13,4 @@ Resulting module, dependencies, and `*.deps.json` should be placed in `garrysnod
 
 ## For more information
 
-Visit [https://github.com/GlebChili/GmodDotNet](https://github.com/GlebChili/GmodDotNet)
+Visit [https://github.com/GmodNET/GmodDotNet](https://github.com/GmodNET/GmodDotNet)
