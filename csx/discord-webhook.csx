@@ -34,7 +34,7 @@ DiscordMessage msg = new DiscordMessage
             type = "rich",
             title = "Nightly build of `GmodDotNet` for `" + branch + "` commit `" + commit.Substring(0, 7) + "`",
             description = discord_text,
-            url = "https://github.com/GlebChili/GmodDotNet/commit/" + commit,
+            url = "https://github.com/GmodNET/GmodDotNet/commit/" + commit,
             color = 65530
         }
     }
