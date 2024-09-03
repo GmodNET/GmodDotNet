@@ -343,25 +343,25 @@ jobs:
              mkdir osx
 
       - name: Download versioned build (windows)
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v4.1.7
         with:
           name: windows-versioned-build
           path: versioned-publish
 
       - name: Download versioned build (linux)
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v4.1.7
         with:
           name: linux-versioned-build
           path: versioned-publish
 
       - name: Download versioned build (osx)
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v4.1.7
         with:
           name: osx-versioned-build
           path: versioned-publish
 
       - name: Download nuget packages from previous stage
-        uses: actions/download-artifact@v1.0.0
+        uses: actions/download-artifact@v4.1.7
         with:
           name: nupkgs
           path: nuget-publish
